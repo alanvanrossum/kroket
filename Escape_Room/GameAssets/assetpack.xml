@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assetpack distributor="TeamKroket" name="GameAssets" version="1.0">
+    <description>Great Asset Pack</description>
+    <license>No License</license>
+    <assets>
+        <asset categories="" name="Materials" tags="" type="other">
+            <description/>
+            <license/>
+            <file path="/Misc//Models/BarrelDistortion.j3m" type="material"/>
+        </asset>
+        <asset categories="" name="Models" tags="" type="model">
+            <description/>
+            <license/>
+            <file path="/Models//Models/vive_controller.j3o" type="scene"/>
+        </asset>
+        <asset categories="" name="scenes" tags="" type="scene">
+            <description/>
+            <license/>
+            <file path="/Scenes//scenes/wildhouse.zip" type="scene"/>
+        </asset>
+        <asset categories="" name="Textures" tags="" type="texture">
+            <description/>
+            <license/>
+            <file path="/Textures//Textures/spheremap.png" type="texture"/>
+            <file path="/Textures//Textures/crosshair.png" type="texture"/>
+            <file path="/Textures//Textures/handnoise.png" type="texture"/>
+            <file path="/Textures//Textures/noise.png" type="texture"/>
+            <file path="/Textures//Textures/test.png" type="texture"/>
+            <file path="/Textures//Textures/vive_controller.png" type="texture"/>
+            <file path="/Textures//Textures/white.png" type="texture"/>
+        </asset>
+    </assets>
+</assetpack>
