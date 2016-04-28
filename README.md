@@ -9,3 +9,8 @@ https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek1
 
 - Sprint Backlog 1  
 https://github.com/alanvanrossum/kroket/blob/master/doc/Scrum%20-%20backlogs/SprintBacklog1.pdf
+
+### Week 2
+
+- Product Vision and Planning
+https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek2
