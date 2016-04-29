@@ -27,9 +27,6 @@
   <property name="maven.build.finalName" value="Escape_Room-1.0-SNAPSHOT"/>
   <property name="maven.build.dir" value="target"/>
   <property name="maven.build.outputDir" value="${maven.build.dir}/classes"/>
-  <!--
-  <property name="maven.build.srcDir.0" value="src/main/java"/>
-  -->
   <property name="maven.build.srcDir.0" value="Escape_Room/src/main/java/"/>
   
   <property name="maven.build.resourceDir.0" value="src/main/resources"/>
