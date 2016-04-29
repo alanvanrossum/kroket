@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="5.3.5" timestamp="2016-04-29T20:59:48.949">
+<pmd version="5.3.5" timestamp="2016-04-29T23:14:14.161">
 <file name="C:\Users\Harvey van Veltom\Documents\GitHub\team kroket\kroket\Escape_Room\src\main\java\com\mycompany\escape_room\Main.java">
 <violation beginline="46" endline="339" begincolumn="8" endcolumn="1" rule="CyclomaticComplexity" ruleset="Code Size" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/codesize.html#CyclomaticComplexity" priority="3">
 The class 'Main' has a Cyclomatic Complexity of 5 (Highest = 18).
