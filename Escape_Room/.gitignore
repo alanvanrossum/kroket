@@ -12,5 +12,5 @@
 .DS_Store
 
 # Maven
-log/
-target/
+Escape_Room/log/
+Escape_Room/target/
