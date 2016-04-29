@@ -4,14 +4,14 @@
 <!-- Ant build file (http://ant.apache.org/) for Ant 1.6.2 or above.        -->
 <!-- ====================================================================== -->
 
-<project name="%PROJECT_ARTIFACTID%" default="jar" basedir=".">
+<project name="Escape_Room" default="package" basedir=".">
 
   <!-- ====================================================================== -->
   <!-- Import maven-build.xml into the current project                        -->
   <!-- ====================================================================== -->
 
   <import file="maven-build.xml"/>
-
+  
   <!-- ====================================================================== -->
   <!-- Help target                                                            -->
   <!-- ====================================================================== -->
@@ -19,4 +19,5 @@
   <target name="help">
     <echo message="Please run: $ant -projecthelp"/>
   </target>
+
 </project>
