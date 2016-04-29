@@ -1,4 +1,3 @@
-
 /*
 
 VR Instancing Progress:
@@ -10,6 +9,7 @@ VR Instancing Progress:
 */
 
 package com.mycompany.escape_room;
+
 
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
@@ -84,13 +84,12 @@ public class Main extends VRApplication {
         observer = new Node("observer");
         
         Spatial sky = SkyFactory.createSky(
-                    getAssetManager(), "/Textures//Textures/spheremap.png", SkyFactory.EnvMapType.EquirectMap);
+                    getAssetManager(), "Textures/Sky/Bright/spheremap.png", SkyFactory.EnvMapType.EquirectMap);
         rootNode.attachChild(sky);
         
         Geometry box = new Geometry("", new Box(5,5,5));
-        //WAAR is deze asset located
-        mat = new Material(getAssetManager(), "/jmevr/shaders/Unshaded.j3md");
-        Texture noise = getAssetManager().loadTexture("/Textures//Textures/noise.png");
+        mat = new Material(getAssetManager(), "jmevr/shaders/Unshaded.j3md");
+        Texture noise = getAssetManager().loadTexture("Textures/noise.png");
         noise.setMagFilter(MagFilter.Nearest);
         noise.setMinFilter(MinFilter.Trilinear);
         noise.setAnisotropicFilter(16);
@@ -112,12 +111,10 @@ public class Main extends VRApplication {
         rootNode.attachChild(floor);
         
         // hand wands
-        
-        leftHand = (Geometry)getAssetManager().loadModel("/Models//Models/vive_controller.j3o");
+        leftHand = (Geometry)getAssetManager().loadModel("Models/vive_controller.j3o");
         rightHand = leftHand.clone();
-        //Waar is deze asset
         Material handMat = new Material(getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-        handMat.setTexture("ColorMap", getAssetManager().loadTexture("/Textures//Textures/vive_controller.png"));
+        handMat.setTexture("ColorMap", getAssetManager().loadTexture("Textures/vive_controller.png"));
         leftHand.setMaterial(handMat);
         rightHand.setMaterial(handMat);
         rootNode.attachChild(rightHand);
@@ -126,7 +123,7 @@ public class Main extends VRApplication {
         // gui element
         Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
         Picture test = new Picture("testpic");
-        test.setImage(getAssetManager(), "/Textures//Textures/crosshair.png", true);
+        test.setImage(getAssetManager(), "Textures/crosshair.png", true);
         test.setWidth(192f);
         test.setHeight(128f);
         test.setPosition(guiCanvasSize.x * 0.5f - 192f * 0.5f, guiCanvasSize.y * 0.5f - 128f * 0.5f);
