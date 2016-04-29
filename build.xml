@@ -10,7 +10,7 @@
   <!-- Import maven-build.xml into the current project                        -->
   <!-- ====================================================================== -->
 
-  <import file="maven-build.xml"/>
+  <import file="Escape_Room/maven-build.xml"/>
   
   <!-- ====================================================================== -->
   <!-- Help target                                                            -->
