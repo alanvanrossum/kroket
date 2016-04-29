@@ -19,7 +19,7 @@
         <id>jmonkeyengine-repository</id>
         <url>http://updates.jmonkeyengine.org/maven/</url>
     </repository>
-  </repositories>
+  </repositories>  
 
   <build>
     <plugins>
@@ -159,6 +159,11 @@
       <version>3.1.0-alpha5</version>
     </dependency>
    
+   <dependency>
+   	<groupId>org.kroket</groupId>
+   	<artifactId>JMonkeyVR</artifactId>
+   	<version>1.0</version>
+   </dependency>
   
   </dependencies>
 </project>
