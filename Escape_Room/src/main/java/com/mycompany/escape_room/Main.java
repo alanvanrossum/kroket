@@ -30,14 +30,14 @@ import com.jme3.texture.Texture.MagFilter;
 import com.jme3.texture.Texture.MinFilter;
 import com.jme3.ui.Picture;
 import com.jme3.util.SkyFactory;
-//import jmevr.app.VRApplication;
-//import jmevr.input.OpenVR;
-//import jmevr.input.VRBounds;
-//import jmevr.input.VRInput;
-//import jmevr.input.VRInput.VRINPUT_TYPE;
-//import jmevr.post.CartoonSSAO;
-//import jmevr.util.VRGuiManager;
-//import jmevr.util.VRGuiManager.POSITIONING_MODE;
+import jmevr.app.VRApplication;
+import jmevr.input.OpenVR;
+import jmevr.input.VRBounds;
+import jmevr.input.VRInput;
+import jmevr.input.VRInput.VRINPUT_TYPE;
+import jmevr.post.CartoonSSAO;
+import jmevr.util.VRGuiManager;
+import jmevr.util.VRGuiManager.POSITIONING_MODE;
 
 /**
  *
