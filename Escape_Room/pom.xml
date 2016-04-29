@@ -92,107 +92,13 @@
     </reporting>   
      
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
     
-    <dependency>
-      <groupId>com.mycompany</groupId>
-      <artifactId>Escape_Room_VR</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/jme_vr_libs/JMonkeyVR.jar</systemPath>
-   </dependency>
    
    <dependency>
-      <groupId>com.mycompany</groupId>
-      <artifactId>Escape_Room_core</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/jme_vr_libs/jme3-core.jar</systemPath>
+   	<groupId>org.kroket</groupId>
+   	<artifactId>JMonkeyVR</artifactId>
+   	<version>1.0</version>
    </dependency>
-   
-   <dependency>
-      <groupId>com.mycompany</groupId>
-      <artifactId>Escape_Room_blender</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/jme_vr_libs/jme3-blender.jar</systemPath>
-   </dependency>
-   
-   <dependency>
-      <groupId>com.mycompany</groupId>
-      <artifactId>Escape_Room_desktop</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/jme_vr_libs/jme3-desktop.jar</systemPath>
-   </dependency>
-   
-   <dependency>
-      <groupId>com.mycompany</groupId>
-      <artifactId>Escape_Room_effects</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/jme_vr_libs/jme3-effects.jar</systemPath>
-   </dependency>
-   
-   <dependency>
-      <groupId>com.mycompany</groupId>
-      <artifactId>Escape_Room_jogg</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/jme_vr_libs/jme3-jogg.jar</systemPath>
-   </dependency>
-   
-   <dependency>
-      <groupId>com.mycompany</groupId>
-      <artifactId>Escape_Room_lwjgl3</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/jme_vr_libs/jme3-lwjgl3.jar</systemPath>
-   </dependency>
-   
-   <dependency>
-      <groupId>com.mycompany</groupId>
-      <artifactId>Escape_Room_plugins</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/jme_vr_libs/jme3-plugins.jar</systemPath>
-   </dependency>
-   
-   <dependency>
-      <groupId>com.mycompany</groupId>
-      <artifactId>Escape_Room_jna</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/jme_vr_libs/jna-4.2.1.jar</systemPath>
-   </dependency>
-   
-   <dependency>
-      <groupId>com.mycompany</groupId>
-      <artifactId>Escape_Room_ogg</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/jme_vr_libs/j-ogg-all.jar</systemPath>
-   </dependency>
-   
-   <dependency>
-      <groupId>com.mycompany</groupId>
-      <artifactId>Escape_Room_lwjgl</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/jme_vr_libs/lwjgl-3.0.0.jar</systemPath>
-   </dependency>
-   
-   <dependency>
-      <groupId>com.mycompany</groupId>
-      <artifactId>Escape_Room_lwjgl_natives</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/jme_vr_libs/lwjgl-3.0.0-natives.jar</systemPath>
-   </dependency>
+  
   </dependencies>
 </project>

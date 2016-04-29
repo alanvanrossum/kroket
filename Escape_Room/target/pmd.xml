@@ -1,35 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="5.3.5" timestamp="2016-04-28T16:57:47.416">
+<pmd version="5.3.5" timestamp="2016-04-29T15:46:34.051">
 <file name="C:\Users\Harvey van Veltom\Documents\GitHub\team kroket\kroket\Escape_Room\src\main\java\com\mycompany\escape_room\Main.java">
-<violation beginline="47" endline="343" begincolumn="8" endcolumn="1" rule="CyclomaticComplexity" ruleset="Code Size" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/codesize.html#CyclomaticComplexity" priority="3">
-The class 'Main' has a Cyclomatic Complexity of 5 (Highest = 18).
-</violation>
-<violation beginline="47" endline="343" begincolumn="8" endcolumn="1" rule="ModifiedCyclomaticComplexity" ruleset="Code Size" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/codesize.html#ModifiedCyclomaticComplexity" priority="3">
-The class 'Main' has a Modified Cyclomatic Complexity of 4 (Highest = 15).
-</violation>
-<violation beginline="47" endline="343" begincolumn="8" endcolumn="1" rule="StdCyclomaticComplexity" ruleset="Code Size" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/codesize.html#StdCyclomaticComplexity" priority="3">
-The class 'Main' has a Standard Cyclomatic Complexity of 4 (Highest = 15).
-</violation>
-<violation beginline="176" endline="248" begincolumn="14" endcolumn="5" rule="CyclomaticComplexity" ruleset="Code Size" package="com.mycompany.escape_room" class="Main" method="initInputs" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/codesize.html#CyclomaticComplexity" priority="3">
-The method 'initInputs' has a Cyclomatic Complexity of 18.
-</violation>
-<violation beginline="176" endline="248" begincolumn="14" endcolumn="5" rule="ModifiedCyclomaticComplexity" ruleset="Code Size" package="com.mycompany.escape_room" class="Main" method="initInputs" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/codesize.html#ModifiedCyclomaticComplexity" priority="3">
-The method 'initInputs' has a Modified Cyclomatic Complexity of 15.
-</violation>
-<violation beginline="176" endline="248" begincolumn="14" endcolumn="5" rule="StdCyclomaticComplexity" ruleset="Code Size" package="com.mycompany.escape_room" class="Main" method="initInputs" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/codesize.html#StdCyclomaticComplexity" priority="3">
-The method 'initInputs' has a Standard Cyclomatic Complexity of 15.
-</violation>
-<violation beginline="189" endline="237" begincolumn="20" endcolumn="13" rule="CyclomaticComplexity" ruleset="Code Size" package="com.mycompany.escape_room" class="Main" method="onAction" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/codesize.html#CyclomaticComplexity" priority="3">
-The method 'onAction' has a Cyclomatic Complexity of 17.
-</violation>
-<violation beginline="189" endline="237" begincolumn="20" endcolumn="13" rule="ModifiedCyclomaticComplexity" ruleset="Code Size" package="com.mycompany.escape_room" class="Main" method="onAction" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/codesize.html#ModifiedCyclomaticComplexity" priority="3">
-The method 'onAction' has a Modified Cyclomatic Complexity of 14.
-</violation>
-<violation beginline="189" endline="237" begincolumn="20" endcolumn="13" rule="StdCyclomaticComplexity" ruleset="Code Size" package="com.mycompany.escape_room" class="Main" method="onAction" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/codesize.html#StdCyclomaticComplexity" priority="3">
-The method 'onAction' has a Standard Cyclomatic Complexity of 14.
-</violation>
-<violation beginline="289" endline="289" begincolumn="10" endcolumn="47" rule="IfStmtsMustUseBraces" ruleset="Braces" package="com.mycompany.escape_room" class="Main" method="simpleUpdate" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/braces.html#IfStmtsMustUseBraces" priority="3">
-Avoid using if statements without curly braces
+<violation beginline="16" endline="16" begincolumn="1" endcolumn="31" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'jmevr.app.VRApplication'
 </violation>
 </file>
 </pmd>
