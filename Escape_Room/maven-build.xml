@@ -444,7 +444,7 @@
          dest="${maven.repo.local}/teamkroket/jmvr/0.0.0/jmvr-0.0.0.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
-    <copy file="repo/teamkroket/jmvr/0.0.0/jmvr-0.0.0.jar" 
+    <copy file="Escape_Room/repo/teamkroket/jmvr/0.0.0/jmvr-0.0.0.jar" 
           tofile="${maven.repo.local}/teamkroket/jmvr/0.0.0/jmvr-0.0.0.jar" 
           failonerror="false"/>
     <get src="http://repo.maven.apache.org/maven2/teamkroket/jmvr/0.0.0/jmvr-0.0.0.jar" 
