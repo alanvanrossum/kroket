@@ -1,8 +1,3 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="5.3.5" timestamp="2016-04-29T15:46:34.051">
-<file name="C:\Users\Harvey van Veltom\Documents\GitHub\team kroket\kroket\Escape_Room\src\main\java\com\mycompany\escape_room\Main.java">
-<violation beginline="16" endline="16" begincolumn="1" endcolumn="31" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
-Avoid unused imports such as 'jmevr.app.VRApplication'
-</violation>
-</file>
+<pmd version="5.3.5" timestamp="2016-04-29T16:31:13.147">
 </pmd>
