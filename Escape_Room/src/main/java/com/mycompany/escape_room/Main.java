@@ -83,6 +83,8 @@ public class Main extends VRApplication {
     private void initTestScene(){
         observer = new Node("observer");
         
+   
+        
         Spatial sky = SkyFactory.createSky(
                     getAssetManager(), "Textures/Sky/Bright/spheremap.png", SkyFactory.EnvMapType.EquirectMap);
         rootNode.attachChild(sky);
