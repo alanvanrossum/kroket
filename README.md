@@ -19,3 +19,10 @@ https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek1
 - Sprint Backlog 2  
 
 https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek2
+
+### Week 3
+
+- Final Product Planning
+- Final Product Vision
+
+https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek3
