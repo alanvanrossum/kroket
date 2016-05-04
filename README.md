@@ -26,5 +26,6 @@ https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek2
 - Final Product Vision
 - Sprint backlog 3
 - Sprint retrospective 2
+- Design document
 
 https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek3
