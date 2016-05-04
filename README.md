@@ -22,6 +22,7 @@ https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek2
 
 ### Week 3
 
+- Architecture design
 - Final Product Planning
 - Final Product Vision
 - Sprint backlog 3
