@@ -1,0 +1,25 @@
+/EscapeApp/*.iml
+/EscapeApp.gradle
+/EscapeApp/local.properties
+/EscapeApp/.idea/workspace.xml
+/EscapeApp/.idea/libraries
+/EscapeApp/.DS_Store
+/EscapeApp/build
+/EscapeApp/captures
+
+# Eclipse
+/Escape_Room/.classpath
+/Escape_Room/.project
+/Escape_Room/.settings/
+
+# Intellij
+/Escape_Room/.idea/
+/Escape_Room/iml
+/Escape_Room/*.iws
+
+# Mac
+/Escape_Room/.DS_Store
+
+# Maven
+/Escape_Room/log/
+/Escape_Room/target/
