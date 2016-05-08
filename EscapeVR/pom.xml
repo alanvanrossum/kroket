@@ -19,6 +19,12 @@
         <id>jmonkeyengine-repository</id>
         <url>http://updates.jmonkeyengine.org/maven/</url>
     </repository>
+ 
+  <repository>
+    <id>repo</id>
+    <url>file://${basedir}/repo/</url>
+  </repository>
+
 </repositories>  
 
   <build>
@@ -62,7 +68,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>nl.tudelft.kroket.Main</mainClass>
+							<mainClass>nl.tudelft.kroket.escape.Main</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
@@ -185,7 +191,14 @@
       <artifactId>jme3-blender</artifactId>
       <version>3.1.0-alpha5</version>
     </dependency>
-    
+
+
+   <dependency>
+    	<groupId>teamkroket</groupId>
+    	<artifactId>jmvr</artifactId>
+    	<version>0.0.0</version>
+    </dependency>
+
   </dependencies>
 
 </project>
