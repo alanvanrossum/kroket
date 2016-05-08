@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd version="5.3.5" timestamp="2016-04-30T00:43:25.848">
+<file name="C:\Users\Harvey van Veltom\Documents\GitHub\team kroket\kroket\Escape_Room\src\main\java\com\mycompany\escape_room\Main.java">
+<violation beginline="13" endline="13" begincolumn="1" endcolumn="35" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'com.jme3.input.InputManager'
+</violation>
+<violation beginline="14" endline="14" begincolumn="1" endcolumn="31" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'com.jme3.input.KeyInput'
+</violation>
+<violation beginline="15" endline="15" begincolumn="1" endcolumn="46" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'com.jme3.input.controls.ActionListener'
+</violation>
+<violation beginline="16" endline="16" begincolumn="1" endcolumn="42" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'com.jme3.input.controls.KeyTrigger'
+</violation>
+<violation beginline="17" endline="17" begincolumn="1" endcolumn="34" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'com.jme3.material.Material'
+</violation>
+<violation beginline="18" endline="18" begincolumn="1" endcolumn="30" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'com.jme3.math.FastMath'
+</violation>
+<violation beginline="19" endline="19" begincolumn="1" endcolumn="32" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'com.jme3.math.Quaternion'
+</violation>
+<violation beginline="20" endline="20" begincolumn="1" endcolumn="30" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'com.jme3.math.Vector2f'
+</violation>
+<violation beginline="21" endline="21" begincolumn="1" endcolumn="30" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'com.jme3.math.Vector3f'
+</violation>
+<violation beginline="22" endline="22" begincolumn="1" endcolumn="41" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'com.jme3.post.FilterPostProcessor'
+</violation>
+<violation beginline="23" endline="23" begincolumn="1" endcolumn="31" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'com.jme3.scene.Geometry'
+</violation>
+<violation beginline="24" endline="24" begincolumn="1" endcolumn="27" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'com.jme3.scene.Node'
+</violation>
+<violation beginline="25" endline="25" begincolumn="1" endcolumn="30" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'com.jme3.scene.Spatial'
+</violation>
+<violation beginline="26" endline="26" begincolumn="1" endcolumn="39" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'com.jme3.scene.Spatial.CullHint'
+</violation>
+<violation beginline="27" endline="27" begincolumn="1" endcolumn="32" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'com.jme3.scene.shape.Box'
+</violation>
+<violation beginline="28" endline="28" begincolumn="1" endcolumn="32" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'com.jme3.texture.Texture'
+</violation>
+<violation beginline="29" endline="29" begincolumn="1" endcolumn="42" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'com.jme3.texture.Texture.MagFilter'
+</violation>
+<violation beginline="30" endline="30" begincolumn="1" endcolumn="42" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'com.jme3.texture.Texture.MinFilter'
+</violation>
+<violation beginline="31" endline="31" begincolumn="1" endcolumn="27" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'com.jme3.ui.Picture'
+</violation>
+<violation beginline="32" endline="32" begincolumn="1" endcolumn="32" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'com.jme3.util.SkyFactory'
+</violation>
+<violation beginline="33" endline="33" begincolumn="1" endcolumn="31" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'jmevr.app.VRApplication'
+</violation>
+<violation beginline="34" endline="34" begincolumn="1" endcolumn="26" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'jmevr.input.OpenVR'
+</violation>
+<violation beginline="35" endline="35" begincolumn="1" endcolumn="28" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'jmevr.input.VRBounds'
+</violation>
+<violation beginline="36" endline="36" begincolumn="1" endcolumn="27" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'jmevr.input.VRInput'
+</violation>
+<violation beginline="37" endline="37" begincolumn="1" endcolumn="40" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'jmevr.input.VRInput.VRINPUT_TYPE'
+</violation>
+<violation beginline="38" endline="38" begincolumn="1" endcolumn="30" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'jmevr.post.CartoonSSAO'
+</violation>
+<violation beginline="39" endline="39" begincolumn="1" endcolumn="31" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'jmevr.util.VRGuiManager'
+</violation>
+<violation beginline="40" endline="40" begincolumn="1" endcolumn="48" rule="UnusedImports" ruleset="Import Statements" package="com.mycompany.escape_room" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'jmevr.util.VRGuiManager.POSITIONING_MODE'
+</violation>
+</file>
+</pmd>
