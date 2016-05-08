@@ -1,11 +1,12 @@
-/EscapeApp/*.iml
-/EscapeApp.gradle
-/EscapeApp/local.properties
-/EscapeApp/.idea/workspace.xml
-/EscapeApp/.idea/libraries
-/EscapeApp/.DS_Store
-/EscapeApp/build
-/EscapeApp/captures
+# Android Studio
+/EscapeApp/EscapeApp/*.iml
+/EscapeApp/EscapeApp.gradle
+/EscapeApp/EscapeApp/local.properties
+/EscapeApp/EscapeApp/.idea/workspace.xml
+/EscapeApp/EscapeApp/.idea/libraries
+/EscapeApp/EscapeApp/.DS_Store
+/EscapeApp/EscapeApp/build
+/EscapeApp/EscapeApp/captures
 
 # Eclipse
 /Escape_Room/.classpath
