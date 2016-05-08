@@ -10,5 +10,12 @@
 
 # Mac
 .DS_Store
-/EscapeVR/build/
+
+# Project specific
+/EscapeVR/target/
+/EscapeVR/repo/
 /EscapeVR/dist/
+
+/EscapeServer/target/
+
+/EscapeApp/build
