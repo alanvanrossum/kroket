@@ -3,4 +3,5 @@
     <string name="connectionMessage">not connected</string>
     <string name="startButton">Start</string>
     <string name="connectButton">Connect</string>
+    <string name="title_activity_game__a_">Game_A_Activity</string>
 </resources>

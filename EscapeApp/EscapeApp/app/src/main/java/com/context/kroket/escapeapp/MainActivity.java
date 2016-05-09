@@ -1,5 +1,6 @@
 package com.context.kroket.escapeapp;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
      * @param view is the view that was clicked.
      */
     public void startButton(View view) {
-
+        Intent intent = new Intent(this, Game_A_Activity.class);
+        startActivity(intent);
     }
 
 
