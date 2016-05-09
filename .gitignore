@@ -1,27 +1,35 @@
-# Android Studio
-# /EscapeApp/EscapeApp/*.iml
-# /EscapeApp/EscapeApp/.gradle
-# /EscapeApp/EscapeApp/local.properties
-# /EscapeApp/EscapeApp/.idea/workspace.xml
-# /EscapeApp/EscapeApp/.idea/libraries
-# /EscapeApp/EscapeApp/.idea
-# /EscapeApp/EscapeApp/.DS_Store
-# /EscapeApp/EscapeApp/build
-# /EscapeApp/EscapeApp/captures
-
+<<<<<<< HEAD
 # Eclipse
-/Escape_Room/.classpath
-/Escape_Room/.project
-/Escape_Room/.settings/
+.classpath
+.project
+.settings/
 
 # Intellij
-/Escape_Room/.idea/
-/Escape_Room/iml
-/Escape_Room/*.iws
+.idea/
+*.iml
+*.iws
 
 # Mac
-/Escape_Room/.DS_Store
+.DS_Store
 
-# Maven
-/Escape_Room/log/
-/Escape_Room/target/
+# Project specific
+/EscapeVR/target/
+#/EscapeVR/repo/
+/EscapeVR/dist/
+#/EscapeVR/jme_vr_libs/
+
+/EscapeServer/target/
+
+/EscapeApp/build
+=======
+# Android Studio
+/EscapeApp/EscapeApp/*.iml
+/EscapeApp/EscapeApp/.gradle
+/EscapeApp/EscapeApp/local.properties
+/EscapeApp/EscapeApp/.idea/workspace.xml
+/EscapeApp/EscapeApp/.idea/libraries
+/EscapeApp/EscapeApp/.idea
+/EscapeApp/EscapeApp/.DS_Store
+/EscapeApp/EscapeApp/build
+/EscapeApp/EscapeApp/captures
+
