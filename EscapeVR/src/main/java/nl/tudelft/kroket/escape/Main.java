@@ -5,13 +5,24 @@ import java.util.List;
 
 import com.jme3.audio.AudioData.DataType;
 import com.jme3.audio.AudioNode;
-import com.jme3.audio.AudioSource;
 import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.input.InputManager;
+import com.jme3.input.JoyInput;
+import com.jme3.input.Joystick;
 import com.jme3.input.KeyInput;
+import com.jme3.input.RawInputListener;
 import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.JoyAxisTrigger;
+import com.jme3.input.controls.JoyButtonTrigger;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.input.event.JoyAxisEvent;
+import com.jme3.input.event.JoyButtonEvent;
+import com.jme3.input.event.KeyInputEvent;
+import com.jme3.input.event.MouseButtonEvent;
+import com.jme3.input.event.MouseMotionEvent;
+import com.jme3.input.event.TouchEvent;
+import com.jme3.input.JoystickAxis;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
@@ -24,6 +35,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.Spatial.CullHint;
 import com.jme3.scene.shape.Box;
+import com.jme3.system.AppSettings;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.MagFilter;
 import com.jme3.texture.Texture.MinFilter;
@@ -41,6 +53,69 @@ import jmevr.util.VRGuiManager.POSITIONING_MODE;
 import jopenvr.VRControllerAxis_t;
 
 public class Main extends VRApplication {
+
+	public static void main(String[] args) {
+		Main mainApplication = new Main();
+
+		// create AppSettings object to enable joysticks/gamepads
+		// and set the title
+		AppSettings settings = new AppSettings(true);
+
+		// enable joysticks/gamepads
+		settings.setUseJoysticks(true);
+
+		// set application/window title
+		settings.setTitle("EscapeVR");
+
+		mainApplication.setSettings(settings);
+
+		mainApplication.preconfigureVRApp(
+				PRECONFIG_PARAMETER.USE_CUSTOM_DISTORTION, false);
+		mainApplication.preconfigureVRApp(
+				PRECONFIG_PARAMETER.ENABLE_MIRROR_WINDOW, false);
+		mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.FORCE_VR_MODE,
+				false);
+		mainApplication.preconfigureVRApp(
+				PRECONFIG_PARAMETER.SET_GUI_CURVED_SURFACE, true);
+		mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.FLIP_EYES, false);
+		mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.SET_GUI_OVERDRAW,
+				true);
+		mainApplication.preconfigureVRApp(
+				PRECONFIG_PARAMETER.INSTANCE_VR_RENDERING, false);
+		mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.NO_GUI, false);
+		mainApplication.preconfigureFrustrumNearFar(0.1f, 512f);
+		mainApplication.start();
+	}
+
+	// protected class JoystickEventListener implements RawInputListener {
+	//
+	// public void onJoyAxisEvent(JoyAxisEvent evt) {
+	// System.out.println("onJoyAxisEvent");
+	// }
+	//
+	// public void onJoyButtonEvent(JoyButtonEvent evt) {
+	// System.out.println("onJoyButtonEvent");
+	// }
+	//
+	// public void beginInput() {
+	// }
+	//
+	// public void endInput() {
+	// }
+	//
+	// public void onMouseMotionEvent(MouseMotionEvent evt) {
+	// }
+	//
+	// public void onMouseButtonEvent(MouseButtonEvent evt) {
+	// }
+	//
+	// public void onKeyEvent(KeyInputEvent evt) {
+	// }
+	//
+	// public void onTouchEvent(TouchEvent evt) {
+	// }
+	//
+	// }
 
 	BitmapFont guiFont;
 
@@ -110,22 +185,6 @@ public class Main extends VRApplication {
 		overlayList.add(ready);
 	}
 
-	// set some VR settings & start the app
-	public static void main(String[] args) {
-		Main test = new Main();
-
-		test.preconfigureVRApp(PRECONFIG_PARAMETER.USE_CUSTOM_DISTORTION, false);
-		test.preconfigureVRApp(PRECONFIG_PARAMETER.ENABLE_MIRROR_WINDOW, false);
-		test.preconfigureVRApp(PRECONFIG_PARAMETER.FORCE_VR_MODE, false);
-		test.preconfigureVRApp(PRECONFIG_PARAMETER.SET_GUI_CURVED_SURFACE, true);
-		test.preconfigureVRApp(PRECONFIG_PARAMETER.FLIP_EYES, false);
-		test.preconfigureVRApp(PRECONFIG_PARAMETER.SET_GUI_OVERDRAW, true);
-		test.preconfigureVRApp(PRECONFIG_PARAMETER.INSTANCE_VR_RENDERING, false);
-		test.preconfigureVRApp(PRECONFIG_PARAMETER.NO_GUI, false);
-		test.preconfigureFrustrumNearFar(0.1f, 512f);
-		test.start();
-	}
-
 	// general objects for scene management
 	Node boxes = new Node("boxes");
 	Spatial observer;
@@ -178,7 +237,8 @@ public class Main extends VRApplication {
 		floorTexture.setAnisotropicFilter(16);
 		floorMat.setTexture("ColorMap", floorTexture);
 
-		// - probeersel van Jochem
+		
+		// create 4 walls
 
 		Geometry wall1 = new Geometry("wall", new Box(.5f, 6f, 6f));
 		wall1.setMaterial(mat);
@@ -193,13 +253,11 @@ public class Main extends VRApplication {
 		Geometry wall3 = new Geometry("wall", new Box(12f, 6f, .5f));
 		wall3.setMaterial(mat);
 		wall3.move(0, 5, 6);
-
 		rootNode.attachChild(wall3);
 
 		Geometry wall4 = new Geometry("wall", new Box(12f, 6f, .5f));
 		wall4.setMaterial(mat);
 		wall4.move(0, 5, -6);
-
 		rootNode.attachChild(wall4);
 
 		// ----
@@ -269,7 +327,7 @@ public class Main extends VRApplication {
 		VRApplication.setObserver(observer);
 		rootNode.attachChild(observer);
 
-		addAllBoxes();
+		// addAllBoxes();
 
 		initInputs();
 
@@ -300,8 +358,89 @@ public class Main extends VRApplication {
 
 	}
 
+	private void initJoysticks() {
+		InputManager inputManager = getInputManager();
+
+		// inputManager.addRawInputListener(new JoystickEventListener());
+
+		Joystick[] joysticks = inputManager.getJoysticks();
+
+		if (joysticks == null || joysticks.length == 0) {
+			System.out.println("No joysticks found");
+		} else {
+
+			System.out.println("joysticks.length = " + joysticks.length);
+
+			Joystick joy = joysticks[0];
+			// JoystickAxis axis = joy.getAxes().get(0);
+
+			// assign axes
+			joy.getAxes().get(0).assignAxis("right", "left");
+			joy.getAxes().get(1).assignAxis("forward", "back");
+
+			// joy.getButtons().get(1).assignButton("X");
+			// joy.getButtons().get(2).assignButton("Y");
+			// joy.getButtons().get(3).assignButton("X");
+			// joy.getButtons().get(4).assignButton("Y");
+		}
+
+	}
+
 	private void initInputs() {
 		InputManager inputManager = getInputManager();
+
+		initJoysticks();
+		//
+		// inputManager.addMapping("forward", new JoyAxisTrigger(0,
+		// JoyInput.AXIS_POV_X, true));
+		// inputManager.addMapping("back", new JoyAxisTrigger(0,
+		// JoyInput.AXIS_POV_X, false));
+		// inputManager.addMapping("left", new JoyAxisTrigger(0,
+		// JoyInput.AXIS_POV_Y, true));
+		// inputManager.addMapping("right", new JoyAxisTrigger(0,
+		// JoyInput.AXIS_POV_Y, false));
+
+		// inputManager.addMapping("left", new JoyAxisTrigger(0,
+		// JoyInput.AXIS_POV_X, true));
+		// inputManager.addMapping("right", new JoyAxisTrigger(0,
+		// JoyInput.AXIS_POV_X, false));
+		// inputManager.addMapping("back", new JoyAxisTrigger(0,
+		// JoyInput.AXIS_POV_Y, true));
+		// inputManager.addMapping("forward", new JoyAxisTrigger(0,
+		// JoyInput.AXIS_POV_Y, false));
+
+		// inputManager.addMapping("Axis LS Up", new JoyAxisTrigger(0, 0,
+		// true));
+		// inputManager
+		// .addMapping("Axis LS Down", new JoyAxisTrigger(0, 0, false));
+		// inputManager.addMapping("Axis LS Left", new JoyAxisTrigger(0, 1,
+		// true));
+		// inputManager.addMapping("Axis LS Right",
+		// new JoyAxisTrigger(0, 1, false));
+		// inputManager.addMapping("Axis RS Up", new JoyAxisTrigger(0, 2,
+		// true));
+		// inputManager
+		// .addMapping("Axis RS Down", new JoyAxisTrigger(0, 2, false));
+		// inputManager.addMapping("Axis RS Left", new JoyAxisTrigger(0, 3,
+		// true));
+		// inputManager.addMapping("Axis RS Right",
+		// new JoyAxisTrigger(0, 3, false));
+		// inputManager.addMapping("Button A", new JoyButtonTrigger(0, 0));
+		// inputManager.addMapping("Button B", new JoyButtonTrigger(0, 1));
+		// inputManager.addMapping("Button X", new JoyButtonTrigger(0, 2));
+		// inputManager.addMapping("Button Y", new JoyButtonTrigger(0, 3));
+		// inputManager.addMapping("Button LB", new JoyButtonTrigger(0, 4));
+		// inputManager.addMapping("Button RB", new JoyButtonTrigger(0, 5));
+		// inputManager.addMapping("Button BACK", new JoyButtonTrigger(0, 6));
+		// inputManager.addMapping("Button START", new JoyButtonTrigger(0, 7));
+		// inputManager.addMapping("Button LT", new JoyButtonTrigger(0, 8));
+		// inputManager.addMapping("Button RT", new JoyButtonTrigger(0, 9));
+		// inputManager.addMapping("Button RT", new JoyAxisTrigger(0, 4, true));
+		// inputManager.addMapping("Button LT", new JoyAxisTrigger(0, 4,
+		// false));
+
+		// inputManager.addMapping("Button A", new KeyTrigger(KeyInput.KEY_A));
+
 		inputManager.addMapping("toggle", new KeyTrigger(KeyInput.KEY_SPACE));
 		inputManager.addMapping("incShift", new KeyTrigger(KeyInput.KEY_Q));
 		inputManager.addMapping("decShift", new KeyTrigger(KeyInput.KEY_E));
@@ -311,9 +450,15 @@ public class Main extends VRApplication {
 		inputManager.addMapping("right", new KeyTrigger(KeyInput.KEY_D));
 		inputManager.addMapping("filter", new KeyTrigger(KeyInput.KEY_F));
 		inputManager.addMapping("dumpImages", new KeyTrigger(KeyInput.KEY_I));
+
 		ActionListener acl = new ActionListener() {
 
 			public void onAction(String name, boolean keyPressed, float tpf) {
+
+				if (!keyPressed) {
+					System.out.println("You have pressed : " + name);
+				}
+
 				if (name.equals("incShift") && keyPressed) {
 					VRGuiManager.adjustGuiDistance(-0.1f);
 				} else if (name.equals("decShift") && keyPressed) {
@@ -372,6 +517,7 @@ public class Main extends VRApplication {
 		inputManager.addListener(acl, "decShift");
 		inputManager.addListener(acl, "filter");
 		inputManager.addListener(acl, "dumpImages");
+
 	}
 
 	private float distance = 100f;
@@ -385,54 +531,54 @@ public class Main extends VRApplication {
 	@Override
 	public void simpleUpdate(float tpf) {
 
-		if (!introPlayed
-				&& audio_welcome.getStatus() != AudioSource.Status.Playing) {
-			introPlayed = true;
-			audio_gameBegin.play();
-			playMusic();
-		} else if (audio_welcome.getStatus() == AudioSource.Status.Playing) {
-
-			if (audio_welcome.getPlaybackTime() < 3) {
-				clearOverlays();
-				overlayImage("Textures/overlay/teamkroket.png");
-			} else if (audio_welcome.getPlaybackTime() < 5) {
-				clearOverlays();
-				overlayImage("Textures/overlay/presents.png");
-			} else if (audio_welcome.getPlaybackTime() < 12) {
-				clearOverlays();
-				overlayImage("Textures/overlay/escaparade.png");
-			} else if (audio_welcome.getPlaybackTime() < 18) {
-				clearOverlays();
-				overlayImage("Textures/overlay/locked.png");
-			} else if (audio_welcome.getPlaybackTime() < 26) {
-				clearOverlays();
-				overlayImage("Textures/overlay/toxicgas.png");
-			} else if (audio_welcome.getPlaybackTime() < 32) {
-				clearOverlays();
-				overlayImage("Textures/overlay/onlygoal.png");
-			} else if (audio_welcome.getPlaybackTime() < 35) {
-				clearOverlays();
-				overlayImage("Textures/overlay/getout.png");
-			} else if (audio_welcome.getPlaybackTime() < 38) {
-				clearOverlays();
-				overlayImage("Textures/overlay/onlyway.png");
-			} else if (audio_welcome.getPlaybackTime() < 41) {
-				clearOverlays();
-				overlayImage("Textures/overlay/byworkingtogether.png");
-			} else if (audio_welcome.getPlaybackTime() < 45) {
-				clearOverlays();
-				overlayImage("Textures/overlay/makeitoutalive.png");
-			} else if (audio_welcome.getPlaybackTime() < 48) {
-				clearOverlays();
-				overlayImage("Textures/overlay/getready.png");
-			} else if (audio_welcome.getPlaybackTime() < 51) {
-				clearOverlays();
-				overlayImage("Textures/overlay/toescape.png");
-			} else
-				clearOverlays();
-
-		} else
-			clearOverlays();
+		// if (!introPlayed
+		// && audio_welcome.getStatus() != AudioSource.Status.Playing) {
+		// introPlayed = true;
+		// audio_gameBegin.play();
+		// playMusic();
+		// } else if (audio_welcome.getStatus() == AudioSource.Status.Playing) {
+		//
+		// if (audio_welcome.getPlaybackTime() < 3) {
+		// clearOverlays();
+		// overlayImage("Textures/overlay/teamkroket.png");
+		// } else if (audio_welcome.getPlaybackTime() < 5) {
+		// clearOverlays();
+		// overlayImage("Textures/overlay/presents.png");
+		// } else if (audio_welcome.getPlaybackTime() < 12) {
+		// clearOverlays();
+		// overlayImage("Textures/overlay/escaparade.png");
+		// } else if (audio_welcome.getPlaybackTime() < 18) {
+		// clearOverlays();
+		// overlayImage("Textures/overlay/locked.png");
+		// } else if (audio_welcome.getPlaybackTime() < 26) {
+		// clearOverlays();
+		// overlayImage("Textures/overlay/toxicgas.png");
+		// } else if (audio_welcome.getPlaybackTime() < 32) {
+		// clearOverlays();
+		// overlayImage("Textures/overlay/onlygoal.png");
+		// } else if (audio_welcome.getPlaybackTime() < 35) {
+		// clearOverlays();
+		// overlayImage("Textures/overlay/getout.png");
+		// } else if (audio_welcome.getPlaybackTime() < 38) {
+		// clearOverlays();
+		// overlayImage("Textures/overlay/onlyway.png");
+		// } else if (audio_welcome.getPlaybackTime() < 41) {
+		// clearOverlays();
+		// overlayImage("Textures/overlay/byworkingtogether.png");
+		// } else if (audio_welcome.getPlaybackTime() < 45) {
+		// clearOverlays();
+		// overlayImage("Textures/overlay/makeitoutalive.png");
+		// } else if (audio_welcome.getPlaybackTime() < 48) {
+		// clearOverlays();
+		// overlayImage("Textures/overlay/getready.png");
+		// } else if (audio_welcome.getPlaybackTime() < 51) {
+		// clearOverlays();
+		// overlayImage("Textures/overlay/toescape.png");
+		// } else
+		// clearOverlays();
+		//
+		// } else
+		// clearOverlays();
 
 		// FPS test
 		tpfAdder += tpf;
@@ -469,6 +615,13 @@ public class Main extends VRApplication {
 			placeRate -= tpf;
 	}
 
+	private ActionListener actionListener = new ActionListener() {
+
+		public void onAction(String name, boolean isPressed, float tpf) {
+
+		}
+	};
+
 	private void handleWandInput(int index, Geometry geo) {
 		Quaternion q = VRInput.getFinalObserverRotation(index);
 		Vector3f v = VRInput.getFinalObserverPosition(index);
@@ -480,7 +633,7 @@ public class Main extends VRApplication {
 			if (VRInput.getAxis(index, VRINPUT_TYPE.ViveTriggerAxis).x >= 1f
 					&& placeRate <= 0f) {
 				placeRate = 0.5f;
-				addBox(v, q, 0.1f);
+				// addBox(v, q, 0.1f);
 				VRInput.triggerHapticPulse(index, 0.1f);
 			}
 
@@ -506,31 +659,31 @@ public class Main extends VRApplication {
 		}
 	}
 
-	private void addAllBoxes() {
-		// float distance = 8;
-		// for (int x = 0; x < 35; x++) {
-		// float cos = FastMath.cos(x * FastMath.PI / 16f) * distance;
-		// float sin = FastMath.sin(x * FastMath.PI / 16f) * distance;
-		// Vector3f loc = new Vector3f(cos, 0, sin);
-		// addBox(loc, null, 1f);
-		// loc = new Vector3f(0, cos, sin);
-		// addBox(loc, null, 1f);
-		// }
+	// private void addAllBoxes() {
+	// // float distance = 8;
+	// // for (int x = 0; x < 35; x++) {
+	// // float cos = FastMath.cos(x * FastMath.PI / 16f) * distance;
+	// // float sin = FastMath.sin(x * FastMath.PI / 16f) * distance;
+	// // Vector3f loc = new Vector3f(cos, 0, sin);
+	// // addBox(loc, null, 1f);
+	// // loc = new Vector3f(0, cos, sin);
+	// // addBox(loc, null, 1f);
+	// // }
+	//
+	// }
 
-	}
-
-	private static final Box smallBox = new Box(0.3f, 0.3f, .3f);
-
-	private void addBox(Vector3f location, Quaternion rot, float scale) {
-		Geometry leftQuad = new Geometry("Box", smallBox);
-		if (rot != null) {
-			leftQuad.setLocalRotation(rot);
-		} else {
-			leftQuad.rotate(0.5f, 0f, 0f);
-		}
-		leftQuad.setLocalScale(scale);
-		leftQuad.setMaterial(mat);
-		leftQuad.setLocalTranslation(location);
-		rootNode.attachChild(leftQuad);
-	}
+	// private static final Box smallBox = new Box(0.3f, 0.3f, .3f);
+	//
+	// private void addBox(Vector3f location, Quaternion rot, float scale) {
+	// Geometry leftQuad = new Geometry("Box", smallBox);
+	// if (rot != null) {
+	// leftQuad.setLocalRotation(rot);
+	// } else {
+	// leftQuad.rotate(0.5f, 0f, 0f);
+	// }
+	// leftQuad.setLocalScale(scale);
+	// leftQuad.setMaterial(mat);
+	// leftQuad.setLocalTranslation(location);
+	// rootNode.attachChild(leftQuad);
+	// }
 }

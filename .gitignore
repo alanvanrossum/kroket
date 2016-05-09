@@ -1,3 +1,6 @@
+# Java
+*.class
+
 # Eclipse
 .classpath
 .project
@@ -11,16 +14,25 @@
 # Mac
 .DS_Store
 
-# Project specific
-/EscapeVR/target/
-#/EscapeVR/repo/
-/EscapeVR/dist/
-#/EscapeVR/jme_vr_libs/
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
 
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Project specific: EscapeVR
+/EscapeVR/target/
+/EscapeVR/dist/
+/EscapeVR/hs_err_pid*
+
+# Project specific: EscapeServer
 /EscapeServer/target/
 
+# Project specific: EscapeApp
 /EscapeApp/build
-=======
+
 # Android Studio
 /EscapeApp/EscapeApp/*.iml
 /EscapeApp/EscapeApp/.gradle
