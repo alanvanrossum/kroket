@@ -11,30 +11,18 @@
     android:orientation="vertical"
     android:weightSum="1">
 
-    <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:id="@+id/fab"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="bottom|end"-->
-        <!--android:layout_margin="@dimen/fab_margin"-->
-        <!--android:src="@android:drawable/ic_dialog_email" />-->
-
-    <!--<TextView android:id="@+id/hoi"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Mini Game 1 !! :D"-->
-        <!--android:layout_gravity="center_horizontal" />-->
-
     <Button android:id="@+id/codeButton"
         android:layout_width="106dp"
         android:layout_height="wrap_content"
         android:text="@string/codeButton"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:onClick="codeButton"/>
 
     <ImageView
         android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/picassowithnumberpng" />
+        android:layout_width="349dp"
+        android:layout_height="199dp"
+        android:src="@drawable/picassowithnumberpng"
+        android:layout_weight="0.88" />
 
 </LinearLayout>

@@ -5,4 +5,7 @@
     <string name="connectButton">Connect</string>
     <string name="title_activity_game__a_">Game_A_Activity</string>
     <string name="codeButton">Code</string>
+    <string name="picButton">Picture</string>
+    <string name="code">M I H A</string>
+    <string name="codedec">Decipher the following code:</string>
 </resources>

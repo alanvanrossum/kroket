@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
      * @param view is the view that was clicked.
      */
     public void startButton(View view) {
-        Intent intent = new Intent(this, Game_A_Activity.class);
+        Intent intent = new Intent(this, Game_AA_Activity.class);
         startActivity(intent);
     }
 
