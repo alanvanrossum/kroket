@@ -13,7 +13,7 @@
 
 # Project specific
 /EscapeVR/target/
-/EscapeVR/repo/
+#/EscapeVR/repo/
 /EscapeVR/dist/
 #/EscapeVR/jme_vr_libs/
 
