@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Eclipse
 .classpath
 .project
@@ -20,3 +21,15 @@
 /EscapeServer/target/
 
 /EscapeApp/build
+=======
+# Android Studio
+/EscapeApp/EscapeApp/*.iml
+/EscapeApp/EscapeApp/.gradle
+/EscapeApp/EscapeApp/local.properties
+/EscapeApp/EscapeApp/.idea/workspace.xml
+/EscapeApp/EscapeApp/.idea/libraries
+/EscapeApp/EscapeApp/.idea
+/EscapeApp/EscapeApp/.DS_Store
+/EscapeApp/EscapeApp/build
+/EscapeApp/EscapeApp/captures
+
