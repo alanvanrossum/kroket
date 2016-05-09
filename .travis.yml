@@ -1,5 +1,7 @@
 language: java
 jdk:
   - oraclejdk8
-  
-before_script: cd EscapeVR
+
+env:
+  - TEST_DIR=EscapeServer
+  - TEST_DIR=EscapeVR
