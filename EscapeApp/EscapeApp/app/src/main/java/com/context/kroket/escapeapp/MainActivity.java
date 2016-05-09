@@ -1,4 +1,4 @@
-package com.example.mayke.escapeapp;
+package com.context.kroket.escapeapp;
 
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 // Otherwise, set the URL to null.
                 Uri.parse("http://host/path"),
                 // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://com.example.mayke.escapeapp/http/host/path")
+                Uri.parse("android-app://com.context.kroket.escapeapp/http/host/path")
         );
         AppIndex.AppIndexApi.start(client, viewAction);
     }
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 // Otherwise, set the URL to null.
                 Uri.parse("http://host/path"),
                 // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://com.example.mayke.escapeapp/http/host/path")
+                Uri.parse("android-app://com.context.kroket.escapeapp/http/host/path")
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();

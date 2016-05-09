@@ -1,4 +1,4 @@
-package com.example.mayke.escapeapp;
+package com.context.kroket.escapeapp;
 
 import org.junit.Test;
 

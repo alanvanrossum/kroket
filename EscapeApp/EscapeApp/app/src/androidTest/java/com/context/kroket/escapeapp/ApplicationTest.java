@@ -1,4 +1,4 @@
-package com.example.mayke.escapeapp;
+package com.context.kroket.escapeapp;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
