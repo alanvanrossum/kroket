@@ -34,7 +34,6 @@ public class Logger {
 
 	public void info(String tag, String message) {
 
-		
 		print(LogLevel.INFO, tag, message);
 	}
 
@@ -44,7 +43,8 @@ public class Logger {
 			return;
 		}
 		if (level.ordinal() <= getLevel().ordinal()) {
-			String output = "[" + timeFormat.format(new Date()) + "]: " + String.format(msgFormat, level, tag, message);
+			String output = "[" + timeFormat.format(new Date()) + "]: "
+					+ String.format(msgFormat, level, tag, message);
 
 			if (level == LogLevel.ERROR) {
 				System.err.println(output);
