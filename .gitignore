@@ -6,7 +6,7 @@
 #/EscapeApp/EscapeApp/.idea/libraries
 /EscapeApp/EscapeApp/.idea
 /EscapeApp/EscapeApp/.DS_Store
-/EscapeApp/EscapeApp/build
+#/EscapeApp/EscapeApp/build
 /EscapeApp/EscapeApp/captures
 
 # Eclipse
