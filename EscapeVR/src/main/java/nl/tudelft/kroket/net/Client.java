@@ -1,16 +1,10 @@
 package nl.tudelft.kroket.net;
 
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Client {
 	
@@ -20,7 +14,6 @@ public class Client {
         
         private DataOutputStream outToServer;
         private DataInputStream inFromServer;
-    private String startMiniGame;
 	
 	public Client() throws IOException {
             createSocket();
@@ -46,7 +39,7 @@ public class Client {
          * @param message, string with message to be sent.
          */
         public void sendMessage(String message) throws IOException{
-            String StartMiniGame = "123";
+            String startMiniGame = "123";
             outToServer.writeBytes(startMiniGame);
         }
         
@@ -60,6 +53,17 @@ public class Client {
             return res;
         }
         
-
-    
+        /**
+         * socket and streams closed when done.
+         */
+        public void close(){
+            try {
+                socket.close();
+                inFromServer.close();
+                outToServer.close();
+            } catch (IOException e) {
+                System.out.println(e);
+            }
+        }
 }
+        
