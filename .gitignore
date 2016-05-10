@@ -26,6 +26,7 @@
 /EscapeVR/target/
 /EscapeVR/dist/
 /EscapeVR/hs_err_pid*
+/EscapeVR/build
 
 # Project specific: EscapeServer
 /EscapeServer/target/
