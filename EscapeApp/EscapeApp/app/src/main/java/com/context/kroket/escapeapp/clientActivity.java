@@ -1,13 +1,13 @@
 package com.context.kroket.escapeapp;
 
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
 import java.util.ArrayList;
 
 public class clientActivity extends AppCompatActivity {
 
-    private TCPClient tcpClient;
+    private GameClient tcpClient;
     private ArrayList<String> list;
 
     @Override
@@ -26,12 +26,12 @@ public class clientActivity extends AppCompatActivity {
         }
     }
 
-    public class connectTask extends AsyncTask<String, String, TCPClient> {
+    public class connectTask extends AsyncTask<String, String, GameClient> {
 
         @Override
-        protected TCPClient doInBackground(String... message) {
+        protected GameClient doInBackground(String... message) {
 
-            tcpClient = new TCPClient(new TCPClient.OnMessageReceived() {
+            tcpClient = new GameClient(new GameClient.OnMessageReceived() {
                 @Override
                 public void messageReceived(String mes) {
                     publishProgress(mes);
