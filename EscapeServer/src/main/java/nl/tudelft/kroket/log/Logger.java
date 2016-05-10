@@ -1,4 +1,4 @@
-package nl.tudelft.kroket.EscapeServer;
+package nl.tudelft.kroket.log;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
