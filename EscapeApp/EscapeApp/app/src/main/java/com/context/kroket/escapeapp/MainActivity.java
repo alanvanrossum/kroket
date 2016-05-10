@@ -2,6 +2,7 @@ package com.context.kroket.escapeapp;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,38 +13,58 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
+
+    GameClient tcpClient;
+    ArrayList<String> list;
 
     /**
      * Method that makes the calls necessary to connect the players to the server.
+     *
      * @param view is the view that was clicked.
      */
     public void connectButton(View view) {
         boolean connect = false;
         //connect to server, if this succeeds set connect boolean to true
         //for now, just set boolean to true
-        Intent intent = new Intent(this, clientActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, clientActivity.class);
+//        startActivity(intent);
+
+        list = new ArrayList<String>();
+        new connectTask().execute("");
+
+        String message = "hallohallo";
+        list.add("client: " + message);
+
+        if (tcpClient != null) {
+            tcpClient.sendMessage(message);
+        }
 
         connect = true;
 
-        TextView connectMessage = (TextView)findViewById(R.id.connectionMessage);
-        Button start = (Button)findViewById(R.id.startButton);
-        if(connect) {
-            if(connectMessage != null) {connectMessage.setText("connected");}
-            if(start != null) {start.setEnabled(true);}
+        TextView connectMessage = (TextView) findViewById(R.id.connectionMessage);
+        Button start = (Button) findViewById(R.id.startButton);
+        if (connect) {
+            if (connectMessage != null) {
+                connectMessage.setText("connected");
+            }
+            if (start != null) {
+                start.setEnabled(true);
+            }
         }
     }
 
     /**
      * Method that starts the game.
+     *
      * @param view is the view that was clicked.
      */
     public void startButton(View view) {
         Intent intent = new Intent(this, Game_AA_Activity.class);
         startActivity(intent);
     }
-
 
 
     /**
@@ -65,8 +86,10 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
 
-        Button start = (Button)findViewById(R.id.startButton);
-        if(start != null) {start.setEnabled(false);}
+        Button start = (Button) findViewById(R.id.startButton);
+        if (start != null) {
+            start.setEnabled(false);
+        }
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client.connect();
@@ -101,5 +124,27 @@ public class MainActivity extends AppCompatActivity {
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
+    }
+
+
+    public class connectTask extends AsyncTask<String, String, GameClient> {
+
+        @Override
+        protected GameClient doInBackground(String... message) {
+            tcpClient = new GameClient(new GameClient.OnMessageReceived() {
+                @Override
+                public void messageReceived(String mes) {
+                    publishProgress(mes);
+                }
+            });
+            tcpClient.run();
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            list.add(values[0]);
+        }
     }
 }

@@ -30,7 +30,6 @@
             android:label="@string/title_activity_game__a_"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Game_AA_Activity" />
-        <activity android:name=".clientActivity"></activity>
     </application>
 
 </manifest>
