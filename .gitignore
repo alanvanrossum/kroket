@@ -11,6 +11,9 @@
 *.iml
 *.iws
 
+# Ignore dll files
+*.dll
+
 # Mac
 .DS_Store
 
@@ -26,7 +29,9 @@
 /EscapeVR/target/
 /EscapeVR/dist/
 /EscapeVR/hs_err_pid*
-/EscapeVR/build
+/EscapeVR/build/
+/EscapeVR/bin/
+/EscapeVR/MANIFEST.MF
 
 # Project specific: EscapeServer
 /EscapeServer/target/
