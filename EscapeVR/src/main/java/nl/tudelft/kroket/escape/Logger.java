@@ -1,15 +1,16 @@
 package nl.tudelft.kroket.escape;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Logger {
-	
+
 	private LogLevel level = LogLevel.ALL;
 
 	public enum LogLevel {
 		NONE, INFO, ERROR, DEBUG, ALL
 	}
-	
+
 	private String msgFormat = "%s %s: %s";
 
 	public void setLevel(LogLevel level) {
@@ -22,8 +23,7 @@ public class Logger {
 
 	private static Logger instance = new Logger();
 
-	private SimpleDateFormat timeFormat = new SimpleDateFormat(
-			"YYYY-MM-dd HH:mm:ss");
+	private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 
 	private Logger() {
 	}
@@ -42,7 +42,8 @@ public class Logger {
 			return;
 		}
 		if (level.ordinal() <= getLevel().ordinal()) {
-			String output = String.format(msgFormat, level, tag, message);
+			String output = "[" + timeFormat.format(new Date()) + "]: "
+					+ String.format(msgFormat, level, tag, message);
 
 			if (level == LogLevel.ERROR) {
 				System.err.println(output);

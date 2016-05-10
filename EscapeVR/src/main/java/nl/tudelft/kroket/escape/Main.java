@@ -23,7 +23,6 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
-import com.jme3.system.AppSettings;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.MagFilter;
 import com.jme3.texture.Texture.MinFilter;
@@ -38,45 +37,6 @@ import jmevr.util.VRGuiManager.POSITIONING_MODE;
 
 public class Main extends VRApplication {
 
-	public static void main(String[] args) {
-            
-		Main mainApplication = new Main();
-//            try {
-//                Client client = new Client();
-//            } catch (IOException ex) {
-//                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-
-		// create AppSettings object to enable joysticks/gamepads
-		// and set the title
-		AppSettings settings = new AppSettings(true);
-
-		// enable joysticks/gamepads
-		settings.setUseJoysticks(true);
-
-		// set application/window title
-		settings.setTitle("EscapeVR");
-
-		mainApplication.setSettings(settings);
-
-		mainApplication.preconfigureVRApp(
-				PRECONFIG_PARAMETER.USE_CUSTOM_DISTORTION, false);
-		mainApplication.preconfigureVRApp(
-				PRECONFIG_PARAMETER.ENABLE_MIRROR_WINDOW, false);
-		mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.FORCE_VR_MODE,
-				false);
-		mainApplication.preconfigureVRApp(
-				PRECONFIG_PARAMETER.SET_GUI_CURVED_SURFACE, true);
-		mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.FLIP_EYES, false);
-		mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.SET_GUI_OVERDRAW,
-				true);
-		mainApplication.preconfigureVRApp(
-				PRECONFIG_PARAMETER.INSTANCE_VR_RENDERING, false);
-		mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.NO_GUI, false);
-		mainApplication.preconfigureFrustrumNearFar(0.1f, 512f);
-		mainApplication.start();
-	}
-
 	BitmapFont guiFont;
 
 	boolean introPlayed = false;
@@ -85,20 +45,20 @@ public class Main extends VRApplication {
 
 	List<Picture> overlayList = new ArrayList<Picture>();
 
-	private void initFont() {
-		guiFont = getAssetManager().loadFont("Interface/Fonts/fyf.ttf");
-		// hudText = new BitmapText(myFont, false);
-
-	}
-
-	private void displayText() {
-		BitmapText hudText = new BitmapText(guiFont, false);
-		hudText.setSize(guiFont.getCharSet().getRenderedSize()); // font size
-		hudText.setColor(ColorRGBA.Blue); // font color
-		hudText.setText("You can write any string here"); // the text
-		hudText.setLocalTranslation(300, hudText.getLineHeight(), 0); // position
-		guiNode.attachChild(hudText);
-	}
+//	private void initFont() {
+//		guiFont = getAssetManager().loadFont("Interface/Fonts/fyf.ttf");
+//		// hudText = new BitmapText(myFont, false);
+//
+//	}
+//
+//	private void displayText() {
+//		BitmapText hudText = new BitmapText(guiFont, false);
+//		hudText.setSize(guiFont.getCharSet().getRenderedSize()); // font size
+//		hudText.setColor(ColorRGBA.Blue); // font color
+//		hudText.setText("You can write any string here"); // the text
+//		hudText.setLocalTranslation(300, hudText.getLineHeight(), 0); // position
+//		guiNode.attachChild(hudText);
+//	}
 
 	private AudioNode audio_ambient;
 	private AudioNode audio_gameBegin;
@@ -168,9 +128,9 @@ public class Main extends VRApplication {
 		audio_ambient.play();
 	}
 
-	private void playIntro() {
-
-	}
+//	private void playIntro() {
+//
+//	}
 
 	private void initTestScene() {
 		observer = new Node("observer");
@@ -182,15 +142,16 @@ public class Main extends VRApplication {
 
 		Geometry box = new Geometry("", new Box(5, 5, 5));
 
-		mat = new Material(getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+		mat = new Material(getAssetManager(),
+				"Common/MatDefs/Misc/Unshaded.j3md");
 		Texture noise = getAssetManager().loadTexture("Textures/noise.png");
 		noise.setMagFilter(MagFilter.Nearest);
 		noise.setMinFilter(MinFilter.Trilinear);
 		noise.setAnisotropicFilter(16);
 		mat.setTexture("ColorMap", noise);
 
-
-		floorMat = new Material(getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+		floorMat = new Material(getAssetManager(),
+				"Common/MatDefs/Misc/Unshaded.j3md");
 
 		Texture floorTexture = getAssetManager().loadTexture(
 				"Textures/floor2.png");
@@ -199,7 +160,6 @@ public class Main extends VRApplication {
 		floorTexture.setAnisotropicFilter(16);
 		floorMat.setTexture("ColorMap", floorTexture);
 
-		
 		// create 4 walls
 
 		Geometry wall1 = new Geometry("wall", new Box(.5f, 6f, 6f));
@@ -524,7 +484,5 @@ public class Main extends VRApplication {
 		if (placeRate > 0f)
 			placeRate -= tpf;
 	}
-
-	
 
 }
