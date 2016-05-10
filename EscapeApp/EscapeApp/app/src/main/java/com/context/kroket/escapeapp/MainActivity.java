@@ -22,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
         boolean connect = false;
         //connect to server, if this succeeds set connect boolean to true
         //for now, just set boolean to true
+        Intent intent = new Intent(this, clientActivity.class);
+        startActivity(intent);
+
         connect = true;
 
         TextView connectMessage = (TextView)findViewById(R.id.connectionMessage);

@@ -19,10 +19,12 @@ public class clientActivity extends AppCompatActivity {
 
         new connectTask().execute("");
 
-        list.add("Hoi Jochem! :)");
+        String message = "hallohallo";
+
+        list.add("client: " + message);
 
         if (tcpClient != null) {
-            tcpClient.sendMessage("Hoi Jochem2! :)");
+            tcpClient.sendMessage(message);
         }
     }
 
@@ -30,20 +32,19 @@ public class clientActivity extends AppCompatActivity {
 
         @Override
         protected GameClient doInBackground(String... message) {
-
             tcpClient = new GameClient(new GameClient.OnMessageReceived() {
                 @Override
                 public void messageReceived(String mes) {
                     publishProgress(mes);
                 }
             });
+            tcpClient.run();
             return null;
         }
 
         @Override
         protected void onProgressUpdate(String... values) {
-            super.onProgressUpdate(values);       //onProgressUpdate
-
+            super.onProgressUpdate(values);
             list.add(values[0]);
         }
     }

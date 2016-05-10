@@ -9,7 +9,7 @@ import java.net.Socket;
  * Created by Swift on 10-5-2016.
  */
 public class GameClient {
-    public static final String SERVERIP = "";//the ip adress of the server
+    public static final String SERVERIP = "145.94.178.99"; // "145.94.213.233";//the ip adress of the server
     public static final int SERVERPORT = 1234;//the port we will be listening //
     private String serverMessage;
     private OnMessageReceived messageListener = null;
