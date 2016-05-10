@@ -17,31 +17,19 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    GameClient tcpClient;
-    ArrayList<String> list;
+    private static GameClient tcpClient;
+    private static ArrayList<String> list;
 
     /**
      * Method that makes the calls necessary to connect the players to the server.
-     *
      * @param view is the view that was clicked.
      */
     public void connectButton(View view) {
         boolean connect = false;
         //connect to server, if this succeeds set connect boolean to true
-        //for now, just set boolean to true
 //        Intent intent = new Intent(this, clientActivity.class);
 //        startActivity(intent);
-
-        list = new ArrayList<String>();
-        new connectTask().execute("");
-
-        String message = "hallohallo";
-        list.add("client: " + message);
-
-        if (tcpClient != null) {
-            tcpClient.sendMessage(message);
-        }
-
+        connect();
         connect = true;
 
         TextView connectMessage = (TextView) findViewById(R.id.connectionMessage);
@@ -53,6 +41,24 @@ public class MainActivity extends AppCompatActivity {
             if (start != null) {
                 start.setEnabled(true);
             }
+        }
+    }
+
+    /**
+     * Connect to the server
+     */
+    public void connect() {
+        list = new ArrayList<String>();
+        new connectTask().execute("");
+
+        String message = "hallohallo";
+        list.add("client: " + message);
+        System.out.println("message: " + message);
+
+        while (tcpClient == null) {}
+        if (tcpClient != null) {
+            System.out.println("send");
+            tcpClient.sendMessage(message);
         }
     }
 
@@ -137,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
                     publishProgress(mes);
                 }
             });
+            System.out.println("tcpClient initialized");
             tcpClient.run();
             return null;
         }
