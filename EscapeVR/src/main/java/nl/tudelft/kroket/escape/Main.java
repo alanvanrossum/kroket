@@ -1,7 +1,17 @@
 package nl.tudelft.kroket.escape;
 
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import nl.tudelft.kroket.net.Client;
+import jmevr.app.VRApplication;
+import jmevr.input.OpenVR;
+import jmevr.input.VRBounds;
+import jmevr.post.CartoonSSAO;
+import jmevr.util.VRGuiManager;
+import jmevr.util.VRGuiManager.POSITIONING_MODE;
 
 import com.jme3.audio.AudioData.DataType;
 import com.jme3.audio.AudioNode;
@@ -14,7 +24,6 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
@@ -28,43 +37,42 @@ import com.jme3.texture.Texture.MagFilter;
 import com.jme3.texture.Texture.MinFilter;
 import com.jme3.ui.Picture;
 import com.jme3.util.SkyFactory;
-import jmevr.app.VRApplication;
-import jmevr.input.OpenVR;
-import jmevr.input.VRBounds;
-import jmevr.post.CartoonSSAO;
-import jmevr.util.VRGuiManager;
-import jmevr.util.VRGuiManager.POSITIONING_MODE;
 
 public class Main extends VRApplication {
 
+	public enum GameState {
+		LOBBY, INTRO, STARTED
+	}
+
+	private GameState currentState = GameState.LOBBY;
+
 	BitmapFont guiFont;
 
-	boolean introPlayed = false;
+	boolean introComplete = false;
 
 	Picture ready;
 
 	List<Picture> overlayList = new ArrayList<Picture>();
 
-//	private void initFont() {
-//		guiFont = getAssetManager().loadFont("Interface/Fonts/fyf.ttf");
-//		// hudText = new BitmapText(myFont, false);
-//
-//	}
-//
-//	private void displayText() {
-//		BitmapText hudText = new BitmapText(guiFont, false);
-//		hudText.setSize(guiFont.getCharSet().getRenderedSize()); // font size
-//		hudText.setColor(ColorRGBA.Blue); // font color
-//		hudText.setText("You can write any string here"); // the text
-//		hudText.setLocalTranslation(300, hudText.getLineHeight(), 0); // position
-//		guiNode.attachChild(hudText);
-//	}
-
 	private AudioNode audio_ambient;
 	private AudioNode audio_gameBegin;
 	private AudioNode audio_welcome;
+	private AudioNode audio_waiting;
+
+	boolean waitingSet = false;
+
+	Client client = null;
+
+	BitmapText hudText;
 
 	private void initAudio() {
+
+		audio_waiting = new AudioNode(getAssetManager(),
+				"Sound/Soundtrack/waiting.wav", DataType.Buffer);
+		audio_waiting.setPositional(false);
+		audio_waiting.setLooping(true);
+		audio_waiting.setVolume(1);
+		rootNode.attachChild(audio_waiting);
 
 		audio_ambient = new AudioNode(getAssetManager(),
 				"Sound/Soundtrack/ambient.wav", DataType.Buffer);
@@ -115,12 +123,49 @@ public class Main extends VRApplication {
 	@Override
 	public void simpleInitApp() {
 		initAudio();
-		initTestScene();
+		initScene();
 
 		// print out what device we have
 		if (VRApplication.getVRHardware() != null) {
 			System.out.println("Attached device: "
 					+ VRApplication.getVRHardware().getName());
+		}
+
+		// displayText("Game not started.\r\nWaiting for players...");
+
+		try {
+			System.out.println("Setting up client...");
+			client = new Client();
+
+			System.out.println("Registering player...");
+
+			client.sendMessage("REGISTER[Harvey]");
+			client.sendMessage("TYPE[VIRTUAL]");
+
+			final DataInputStream stream = client.getStream();
+
+			Thread thread = new Thread() {
+				@Override
+				public void run() {
+
+					String line;
+					try {
+						while ((line = stream.readLine()) != null) {
+							receiveLoop(line);
+						}
+						System.out.println("end of loop");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				};
+			};
+			thread.start();
+			System.out.println("Thread started");
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -128,12 +173,33 @@ public class Main extends VRApplication {
 		audio_ambient.play();
 	}
 
-//	private void playIntro() {
-//
-//	}
+	// public void displayText(String text) {
+	//
+	// Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
+	//
+	// Picture pic = new Picture("HUD Picture");
+	// pic.setImage(getAssetManager(), "Textures/overlay/waiting.png", true);
+	//
+	// /** Write text on the screen (HUD) */
+	// //guiNode.detachAllChildren();
+	//
+	//
+	// guiNode.attachChild(pic);
+	//
+	// }
+	/** Write text on the screen (HUD) */
 
-	private void initTestScene() {
+	private void initScene() {
 		observer = new Node("observer");
+
+		BitmapFont guiFont = getAssetManager().loadFont(
+				"Interface/Fonts/Default.fnt");
+
+		hudText = new BitmapText(guiFont, false);
+		hudText.setSize(guiFont.getCharSet().getRenderedSize());
+		hudText.setText("hudText placeholder");
+		hudText.setLocalTranslation(0, hudText.getLineHeight(), 0);
+		guiNode.attachChild(hudText);
 
 		Spatial sky = SkyFactory.createSky(getAssetManager(),
 				"Textures/Sky/Bright/spheremap.png",
@@ -230,19 +296,19 @@ public class Main extends VRApplication {
 		VRGuiManager.setGuiScale(0.4f);
 		VRGuiManager.setPositioningElasticity(10f);
 
-		box.setMaterial(mat);
-
-		Geometry box2 = box.clone();
-		box2.move(15, 0, 0);
-		box2.setMaterial(mat);
-		Geometry box3 = box.clone();
-		box3.move(-15, 0, 0);
-		box3.setMaterial(mat);
-
-		boxes.attachChild(box);
-		boxes.attachChild(box2);
-		boxes.attachChild(box3);
-		rootNode.attachChild(boxes);
+		// box.setMaterial(mat);
+		//
+		// Geometry box2 = box.clone();
+		// box2.move(15, 0, 0);
+		// box2.setMaterial(mat);
+		// Geometry box3 = box.clone();
+		// box3.move(-15, 0, 0);
+		// box3.setMaterial(mat);
+		//
+		// boxes.attachChild(box);
+		// boxes.attachChild(box2);
+		// boxes.attachChild(box3);
+		// rootNode.attachChild(boxes);
 
 		observer.setLocalTranslation(new Vector3f(0.0f, 0.0f, 0.0f));
 
@@ -250,8 +316,6 @@ public class Main extends VRApplication {
 		rootNode.attachChild(observer);
 
 		// addAllBoxes();
-
-		initInputs();
 
 		// initFont();
 
@@ -266,10 +330,9 @@ public class Main extends VRApplication {
 		 * viewPort.addProcessor(fpp);
 		 */
 
-		System.out.println("Starting audio playback...");
-		audio_welcome.play();
+		// System.out.println("Starting audio playback...");
+		// audio_welcome.play();
 
-		// displayText();
 	}
 
 	private void clearOverlays() {
@@ -400,14 +463,14 @@ public class Main extends VRApplication {
 	private float tpfAdder = 0f;
 	private int tpfCount = 0;
 
-	@Override
-	public void simpleUpdate(float tpf) {
-
-		if (!introPlayed
+	private void displayIntro() {
+		if (!introComplete
 				&& audio_welcome.getStatus() != AudioSource.Status.Playing) {
-			introPlayed = true;
+			introComplete = true;
+			initInputs();
 			audio_gameBegin.play();
 			playMusic();
+			currentState = GameState.STARTED;
 		} else if (audio_welcome.getStatus() == AudioSource.Status.Playing) {
 
 			if (audio_welcome.getPlaybackTime() < 3) {
@@ -449,40 +512,97 @@ public class Main extends VRApplication {
 			} else
 				clearOverlays();
 
-		} else
+		} else {
 			clearOverlays();
+		}
+	}
 
-		// FPS test
-		tpfAdder += tpf;
-		tpfCount++;
-		if (tpfCount == 60) {
-			System.out.println("FPS: "
-					+ Float.toString(1f / (tpfAdder / tpfCount)));
-			tpfCount = 0;
-			tpfAdder = 0f;
-		}
+	private void showLobby() {
+		clearOverlays();
+		overlayImage("Textures/overlay/waiting.png");
+		guiNode.attachChild(hudText);
+	}
 
-		prod += tpf;
-		distance = 100f * FastMath.sin(prod);
-		boxes.setLocalTranslation(0, 0, 200f + distance);
+	boolean introSet = false;
 
-		if (moveForward) {
-			observer.move(VRApplication.getFinalObserverRotation()
-					.getRotationColumn(2).mult(tpf * 8f));
-		}
-		if (moveBackwards) {
-			observer.move(VRApplication.getFinalObserverRotation()
-					.getRotationColumn(2).mult(-tpf * 8f));
-		}
-		if (rotateLeft) {
-			observer.rotate(0, 0.75f * tpf, 0);
-		}
-		if (rotateRight) {
-			observer.rotate(0, -0.75f * tpf, 0);
-		}
+	@Override
+	public void simpleUpdate(float tpf) {
 
-		if (placeRate > 0f)
-			placeRate -= tpf;
+		if (currentState == GameState.LOBBY) {
+
+			if (!waitingSet) {
+				audio_waiting.play();
+				waitingSet = true;
+				// displayWaiting();
+
+				guiNode.detachAllChildren();
+				showLobby();
+				hudText.setText("Waiting for other players to connect...");
+				guiNode.attachChild(hudText);
+			}
+
+		} else if (currentState == GameState.INTRO) {
+
+			if (!introSet) {
+				introSet = true;
+				audio_waiting.stop();
+				// audio_welcome.play();
+			}
+			displayIntro();
+		} else if (currentState == GameState.STARTED) {
+
+			// FPS test
+			tpfAdder += tpf;
+			tpfCount++;
+			if (tpfCount == 60) {
+				// System.out.println("FPS: "
+				// + Float.toString(1f / (tpfAdder / tpfCount)));
+				tpfCount = 0;
+				tpfAdder = 0f;
+			}
+
+			prod += tpf;
+			distance = 100f * FastMath.sin(prod);
+			// boxes.setLocalTranslation(0, 0, 200f + distance);
+
+			if (moveForward) {
+				observer.move(VRApplication.getFinalObserverRotation()
+						.getRotationColumn(2).mult(tpf * 8f));
+			}
+			if (moveBackwards) {
+				observer.move(VRApplication.getFinalObserverRotation()
+						.getRotationColumn(2).mult(-tpf * 8f));
+			}
+			if (rotateLeft) {
+				observer.rotate(0, 0.75f * tpf, 0);
+			}
+			if (rotateRight) {
+				observer.rotate(0, -0.75f * tpf, 0);
+			}
+
+			if (placeRate > 0f)
+				placeRate -= tpf;
+
+		}
+	}
+
+	public void remoteInput(String line) {
+
+		if (line.equals("START")) {
+			// audio_waiting.stop();
+			guiNode.detachAllChildren();
+			audio_waiting.stop();
+			audio_welcome.play();
+			currentState = GameState.INTRO;
+		} else
+
+			hudText.setText(line);
+	}
+
+	public void receiveLoop(String message) {
+		System.out.println("Remote input: " + message);
+
+		remoteInput(message);
 	}
 
 }

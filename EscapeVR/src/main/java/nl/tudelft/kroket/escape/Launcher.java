@@ -1,18 +1,21 @@
 package nl.tudelft.kroket.escape;
 
+import java.io.DataInputStream;
+import java.io.IOException;
+
+import nl.tudelft.kroket.net.Client;
 import jmevr.app.VRApplication.PRECONFIG_PARAMETER;
 
 import com.jme3.system.AppSettings;
 
 public class Launcher {
 
+	static Main mainApplication;
+
 	public static void main(String[] args) {
-		Main mainApplication = new Main();
-		// try {
-		// Client client = new Client();
-		// } catch (IOException ex) {
-		// Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-		// }
+		mainApplication = new Main();
+
+		
 
 		// create AppSettings object to enable joysticks/gamepads
 		// and set the title
@@ -42,6 +45,11 @@ public class Launcher {
 		mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.NO_GUI, false);
 		mainApplication.preconfigureFrustrumNearFar(0.1f, 512f);
 		mainApplication.start();
+		
+		System.out.println("Blah...");
+		
+
 	}
+
 
 }
