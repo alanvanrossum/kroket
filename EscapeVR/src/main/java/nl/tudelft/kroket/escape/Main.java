@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.jme3.audio.AudioData.DataType;
 import com.jme3.audio.AudioNode;
+import com.jme3.audio.AudioSource;
 import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.input.InputManager;
@@ -531,54 +532,54 @@ public class Main extends VRApplication {
 	@Override
 	public void simpleUpdate(float tpf) {
 
-		// if (!introPlayed
-		// && audio_welcome.getStatus() != AudioSource.Status.Playing) {
-		// introPlayed = true;
-		// audio_gameBegin.play();
-		// playMusic();
-		// } else if (audio_welcome.getStatus() == AudioSource.Status.Playing) {
-		//
-		// if (audio_welcome.getPlaybackTime() < 3) {
-		// clearOverlays();
-		// overlayImage("Textures/overlay/teamkroket.png");
-		// } else if (audio_welcome.getPlaybackTime() < 5) {
-		// clearOverlays();
-		// overlayImage("Textures/overlay/presents.png");
-		// } else if (audio_welcome.getPlaybackTime() < 12) {
-		// clearOverlays();
-		// overlayImage("Textures/overlay/escaparade.png");
-		// } else if (audio_welcome.getPlaybackTime() < 18) {
-		// clearOverlays();
-		// overlayImage("Textures/overlay/locked.png");
-		// } else if (audio_welcome.getPlaybackTime() < 26) {
-		// clearOverlays();
-		// overlayImage("Textures/overlay/toxicgas.png");
-		// } else if (audio_welcome.getPlaybackTime() < 32) {
-		// clearOverlays();
-		// overlayImage("Textures/overlay/onlygoal.png");
-		// } else if (audio_welcome.getPlaybackTime() < 35) {
-		// clearOverlays();
-		// overlayImage("Textures/overlay/getout.png");
-		// } else if (audio_welcome.getPlaybackTime() < 38) {
-		// clearOverlays();
-		// overlayImage("Textures/overlay/onlyway.png");
-		// } else if (audio_welcome.getPlaybackTime() < 41) {
-		// clearOverlays();
-		// overlayImage("Textures/overlay/byworkingtogether.png");
-		// } else if (audio_welcome.getPlaybackTime() < 45) {
-		// clearOverlays();
-		// overlayImage("Textures/overlay/makeitoutalive.png");
-		// } else if (audio_welcome.getPlaybackTime() < 48) {
-		// clearOverlays();
-		// overlayImage("Textures/overlay/getready.png");
-		// } else if (audio_welcome.getPlaybackTime() < 51) {
-		// clearOverlays();
-		// overlayImage("Textures/overlay/toescape.png");
-		// } else
-		// clearOverlays();
-		//
-		// } else
-		// clearOverlays();
+		if (!introPlayed
+				&& audio_welcome.getStatus() != AudioSource.Status.Playing) {
+			introPlayed = true;
+			audio_gameBegin.play();
+			playMusic();
+		} else if (audio_welcome.getStatus() == AudioSource.Status.Playing) {
+
+			if (audio_welcome.getPlaybackTime() < 3) {
+				clearOverlays();
+				overlayImage("Textures/overlay/teamkroket.png");
+			} else if (audio_welcome.getPlaybackTime() < 5) {
+				clearOverlays();
+				overlayImage("Textures/overlay/presents.png");
+			} else if (audio_welcome.getPlaybackTime() < 12) {
+				clearOverlays();
+				overlayImage("Textures/overlay/escaparade.png");
+			} else if (audio_welcome.getPlaybackTime() < 18) {
+				clearOverlays();
+				overlayImage("Textures/overlay/locked.png");
+			} else if (audio_welcome.getPlaybackTime() < 26) {
+				clearOverlays();
+				overlayImage("Textures/overlay/toxicgas.png");
+			} else if (audio_welcome.getPlaybackTime() < 32) {
+				clearOverlays();
+				overlayImage("Textures/overlay/onlygoal.png");
+			} else if (audio_welcome.getPlaybackTime() < 35) {
+				clearOverlays();
+				overlayImage("Textures/overlay/getout.png");
+			} else if (audio_welcome.getPlaybackTime() < 38) {
+				clearOverlays();
+				overlayImage("Textures/overlay/onlyway.png");
+			} else if (audio_welcome.getPlaybackTime() < 41) {
+				clearOverlays();
+				overlayImage("Textures/overlay/byworkingtogether.png");
+			} else if (audio_welcome.getPlaybackTime() < 45) {
+				clearOverlays();
+				overlayImage("Textures/overlay/makeitoutalive.png");
+			} else if (audio_welcome.getPlaybackTime() < 48) {
+				clearOverlays();
+				overlayImage("Textures/overlay/getready.png");
+			} else if (audio_welcome.getPlaybackTime() < 51) {
+				clearOverlays();
+				overlayImage("Textures/overlay/toescape.png");
+			} else
+				clearOverlays();
+
+		} else
+			clearOverlays();
 
 		// FPS test
 		tpfAdder += tpf;
