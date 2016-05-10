@@ -42,6 +42,9 @@ import com.jme3.texture.Texture.MagFilter;
 import com.jme3.texture.Texture.MinFilter;
 import com.jme3.ui.Picture;
 import com.jme3.util.SkyFactory;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import jmevr.app.VRApplication;
 import jmevr.input.OpenVR;
@@ -52,11 +55,18 @@ import jmevr.post.CartoonSSAO;
 import jmevr.util.VRGuiManager;
 import jmevr.util.VRGuiManager.POSITIONING_MODE;
 import jopenvr.VRControllerAxis_t;
+import nl.tudelft.kroket.net.Client;
 
 public class Main extends VRApplication {
 
 	public static void main(String[] args) {
+            
 		Main mainApplication = new Main();
+//            try {
+//                Client client = new Client();
+//            } catch (IOException ex) {
+//                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+//            }
 
 		// create AppSettings object to enable joysticks/gamepads
 		// and set the title
