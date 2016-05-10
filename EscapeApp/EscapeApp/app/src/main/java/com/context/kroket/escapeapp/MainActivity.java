@@ -27,8 +27,6 @@ public class MainActivity extends AppCompatActivity {
     public void connectButton(View view) {
         boolean connect = false;
         //connect to server, if this succeeds set connect boolean to true
-//        Intent intent = new Intent(this, clientActivity.class);
-//        startActivity(intent);
         connect();
         connect = true;
 
@@ -152,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
             list.add(values[0]);
+            System.out.println(values[0]);
         }
     }
 }
