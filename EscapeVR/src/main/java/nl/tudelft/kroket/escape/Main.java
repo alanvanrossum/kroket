@@ -181,7 +181,7 @@ public class Main extends VRApplication {
 		rootNode.attachChild(sky);
 
 		Geometry box = new Geometry("", new Box(5, 5, 5));
-		
+
 		mat = new Material(getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
 		Texture noise = getAssetManager().loadTexture("Textures/noise.png");
 		noise.setMagFilter(MagFilter.Nearest);
@@ -189,7 +189,9 @@ public class Main extends VRApplication {
 		noise.setAnisotropicFilter(16);
 		mat.setTexture("ColorMap", noise);
 
+
 		floorMat = new Material(getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+
 		Texture floorTexture = getAssetManager().loadTexture(
 				"Textures/floor2.png");
 		floorTexture.setMagFilter(MagFilter.Nearest);
