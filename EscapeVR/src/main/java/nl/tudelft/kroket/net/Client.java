@@ -8,56 +8,79 @@ import java.net.UnknownHostException;
 
 public class Client {
 
-	private static int PORTNUM = 1234;
-	private static String HOST = "127.0.0.1";
+	private static final String CRLF = "\r\n"; // newline
+
 	private Socket socket = null;
+
+	private boolean initialised;
+	private boolean connected;
+
+	public boolean isInitialised() {
+		
+		if (socket == null)
+			return false;
+		
+		return initialised;
+	}
+
+	public void setInitialised(boolean initialised) {
+		this.initialised = initialised;
+	}
+
+	public boolean isConnected() {
+		
+		if (!isInitialised())
+			return false;
+		
+		return connected;
+	}
+
+	public void setConnected(boolean connected) {
+		this.connected = connected;
+	}
+
+	
 
 	private DataOutputStream dOutput;
 	private DataInputStream dInput;
 
-	public Client() throws IOException {
-		createSocket();
-		// outToServer.writeBytes("hallo Jochem!! :D:D");
-		// ja hoi Mayke
+	public Client(String host, int port) {
+		connect(host, port);
 	}
 
 	public DataInputStream getStream() {
 		return dInput;
 	}
 
-	/**
-	 * creates the socket.
-	 */
-	public void createSocket() {
+	public boolean connect(String host, int port) {
 		try {
-			socket = new Socket(HOST, PORTNUM);
+			socket = new Socket(host, port);
+
+			if (socket == null) {
+				return false;
+			}
 
 			dOutput = new DataOutputStream(socket.getOutputStream());
 			dInput = new DataInputStream(socket.getInputStream());
+
+			return true;
 		} catch (UnknownHostException e) {
 			System.out.println(e);
 		} catch (IOException e) {
 			System.out.println(e);
 		}
+
+		return false;
 	}
 
-	/**
-	 * Data that needs to be sent after an interaction with an object.
-	 * 
-	 * @param message
-	 *            , string with message to be sent.
-	 */
 	public void sendMessage(String message) throws IOException {
 
-		if (!message.endsWith("\r\n"))
-			message += "\r\n";
+		if (!message.endsWith(CRLF))
+			message += CRLF;
 
 		dOutput.writeBytes(message);
 	}
 
-	/**
-	 * socket and streams closed when done.
-	 */
 	public void close() {
 		try {
 			socket.close();

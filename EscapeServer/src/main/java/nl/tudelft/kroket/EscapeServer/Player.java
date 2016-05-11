@@ -4,10 +4,17 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * Player object for EscapeServer.
+ * @author Team Kroket
+ *
+ */
 public class Player {
+	
+	private static final String CRLF = "\r\n"; // newline
 
 	public enum PlayerType {
-		VIRTUAL, MOBILE, NONE
+		NONE, VIRTUAL, MOBILE, ADMIN 
 	}
 
 	private Socket socket;
@@ -51,14 +58,21 @@ public class Player {
 	}
 
 	public String toString() {
-		return String.format("Player %s - %s - %s", getSocket()
-				.getRemoteSocketAddress(), getName(), getType());
+		return String.format("Player %s - %s - %s", getName(),  getSocket()
+				.getRemoteSocketAddress(), getType());
+	}
+	
+	public boolean isConnected() {
+		return (getSocket().isConnected() && !getSocket().isClosed());
 	}
 	
 	public void sendMessage(String message) {
 		
-		if (!message.endsWith("\r\n"))
-			message += "\r\n";
+		if (!isConnected())
+			return;
+		
+		if (!message.endsWith(CRLF))
+			message += CRLF;
 			
 		try {
 			stream.writeBytes(message);

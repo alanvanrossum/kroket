@@ -1,9 +1,12 @@
-package nl.tudelft.kroket.escape;
+package nl.tudelft.kroket.log;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Logger {
+
+	private Logger() {
+	}
 
 	private LogLevel level = LogLevel.ALL;
 
@@ -25,18 +28,26 @@ public class Logger {
 
 	private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 
-	private Logger() {
-	}
-
 	public static Logger getInstance() {
 		return instance;
 	}
 
 	public void info(String tag, String message) {
+
 		print(LogLevel.INFO, tag, message);
 	}
 
-	private void print(LogLevel level, String tag, String message) {
+	public void debug(String tag, String message) {
+
+		print(LogLevel.DEBUG, tag, message);
+	}
+
+	public void error(String tag, String message) {
+
+		print(LogLevel.ERROR, tag, message);
+	}
+
+	void print(LogLevel level, String tag, String message) {
 
 		if (getLevel() == LogLevel.NONE) {
 			return;

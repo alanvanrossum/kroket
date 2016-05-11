@@ -40,6 +40,11 @@ import com.jme3.util.SkyFactory;
 
 public class Main extends VRApplication {
 
+	private static final String HOSTNAME = "localhost";
+	private static int PORTNUM = 1234;
+        
+        private boolean controlsInitialized = false;
+
 	public enum GameState {
 		LOBBY, INTRO, STARTED
 	}
@@ -53,6 +58,8 @@ public class Main extends VRApplication {
 	Picture ready;
 
 	List<Picture> overlayList = new ArrayList<Picture>();
+        
+        List<AudioNode> audioList = new ArrayList<AudioNode>();
 
 	private AudioNode audio_ambient;
 	private AudioNode audio_gameBegin;
@@ -96,6 +103,14 @@ public class Main extends VRApplication {
 		rootNode.attachChild(audio_gameBegin);
 
 	}
+        
+        private void stopAudio() 
+        {
+            for (AudioNode node : audioList)
+            {
+                node.stop();
+            }
+        }
 
 	private void overlayImage(String path) {
 		Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
@@ -133,44 +148,42 @@ public class Main extends VRApplication {
 
 		// displayText("Game not started.\r\nWaiting for players...");
 
+		System.out.println("Setting up client...");
+		client = new Client(HOSTNAME, PORTNUM);
+
+
+
+		final DataInputStream stream = client.getStream();
+
+		Thread thread = new Thread() {
+			@Override
+			public void run() {
+
+				String line;
+				try {
+					while ((line = stream.readLine()) != null) {
+						receiveLoop(line);
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			};
+		};
+		thread.start();
+		System.out.println("Thread started");
+		
+		System.out.println("Registering player...");
+
 		try {
-			System.out.println("Setting up client...");
-			client = new Client();
-
-			System.out.println("Registering player...");
-
 			client.sendMessage("REGISTER[Harvey]");
 			client.sendMessage("TYPE[VIRTUAL]");
-
-			final DataInputStream stream = client.getStream();
-
-			Thread thread = new Thread() {
-				@Override
-				public void run() {
-
-					String line;
-					try {
-						while ((line = stream.readLine()) != null) {
-							receiveLoop(line);
-						}
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				};
-			};
-			thread.start();
-			System.out.println("Thread started");
-
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 
-	private void playMusic() {
-		audio_ambient.play();
-	}
 
 	// public void displayText(String text) {
 	//
@@ -191,13 +204,16 @@ public class Main extends VRApplication {
 	private void initScene() {
 		observer = new Node("observer");
 
+		Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
+
 		BitmapFont guiFont = getAssetManager().loadFont(
 				"Interface/Fonts/Default.fnt");
 
 		hudText = new BitmapText(guiFont, false);
 		hudText.setSize(guiFont.getCharSet().getRenderedSize());
 		hudText.setText("hudText placeholder");
-		hudText.setLocalTranslation(0, hudText.getLineHeight(), 0);
+		hudText.setLocalTranslation(guiCanvasSize.getX() * 0.5f - 120,
+				(guiCanvasSize.getY() * 0.5f) - 70, 0);
 		guiNode.attachChild(hudText);
 
 		Spatial sky = SkyFactory.createSky(getAssetManager(),
@@ -205,7 +221,7 @@ public class Main extends VRApplication {
 				SkyFactory.EnvMapType.EquirectMap);
 		rootNode.attachChild(sky);
 
-		Geometry box = new Geometry("", new Box(5, 5, 5));
+		//Geometry box = new Geometry("", new Box(5, 5, 5));
 
 		mat = new Material(getAssetManager(),
 				"Common/MatDefs/Misc/Unshaded.j3md");
@@ -251,28 +267,27 @@ public class Main extends VRApplication {
 
 		// make the floor according to the size of our play area
 		Geometry floor = new Geometry("floor", new Box(6f, 1f, 3f));
-//		Vector2f playArea = VRBounds.getPlaySize();
-//		if (playArea == null) {
-//                    System.out.println("playArea == null");
-//                    
-//			// no play area, use default size & height
-//			floor.setLocalScale(2f, 0.5f, 2f);
-//			floor.move(0f, -1.5f, 0f);
-//		} else {
-//			// cube model is actually 2x as big, cut it down to proper playArea
-//			// size with * 0.5
-////			floor.setLocalScale(playArea.x * 0.5f, 0.5f, playArea.y * 0.5f);
-////			floor.move(0f, -0.5f, 0f);
-//			
-//			
-//			floor.setLocalScale(2f, 0.5f, 2f);
-//			floor.move(0f, -1.5f, 0f);
-//			
-//                        
-//                        System.out.println("playArea => VR");
-//		}
-		
-		
+		// Vector2f playArea = VRBounds.getPlaySize();
+		// if (playArea == null) {
+		// System.out.println("playArea == null");
+		//
+		// // no play area, use default size & height
+		// floor.setLocalScale(2f, 0.5f, 2f);
+		// floor.move(0f, -1.5f, 0f);
+		// } else {
+		// // cube model is actually 2x as big, cut it down to proper playArea
+		// // size with * 0.5
+		// // floor.setLocalScale(playArea.x * 0.5f, 0.5f, playArea.y * 0.5f);
+		// // floor.move(0f, -0.5f, 0f);
+		//
+		//
+		// floor.setLocalScale(2f, 0.5f, 2f);
+		// floor.move(0f, -1.5f, 0f);
+		//
+		//
+		// System.out.println("playArea => VR");
+		// }
+
 		floor.setLocalScale(2f, 0.5f, 2f);
 		floor.move(0f, -1.5f, 0f);
 
@@ -353,6 +368,8 @@ public class Main extends VRApplication {
 			pic.removeFromParent();
 		}
 
+		overlayList.clear();
+
 	}
 
 	private void initJoysticks() {
@@ -384,6 +401,10 @@ public class Main extends VRApplication {
 	}
 
 	private void initInputs() {
+            
+            if (controlsInitialized)
+                return;
+            
 		InputManager inputManager = getInputManager();
 
 		initJoysticks();
@@ -464,6 +485,8 @@ public class Main extends VRApplication {
 		inputManager.addListener(acl, "decShift");
 		inputManager.addListener(acl, "filter");
 		inputManager.addListener(acl, "dumpImages");
+                
+                controlsInitialized = true;
 
 	}
 
@@ -479,7 +502,6 @@ public class Main extends VRApplication {
 		if (!introComplete
 				&& audio_welcome.getStatus() != AudioSource.Status.Playing) {
 			introComplete = true;
-			initInputs();
 			audio_gameBegin.play();
 			playMusic();
 			currentState = GameState.STARTED;
@@ -563,6 +585,14 @@ public class Main extends VRApplication {
 			displayIntro();
 		} else if (currentState == GameState.STARTED) {
 
+                    initInputs();
+                    
+                    if (audio_waiting.getStatus() == AudioSource.Status.Playing)
+                        audio_waiting.stop();
+                    
+                      if (audio_ambient.getStatus() != AudioSource.Status.Playing)
+                        audio_ambient.play();
+
 			// FPS test
 			tpfAdder += tpf;
 			tpfCount++;
@@ -604,10 +634,14 @@ public class Main extends VRApplication {
 			// audio_waiting.stop();
 			guiNode.detachAllChildren();
 
-			currentState = GameState.INTRO;
+			// currentState = GameState.STARTED;
+			currentState = GameState.STARTED;
 		} else
+                {
 
 			hudText.setText(line);
+                        guiNode.attachChild(hudText);
+                }
 	}
 
 	public void receiveLoop(String message) {

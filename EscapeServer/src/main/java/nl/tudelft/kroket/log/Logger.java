@@ -28,6 +28,7 @@ public class Logger {
 
 	private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 
+	/** Singleton reference. */
 	public static Logger getInstance() {
 		return instance;
 	}
@@ -36,6 +37,17 @@ public class Logger {
 
 		print(LogLevel.INFO, tag, message);
 	}
+	
+	public void debug(String tag, String message) {
+
+		print(LogLevel.DEBUG, tag, message);
+	}
+	
+	public void error(String tag, String message) {
+
+		print(LogLevel.ERROR, tag, message);
+	}
+	
 
 	void print(LogLevel level, String tag, String message) {
 

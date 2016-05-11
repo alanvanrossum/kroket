@@ -16,14 +16,30 @@ import nl.tudelft.kroket.log.Logger;
 
 public class EscapeServer implements Runnable {
 
+	/** List of players connected to the server. */
 	public static HashMap<Socket, Player> playerList = new HashMap<Socket, Player>();
+
+	/** Value to keep track whether socket was initialized. */
+	private static boolean initialized;
 
 	private final static String className = "EscapeServer";
 
+	/** Port number to bind server to. */
 	private static final int PORTNUM = 1234;
 
+	/** Number of VR clients required to start the game. */
 	private static final int REQUIRED_VIRTUAL = 1;
+
+	/** Number of mobile clients required to start the game. */
 	private static final int REQUIRED_MOBILE = 2;
+
+	/** How many seconds before each status print. */
+	private static final int SECPRINTSTATUS = 30;
+
+	/** How many seconds until retrying to bind to the socket. */
+	private static final int SECBINDRETRY = 5;
+
+	private static boolean gameActive = false;
 
 	protected int serverPort;
 
@@ -32,41 +48,95 @@ public class EscapeServer implements Runnable {
 	static Logger log = Logger.getInstance();
 
 	public static void main(String[] args) {
- 
-		log.info(className, "Initializing...");
 
-		long startTime = System.currentTimeMillis();
+		log.info(className, "Initializing...");
+		initialized = false;
+
+		// long startTime = System.currentTimeMillis();
 
 		EscapeServer server = new EscapeServer(PORTNUM);
-		new Thread(server).start();
 
-		int time = 0;
+		while (!initialized) {
+			new Thread(server).start();
 
-		while (!ready()) {
-
-			// long duration = System.currentTimeMillis() - startTime;
-
-			time += 1;
-
-			if (time >= 10) {
-
-				log.info("Server",
-						"Game not ready. Waiting for players to register...");
-				printPlayers();
-
-				time = 0;
-			}
+			if (initialized)
+				break;
 
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(SECBINDRETRY * 1000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 
-		startGame();
+		int tickCounter = 0;
 
+		if (initialized) {
+			
+			boolean breakLoop = false;
+
+			while (!breakLoop) {
+
+				log.info(className,
+						"Game not ready. Waiting for players to register...");
+				
+				while (!ready()) {
+
+					// long duration = System.currentTimeMillis() - startTime;
+
+					tickCounter += 1;
+
+					if ((tickCounter % SECPRINTSTATUS) == 0) {
+
+						log.info(className,
+								"Game not ready.");
+						
+						printPlayers();
+					}
+
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+
+				log.info(className, "Server is ready to host game.");
+
+				startGame();
+
+				gameActive = true;
+
+				while (gameActive && ready()) {
+					tickCounter += 1;
+
+					if ((tickCounter % SECPRINTSTATUS) == 0) {
+
+						log.info(className, "Game is active.");
+						printPlayers();
+
+					}
+
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+				gameActive = false;
+				
+				log.info(className, "Game session has ended.");
+
+			}
+
+		} else {
+			log.error(className, "Initialization failed. Is the port in use?");
+		}
+
+		log.info(className, "Exiting...");
 	}
 
 	private static void startGame() {
@@ -84,6 +154,32 @@ public class EscapeServer implements Runnable {
 
 	public EscapeServer(int port) {
 		serverPort = port;
+	}
+
+	public static void removePlayer(Socket clientSocket) {
+
+		Player player = playerList.get(clientSocket);
+
+		playerList.remove(clientSocket);
+
+		if (!clientSocket.isClosed()) {
+			try {
+				clientSocket.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		if (player != null) {
+			log.info(className,
+					String.format("Player %s disconnected.", player.getName()));
+			sendAll(String.format("Player %s has left the game.",
+					player.getName()));
+		}
+		log.info(className, "Socket "
+				+ clientSocket.getRemoteSocketAddress().toString()
+				+ " removed.");
 	}
 
 	public static void registerPlayer(Socket clientSocket,
@@ -114,7 +210,7 @@ public class EscapeServer implements Runnable {
 					}
 				}
 			} else {
-				System.out.println("socket already registered");
+				System.out.println("Socket already registered");
 
 				try {
 					dOutput.writeBytes("You are already registered.\r\n");
@@ -133,28 +229,46 @@ public class EscapeServer implements Runnable {
 		}
 
 		log.info(className, "Creating socket...");
-		createSocket();
 
-		while (!isStopped()) {
-			Socket clientSocket = null;
-			try {
-				log.info(className, "Listening for incoming connections.");
-				clientSocket = serverSocket.accept();
-
-				log.info(className, "Incoming connection from "
-						+ clientSocket.getRemoteSocketAddress().toString());
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			threadPool.execute(new ConnectionThread(clientSocket));
-
-			printPlayers();
+		try {
+			serverSocket = new ServerSocket(serverPort);
+		} catch (IOException exception) {
+			log.error(className, "Error: " + exception);
 		}
 
-		// ...
+		if (serverSocket == null) {
+			initialized = false;
+		} else {
 
-		threadPool.shutdown();
+			initialized = true;
+
+			while (!isStopped()) {
+				Socket clientSocket = null;
+				try {
+					log.info(className, String.format(
+							"Listening for incoming connections on port %d...",
+							serverPort));
+					clientSocket = serverSocket.accept();
+
+					log.info(className,
+							"Connection accepted. Incoming connection from "
+									+ clientSocket.getRemoteSocketAddress()
+											.toString());
+
+					playerList.put(clientSocket, null);
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				threadPool.execute(new ConnectionThread(clientSocket));
+
+				printPlayers();
+			}
+
+			// ...
+
+			threadPool.shutdown();
+		}
 	}
 
 	private synchronized boolean isStopped() {
@@ -173,6 +287,9 @@ public class EscapeServer implements Runnable {
 	public static int countPlayers(PlayerType type) {
 		int sum = 0;
 		for (Entry<Socket, Player> entry : playerList.entrySet()) {
+
+			if (entry.getValue() == null)
+				continue;
 
 			if (entry.getValue().getType() == type)
 				sum += 1;
@@ -193,6 +310,9 @@ public class EscapeServer implements Runnable {
 	public static Player getPlayer(String playername) {
 		for (Entry<Socket, Player> entry : playerList.entrySet()) {
 
+			if (entry.getValue() == null)
+				continue;
+
 			if (playername.equals(entry.getValue().getName()))
 				return entry.getValue();
 
@@ -203,7 +323,9 @@ public class EscapeServer implements Runnable {
 
 	public static void sendAll(String message) {
 		for (Entry<Socket, Player> entry : playerList.entrySet()) {
-			entry.getValue().sendMessage(message);
+
+			if (entry.getValue() != null)
+				entry.getValue().sendMessage(message);
 		}
 	}
 
@@ -216,16 +338,22 @@ public class EscapeServer implements Runnable {
 			System.out.println("Registered players:");
 
 			for (Entry<Socket, Player> entry : playerList.entrySet()) {
-				System.out.println(entry.getValue());
+
+				if (entry.getValue() == null)
+					System.out.println("Unregistered: \t"
+							+ entry.getKey().getRemoteSocketAddress()
+									.toString());
+				else
+					System.out.println("Registered: \t" + entry.getValue());
 			}
 		}
 	}
 
-	private void createSocket() {
-		try {
-			serverSocket = new ServerSocket(serverPort);
-		} catch (IOException e) {
-			throw new RuntimeException("Cannot listen on port " + serverPort, e);
-		}
-	}
+	// private void createSocket() {
+	// try {
+	// serverSocket = new ServerSocket(serverPort);
+	// } catch (IOException e) {
+	// throw new RuntimeException("Cannot listen on port " + serverPort, e);
+	// }
+	// }
 }

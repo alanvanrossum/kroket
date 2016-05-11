@@ -42,13 +42,15 @@ public class ConnectionThread implements Runnable {
 				if (player == null) {
 					System.out.println("Player not registered yet.");
 				} else {
-					
+
 					type = PlayerType.valueOf(typeString);
-					
+
 					player.setType(type);
 
 					player.sendMessage("Your type is now set to "
 							+ type.toString());
+					
+					log.info(className, String.format("Player %s is now set to type %s.", player.getName(), player.getType().toString()));
 				}
 			}
 
@@ -63,8 +65,16 @@ public class ConnectionThread implements Runnable {
 				EscapeServer.registerPlayer(clientSocket, dOutput, name);
 
 			}
+		} else if (input.startsWith("admin")) {
+			adminCommand(input.substring(6));
 		}
 
+	}
+
+	public void adminCommand(String command) {
+		if (command.startsWith("sendall")) {
+			EscapeServer.sendAll(command.substring(8));
+		}
 	}
 
 	public void run() {
@@ -83,8 +93,10 @@ public class ConnectionThread implements Runnable {
 			output.close();
 			input.close();
 		} catch (IOException e) {
-			// report exception somewhere.
-			e.printStackTrace();
+
+			EscapeServer.removePlayer(clientSocket);
+
+			// e.printStackTrace();
 		}
 	}
 }
