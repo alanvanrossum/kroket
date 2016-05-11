@@ -32,7 +32,7 @@ public class EscapeServer implements Runnable {
 	static Logger log = Logger.getInstance();
 
 	public static void main(String[] args) {
-
+ 
 		log.info(className, "Initializing...");
 
 		long startTime = System.currentTimeMillis();

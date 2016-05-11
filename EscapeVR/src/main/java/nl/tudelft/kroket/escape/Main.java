@@ -251,17 +251,30 @@ public class Main extends VRApplication {
 
 		// make the floor according to the size of our play area
 		Geometry floor = new Geometry("floor", new Box(6f, 1f, 3f));
-		Vector2f playArea = VRBounds.getPlaySize();
-		if (playArea == null) {
-			// no play area, use default size & height
-			floor.setLocalScale(2f, 0.5f, 2f);
-			floor.move(0f, -1.5f, 0f);
-		} else {
-			// cube model is actually 2x as big, cut it down to proper playArea
-			// size with * 0.5
-			floor.setLocalScale(playArea.x * 0.5f, 0.5f, playArea.y * 0.5f);
-			floor.move(0f, -0.5f, 0f);
-		}
+//		Vector2f playArea = VRBounds.getPlaySize();
+//		if (playArea == null) {
+//                    System.out.println("playArea == null");
+//                    
+//			// no play area, use default size & height
+//			floor.setLocalScale(2f, 0.5f, 2f);
+//			floor.move(0f, -1.5f, 0f);
+//		} else {
+//			// cube model is actually 2x as big, cut it down to proper playArea
+//			// size with * 0.5
+////			floor.setLocalScale(playArea.x * 0.5f, 0.5f, playArea.y * 0.5f);
+////			floor.move(0f, -0.5f, 0f);
+//			
+//			
+//			floor.setLocalScale(2f, 0.5f, 2f);
+//			floor.move(0f, -1.5f, 0f);
+//			
+//                        
+//                        System.out.println("playArea => VR");
+//		}
+		
+		
+		floor.setLocalScale(2f, 0.5f, 2f);
+		floor.move(0f, -1.5f, 0f);
 
 		floor.setMaterial(floorMat);
 		rootNode.attachChild(floor);

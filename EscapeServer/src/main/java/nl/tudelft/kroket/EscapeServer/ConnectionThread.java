@@ -42,17 +42,8 @@ public class ConnectionThread implements Runnable {
 				if (player == null) {
 					System.out.println("Player not registered yet.");
 				} else {
-					switch (typeString) {
-
-					case "VIRTUAL":
-						type = PlayerType.VIRTUAL;
-						break;
-					case "MOBILE":
-						type = PlayerType.MOBILE;
-						break;
-					default:
-						type = null;
-					}
+					
+					type = PlayerType.valueOf(typeString);
 					
 					player.setType(type);
 
