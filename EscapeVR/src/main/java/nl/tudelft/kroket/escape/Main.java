@@ -153,7 +153,6 @@ public class Main extends VRApplication {
 						while ((line = stream.readLine()) != null) {
 							receiveLoop(line);
 						}
-						System.out.println("end of loop");
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -546,7 +545,7 @@ public class Main extends VRApplication {
 			if (!introSet) {
 				introSet = true;
 				audio_waiting.stop();
-				// audio_welcome.play();
+				audio_welcome.play();
 			}
 			displayIntro();
 		} else if (currentState == GameState.STARTED) {
@@ -591,8 +590,7 @@ public class Main extends VRApplication {
 		if (line.equals("START")) {
 			// audio_waiting.stop();
 			guiNode.detachAllChildren();
-			audio_waiting.stop();
-			audio_welcome.play();
+
 			currentState = GameState.INTRO;
 		} else
 

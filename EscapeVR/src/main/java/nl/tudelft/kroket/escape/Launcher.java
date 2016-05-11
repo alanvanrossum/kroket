@@ -46,7 +46,6 @@ public class Launcher {
 		mainApplication.preconfigureFrustrumNearFar(0.1f, 512f);
 		mainApplication.start();
 		
-		System.out.println("Blah...");
 		
 
 	}
