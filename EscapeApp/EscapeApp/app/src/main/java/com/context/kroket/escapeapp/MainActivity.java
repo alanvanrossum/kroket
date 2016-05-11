@@ -1,5 +1,6 @@
 package com.context.kroket.escapeapp;
 
+import android.app.Service;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -17,9 +18,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static GameClient tcpClient;
-    private static ArrayList<String> list;
-
     /**
      * Method that makes the calls necessary to connect the players to the server.
      * @param view is the view that was clicked.
@@ -27,7 +25,9 @@ public class MainActivity extends AppCompatActivity {
     public void connectButton(View view) {
         boolean connect = false;
         //connect to server, if this succeeds set connect boolean to true
-        connect();
+        //connect();
+        startService(new Intent(this, ConnectionService.class));
+
         connect = true;
 
         TextView connectMessage = (TextView) findViewById(R.id.connectionMessage);
@@ -39,24 +39,6 @@ public class MainActivity extends AppCompatActivity {
             if (start != null) {
                 start.setEnabled(true);
             }
-        }
-    }
-
-    /**
-     * Connect to the server
-     */
-    public void connect() {
-        list = new ArrayList<String>();
-        new connectTask().execute("");
-
-        String message = "hallohallo";
-        list.add("client: " + message);
-        System.out.println("message: " + message);
-
-        while (tcpClient == null) {}
-        if (tcpClient != null) {
-            System.out.println("send");
-            tcpClient.sendMessage(message);
         }
     }
 
@@ -128,29 +110,5 @@ public class MainActivity extends AppCompatActivity {
         );
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
-    }
-
-
-    public class connectTask extends AsyncTask<String, String, GameClient> {
-
-        @Override
-        protected GameClient doInBackground(String... message) {
-            tcpClient = new GameClient(new GameClient.OnMessageReceived() {
-                @Override
-                public void messageReceived(String mes) {
-                    publishProgress(mes);
-                }
-            });
-            System.out.println("tcpClient initialized");
-            tcpClient.run();
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(String... values) {
-            super.onProgressUpdate(values);
-            list.add(values[0]);
-            System.out.println(values[0]);
-        }
     }
 }
