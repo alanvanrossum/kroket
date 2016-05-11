@@ -503,7 +503,6 @@ public class Main extends VRApplication {
 				&& audio_welcome.getStatus() != AudioSource.Status.Playing) {
 			introComplete = true;
 			audio_gameBegin.play();
-			playMusic();
 			currentState = GameState.STARTED;
 		} else if (audio_welcome.getStatus() == AudioSource.Status.Playing) {
 
