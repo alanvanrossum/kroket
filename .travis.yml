@@ -6,4 +6,4 @@ env:
   - TEST_DIR=EscapeServer
   - TEST_DIR=EscapeVR
 
-script: cd $TEST_DIR && mvn -source 8 test
+script: cd $TEST_DIR && mvn test
