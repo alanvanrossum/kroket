@@ -1,0 +1,52 @@
+# Java
+*.class
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Ignore dll files
+*.dll
+
+# Mac
+.DS_Store
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Project specific: EscapeVR
+/EscapeVR/target/
+/EscapeVR/dist/
+/EscapeVR/hs_err_pid*
+/EscapeVR/build/
+/EscapeVR/bin/
+/EscapeVR/MANIFEST.MF
+
+# Project specific: EscapeServer
+/EscapeServer/target/
+
+# Project specific: EscapeApp
+/EscapeApp/build
+
+# Android Studio
+/EscapeApp/EscapeApp/*.iml
+/EscapeApp/EscapeApp/.gradle
+/EscapeApp/EscapeApp/local.properties
+/EscapeApp/EscapeApp/.idea/workspace.xml
+/EscapeApp/EscapeApp/.idea/libraries
+/EscapeApp/EscapeApp/.idea
+/EscapeApp/EscapeApp/.DS_Store
+/EscapeApp/EscapeApp/build
+/EscapeApp/EscapeApp/captures
+
