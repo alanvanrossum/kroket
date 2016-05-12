@@ -34,7 +34,9 @@
         <service
             android:name=".ConnectionService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity android:name=".Game_B_Activity"></activity>
     </application>
 
 </manifest>
