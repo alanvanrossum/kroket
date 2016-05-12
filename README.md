@@ -30,3 +30,11 @@ https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek2
 - Design document
 
 https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek3
+
+### Week 4
+
+- Architecture design
+- Sprint backlog 4
+- Sprint retrospective 3
+
+https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek4
