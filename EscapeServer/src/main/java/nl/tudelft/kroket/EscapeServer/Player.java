@@ -77,7 +77,6 @@ public class Player {
 		try {
 			stream.writeBytes(message);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

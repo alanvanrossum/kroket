@@ -138,7 +138,10 @@ public class EscapeServer implements Runnable {
 
 		log.info(className, "Exiting...");
 	}
-
+	
+	/**
+	 * Start the game.
+	 */
 	private static void startGame() {
 
 		log.info(className, "Starting game...");
@@ -155,7 +158,11 @@ public class EscapeServer implements Runnable {
 	public EscapeServer(int port) {
 		serverPort = port;
 	}
-
+	
+	/**
+	 * Remove a player based on its socket.
+	 * @param clientSocket the client's socket
+	 */
 	public static void removePlayer(Socket clientSocket) {
 
 		Player player = playerList.get(clientSocket);
@@ -181,7 +188,13 @@ public class EscapeServer implements Runnable {
 				+ clientSocket.getRemoteSocketAddress().toString()
 				+ " removed.");
 	}
-
+	
+	/**
+	 * Register a player to the server.
+	 * @param clientSocket the client's socket
+	 * @param dOutput the dataoutputstream
+	 * @param playername the player's name
+	 */
 	public static void registerPlayer(Socket clientSocket,
 			DataOutputStream dOutput, String playername) {
 		if (playername.length() > 0) {
@@ -197,6 +210,12 @@ public class EscapeServer implements Runnable {
 
 					player.sendMessage("You are now registered as "
 							+ player.toString());
+					
+					if (!ready())
+					{
+						player.sendMessage(countPlayers() + " players waiting...");
+					}
+					
 					sendAll("Player " + player.getName() + " entered the game.");
 				} else {
 					System.out.println("player " + playername
@@ -299,6 +318,22 @@ public class EscapeServer implements Runnable {
 
 	}
 
+	public static int countPlayers() {
+		int sum = 0;
+		for (Entry<Socket, Player> entry : playerList.entrySet()) {
+
+			if (entry.getValue() == null)
+				continue;
+			
+			sum += 1;
+		}
+
+		return sum;
+
+	}
+
+	
+	
 	public static boolean ready() {
 		return (countPlayers(PlayerType.VIRTUAL) == REQUIRED_VIRTUAL && countPlayers(PlayerType.MOBILE) == REQUIRED_MOBILE);
 	}
@@ -320,7 +355,11 @@ public class EscapeServer implements Runnable {
 
 		return null;
 	}
-
+	
+	/**
+	 * Send a message to all connected players.
+	 * @param message the message to be sent
+	 */
 	public static void sendAll(String message) {
 		for (Entry<Socket, Player> entry : playerList.entrySet()) {
 
@@ -349,11 +388,4 @@ public class EscapeServer implements Runnable {
 		}
 	}
 
-	// private void createSocket() {
-	// try {
-	// serverSocket = new ServerSocket(serverPort);
-	// } catch (IOException e) {
-	// throw new RuntimeException("Cannot listen on port " + serverPort, e);
-	// }
-	// }
 }

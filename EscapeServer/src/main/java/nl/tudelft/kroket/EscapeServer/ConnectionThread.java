@@ -27,6 +27,12 @@ public class ConnectionThread implements Runnable {
 		this.clientSocket = clientSocket;
 	}
 
+	/**
+	 * Process remote input.
+	 * 
+	 * @param input
+	 *            the remote input
+	 */
 	private void processInput(String input) {
 		Logger.getInstance().info(className, input);
 
@@ -43,14 +49,26 @@ public class ConnectionThread implements Runnable {
 					System.out.println("Player not registered yet.");
 				} else {
 
-					type = PlayerType.valueOf(typeString);
+					try {
+						type = PlayerType.valueOf(typeString);
 
-					player.setType(type);
+						player.setType(type);
 
-					player.sendMessage("Your type is now set to "
-							+ type.toString());
-					
-					log.info(className, String.format("Player %s is now set to type %s.", player.getName(), player.getType().toString()));
+						player.sendMessage("Your type is now set to "
+								+ type.toString());
+
+						log.info(className, String.format(
+								"Player %s is now set to type %s.",
+								player.getName(), player.getType().toString()));
+
+						if (!EscapeServer.ready()) {
+							player.sendMessage(EscapeServer.countPlayers()
+									+ " player(s) connected.");
+						}
+					} catch (IllegalArgumentException e) {
+						player.sendMessage("Invalid client type.");
+					}
+
 				}
 			}
 
@@ -71,6 +89,11 @@ public class ConnectionThread implements Runnable {
 
 	}
 
+	/**
+	 * Process admin command.
+	 * 
+	 * @param command
+	 */
 	public void adminCommand(String command) {
 		if (command.startsWith("sendall")) {
 			EscapeServer.sendAll(command.substring(8));
@@ -94,9 +117,9 @@ public class ConnectionThread implements Runnable {
 			input.close();
 		} catch (IOException e) {
 
+			// in case an exception occured, remove and disconnect the client
 			EscapeServer.removePlayer(clientSocket);
 
-			// e.printStackTrace();
 		}
 	}
 }
