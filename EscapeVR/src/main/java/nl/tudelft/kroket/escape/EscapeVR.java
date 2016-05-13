@@ -123,7 +123,7 @@ public class EscapeVR extends VRApplication {
 
 					log.info(className, "Trying to register client...");
 
-					client.sendMessage("REGISTER[Harvey]");
+					client.sendMessage("REGISTER[Rift-User]");
 					client.sendMessage("TYPE[VIRTUAL]");
 
 					DataInputStream stream = client.getStream();

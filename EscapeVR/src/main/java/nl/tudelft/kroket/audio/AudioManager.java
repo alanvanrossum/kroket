@@ -56,6 +56,8 @@ public class AudioManager {
 	 * Stop all audio tracks from playing.
 	 */
 	public void stopAudio() {
+		log.info(className, "Stopping all audio tracks...");
+		
 		for (AudioNode node : audioNodes.values()) {
 			if (node.getStatus() == AudioSource.Status.Playing)
 				node.stop();
@@ -78,6 +80,8 @@ public class AudioManager {
 	 * @param name the name of the audionode
 	 */
 	public void play(String name) {
+		log.info(className, String.format("Playing audio track '%s'...", name));
+		
 		getNode(name).play();
 	}
 	

@@ -23,8 +23,8 @@ public class EscapeScene extends Scene {
 
 		createWalls("Textures/brick_wall.jpg");
 
-		createFloor("Textures/floor.png");
-		createCeiling("Textures/floor.png");
+		createFloor("Textures/dirty_floor.png");
+		createCeiling("Textures/dirty_ceiling4.png");
 	}
 
 	private void createWalls(String texturePath) {
