@@ -17,11 +17,6 @@
 	<repositories>
 		
 		<repository>
-			<id>jmonkeyengine-repository</id>
-			<url>http://updates.jmonkeyengine.org/maven/</url>
-		</repository>
-		
-		<repository>
 			<id>jmonkeyengine-devhub-mirror</id>
 			<url>https://devhub.ewi.tudelft.nl/nexus/content/repositories/jmonkeyengine/</url>
 		</repository>
