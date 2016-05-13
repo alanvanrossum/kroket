@@ -22,7 +22,7 @@
 		</repository>
 		
 		<repository>
-			<id>jmonkeyengine-repository</id>
+			<id>jmonkeyengine-devhub-mirror</id>
 			<url>https://devhub.ewi.tudelft.nl/nexus/content/repositories/jmonkeyengine/</url>
 		</repository>
 
