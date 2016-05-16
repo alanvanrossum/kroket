@@ -15,17 +15,25 @@
 	</properties>
 
 	<repositories>
-		
+
 		<repository>
-			<id>jmonkeyengine-repository</id>
-			<url>http://updates.jmonkeyengine.org/maven/</url>
+			<id>jmonkeyengine-devhub-mirror</id>
+			<url>https://devhub.ewi.tudelft.nl/nexus/content/repositories/jmonkeyengine/</url>
+		</repository>
+
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>bintray-jmonkeyengine-org.jmonkeyengine</id>
+			<url>http://dl.bintray.com/jmonkeyengine/org.jmonkeyengine</url>
 		</repository>
 
 		<repository>
 			<id>repo</id>
 			<url>file://${basedir}/libs/</url>
 		</repository>
-		
+
 	</repositories>
 
 	<build>
@@ -40,7 +48,7 @@
 				</includes>
 			</resource>
 		</resources>
-		
+
 		<plugins>
 
 			<plugin>
@@ -163,6 +171,13 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>1.9.5</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>org.jmonkeyengine</groupId>
 			<artifactId>jme3-core</artifactId>
 			<version>3.1.0-alpha5</version>
@@ -201,6 +216,12 @@
 		<dependency>
 			<groupId>org.jmonkeyengine</groupId>
 			<artifactId>jme3-blender</artifactId>
+			<version>3.1.0-alpha5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jmonkeyengine</groupId>
+			<artifactId>jme3-effects</artifactId>
 			<version>3.1.0-alpha5</version>
 		</dependency>
 
