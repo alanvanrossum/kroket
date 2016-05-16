@@ -365,9 +365,10 @@ public class EscapeVR extends VRApplication {
 
 		float distance = VRApplication.getFinalObserverPosition().distance(
 				painting.getWorldBound().getCenter());
-		
+
 		if (distance < 4.0f)
-			log.debug(className, String.format("Player is near paiting, dist = %f", distance));
+			log.debug(className, String.format("Player is near painting, dist = %f", distance));
+
 
 		//System.out.printf("distance to painting = %f\n", distance);
 
