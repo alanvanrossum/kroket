@@ -20,7 +20,7 @@ public final class InputHandler {
 	private Logger log = Logger.getInstance();
 
 	/** Observer controls. */
-	private boolean moveForward, moveBackwards, rotateLeft, rotateRight;
+	private boolean moveForward, moveBackwards, rotateLeft, rotateRight, rotateUp, rotateDown;
 
 	private InputManager inputManager;
 	private Spatial observer;
@@ -61,8 +61,12 @@ public final class InputHandler {
 		inputManager.addMapping("right", new KeyTrigger(KeyInput.KEY_D));
 		inputManager.addMapping("filter", new KeyTrigger(KeyInput.KEY_F));
 		inputManager.addMapping("dumpImages", new KeyTrigger(KeyInput.KEY_I));
+                inputManager.addMapping("goup", new KeyTrigger(KeyInput.KEY_U));
+                inputManager.addMapping("godown", new KeyTrigger(KeyInput.KEY_J));
 
 		inputManager.addListener(actionListener, "forward");
+                inputManager.addListener(actionListener, "goup");
+                inputManager.addListener(actionListener, "godown");
 		inputManager.addListener(actionListener, "back");
 		inputManager.addListener(actionListener, "left");
 		inputManager.addListener(actionListener, "right");
@@ -115,6 +119,12 @@ public final class InputHandler {
 			observer.move(VRApplication.getFinalObserverRotation()
 					.getRotationColumn(2).mult(-tpf * 8f));
 		}
+                if(rotateUp){
+                    observer.rotate(-0.75f * tpf, 0, 0);                
+                }
+                if(rotateDown){
+                    observer.rotate(0.75f * tpf, 0, 0 );                
+                }
 		if (rotateLeft) {
 			observer.rotate(0, 0.75f * tpf, 0);
 		}
@@ -172,6 +182,18 @@ public final class InputHandler {
 					moveForward = true;
 				} else {
 					moveForward = false;
+				}
+                        } else if (name.equals("goup")) {
+				if (keyPressed) {
+					rotateUp = true;
+				} else {
+					rotateUp = false;
+				}
+                        } else if (name.equals("godown")) {
+				if (keyPressed) {
+					rotateDown = true;
+				} else {
+					rotateDown = false;
 				}
 			} else if (name.equals("back")) {
 				if (keyPressed) {
