@@ -20,7 +20,7 @@ public final class InputHandler {
 	private Logger log = Logger.getInstance();
 
 	/** Observer controls. */
-	private boolean moveForward, moveBackwards, rotateLeft, rotateRight, rotateUp, rotateDown;
+	private boolean moveForward, moveBackwards, rotateLeft, rotateRight, rotateUp, rotateDown,tiltLeft,tiltRight;
 
 	private InputManager inputManager;
 	private Spatial observer;
@@ -63,10 +63,10 @@ public final class InputHandler {
 		inputManager.addMapping("dumpImages", new KeyTrigger(KeyInput.KEY_I));
                 inputManager.addMapping("goup", new KeyTrigger(KeyInput.KEY_U));
                 inputManager.addMapping("godown", new KeyTrigger(KeyInput.KEY_J));
+                inputManager.addMapping("tiltleft", new KeyTrigger(KeyInput.KEY_Y));
+                inputManager.addMapping("tiltright", new KeyTrigger(KeyInput.KEY_H));
 
 		inputManager.addListener(actionListener, "forward");
-                inputManager.addListener(actionListener, "goup");
-                inputManager.addListener(actionListener, "godown");
 		inputManager.addListener(actionListener, "back");
 		inputManager.addListener(actionListener, "left");
 		inputManager.addListener(actionListener, "right");
@@ -75,6 +75,10 @@ public final class InputHandler {
 		inputManager.addListener(actionListener, "decShift");
 		inputManager.addListener(actionListener, "filter");
 		inputManager.addListener(actionListener, "dumpImages");
+                inputManager.addListener(actionListener, "goup");
+                inputManager.addListener(actionListener, "godown");
+                inputManager.addListener(actionListener, "tiltleft");
+                inputManager.addListener(actionListener, "tiltright");
 
 		log.debug(className, "Keyboard controls registered.");
 	}
@@ -124,6 +128,12 @@ public final class InputHandler {
                 }
                 if(rotateDown){
                     observer.rotate(0.75f * tpf, 0, 0 );                
+                }
+                 if(tiltLeft){
+                    observer.rotate(0, 0, -0.75f * tpf);                
+                }
+                if(tiltRight){
+                    observer.rotate(0, 0, 0.75f * tpf);                
                 }
 		if (rotateLeft) {
 			observer.rotate(0, 0.75f * tpf, 0);
@@ -195,11 +205,23 @@ public final class InputHandler {
 				} else {
 					rotateDown = false;
 				}
-			} else if (name.equals("back")) {
+                        } else if (name.equals("goup")) {
 				if (keyPressed) {
-					moveBackwards = true;
+					rotateUp = true;
 				} else {
-					moveBackwards = false;
+					rotateUp = false;
+				}
+                        } else if (name.equals("tiltleft")) {
+				if (keyPressed) {
+					tiltLeft = true;
+				} else {
+					tiltLeft = false;
+				}        
+			} else if (name.equals("tiltright")) {
+				if (keyPressed) {
+					tiltRight = true;
+				} else {
+					tiltRight = false;
 				}
 			} else if (name.equals("dumpImages")) {
 				OpenVR.getCompositor().CompositorDumpImages.apply();
