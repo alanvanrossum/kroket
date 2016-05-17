@@ -114,7 +114,11 @@ public final class InputHandler {
 	}
 
 	public void handleInput(float tpf) {
-    
+                float roomDepth = 12f;
+                float roomWidth = 9f;
+                float roomHeight = 6f;
+                
+            
 		if (moveForward) {
 			observer.move(VRApplication.getFinalObserverRotation()
 					.getRotationColumn(2).mult(tpf * 8f));
@@ -123,6 +127,28 @@ public final class InputHandler {
 			observer.move(VRApplication.getFinalObserverRotation()
 					.getRotationColumn(2).mult(-tpf * 8f));
 		}
+                //collide X
+                if(observer.getLocalTranslation().x>roomWidth-1){
+                    observer.move(-8*tpf,0,0);
+                }
+                 if(observer.getLocalTranslation().x<-roomWidth+1){
+                    observer.move(8*tpf,0,0);
+                }
+                 //collideZ
+                  if(observer.getLocalTranslation().z>roomDepth-1){
+                    observer.move(0,0,-8*tpf);
+                }
+                 if(observer.getLocalTranslation().z<-roomDepth+1){
+                    observer.move(0,0,8*tpf);
+                } 
+                //roof
+                if(observer.getLocalTranslation().y>roomHeight){
+                    observer.move(0,-8*tpf,0);
+                }
+                //floor
+                if(observer.getLocalTranslation().y<0){
+                    observer.move(0,8*tpf,0);
+                }
                 if(rotateUp){
                     observer.rotate(-0.75f * tpf, 0, 0);                
                 }
