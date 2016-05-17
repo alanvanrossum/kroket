@@ -193,6 +193,12 @@ public final class InputHandler {
 				} else {
 					moveForward = false;
 				}
+                        }else if (name.equals("back")) {
+				if (keyPressed) {
+					moveBackwards = true;
+				} else {
+					moveBackwards = false;
+				}
                         } else if (name.equals("goup")) {
 				if (keyPressed) {
 					rotateUp = true;
