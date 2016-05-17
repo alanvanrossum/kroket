@@ -42,6 +42,6 @@
 # Android Studio
 /EscapeApp/.gradle
 /EscapeApp/local.properties
-/EscapeApp/build
-/EscapeApp/captures
+/EscapeApp/build/
+/EscapeApp/captures/
 
