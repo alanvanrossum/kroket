@@ -24,6 +24,10 @@ public class ConnectionThread implements Runnable {
 
 	protected Socket clientSocket = null;
 
+	/**
+	 * constructor for this class.
+	 * @param clientSocket sets the socket.
+	 */
 	public ConnectionThread(Socket clientSocket) {
 		this.clientSocket = clientSocket;
 	}
@@ -86,7 +90,17 @@ public class ConnectionThread implements Runnable {
 			}
 		} else if (input.startsWith("admin")) {
 			adminCommand(input.substring(6));
-		}
+		} else if (input.startsWith("INITM[")) {
+		  int pos = input.indexOf(']');
+		  //String name = input.substring(6, pos);
+		  EscapeServer.sendMobile(input);
+		  
+		} else if (input.startsWith("INITVR[")) {
+      int pos = input.indexOf(']');
+      //String name = input.substring(7, pos);
+      EscapeServer.sendVirtual(input);
+      
+    }
 
 	}
 
@@ -101,6 +115,9 @@ public class ConnectionThread implements Runnable {
 		}
 	}
 
+	/**
+	 * runs server.
+	 */
 	public void run() {
 		try {
 			InputStream input = clientSocket.getInputStream();

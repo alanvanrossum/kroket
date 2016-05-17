@@ -41,7 +41,7 @@ public class EscapeVR extends VRApplication {
 	private Logger log = Logger.getInstance();
 
 	/** Hostname of the gamehost. */
-	private static final String HOSTNAME = "localhost";
+	private static final String HOSTNAME = "145.94.156.217";
 
 	/** Portnumber of the gamehost. */
 	private static int PORTNUM = 1234;
@@ -366,8 +366,12 @@ public class EscapeVR extends VRApplication {
 		float distance = VRApplication.getFinalObserverPosition().distance(
 				painting.getWorldBound().getCenter());
 
-		if (distance < 4.0f)
+		if (distance < 4.0f) {
 			log.debug(className, String.format("Player is near painting, dist = %f", distance));
+                        //temporary solution to test if we can send messages and do something
+                        //ultimately this message should be sent after the player presses a certain button
+                        client.sendMessage("INITM[startA]");
+                }
 
 
 		//System.out.printf("distance to painting = %f\n", distance);
