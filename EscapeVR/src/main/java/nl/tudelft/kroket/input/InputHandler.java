@@ -1,5 +1,8 @@
 package nl.tudelft.kroket.input;
 
+import com.jme3.input.controls.AnalogListener;
+import com.jme3.input.controls.MouseAxisTrigger;
+
 import jmevr.app.VRApplication;
 import jmevr.input.OpenVR;
 import jmevr.util.VRGuiManager;
@@ -7,11 +10,13 @@ import jmevr.util.VRGuiManager;
 import com.jme3.input.InputManager;
 import com.jme3.input.Joystick;
 import com.jme3.input.KeyInput;
+import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.JoyButtonTrigger;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.scene.Spatial;
 
+import nl.tudelft.kroket.event.EventManager;
 import nl.tudelft.kroket.log.Logger;
 
 public final class InputHandler {
@@ -25,20 +30,26 @@ public final class InputHandler {
 	private InputManager inputManager;
 	private Spatial observer;
 	private boolean acceptInput = false;
+	private EventManager eventManager;
 
 	public InputHandler(InputManager inputManager, Spatial observer,
-			boolean acceptInput) {
+			EventManager eventManager, boolean acceptInput) {
 
 		log.info(className, "Initializing...");
 
 		this.inputManager = inputManager;
 		this.observer = observer;
 		this.acceptInput = acceptInput;
+		setEventManager(eventManager);
 
 		setAcceptInput(acceptInput);
 
 		initControls();
 		initJoysticks();
+	}
+
+	public void setEventManager(EventManager em) {
+		this.eventManager = em;
 	}
 
 	public void setAcceptInput(boolean acceptInput) {
@@ -73,6 +84,13 @@ public final class InputHandler {
 		inputManager.addListener(actionListener, "dumpImages");
 
 		log.debug(className, "Keyboard controls registered.");
+
+		if (eventManager == null) {
+			log.debug(className, "Event manager is null");
+		} else {
+			inputManager.addListener(eventManager.getActionListener(), "forward", "back", "left", "right");
+			System.out.println("adding Listener");
+		}
 	}
 
 	private void initJoysticks() {
@@ -106,21 +124,35 @@ public final class InputHandler {
 	}
 
 	public void handleInput(float tpf) {
-    
-		if (moveForward) {
-			observer.move(VRApplication.getFinalObserverRotation()
-					.getRotationColumn(2).mult(tpf * 8f));
+
+		float height = VRApplication.getFinalObserverPosition().getY();
+
+		if (height < 8.6) {
+
+			if (moveForward) {
+				observer.move(VRApplication.getFinalObserverRotation()
+						.getRotationColumn(2).mult(tpf * 8f));
+			}
+			if (moveBackwards) {
+				observer.move(VRApplication.getFinalObserverRotation()
+						.getRotationColumn(2).mult(-tpf * 8f));
+			}
+
 		}
-		if (moveBackwards) {
-			observer.move(VRApplication.getFinalObserverRotation()
-					.getRotationColumn(2).mult(-tpf * 8f));
-		}
+
+		else
+			observer.move(0, -1, 0);
+
 		if (rotateLeft) {
 			observer.rotate(0, 0.75f * tpf, 0);
 		}
 		if (rotateRight) {
 			observer.rotate(0, -0.75f * tpf, 0);
 		}
+
+		// System.out.println("VRApplication.getFinalObserverPosition = "
+		// + VRApplication.getFinalObserverPosition().toString());
+
 	}
 
 	private ActionListener actionListener = new ActionListener() {
@@ -132,24 +164,23 @@ public final class InputHandler {
 				return;
 
 			if (keyPressed) {
-				 log.debug(className, "You have pressed : " + name);
+				log.debug(className, "You have pressed : " + name);
 
-//				System.out.println(String.format(
-//						"onAction(name = %s, keyPressed = true, tpf = %s)",
-//						name, tpf));
-			} 
-//			else {
-//				System.out.println(String.format(
-//						"onAction(name = %s, keyPressed = false tpf = %s)",
-//						name, tpf));
-//			}
-			
+				// System.out.println(String.format(
+				// "onAction(name = %s, keyPressed = true, tpf = %s)",
+				// name, tpf));
+			}
+			// else {
+			// System.out.println(String.format(
+			// "onAction(name = %s, keyPressed = false tpf = %s)",
+			// name, tpf));
+			// }
+
 			if (name.equals("incShift") && keyPressed) {
 				VRGuiManager.adjustGuiDistance(-0.1f);
 			} else if (name.equals("decShift") && keyPressed) {
 				VRGuiManager.adjustGuiDistance(0.1f);
 			}
-
 
 			// else if (name.equals("filter") && keyPressed) {
 			// // adding filters in realtime

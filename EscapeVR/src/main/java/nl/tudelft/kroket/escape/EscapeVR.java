@@ -2,8 +2,12 @@ package nl.tudelft.kroket.escape;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.EventObject;
 
 import nl.tudelft.kroket.audio.AudioManager;
+import nl.tudelft.kroket.event.EventListener;
+import nl.tudelft.kroket.event.EventManager;
+import nl.tudelft.kroket.event.events.InteractionEvent;
 import nl.tudelft.kroket.input.InputHandler;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.net.NetworkClient;
@@ -12,30 +16,22 @@ import nl.tudelft.kroket.scene.scenes.EscapeScene;
 import nl.tudelft.kroket.screen.ScreenManager;
 import nl.tudelft.kroket.screen.screens.LobbyScreen;
 import jmevr.app.VRApplication;
-import jmevr.input.VRBounds;
 import jmevr.util.VRGuiManager;
 import jmevr.util.VRGuiManager.POSITIONING_MODE;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.audio.AudioSource;
-import com.jme3.effect.ParticleEmitter;
-import com.jme3.effect.ParticleMesh.Type;
 import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.font.Rectangle;
-import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
-import com.jme3.post.FilterPostProcessor;
-import com.jme3.post.filters.FogFilter;
-import com.jme3.scene.CameraNode;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.ui.Picture;
 import com.jme3.util.SkyFactory;
 
-public class EscapeVR extends VRApplication {
+public class EscapeVR extends VRApplication implements EventListener {
 
 	private final String className = this.getClass().getSimpleName();
 	private Logger log = Logger.getInstance();
@@ -45,7 +41,9 @@ public class EscapeVR extends VRApplication {
 
 	/** Portnumber of the gamehost. */
 	private static int PORTNUM = 1234;
-	
+
+	EventManager eventManager;
+
 	private static int SECRECONN = 5;
 
 	/** Enum for all GameStates. */
@@ -81,16 +79,18 @@ public class EscapeVR extends VRApplication {
 	private void initAudioManager() {
 		audioManager = new AudioManager(getAssetManager(), rootNode, "Sound/");
 		audioManager.loadFile("waiting", "Soundtrack/waiting.wav", false,
-				false, 5);
+				false, 3);
 		audioManager.loadFile("ambient", "Soundtrack/ambient.wav", false,
-				false, 5);
+				true, 2);
 		audioManager.loadFile("welcome", "Voice/intro2.wav", false, false, 5);
 		audioManager.loadFile("letthegamebegin", "Voice/letthegamebegin3.wav",
 				false, false, 5);
+		audioManager.loadFile("muhaha", "Voice/muhaha.wav", false, false, 5);
 	}
 
 	private void initInputHandler() {
-		inputHandler = new InputHandler(getInputManager(), observer, false);
+		inputHandler = new InputHandler(getInputManager(), observer,
+				eventManager, false);
 	}
 
 	private void initSceneManager() {
@@ -101,8 +101,10 @@ public class EscapeVR extends VRApplication {
 
 	private void initScreenManager() {
 		Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
+
 		screenManager = new ScreenManager(getAssetManager(), guiNode,
 				guiCanvasSize.getX(), guiCanvasSize.getY());
+
 		screenManager.loadScreen("lobby", LobbyScreen.class);
 	}
 
@@ -167,31 +169,21 @@ public class EscapeVR extends VRApplication {
 		}
 
 		initObjects();
+
 		initSceneManager();
 		initAudioManager();
+		eventManager = new EventManager(rootNode);
 		initInputHandler();
 
 		initScreenManager();
 		initNetworkClient();
-
+		
 		sceneManager.getScene("escape").createScene();
 
-		// /** Add fog to a scene */
-		// FilterPostProcessor fpp=new FilterPostProcessor(getAssetManager());
-		// FogFilter fog=new FogFilter();
-		// fog.setFogColor(new ColorRGBA(0.9f, 0.9f, 0.9f, 1.0f));
-		// fog.setFogDistance(155);
-		// fog.setFogDensity(2.0f);
-		// fpp.addFilter(fog);
-		// getViewPort().addProcessor(fpp);
-		
-//		Vector2f playArea = VRBounds.getPlaySize();
-//		
-//		if (playArea == null) {
-//			log.info(className, "no vrbounds");
-//		}
-//		else
-//			log.info(className, "vrBounds");
+		eventManager.addListener(this);
+		eventManager.registerTrigger("painting", 4);
+		eventManager.registerTrigger("door", 2);
+
 
 	}
 
@@ -268,55 +260,6 @@ public class EscapeVR extends VRApplication {
 	}
 
 	/**
-	 * Display intro overlay images.
-	 * 
-	 * @param f
-	 *            time into intro
-	 */
-	// private void displayIntro(float f) {
-	//
-	// if (f < 3) {
-	// clearOverlays();
-	// overlayImage("Textures/overlay/teamkroket.png");
-	// } else if (f < 5) {
-	// clearOverlays();
-	// overlayImage("Textures/overlay/presents.png");
-	// } else if (f < 12) {
-	// clearOverlays();
-	// overlayImage("Textures/overlay/escaparade.png");
-	// } else if (f < 18) {
-	// clearOverlays();
-	// overlayImage("Textures/overlay/locked.png");
-	// } else if (f < 26) {
-	// clearOverlays();
-	// overlayImage("Textures/overlay/toxicgas.png");
-	// } else if (f < 32) {
-	// clearOverlays();
-	// overlayImage("Textures/overlay/onlygoal.png");
-	// } else if (f < 35) {
-	// clearOverlays();
-	// overlayImage("Textures/overlay/getout.png");
-	// } else if (f < 38) {
-	// clearOverlays();
-	// overlayImage("Textures/overlay/onlyway.png");
-	// } else if (f < 41) {
-	// clearOverlays();
-	// overlayImage("Textures/overlay/byworkingtogether.png");
-	// } else if (f < 45) {
-	// clearOverlays();
-	// overlayImage("Textures/overlay/makeitoutalive.png");
-	// } else if (f < 48) {
-	// clearOverlays();
-	// overlayImage("Textures/overlay/getready.png");
-	// } else if (f < 51) {
-	// clearOverlays();
-	// overlayImage("Textures/overlay/toescape.png");
-	// } else {
-	// clearOverlays();
-	// }
-	// }
-
-	/**
 	 * Main method to update the scene.
 	 */
 	@Override
@@ -361,16 +304,15 @@ public class EscapeVR extends VRApplication {
 		if (painting == null)
 			return;
 
-		//System.out.println("painting = " + painting + "\n");
+		// System.out.println("painting = " + painting + "\n");
 
-		float distance = VRApplication.getFinalObserverPosition().distance(
-				painting.getWorldBound().getCenter());
+		// float distance =
 
-		if (distance < 4.0f)
-			log.debug(className, String.format("Player is near painting, dist = %f", distance));
+		// if (distance < 4.0f)
+		// log.debug(className,
+		// String.format("Player is near painting, dist = %f", distance));
 
-
-		//System.out.printf("distance to painting = %f\n", distance);
+		// System.out.printf("distance to painting = %f\n", distance);
 
 		// if (observer == null) {
 		// return;
@@ -462,9 +404,9 @@ public class EscapeVR extends VRApplication {
 			if (audioManager.getStatus("ambient") != AudioSource.Status.Playing)
 				audioManager.play("ambient");
 
-//			System.out.println("Creating gas...");
-//			EscapeScene escapeScene = ((EscapeScene) sceneManager
-//					.getScene("escape"));
+			// System.out.println("Creating gas...");
+			// EscapeScene escapeScene = ((EscapeScene) sceneManager
+			// .getScene("escape"));
 			// escapeScene.createGas();
 
 			break;
@@ -512,6 +454,35 @@ public class EscapeVR extends VRApplication {
 		System.out.println("Remote input: " + message);
 
 		remoteInput(message);
+	}
+
+	@Override
+	public void handleEvent(EventObject e) {
+
+		if (e instanceof InteractionEvent) {
+			InteractionEvent interactionEvent = (InteractionEvent) e;
+
+			log.info(className, "Player interacted with " + interactionEvent.getName());
+			
+			String objectName = interactionEvent.getName();
+			
+			client.sendMessage(String.format("INTERACT[%s]", objectName));
+			
+			switch(objectName) {
+			case "door":
+				// play spooky muhaha sound when player interacts with door
+				if (audioManager.getStatus("muhaha") != AudioSource.Status.Playing)
+					audioManager.getNode("muhaha").play();
+				break;
+			case "painting":
+				client.sendMessage("INITM[startA]");
+				break;
+			default:
+				break;
+			}
+
+		}
+
 	}
 
 }
