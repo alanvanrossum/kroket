@@ -292,43 +292,6 @@ public class EscapeVR extends VRApplication implements EventListener {
 		default:
 			break;
 		}
-
-		// System.out.println();
-
-		// Spatial painting =
-		// sceneManager.getScene("escape").getRootNode().getChild("painting");
-		// of
-		Spatial painting = sceneManager.getScene("escape")
-				.getObject("painting");
-
-		if (painting == null)
-			return;
-
-		// System.out.println("painting = " + painting + "\n");
-
-		// float distance =
-
-		// if (distance < 4.0f)
-		// log.debug(className,
-		// String.format("Player is near painting, dist = %f", distance));
-
-		// System.out.printf("distance to painting = %f\n", distance);
-
-		// if (observer == null) {
-		// return;
-		// }
-		//
-		//
-		// if (observer.getWorldBound() != null &&
-		// observer.getWorldBound().getCenter() != null) {
-		//
-		// Vector3f pos = observer.getWorldBound().getCenter();
-		// System.out.println(pos);
-		//
-		// }
-		// else
-		// System.out.println("observer.getWorldBound() ==  null");
-
 	}
 
 	/**

@@ -46,6 +46,14 @@ public final class InputHandler {
 
 		initControls();
 		initJoysticks();
+		
+		if (eventManager == null) {
+			log.debug(className, "Event manager is null");
+		} else {
+			inputManager.addListener(eventManager.getActionListener(), "Button A", "Button B",
+					"Button X", "Button Y");
+			System.out.println("adding Listener");
+		}
 	}
 
 	public void setEventManager(EventManager em) {
@@ -72,6 +80,12 @@ public final class InputHandler {
 		inputManager.addMapping("right", new KeyTrigger(KeyInput.KEY_D));
 		inputManager.addMapping("filter", new KeyTrigger(KeyInput.KEY_F));
 		inputManager.addMapping("dumpImages", new KeyTrigger(KeyInput.KEY_I));
+		
+		// register numpad keys, for when we don't have a keypad
+		inputManager.addMapping("Button A", new KeyTrigger(KeyInput.KEY_NUMPAD1));
+		inputManager.addMapping("Button B", new KeyTrigger(KeyInput.KEY_NUMPAD2));
+		inputManager.addMapping("Button X", new KeyTrigger(KeyInput.KEY_NUMPAD3));
+		inputManager.addMapping("Button Y", new KeyTrigger(KeyInput.KEY_NUMPAD4));
 
 		inputManager.addListener(actionListener, "forward");
 		inputManager.addListener(actionListener, "back");
@@ -85,12 +99,7 @@ public final class InputHandler {
 
 		log.debug(className, "Keyboard controls registered.");
 
-		if (eventManager == null) {
-			log.debug(className, "Event manager is null");
-		} else {
-			inputManager.addListener(eventManager.getActionListener(), "forward", "back", "left", "right");
-			System.out.println("adding Listener");
-		}
+
 	}
 
 	private void initJoysticks() {
@@ -127,7 +136,7 @@ public final class InputHandler {
 
 		float height = VRApplication.getFinalObserverPosition().getY();
 
-		if (height < 8.6) {
+		//if (height < 8.6) {
 
 			if (moveForward) {
 				observer.move(VRApplication.getFinalObserverRotation()
@@ -140,8 +149,8 @@ public final class InputHandler {
 
 		}
 
-		else
-			observer.move(0, -1, 0);
+		//else
+		//	observer.move(0, -1, 0);
 
 		if (rotateLeft) {
 			observer.rotate(0, 0.75f * tpf, 0);
@@ -164,7 +173,7 @@ public final class InputHandler {
 				return;
 
 			if (keyPressed) {
-				log.debug(className, "You have pressed : " + name);
+	//			log.debug(className, "You have pressed : " + name);
 
 				// System.out.println(String.format(
 				// "onAction(name = %s, keyPressed = true, tpf = %s)",

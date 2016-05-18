@@ -15,12 +15,17 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
 public class EventManager {
-	private List<EventObject> eventList = new ArrayList<EventObject>();
+	private HashMap<String, EventObject> eventList = new HashMap<String, EventObject>();
 	private List<EventListener> listenerList = new ArrayList<EventListener>();
+	
+	
+	private final int INPUT_GRACE_PERIOD = 500;
 
 	ActionListener actionListener;
 
 	Node rootNode;
+	
+	long prevInput = 0;
 
 	private HashMap<String, Float> triggers = new HashMap<String, Float>();
 
@@ -31,20 +36,36 @@ public class EventManager {
 
 			public void onAction(String name, boolean keyPressed, float tpf) {
 
+				if (!keyPressed)
+					return;
+
+				long now = System.currentTimeMillis();
+				long diff = now - prevInput;
+				
+				//System.out.println("diff = " + diff);
+				
+				if (diff < INPUT_GRACE_PERIOD)
+					return;
+				
+				prevInput = now;
+				
+
 				for (Entry<String, Float> entry : triggers.entrySet()) {
 
 					Spatial object = rootNode.getChild(entry.getKey());
 
 					if (InteractionEvent.checkConditions(object,
 							entry.getValue(), name)) {
-						InteractionEvent event = new InteractionEvent(this, entry.getKey());
-						addEvent(event);
+						InteractionEvent event = new InteractionEvent(this,
+								entry.getKey());
+						addEvent("interaction", event);
 
 					}
 				}
-
 				fireEvents();
+				
 			}
+
 		};
 	}
 
@@ -54,18 +75,18 @@ public class EventManager {
 
 	private synchronized void fireEvents() {
 		Iterator<EventListener> i = listenerList.iterator();
-		for (EventObject event : eventList) {
+		for (EventObject event : eventList.values()) {
 			while (i.hasNext()) {
 
 				((EventListener) i.next()).handleEvent(event);
 			}
 		}
-		
-	eventList.clear();
+
+		eventList.clear();
 	}
 
-	public synchronized void addEvent(EventObject event) {
-		eventList.add(event);
+	public synchronized void addEvent(String type, EventObject event) {
+		eventList.put(type, event);
 	}
 
 	public synchronized void addListener(EventListener listener) {
