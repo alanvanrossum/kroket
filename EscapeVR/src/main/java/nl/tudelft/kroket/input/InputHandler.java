@@ -147,7 +147,7 @@ public final class InputHandler {
 						.getRotationColumn(2).mult(-tpf * 8f));
 			}
 
-		}
+	//}
 
 		//else
 		//	observer.move(0, -1, 0);
