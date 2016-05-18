@@ -20,7 +20,7 @@ public final class InputHandler {
 	private Logger log = Logger.getInstance();
 
 	/** Observer controls. */
-	private boolean moveForward, moveBackwards, rotateLeft, rotateRight, rotateUp, rotateDown,tiltLeft,tiltRight;
+	private boolean moveForward, moveBackwards, rotateLeft, rotateRight, rotateUp, rotateDown,tiltLeft,tiltRight, interact;
 
 	private InputManager inputManager;
 	private Spatial observer;
@@ -167,6 +167,9 @@ public final class InputHandler {
 		if (rotateRight) {
 			observer.rotate(0, -0.75f * tpf, 0);
 		}
+                if (interact) {
+                     //client.sendMessage("INITM[startA]");
+                }
 	}
 
 	private ActionListener actionListener = new ActionListener() {
@@ -268,6 +271,12 @@ public final class InputHandler {
 					rotateRight = true;
 				} else {
 					rotateRight = false;
+				}
+			} else if (name.equals("toggle")) {
+				if (keyPressed) {
+					interact = true;
+				} else {
+					interact = false;
 				}
 			}
 
