@@ -164,14 +164,6 @@ public final class InputHandler {
 		float roomWidth = 9f;
 		float roomHeight = 6f;
 
-//		if (moveForward) {
-//			observer.move(VRApplication.getFinalObserverRotation()
-//					.getRotationColumn(2).mult(tpf * 8f));
-//		}
-//		if (moveBackwards) {
-//			observer.move(VRApplication.getFinalObserverRotation()
-//					.getRotationColumn(2).mult(-tpf * 8f)); 
-//		}
 		// collide X
 		if (observer.getLocalTranslation().x > roomWidth - 1) {
 			observer.move(-8 * tpf, 0, 0);
