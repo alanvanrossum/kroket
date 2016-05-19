@@ -368,6 +368,31 @@ public class EscapeServer implements Runnable {
 				entry.getValue().sendMessage(message);
 		}
 	}
+	
+	/**
+	 * sends a message only if a player has type mobile
+	 * @param message the string to be sent.
+	 */
+	public static void sendMobile(String message){
+	  for (Entry<Socket, Player> entry : playerList.entrySet()) {
+
+      if (entry.getValue() != null && entry.getValue().getType() == PlayerType.MOBILE)
+        entry.getValue().sendMessage(message);
+    }
+	}
+	
+	 /**
+   * sends a message only if a player has type virtual
+   * @param message the string to be sent.
+   */
+  public static void sendVirtual(String message){
+    for (Entry<Socket, Player> entry : playerList.entrySet()) {
+
+      if (entry.getValue() != null && entry.getValue().getType() == PlayerType.VIRTUAL)
+        entry.getValue().sendMessage(message);
+    }
+  }
+
 
 	private static void printPlayers() {
 

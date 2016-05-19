@@ -37,7 +37,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 	private Logger log = Logger.getInstance();
 
 	/** Hostname of the gamehost. */
-	private static final String HOSTNAME = "localhost";
+	private static final String HOSTNAME = "145.94.156.217";
 
 	/** Portnumber of the gamehost. */
 	private static int PORTNUM = 1234;

@@ -25,7 +25,7 @@ public final class InputHandler {
 	private Logger log = Logger.getInstance();
 
 	/** Observer controls. */
-	private boolean moveForward, moveBackwards, rotateLeft, rotateRight;
+	private boolean moveForward, moveBackwards, rotateLeft, rotateRight, rotateUp, rotateDown,tiltLeft,tiltRight, interact;
 
 	private InputManager inputManager;
 	private Spatial observer;
@@ -80,12 +80,19 @@ public final class InputHandler {
 		inputManager.addMapping("right", new KeyTrigger(KeyInput.KEY_D));
 		inputManager.addMapping("filter", new KeyTrigger(KeyInput.KEY_F));
 		inputManager.addMapping("dumpImages", new KeyTrigger(KeyInput.KEY_I));
+
 		
 		// register numpad keys, for when we don't have a keypad
 		inputManager.addMapping("Button A", new KeyTrigger(KeyInput.KEY_NUMPAD1));
 		inputManager.addMapping("Button B", new KeyTrigger(KeyInput.KEY_NUMPAD2));
 		inputManager.addMapping("Button X", new KeyTrigger(KeyInput.KEY_NUMPAD3));
 		inputManager.addMapping("Button Y", new KeyTrigger(KeyInput.KEY_NUMPAD4));
+
+                inputManager.addMapping("goup", new KeyTrigger(KeyInput.KEY_U));
+                inputManager.addMapping("godown", new KeyTrigger(KeyInput.KEY_J));
+                inputManager.addMapping("tiltleft", new KeyTrigger(KeyInput.KEY_Y));
+                inputManager.addMapping("tiltright", new KeyTrigger(KeyInput.KEY_H));
+
 
 		inputManager.addListener(actionListener, "forward");
 		inputManager.addListener(actionListener, "back");
@@ -96,6 +103,10 @@ public final class InputHandler {
 		inputManager.addListener(actionListener, "decShift");
 		inputManager.addListener(actionListener, "filter");
 		inputManager.addListener(actionListener, "dumpImages");
+                inputManager.addListener(actionListener, "goup");
+                inputManager.addListener(actionListener, "godown");
+                inputManager.addListener(actionListener, "tiltleft");
+                inputManager.addListener(actionListener, "tiltright");
 
 		log.debug(className, "Keyboard controls registered.");
 
@@ -152,15 +163,61 @@ public final class InputHandler {
 		//else
 		//	observer.move(0, -1, 0);
 
+
+                float roomDepth = 12f;
+                float roomWidth = 9f;
+                float roomHeight = 6f;
+                
+            
+		if (moveForward) {
+			observer.move(VRApplication.getFinalObserverRotation()
+					.getRotationColumn(2).mult(tpf * 8f));
+		}
+		if (moveBackwards) {
+			observer.move(VRApplication.getFinalObserverRotation()
+					.getRotationColumn(2).mult(-tpf * 8f));
+		}
+                //collide X
+                if(observer.getLocalTranslation().x>roomWidth-1){
+                    observer.move(-8*tpf,0,0);
+                }
+                 if(observer.getLocalTranslation().x<-roomWidth+1){
+                    observer.move(8*tpf,0,0);
+                }
+                 //collideZ
+                  if(observer.getLocalTranslation().z>roomDepth-1){
+                    observer.move(0,0,-8*tpf);
+                }
+                 if(observer.getLocalTranslation().z<-roomDepth+1){
+                    observer.move(0,0,8*tpf);
+                } 
+                //roof
+                if(observer.getLocalTranslation().y>roomHeight){
+                    observer.move(0,-8*tpf,0);
+                }
+                //floor
+                if(observer.getLocalTranslation().y<0){
+                    observer.move(0,8*tpf,0);
+                }
+                if(rotateUp){
+                    observer.rotate(-0.75f * tpf, 0, 0);                
+                }
+                if(rotateDown){
+                    observer.rotate(0.75f * tpf, 0, 0 );                
+                }
+                 if(tiltLeft){
+                    observer.rotate(0, 0, -0.75f * tpf);                
+                }
+                if(tiltRight){
+                    observer.rotate(0, 0, 0.75f * tpf);                
+                }
+
 		if (rotateLeft) {
 			observer.rotate(0, 0.75f * tpf, 0);
 		}
 		if (rotateRight) {
 			observer.rotate(0, -0.75f * tpf, 0);
 		}
-
-		// System.out.println("VRApplication.getFinalObserverPosition = "
-		// + VRApplication.getFinalObserverPosition().toString());
 
 	}
 
@@ -213,11 +270,41 @@ public final class InputHandler {
 				} else {
 					moveForward = false;
 				}
-			} else if (name.equals("back")) {
+                        }else if (name.equals("back")) {
 				if (keyPressed) {
 					moveBackwards = true;
 				} else {
 					moveBackwards = false;
+				}
+                        } else if (name.equals("goup")) {
+				if (keyPressed) {
+					rotateUp = true;
+				} else {
+					rotateUp = false;
+				}
+                        } else if (name.equals("godown")) {
+				if (keyPressed) {
+					rotateDown = true;
+				} else {
+					rotateDown = false;
+				}
+                        } else if (name.equals("goup")) {
+				if (keyPressed) {
+					rotateUp = true;
+				} else {
+					rotateUp = false;
+				}
+                        } else if (name.equals("tiltleft")) {
+				if (keyPressed) {
+					tiltLeft = true;
+				} else {
+					tiltLeft = false;
+				}        
+			} else if (name.equals("tiltright")) {
+				if (keyPressed) {
+					tiltRight = true;
+				} else {
+					tiltRight = false;
 				}
 			} else if (name.equals("dumpImages")) {
 				OpenVR.getCompositor().CompositorDumpImages.apply();
@@ -232,6 +319,12 @@ public final class InputHandler {
 					rotateRight = true;
 				} else {
 					rotateRight = false;
+				}
+			} else if (name.equals("toggle")) {
+				if (keyPressed) {
+					interact = true;
+				} else {
+					interact = false;
 				}
 			}
 
