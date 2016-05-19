@@ -80,8 +80,8 @@ public class EscapeVR extends VRApplication implements EventListener {
 		audioManager = new AudioManager(getAssetManager(), rootNode, "Sound/");
 		audioManager.loadFile("waiting", "Soundtrack/waiting.wav", false,
 				false, 3);
-		audioManager.loadFile("ambient", "Soundtrack/ambient.wav", false,
-				true, 2);
+		audioManager.loadFile("ambient", "Soundtrack/ambient.wav", false, true,
+				2);
 		audioManager.loadFile("welcome", "Voice/intro2.wav", false, false, 5);
 		audioManager.loadFile("letthegamebegin", "Voice/letthegamebegin3.wav",
 				false, false, 5);
@@ -177,13 +177,12 @@ public class EscapeVR extends VRApplication implements EventListener {
 
 		initScreenManager();
 		initNetworkClient();
-		
+
 		sceneManager.getScene("escape").createScene();
 
 		eventManager.addListener(this);
 		eventManager.registerTrigger("painting", 4);
 		eventManager.registerTrigger("door", 2);
-
 
 	}
 
@@ -425,13 +424,14 @@ public class EscapeVR extends VRApplication implements EventListener {
 		if (e instanceof InteractionEvent) {
 			InteractionEvent interactionEvent = (InteractionEvent) e;
 
-			log.info(className, "Player interacted with " + interactionEvent.getName());
-			
+			log.info(className,
+					"Player interacted with " + interactionEvent.getName());
+
 			String objectName = interactionEvent.getName();
-			
+
 			client.sendMessage(String.format("INTERACT[%s]", objectName));
-			
-			switch(objectName) {
+
+			switch (objectName) {
 			case "door":
 				// play spooky muhaha sound when player interacts with door
 				if (audioManager.getStatus("muhaha") != AudioSource.Status.Playing)
