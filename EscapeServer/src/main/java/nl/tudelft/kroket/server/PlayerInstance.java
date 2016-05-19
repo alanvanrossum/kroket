@@ -12,34 +12,38 @@ import nl.tudelft.kroket.player.Player;
 import nl.tudelft.kroket.player.Player.PlayerType;
 
 /**
- * ConnectionThread object.
+ * ConnectionThread object to handle interaction with a client.
  * 
  * @author Team Kroket
  *
  */
-public class ConnectionThread implements Runnable {
-	
+public class PlayerInstance implements Runnable {
+
 	/** Singleton reference to logger. */
 	static Logger log = Logger.getInstance();
-	
+
 	/** Class simpleName, used as tag for logging. */
 	private final String className = this.getClass().getSimpleName();
 
-	
+	/** Client's DataInputStream. */
 	DataInputStream inputStream = null;
+
+	/** Client's DataOutputStream. */
 	DataOutputStream outputStream = null;
 
+	/** The type of player. */
 	Player.PlayerType type = PlayerType.NONE;
-	
+
 	/** Reference to the socket of the connected client. */
 	protected Socket clientSocket = null;
 
 	/**
 	 * Constructor for ConnectionThread.
 	 * 
-	 * @param clientSocket the socket of the client
+	 * @param clientSocket
+	 *            the socket of the client
 	 */
-	public ConnectionThread(Socket clientSocket) {
+	public PlayerInstance(Socket clientSocket) {
 		this.clientSocket = clientSocket;
 	}
 
@@ -54,6 +58,7 @@ public class ConnectionThread implements Runnable {
 
 		if (input.startsWith("TYPE[")) {
 
+			// find the closing bracket
 			int pos = input.indexOf(']');
 			String typeString = input.substring(5, pos);
 
@@ -67,16 +72,19 @@ public class ConnectionThread implements Runnable {
 
 					try {
 						type = PlayerType.valueOf(typeString);
-
+						
+						// set the type of the player
 						player.setType(type);
 
+						// tell player what his new type is
 						player.sendMessage("Your type is now set to "
 								+ type.toString());
-
+						
 						log.info(className, String.format(
 								"Player %s is now set to type %s.",
 								player.getName(), player.getType().toString()));
 
+						// if the game isn't ready, let the new player know
 						if (!EscapeServer.ready()) {
 							player.sendMessage(EscapeServer.countPlayers()
 									+ " player(s) connected.");
@@ -90,15 +98,19 @@ public class ConnectionThread implements Runnable {
 
 		} else if (input.startsWith("REGISTER[")) {
 
+			// find closing bracket
 			int pos = input.indexOf(']');
 
 			if (pos > 9) {
-
 				String name = input.substring(9, pos);
 
+				// try register the new player
 				EscapeServer.registerPlayer(clientSocket, outputStream, name);
-
+			} else {
+				log.error(className,
+						"Closing bracket not found or in invalid position.");
 			}
+
 		} else if (input.startsWith("admin")) {
 			adminCommand(input.substring(6));
 		} else if (input.startsWith("INITM[")) {
