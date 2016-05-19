@@ -45,7 +45,7 @@ public class AudioManager {
 	
 	public void loadFile(String name, String path, boolean positional, boolean looping, int volume) {
 	
-		AudioNode node = createNode(path, looping, looping, volume);
+		AudioNode node = createNode(path, positional, looping, volume);
 		
 		audioNodes.put(name, node);
 		

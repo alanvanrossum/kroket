@@ -31,18 +31,7 @@
 /EscapeVR/hs_err_pid*
 /EscapeVR/build/
 /EscapeVR/bin/
-/EscapeVR/nbproject/private
-/EscapeVR/MANIFEST.MF
+/EscapeVR/nbproject/private/
 
 # Project specific: EscapeServer
 /EscapeServer/target/
-
-# Project specific: EscapeApp
-/EscapeApp/build
-
-# Android Studio
-/EscapeApp/.gradle
-/EscapeApp/local.properties
-/EscapeApp/build/
-/EscapeApp/captures/
-
