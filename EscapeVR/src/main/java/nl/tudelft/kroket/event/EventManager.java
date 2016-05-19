@@ -22,17 +22,20 @@ public class EventManager {
 	private final int INPUT_GRACE_PERIOD = 400;
 
 	ActionListener actionListener;
-
-	Node rootNode;
 	
 	long prevInput = 0;
+	
+	private Node rootNode;
 
 	private HashMap<String, Float> triggers = new HashMap<String, Float>();
 
-	public EventManager(Node rootNode) {
-		this.rootNode = rootNode;
+	public EventManager(Node root) {
+		
+		this.rootNode = root;
 
 		actionListener = new ActionListener() {
+
+			private final Node rn = rootNode;
 
 			public void onAction(String name, boolean keyPressed, float tpf) {
 
@@ -50,7 +53,7 @@ public class EventManager {
 
 				for (Entry<String, Float> entry : triggers.entrySet()) {
 
-					Spatial object = rootNode.getChild(entry.getKey());
+					Spatial object = rn.getChild(entry.getKey());
 
 					if (InteractionEvent.checkConditions(object,
 							entry.getValue(), name)) {
