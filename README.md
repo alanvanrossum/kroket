@@ -54,7 +54,7 @@ https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek4
 
 ## Introduction
 
-You're looking at the Github repository of Team Kroket.  Team Kroket is a group of five Computer Science students at Delft University of Technology, The Netherlands. For the course TI2806 - Contextproject our goal was to create a simple but fun multiplayer game, using an Oculus Rift a few Android powered mobile devices and our imagination.  
+You're looking at the Github repository of Team Kroket.  Team Kroket is a group of five Computer Science students at Delft University of Technology, The Netherlands. For the course TI2806 - Contextproject our goal was to create a simple but fun multiplayer game, using an Oculus Rift, a few Android powered mobile devices and our imagination.  
 
 ### What am I looking at?
 
