@@ -55,7 +55,9 @@ public class EscapeServer implements Runnable {
 	static Logger log = Logger.getInstance();
 
 	public static void main(String[] args) {
-
+		
+		log.info(className, "EscapeServer by Team Kroket");
+		log.info(className, String.format("Listening port is set to %d", PORTNUM));
 		log.info(className, "Initializing...");
 		initialized = false;
 
@@ -329,7 +331,6 @@ public class EscapeServer implements Runnable {
 		}
 
 		return sum;
-
 	}
 
 	/**
