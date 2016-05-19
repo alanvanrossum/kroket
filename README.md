@@ -6,6 +6,7 @@
 
 For CI purposes, our app was relocated to a different repository, click [here](https://github.com/alanvanrossum/kroketapp/).
 
+
 # Documentation
 
 ## Development documents
@@ -15,7 +16,7 @@ For CI purposes, our app was relocated to a different repository, click [here](h
 - Top 3 game concepts 
 - Sprint Backlog 1  
 
-https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek1
+[Week 1 documents](https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek1)
 
 ### Week 2
 
@@ -24,7 +25,7 @@ https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek1
 - Architecture design 
 - Sprint Backlog 2  
 
-https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek2
+[Week 2 documents](https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek2)
 
 ### Week 3
 
@@ -35,7 +36,7 @@ https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek2
 - Sprint retrospective 2
 - Design document
 
-https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek3
+[Week 3 documents](https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek3)
 
 ### Week 4
 
@@ -43,7 +44,7 @@ https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek3
 - Sprint backlog 4
 - Sprint retrospective 3
 
-https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek4
+[Week 4 documents](https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek4)
 
 ### Week 5
 
@@ -51,6 +52,7 @@ https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek4
 - Sprint backlog 5
 - Sprint retrospective 4
 
+[Week 5 documents](https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek5)
 
 ## Introduction
 
