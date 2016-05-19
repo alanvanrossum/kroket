@@ -38,7 +38,7 @@ public class EscapeServer implements Runnable {
 	private static final int REQUIRED_VIRTUAL = 1;
 
 	/** Number of mobile clients required to start the game. */
-	private static final int REQUIRED_MOBILE = 2;
+	private static final int REQUIRED_MOBILE = 1;
 
 	/** How many seconds before each status print. */
 	private static final int SECPRINTSTATUS = 30;

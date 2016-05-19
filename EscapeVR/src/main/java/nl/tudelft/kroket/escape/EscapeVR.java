@@ -38,7 +38,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 	private Logger log = Logger.getInstance();
 
 	/** Hostname of the gamehost. */
-	private static final String HOSTNAME = "145.94.156.217";
+	private static final String HOSTNAME = "localhost";
 
 	/** Portnumber of the gamehost. */
 	private static int PORTNUM = 1234;
@@ -59,14 +59,10 @@ public class EscapeVR extends VRApplication implements EventListener {
 	private GameState currentState = GameState.NONE;
 
 
-
-//	Picture ready;
-
-
 	private boolean forceUpdateState = true;
 
 	/** State to force game to. */
-	private GameState insertState = GameState.PLAYING; // start in lobby
+	private GameState insertState = GameState.LOBBY; // start in lobby
 
 	private AudioManager audioManager;
 	private InputHandler inputHandler;
@@ -173,7 +169,8 @@ public class EscapeVR extends VRApplication implements EventListener {
 		}
 
 		initObjects();
-
+		
+		initHeadUpDisplay();
 		initSceneManager();
 		initAudioManager();
 		eventManager = new EventManager(rootNode);
@@ -355,7 +352,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 	 * @param line
 	 *            incoming from remote source
 	 */
-	public void remoteInput(String line) {
+	synchronized public void remoteInput(String line) {
 
 		if (line.equals("START")) {
 			guiNode.detachAllChildren();
@@ -369,7 +366,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
 			insertState = GameState.PLAYING;
 
-			hud.setCenterText("");
+			guiNode.getChild("");
 		} else {
 
 			hud.setCenterText(line);
