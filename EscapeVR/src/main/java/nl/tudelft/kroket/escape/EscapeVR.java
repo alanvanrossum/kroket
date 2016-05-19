@@ -13,6 +13,7 @@ import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.net.NetworkClient;
 import nl.tudelft.kroket.scene.SceneManager;
 import nl.tudelft.kroket.scene.scenes.EscapeScene;
+import nl.tudelft.kroket.screen.HeadUpDisplay;
 import nl.tudelft.kroket.screen.ScreenManager;
 import nl.tudelft.kroket.screen.screens.LobbyScreen;
 import jmevr.app.VRApplication;
@@ -57,13 +58,10 @@ public class EscapeVR extends VRApplication implements EventListener {
 	/** Current gamestate. */
 	private GameState currentState = GameState.NONE;
 
-	/** Font used in overlays. */
-	BitmapFont guiFont;
 
-	Picture ready;
 
-	/** The text displayed in the HUD. */
-	BitmapText hudText;
+//	Picture ready;
+
 
 	private boolean forceUpdateState = true;
 
@@ -75,6 +73,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 	private SceneManager sceneManager;
 	private ScreenManager screenManager;
 	private NetworkClient client;
+	private HeadUpDisplay hud;
 
 	private void initAudioManager() {
 		audioManager = new AudioManager(getAssetManager(), rootNode, "Sound/");
@@ -107,6 +106,11 @@ public class EscapeVR extends VRApplication implements EventListener {
 
 		screenManager.loadScreen("lobby", LobbyScreen.class);
 	}
+	
+	private void initHeadUpDisplay() {
+		Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
+		hud = new HeadUpDisplay(getAssetManager(), guiNode, guiCanvasSize);
+	}
 
 	private void initNetworkClient() {
 		client = new NetworkClient(HOSTNAME, PORTNUM);
@@ -123,7 +127,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 						if (!client.connect()) {
 							log.info(className,
 									"Failed to connect. Retrying...");
-							hudText.setText("Trying to connect to server...");
+							hud.setCenterText("Trying to connect to server...");
 							client.close();
 							try {
 								Thread.sleep(SECRECONN * 1000);
@@ -186,49 +190,17 @@ public class EscapeVR extends VRApplication implements EventListener {
 
 	}
 
-	/**
-	 * Create a label (text).
-	 * 
-	 * @param assetManager
-	 *            assetmanager instance
-	 * @param fontpath
-	 *            path to the font asset
-	 * @param x
-	 *            the x-coordinate to position the label to
-	 * @param y
-	 *            the y-coordinate to position the label to
-	 * @param width
-	 *            the width of the label
-	 * @param height
-	 *            the height of the label
-	 * @return the bitmap object
-	 */
-	protected BitmapText createLabel(AssetManager assetManager,
-			String fontpath, float x, float y, float width, float height) {
-		BitmapFont fnt = assetManager.loadFont(fontpath);
-		BitmapText txt = new BitmapText(fnt, false);
-		txt.setBox(new Rectangle(0, 0, width, height));
-		txt.setLocalTranslation(x, y, 0);
-		return txt;
-	}
 
 	/**
 	 * Initialize the scene.
 	 */
 	private void initObjects() {
-		Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
+	//	Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
 		observer = new Node("observer");
 
-		guiFont = getAssetManager().loadFont("Interface/Fonts/Default.fnt");
+		
 
-		hudText = createLabel(getAssetManager(), "Interface/Fonts/Default.fnt",
-				guiCanvasSize.getX() * 0.5f - 145,
-				(guiCanvasSize.getY() * 0.5f) - 145, guiCanvasSize.getX(),
-				guiCanvasSize.getY());
-		hudText.setSize(24);
 
-		hudText.setText("Loading...");
-		guiNode.attachChild(hudText);
 
 		Spatial sky = SkyFactory.createSky(getAssetManager(),
 				"Textures/Sky/Bright/spheremap.png",
@@ -272,7 +244,6 @@ public class EscapeVR extends VRApplication implements EventListener {
 		switch (currentState) {
 
 		case LOBBY:
-			guiNode.attachChild(hudText);
 			break;
 		case INTRO:
 			if (audioManager.getStatus("welcome") == AudioSource.Status.Playing) {
@@ -398,11 +369,10 @@ public class EscapeVR extends VRApplication implements EventListener {
 
 			insertState = GameState.PLAYING;
 
-			hudText.setText("");
+			hud.setCenterText("");
 		} else {
 
-			hudText.setText(line);
-			guiNode.attachChild(hudText);
+			hud.setCenterText(line);
 		}
 	}
 
