@@ -15,6 +15,12 @@ import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.player.Player;
 import nl.tudelft.kroket.player.Player.PlayerType;
 
+/**
+ * EscapeServer object.
+ * 
+ * @author Team Kroket
+ *
+ */
 public class EscapeServer implements Runnable {
 
 	/** List of players connected to the server. */
@@ -58,6 +64,8 @@ public class EscapeServer implements Runnable {
 		EscapeServer server = new EscapeServer(PORTNUM);
 
 		while (!initialized) {
+
+			// spawn this server in a new thread
 			new Thread(server).start();
 
 			if (initialized)
@@ -73,14 +81,14 @@ public class EscapeServer implements Runnable {
 		int tickCounter = 0;
 
 		if (initialized) {
-			
+
 			boolean breakLoop = false;
 
 			while (!breakLoop) {
 
 				log.info(className,
 						"Game not ready. Waiting for players to register...");
-				
+
 				while (!ready()) {
 
 					// long duration = System.currentTimeMillis() - startTime;
@@ -89,9 +97,8 @@ public class EscapeServer implements Runnable {
 
 					if ((tickCounter % SECPRINTSTATUS) == 0) {
 
-						log.info(className,
-								"Game not ready.");
-						
+						log.info(className, "Game not ready.");
+
 						printPlayers();
 					}
 
@@ -126,9 +133,9 @@ public class EscapeServer implements Runnable {
 						e.printStackTrace();
 					}
 				}
-				
+
 				gameActive = false;
-				
+
 				log.info(className, "Game session has ended.");
 
 			}
@@ -139,7 +146,7 @@ public class EscapeServer implements Runnable {
 
 		log.info(className, "Exiting...");
 	}
-	
+
 	/**
 	 * Start the game.
 	 */
@@ -159,10 +166,12 @@ public class EscapeServer implements Runnable {
 	public EscapeServer(int port) {
 		serverPort = port;
 	}
-	
+
 	/**
 	 * Remove a player based on its socket.
-	 * @param clientSocket the client's socket
+	 * 
+	 * @param clientSocket
+	 *            the client's socket
 	 */
 	public static void removePlayer(Socket clientSocket) {
 
@@ -189,12 +198,16 @@ public class EscapeServer implements Runnable {
 				+ clientSocket.getRemoteSocketAddress().toString()
 				+ " removed.");
 	}
-	
+
 	/**
 	 * Register a player to the server.
-	 * @param clientSocket the client's socket
-	 * @param dOutput the dataoutputstream
-	 * @param playername the player's name
+	 * 
+	 * @param clientSocket
+	 *            the client's socket
+	 * @param dOutput
+	 *            the dataoutputstream
+	 * @param playername
+	 *            the player's name
 	 */
 	public static void registerPlayer(Socket clientSocket,
 			DataOutputStream dOutput, String playername) {
@@ -211,12 +224,12 @@ public class EscapeServer implements Runnable {
 
 					player.sendMessage("You are now registered as "
 							+ player.toString());
-					
-					if (!ready())
-					{
-						player.sendMessage(countPlayers() + " players waiting...");
+
+					if (!ready()) {
+						player.sendMessage(countPlayers()
+								+ " players waiting...");
 					}
-					
+
 					sendAll("Player " + player.getName() + " entered the game.");
 				} else {
 					System.out.println("player " + playername
@@ -319,13 +332,18 @@ public class EscapeServer implements Runnable {
 
 	}
 
+	/**
+	 * Count the number of players present in the server.
+	 * 
+	 * @return the number of players present
+	 */
 	public static int countPlayers() {
 		int sum = 0;
 		for (Entry<Socket, Player> entry : playerList.entrySet()) {
 
 			if (entry.getValue() == null)
 				continue;
-			
+
 			sum += 1;
 		}
 
@@ -333,12 +351,22 @@ public class EscapeServer implements Runnable {
 
 	}
 
-	
-	
+	/**
+	 * Check whether the server is ready to start a game.
+	 * 
+	 * @return true when game is ready
+	 */
 	public static boolean ready() {
 		return (countPlayers(PlayerType.VIRTUAL) == REQUIRED_VIRTUAL && countPlayers(PlayerType.MOBILE) == REQUIRED_MOBILE);
 	}
 
+	/**
+	 * Get a player by socket.
+	 * 
+	 * @param socket
+	 *            the socket
+	 * @return Player object
+	 */
 	public static Player getPlayer(Socket socket) {
 		return playerList.get(socket);
 	}
@@ -356,10 +384,12 @@ public class EscapeServer implements Runnable {
 
 		return null;
 	}
-	
+
 	/**
 	 * Send a message to all connected players.
-	 * @param message the message to be sent
+	 * 
+	 * @param message
+	 *            the message to be sent
 	 */
 	public static void sendAll(String message) {
 		for (Entry<Socket, Player> entry : playerList.entrySet()) {
@@ -368,31 +398,36 @@ public class EscapeServer implements Runnable {
 				entry.getValue().sendMessage(message);
 		}
 	}
-	
+
 	/**
 	 * sends a message only if a player has type mobile
-	 * @param message the string to be sent.
+	 * 
+	 * @param message
+	 *            the string to be sent.
 	 */
-	public static void sendMobile(String message){
-	  for (Entry<Socket, Player> entry : playerList.entrySet()) {
+	public static void sendMobile(String message) {
+		for (Entry<Socket, Player> entry : playerList.entrySet()) {
 
-      if (entry.getValue() != null && entry.getValue().getType() == PlayerType.MOBILE)
-        entry.getValue().sendMessage(message);
-    }
+			if (entry.getValue() != null
+					&& entry.getValue().getType() == PlayerType.MOBILE)
+				entry.getValue().sendMessage(message);
+		}
 	}
-	
-	 /**
-   * sends a message only if a player has type virtual
-   * @param message the string to be sent.
-   */
-  public static void sendVirtual(String message){
-    for (Entry<Socket, Player> entry : playerList.entrySet()) {
 
-      if (entry.getValue() != null && entry.getValue().getType() == PlayerType.VIRTUAL)
-        entry.getValue().sendMessage(message);
-    }
-  }
+	/**
+	 * sends a message only if a player has type virtual
+	 * 
+	 * @param message
+	 *            the string to be sent.
+	 */
+	public static void sendVirtual(String message) {
+		for (Entry<Socket, Player> entry : playerList.entrySet()) {
 
+			if (entry.getValue() != null
+					&& entry.getValue().getType() == PlayerType.VIRTUAL)
+				entry.getValue().sendMessage(message);
+		}
+	}
 
 	private static void printPlayers() {
 

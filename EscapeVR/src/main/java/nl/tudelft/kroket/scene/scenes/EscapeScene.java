@@ -15,6 +15,12 @@ import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.MagFilter;
 import com.jme3.texture.Texture.MinFilter;
 
+/**
+ * EscapeScene object.
+ * 
+ * @author Team Kroket
+ *
+ */
 public class EscapeScene extends Scene {
 
 	float translationY = 3f;
@@ -44,8 +50,14 @@ public class EscapeScene extends Scene {
 		createGas();
 
 		createPainting("Textures/Painting/painting.jpg");
+		createPainting2("Textures/Painting/painting2.jpg");
 	}
-
+	
+	/**
+	 * Create four walls using a texture.
+	 * 
+	 * @param texturePath the relative path to the texture
+	 */
 	private void createWalls(String texturePath) {
 
 		Texture wallTexture = assetManager.loadTexture(texturePath);
@@ -84,7 +96,12 @@ public class EscapeScene extends Scene {
 		wall4.move(0, translationY, -roomDepth);
 		addObject("wall-south", wall4);
 	}
-
+	
+	/**
+	 * Create a floor object.
+	 * 
+	 * @param texturePath the relative path to the texture
+	 */
 	private void createFloor(String texturePath) {
 
 		Texture floorTexture = assetManager.loadTexture(texturePath);
@@ -102,7 +119,12 @@ public class EscapeScene extends Scene {
 
 		addObject("floor", floor);
 	}
-
+	
+	/**
+	 * Create and draw a ceiling.
+	 * 
+	 * @param texturePath the relative path to the texture
+	 */
 	private void createCeiling(String texturePath) {
 		Texture ceilingTexture = assetManager.loadTexture(texturePath);
 		ceilingTexture.setMagFilter(MagFilter.Nearest);
@@ -120,10 +142,15 @@ public class EscapeScene extends Scene {
 
 		addObject("ceiling", ceiling);
 	}
-
+	
+	/**
+	 * Create and draw a floor.
+	 * 
+	 * @param texturePath the relative path to the texture
+	 */
 	private void createDoor(String texturePath) {
 
-		float doorWidth = 1.4f;
+		float doorWidth = 1.8f;
 		float doorHeight = 3.5f;
 
 		Texture doorTexture = assetManager.loadTexture(texturePath);
@@ -143,9 +170,10 @@ public class EscapeScene extends Scene {
 		addObject("door", door);
 	}
 
+	
 	private void createPainting(String texturePath) {
-		float paintingWidth = 1.4f;
-		float paintingHeight = 3.5f;
+		float paintingWidth = 2.5f;
+		float paintingHeight = 3.0f;
 
 		Texture doorTexture = assetManager.loadTexture(texturePath);
 		doorTexture.setMagFilter(MagFilter.Nearest);
@@ -164,6 +192,29 @@ public class EscapeScene extends Scene {
 
 		addObject("painting", painting);
 	}
+	
+	private void createPainting2(String texturePath) {
+		float paintingWidth = 2.5f;
+		float paintingHeight = 3.0f;
+
+		Texture doorTexture = assetManager.loadTexture(texturePath);
+		doorTexture.setMagFilter(MagFilter.Nearest);
+		doorTexture.setMinFilter(MinFilter.Trilinear);
+		doorTexture.setAnisotropicFilter(16);
+
+		Material paintingMaterial = new Material(assetManager, materialPath);
+		paintingMaterial.setTexture("ColorMap", doorTexture);
+
+		Geometry painting = new Geometry("painting2", new Box(paintingWidth,
+				paintingHeight, 0.1f));
+
+		painting.move(-2f, translationY, -roomDepth + 0.1f);
+
+		painting.setMaterial(paintingMaterial);
+
+		addObject("painting2", painting);
+	}
+	
 
 	public void createGas() {
 

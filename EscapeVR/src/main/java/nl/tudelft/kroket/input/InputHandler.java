@@ -15,6 +15,12 @@ import com.jme3.scene.Spatial;
 import nl.tudelft.kroket.event.EventManager;
 import nl.tudelft.kroket.log.Logger;
 
+/**
+ * InputHandler object, used to handle keyboard/gamepad input.
+ * 
+ * @author Team Kroket
+ *
+ */
 public final class InputHandler {
 
 	private final String className = this.getClass().getSimpleName();
@@ -59,7 +65,10 @@ public final class InputHandler {
 	public void setAcceptInput(boolean acceptInput) {
 		this.acceptInput = acceptInput;
 	}
-
+	
+	/**
+	 * Initialize keyboard controls.
+	 */
 	public void initControls() {
 
 		if (inputManager == null)
@@ -110,6 +119,9 @@ public final class InputHandler {
 
 	}
 
+	/**
+	 * Initialize joysticks/gamepads.
+	 */
 	private void initJoysticks() {
 
 		log.debug(className, "Registering joystick/gamepad controls...");
@@ -140,6 +152,11 @@ public final class InputHandler {
 		}
 	}
 
+	/**
+	 * Handle user input. This should be called upon refresh.
+	 * 
+	 * @param tpf time per frame
+	 */
 	public void handleInput(float tpf) {
 
 		float height = VRApplication.getFinalObserverPosition().getY();
@@ -207,7 +224,10 @@ public final class InputHandler {
 		}
 
 	}
-
+	
+	/**
+	 * Default ActionListener object, used to process user input.
+	 */
 	private ActionListener actionListener = new ActionListener() {
 
 		public void onAction(String name, boolean keyPressed, float tpf) {

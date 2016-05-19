@@ -11,22 +11,33 @@ import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.player.Player;
 import nl.tudelft.kroket.player.Player.PlayerType;
 
+/**
+ * ConnectionThread object.
+ * 
+ * @author Team Kroket
+ *
+ */
 public class ConnectionThread implements Runnable {
-
+	
+	/** Singleton reference to logger. */
 	static Logger log = Logger.getInstance();
-
+	
+	/** Class simpleName, used as tag for logging. */
 	private final String className = this.getClass().getSimpleName();
 
+	
 	DataInputStream inputStream = null;
 	DataOutputStream outputStream = null;
 
 	Player.PlayerType type = PlayerType.NONE;
-
+	
+	/** Reference to the socket of the connected client. */
 	protected Socket clientSocket = null;
 
 	/**
-	 * constructor for this class.
-	 * @param clientSocket sets the socket.
+	 * Constructor for ConnectionThread.
+	 * 
+	 * @param clientSocket the socket of the client
 	 */
 	public ConnectionThread(Socket clientSocket) {
 		this.clientSocket = clientSocket;
@@ -91,23 +102,24 @@ public class ConnectionThread implements Runnable {
 		} else if (input.startsWith("admin")) {
 			adminCommand(input.substring(6));
 		} else if (input.startsWith("INITM[")) {
-		  int pos = input.indexOf(']');
-		  //String name = input.substring(6, pos);
-		  EscapeServer.sendMobile(input);
-		  
+			int pos = input.indexOf(']');
+			// String name = input.substring(6, pos);
+			EscapeServer.sendMobile(input);
+
 		} else if (input.startsWith("INITVR[")) {
-      int pos = input.indexOf(']');
-      //String name = input.substring(7, pos);
-      EscapeServer.sendVirtual(input);
-      
-    }
+			int pos = input.indexOf(']');
+			// String name = input.substring(7, pos);
+			EscapeServer.sendVirtual(input);
+
+		}
 
 	}
 
 	/**
 	 * Process admin command.
 	 * 
-	 * @param command
+	 * @param the
+	 *            admin command
 	 */
 	public void adminCommand(String command) {
 		if (command.startsWith("sendall")) {
@@ -116,7 +128,7 @@ public class ConnectionThread implements Runnable {
 	}
 
 	/**
-	 * runs server.
+	 * Run the server thread.
 	 */
 	public void run() {
 		try {

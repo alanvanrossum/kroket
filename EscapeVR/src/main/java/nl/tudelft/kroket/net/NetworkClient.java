@@ -22,7 +22,12 @@ public class NetworkClient {
 
 	private String remoteHost;
 	private int remotePort;
-
+	
+	/**
+	 * Constructor for TCP NetworkClient object.
+	 * @param host string of the host to connect to
+	 * @param port port of the host to connect to
+	 */
 	public NetworkClient(String host, int port) {
 
 		log.info(className, "Initializing...");
@@ -33,7 +38,12 @@ public class NetworkClient {
 
 	private boolean initialised;
 	private boolean connected;
-
+	
+	/**
+	 * Check whether the socket is initialised.
+	 * 
+	 * @return if the socket is initialised
+	 */
 	public boolean isInitialised() {
 
 		if (socket == null)
@@ -41,11 +51,21 @@ public class NetworkClient {
 
 		return initialised;
 	}
-
+	
+	/**
+	 * Set socket initalised value.
+	 * 
+	 * @param initialised
+	 */
 	public void setInitialised(boolean initialised) {
 		this.initialised = initialised;
 	}
-
+	
+	/**
+	 * Check whether the client is connected.
+	 * 
+	 * @return true if the client is connected.
+	 */
 	public boolean isConnected() {
 
 		if (!isInitialised())
@@ -58,10 +78,22 @@ public class NetworkClient {
 		this.connected = connected;
 	}
 
+	/**
+	 * Get the client's DataInputStream handle.
+	 * 
+	 * @return the DataInputStream handle.
+	 */
 	public DataInputStream getStream() {
 		return dataInputStream;
 	}
-
+	
+	/**
+	 * Connect to a remote socket.
+	 * 
+	 * @param host string of the host to connect to
+	 * @param port number of the host to connect to
+	 * @return true if succesful
+	 */
 	public boolean connect(String host, int port) {
 
 		log.info(className,
@@ -90,7 +122,12 @@ public class NetworkClient {
 		setConnected(false);
 		return false;
 	}
-
+	
+	/**
+	 * Send a message to the dataoutputstream.
+	 * 
+	 * @param message the message to send
+	 */
 	public void sendMessage(String message) {
 
 		if (!isConnected())
@@ -105,7 +142,10 @@ public class NetworkClient {
 			setConnected(false);
 		}
 	}
-
+	
+	/**
+	 * Close the socket.
+	 */
 	public void close() {
 
 		setInitialised(false);
@@ -129,7 +169,12 @@ public class NetworkClient {
 		dataInputStream = null;
 		dataOutputStream = null;
 	}
-
+	
+	/**
+	 * Connect to remote host.
+	 * 
+	 * @return true if connection established
+	 */
 	public boolean connect() {
 		return connect(remoteHost, remotePort);
 
