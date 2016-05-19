@@ -34,7 +34,10 @@ import com.jme3.util.SkyFactory;
 
 public class EscapeVR extends VRApplication implements EventListener {
 
+	/** Current class, used as tag for logger. */
 	private final String className = this.getClass().getSimpleName();
+	
+	/** Singleton logger instance. */
 	private Logger log = Logger.getInstance();
 
 	/** Hostname of the gamehost. */

@@ -13,18 +13,25 @@ import com.jme3.scene.Node;
 
 /**
  * AudioManager object.
+ * 
  * @author Team Kroket
  *
  */
 public class AudioManager {
 	
+	/** Current class, used as tag for logger. */
 	private final String className = this.getClass().getSimpleName();
+	
+	/** Singleton logger instance. */
 	private Logger log = Logger.getInstance();
 	
+	/** Relative path for audio assets. */
 	private String rootPath = "Sound/";
 	
+	/** A HashMap object to reference all AudioNodes used. */
 	HashMap<String, AudioNode> audioNodes = new HashMap<String, AudioNode>();
-
+	
+	/** Handle to the AssetManager object. */
 	private AssetManager assetManager;
 
 	private Node rootNode;

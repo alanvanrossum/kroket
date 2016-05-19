@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import nl.tudelft.kroket.event.events.InteractionEvent;
+import nl.tudelft.kroket.log.Logger;
 
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.InputListener;
@@ -15,22 +16,28 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
 public class EventManager {
+
+	/** Current class, used as tag for logger. */
+	private final String className = this.getClass().getSimpleName();
+
+	/** Singleton logger instance. */
+	private Logger log = Logger.getInstance();
+
 	private HashMap<String, EventObject> eventList = new HashMap<String, EventObject>();
 	private List<EventListener> listenerList = new ArrayList<EventListener>();
-	
-	
+
 	private final int INPUT_GRACE_PERIOD = 400;
 
 	ActionListener actionListener;
-	
+
 	long prevInput = 0;
-	
+
 	private Node rootNode;
 
 	private HashMap<String, Float> triggers = new HashMap<String, Float>();
 
 	public EventManager(Node root) {
-		
+
 		this.rootNode = root;
 
 		actionListener = new ActionListener() {
@@ -44,12 +51,11 @@ public class EventManager {
 
 				long now = System.currentTimeMillis();
 				long delta = now - prevInput;
-				
+
 				if (delta < INPUT_GRACE_PERIOD)
 					return;
-				
+
 				prevInput = now;
-				
 
 				for (Entry<String, Float> entry : triggers.entrySet()) {
 
@@ -64,7 +70,7 @@ public class EventManager {
 					}
 				}
 				fireEvents();
-				
+
 			}
 
 		};
@@ -89,8 +95,7 @@ public class EventManager {
 	public synchronized void addEvent(String type, EventObject event) {
 		eventList.put(type, event);
 	}
-	
-	
+
 	public synchronized void addListener(EventListener listener) {
 		listenerList.add(listener);
 	}

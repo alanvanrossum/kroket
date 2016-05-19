@@ -9,9 +9,18 @@ import nl.tudelft.kroket.log.Logger;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
 
+/**
+ * ScreenManager used for handling overlays.
+ * 
+ * @author Team Kroket
+ *
+ */
 public class ScreenManager {
 
+	/** Current class, used as tag for logger. */
 	private final String className = this.getClass().getSimpleName();
+
+	/** Singleton logger instance. */
 	private Logger log = Logger.getInstance();
 
 	HashMap<String, Screen> screens = new HashMap<String, Screen>();
@@ -20,6 +29,18 @@ public class ScreenManager {
 	Node guiNode;
 	float width, height;
 
+	/**
+	 * Constructor for ScreenManager.
+	 * 
+	 * @param assetManager
+	 *            reference to the AssetManager
+	 * @param guiNode
+	 *            reference to the guiNode
+	 * @param width
+	 *            the width of the overlays
+	 * @param height
+	 *            the height of the overlays
+	 */
 	public ScreenManager(AssetManager assetManager, Node guiNode, float width,
 			float height) {
 
@@ -39,7 +60,7 @@ public class ScreenManager {
 					.getDeclaredConstructor(AssetManager.class, Node.class,
 							float.class, float.class);
 			newScreen = ctor.newInstance(assetManager, guiNode, width, height);
-		} catch (InstantiationException | IllegalAccessException e) {
+		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
@@ -49,11 +70,21 @@ public class ScreenManager {
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
 		}
 
+		// after initiating the screen, store it so we can reference it later
 		screens.put(name, newScreen);
 	}
 
+	/**
+	 * Get a screen by name.
+	 * 
+	 * @param name
+	 *            the name of the screen
+	 * @return Screen object, could be null if not found
+	 */
 	public Screen getScreen(String name) {
 
 		if (!screens.containsKey(name)) {
@@ -65,10 +96,22 @@ public class ScreenManager {
 		return screens.get(name);
 	}
 
+	/**
+	 * Show a screen by name.
+	 * 
+	 * @param name
+	 *            the name of the screen
+	 */
 	public void showScreen(String name) {
 		getScreen(name).show();
 	}
 
+	/**
+	 * Hide a screen by name.
+	 * 
+	 * @param name
+	 *            the name of the screen
+	 */
 	public void hideScreen(String name) {
 		getScreen(name).hide();
 	}

@@ -52,11 +52,12 @@ public class EscapeScene extends Scene {
 		createPainting("Textures/Painting/painting.jpg");
 		createPainting2("Textures/Painting/painting2.jpg");
 	}
-	
+
 	/**
 	 * Create four walls using a texture.
 	 * 
-	 * @param texturePath the relative path to the texture
+	 * @param texturePath
+	 *            the relative path to the texture
 	 */
 	private void createWalls(String texturePath) {
 
@@ -96,11 +97,12 @@ public class EscapeScene extends Scene {
 		wall4.move(0, translationY, -roomDepth);
 		addObject("wall-south", wall4);
 	}
-	
+
 	/**
 	 * Create a floor object.
 	 * 
-	 * @param texturePath the relative path to the texture
+	 * @param texturePath
+	 *            the relative path to the texture
 	 */
 	private void createFloor(String texturePath) {
 
@@ -119,11 +121,12 @@ public class EscapeScene extends Scene {
 
 		addObject("floor", floor);
 	}
-	
+
 	/**
 	 * Create and draw a ceiling.
 	 * 
-	 * @param texturePath the relative path to the texture
+	 * @param texturePath
+	 *            the relative path to the texture
 	 */
 	private void createCeiling(String texturePath) {
 		Texture ceilingTexture = assetManager.loadTexture(texturePath);
@@ -142,11 +145,12 @@ public class EscapeScene extends Scene {
 
 		addObject("ceiling", ceiling);
 	}
-	
+
 	/**
 	 * Create and draw a floor.
 	 * 
-	 * @param texturePath the relative path to the texture
+	 * @param texturePath
+	 *            the relative path to the texture
 	 */
 	private void createDoor(String texturePath) {
 
@@ -170,7 +174,6 @@ public class EscapeScene extends Scene {
 		addObject("door", door);
 	}
 
-	
 	private void createPainting(String texturePath) {
 		float paintingWidth = 2.5f;
 		float paintingHeight = 3.0f;
@@ -192,7 +195,7 @@ public class EscapeScene extends Scene {
 
 		addObject("painting", painting);
 	}
-	
+
 	private void createPainting2(String texturePath) {
 		float paintingWidth = 2.5f;
 		float paintingHeight = 3.0f;
@@ -214,8 +217,10 @@ public class EscapeScene extends Scene {
 
 		addObject("painting2", painting);
 	}
-	
 
+	/**
+	 * Add gas to the scene.
+	 */
 	public void createGas() {
 
 		FilterPostProcessor fpp = new FilterPostProcessor(assetManager);

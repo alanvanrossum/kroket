@@ -8,18 +8,18 @@ import com.jme3.math.Vector2f;
 import com.jme3.scene.Node;
 
 public class HeadUpDisplay {
-	
 
 	/** The text displayed in the HUD. */
 	BitmapText centerText;
-	
+
 	BitmapText topText;
-	
+
 	BitmapFont guiFont;
-	
-	public HeadUpDisplay(AssetManager assetManager, Node guiNode, Vector2f guiCanvasSize) {
+
+	public HeadUpDisplay(AssetManager assetManager, Node guiNode,
+			Vector2f guiCanvasSize) {
 		guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
-		
+
 		centerText = createLabel(assetManager, "Interface/Fonts/Default.fnt",
 				guiCanvasSize.getX() * 0.5f - 145,
 				(guiCanvasSize.getY() * 0.5f) - 145, guiCanvasSize.getX(),
@@ -28,7 +28,7 @@ public class HeadUpDisplay {
 
 		guiNode.attachChild(centerText);
 	}
-	
+
 	/**
 	 * Create a label (text).
 	 * 

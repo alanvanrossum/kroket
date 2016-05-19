@@ -10,17 +10,25 @@ import nl.tudelft.kroket.log.Logger;
 
 public class NetworkClient {
 
+	/** Current class, used as tag for logger. */
 	private final String className = this.getClass().getSimpleName();
+	
+	/** Singleton logger instance. */
 	private Logger log = Logger.getInstance();
-
+	
+	/** Carriage-return, line-feed. */
 	private static final String CRLF = "\r\n"; // newline
-
+	
+	/** The socket we're using to connect to the other endpoint. */
 	private Socket socket = null;
 
 	private DataOutputStream dataOutputStream;
 	private DataInputStream dataInputStream;
-
+	
+	/** Remote host's name or IP address. */
 	private String remoteHost;
+	
+	/** Remote host's portnumber. */
 	private int remotePort;
 	
 	/**
@@ -67,7 +75,9 @@ public class NetworkClient {
 	 * @return true if the client is connected.
 	 */
 	public boolean isConnected() {
-
+		
+		// can't be connected if socket
+		// isn't even initialised
 		if (!isInitialised())
 			return false;
 
