@@ -1,9 +1,6 @@
 package nl.tudelft.kroket.scene;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
 import com.jme3.asset.AssetManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;

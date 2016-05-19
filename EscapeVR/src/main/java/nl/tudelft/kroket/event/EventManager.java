@@ -19,7 +19,7 @@ public class EventManager {
 	private List<EventListener> listenerList = new ArrayList<EventListener>();
 	
 	
-	private final int INPUT_GRACE_PERIOD = 500;
+	private final int INPUT_GRACE_PERIOD = 400;
 
 	ActionListener actionListener;
 
@@ -40,11 +40,9 @@ public class EventManager {
 					return;
 
 				long now = System.currentTimeMillis();
-				long diff = now - prevInput;
+				long delta = now - prevInput;
 				
-				//System.out.println("diff = " + diff);
-				
-				if (diff < INPUT_GRACE_PERIOD)
+				if (delta < INPUT_GRACE_PERIOD)
 					return;
 				
 				prevInput = now;
