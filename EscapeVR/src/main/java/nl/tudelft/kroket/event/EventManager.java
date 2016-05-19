@@ -89,7 +89,8 @@ public class EventManager {
 	public synchronized void addEvent(String type, EventObject event) {
 		eventList.put(type, event);
 	}
-
+	
+	
 	public synchronized void addListener(EventListener listener) {
 		listenerList.add(listener);
 	}
