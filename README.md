@@ -4,6 +4,8 @@
 
 [![Build Status](https://api.travis-ci.org/alanvanrossum/kroket.svg?branch=master)](https://travis-ci.org/alanvanrossum/kroket)
 
+For CI purposes, our app was relocated to a different repository, click [here](https://github.com/alanvanrossum/kroketapp/).
+
 # Documentation
 
 ## Development documents
@@ -45,14 +47,18 @@ https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek4
 
 ### Week 5
 
+- Architecture design
+- Sprint backlog 5
+- Sprint retrospective 4
+
 
 ## Introduction
 
-You're looking at the Github repository of Team Kroket.
+You're looking at the Github repository of Team Kroket.  Team Kroket is a group of five Computer Science students at Delft University of Technology, The Netherlands. For the course TI2806 - Contextproject our goal was to create a simple but fun multiplayer game, using an Oculus Rift a few Android powered mobile devices and our imagination.  
 
 ### What am I looking at?
 
-This is Escaparade. Yes, Escaparade, or Escapãradè (??), all up to you. Escaparade is a multiplayer game by Team Kroket. We (Team Kroket) are five Computer Science students at Delft University of Technology, The Netherlands. For the course TI2806 - Contextproject our goal was to create a simple but fun multiplayer game, using an Oculus Rift a few Android powered mobile devices and our imagination.  
+This is Escaparade. Yes, Escaparade, or Escapãradè (??), all up to you. Escaparade is a multiplayer game by Team Kroket.
 
 ### Team w..wha?
 
@@ -63,8 +69,8 @@ We picked this name because... we could. When signing up, we just picked a rando
 ### How to play
 
 You'll need:
-- 1 Oculus Rift + computer
+- 1 Oculus Rift connected to a computer
 - 2 friends
-- 2 Android Smartphones
+- 2 Android Smartphones with the EscapeApp installed
 - To be ready to laugh
 
