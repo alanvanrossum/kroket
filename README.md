@@ -48,7 +48,7 @@ For CI purposes, our app was relocated to a different repository, click [here](h
 
 ### Week 5
 
-- (Architecture design)
+- Architecture design
 - Sprint backlog 5
 - Sprint retrospective 4
 
