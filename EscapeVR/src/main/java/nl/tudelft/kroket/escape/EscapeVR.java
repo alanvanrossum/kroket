@@ -36,7 +36,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
 	/** Current class, used as tag for logger. */
 	private final String className = this.getClass().getSimpleName();
-	
+
 	/** Singleton logger instance. */
 	private Logger log = Logger.getInstance();
 
@@ -61,7 +61,6 @@ public class EscapeVR extends VRApplication implements EventListener {
 	/** Current gamestate. */
 	private GameState currentState = GameState.NONE;
 
-
 	private boolean forceUpdateState = true;
 
 	/** State to force game to. */
@@ -76,8 +75,8 @@ public class EscapeVR extends VRApplication implements EventListener {
 
 	private void initAudioManager() {
 		audioManager = new AudioManager(getAssetManager(), rootNode, "Sound/");
-		audioManager.loadFile("waiting", "Soundtrack/waiting.wav", false,
-				true, 3);
+		audioManager.loadFile("waiting", "Soundtrack/waiting.wav", false, true,
+				3);
 		audioManager.loadFile("ambient", "Soundtrack/ambient.wav", false, true,
 				2);
 		audioManager.loadFile("welcome", "Voice/intro2.wav", false, false, 5);
@@ -105,7 +104,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
 		screenManager.loadScreen("lobby", LobbyScreen.class);
 	}
-	
+
 	private void initHeadUpDisplay() {
 		Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
 		hud = new HeadUpDisplay(getAssetManager(), guiNode, guiCanvasSize);
@@ -172,7 +171,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 		}
 
 		initObjects();
-		
+
 		initHeadUpDisplay();
 		initSceneManager();
 		initAudioManager();
@@ -186,21 +185,17 @@ public class EscapeVR extends VRApplication implements EventListener {
 
 		eventManager.addListener(this);
 		eventManager.registerTrigger("painting", 4);
+		eventManager.registerTrigger("painting2", 4);
 		eventManager.registerTrigger("door", 2);
 
 	}
-
 
 	/**
 	 * Initialize the scene.
 	 */
 	private void initObjects() {
-	//	Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
+		// Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
 		observer = new Node("observer");
-
-		
-
-
 
 		Spatial sky = SkyFactory.createSky(getAssetManager(),
 				"Textures/Sky/Bright/spheremap.png",
@@ -358,7 +353,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 	synchronized public void remoteInput(String line) {
 
 		if (line.equals("START")) {
-			guiNode.detachAllChildren();
+			screenManager.hideScreen("lobby");
 
 			// do not call setGameState or switchState here as those run in
 			// a different thread, use updateStates and insertState instead
@@ -369,11 +364,39 @@ public class EscapeVR extends VRApplication implements EventListener {
 
 			insertState = GameState.PLAYING;
 
-			guiNode.getChild("");
+			hud.setCenterText("");
+		}
+
+		else if (line.startsWith("INITVR[")) {
+
+			int pos = line.indexOf(']');
+			
+			System.out.println("pos = " + pos);
+
+			if (pos > 7) {
+				String vrString = line.substring(7, pos);
+				System.out.println("blah");
+				if (vrString.equals("doneA")) {
+					System.out.println("Minigame A complete");
+					hud.setCenterText("Minigame A complete!");
+					
+					
+//					sceneManager.getScene("escape").destroyScene();
+//					sceneManager.getScene("escape").destroyScene();
+//					sceneManager.destroyScene("escape");
+				}
+				else if (vrString.equals("doneB")) {
+					System.out.println("Minigame B complete");
+					hud.setCenterText("Minigame B complete!");
+					
+				}
+			}
+
 		} else {
 
 			hud.setCenterText(line);
 		}
+
 	}
 
 	/**
@@ -409,6 +432,9 @@ public class EscapeVR extends VRApplication implements EventListener {
 				break;
 			case "painting":
 				client.sendMessage("INITM[startA]");
+				break;
+			case "painting2":
+				client.sendMessage("INITM[startB]");
 				break;
 			default:
 				break;
