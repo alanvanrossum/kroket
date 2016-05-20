@@ -89,6 +89,8 @@ public class Logger {
 		if (getLevel() == LogLevel.NONE) {
 			return;
 		}
+		
+		// only print messages if our settings allow us to
 		if (level.ordinal() <= getLevel().ordinal()) {
 			String output = "[" + timeFormat.format(new Date()) + "]: "
 					+ String.format(msgFormat, level, tag, message);

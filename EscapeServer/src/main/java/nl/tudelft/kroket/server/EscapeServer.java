@@ -31,37 +31,25 @@ public class EscapeServer implements Runnable {
 
 	private final static String className = "EscapeServer";
 
-	/** Port number to bind server to. */
-	private static final int PORTNUM = 1234;
-
-	/** Number of VR clients required to start the game. */
-	private static final int REQUIRED_VIRTUAL = 1;
-
-	/** Number of mobile clients required to start the game. */
-	private static final int REQUIRED_MOBILE = 2;
-
-	/** How many seconds before each status print. */
-	private static final int SECPRINTSTATUS = 30;
-
-	/** How many seconds until retrying to bind to the socket. */
-	private static final int SECBINDRETRY = 5;
-
 	private static boolean gameActive = false;
 
 	protected int serverPort;
 
-	List<ConnectionThread> clientList = new ArrayList<ConnectionThread>();
+	List<PlayerInstance> clientList = new ArrayList<PlayerInstance>();
 
 	static Logger log = Logger.getInstance();
 
 	public static void main(String[] args) {
 
+		log.info(className, "EscapeServer by Team Kroket");
+		log.info(className,
+				String.format("Listening port is set to %d", Settings.PORTNUM));
 		log.info(className, "Initializing...");
 		initialized = false;
 
 		// long startTime = System.currentTimeMillis();
 
-		EscapeServer server = new EscapeServer(PORTNUM);
+		EscapeServer server = new EscapeServer(Settings.PORTNUM);
 
 		while (!initialized) {
 
@@ -72,7 +60,7 @@ public class EscapeServer implements Runnable {
 				break;
 
 			try {
-				Thread.sleep(SECBINDRETRY * 1000);
+				Thread.sleep(Settings.INTERVAL_SOCKET_RETRY * 1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -95,7 +83,7 @@ public class EscapeServer implements Runnable {
 
 					tickCounter += 1;
 
-					if ((tickCounter % SECPRINTSTATUS) == 0) {
+					if ((tickCounter % Settings.INTERVAL_REPORT_STATUS) == 0) {
 
 						log.info(className, "Game not ready.");
 
@@ -119,7 +107,7 @@ public class EscapeServer implements Runnable {
 				while (gameActive && ready()) {
 					tickCounter += 1;
 
-					if ((tickCounter % SECPRINTSTATUS) == 0) {
+					if ((tickCounter % Settings.INTERVAL_REPORT_STATUS) == 0) {
 
 						log.info(className, "Game is active.");
 						printPlayers();
@@ -215,13 +203,18 @@ public class EscapeServer implements Runnable {
 
 			if (getPlayer(clientSocket) == null) {
 
+				// make sure chosen name is still available
 				if (getPlayer(playername) == null) {
 
+					// create a new player object
 					Player player = new Player(clientSocket, dOutput,
 							playername);
 
+					// put new player object in playerList
+					// key should already exist
 					playerList.put(clientSocket, player);
 
+					// tell player that he registered succesfully
 					player.sendMessage("You are now registered as "
 							+ player.toString());
 
@@ -230,9 +223,13 @@ public class EscapeServer implements Runnable {
 								+ " players waiting...");
 					}
 
+					// let everyone know a new player registered with the server
 					sendAll("Player " + player.getName() + " entered the game.");
 				} else {
-					System.out.println("player " + playername
+
+					// player's name was not available, let player know
+
+					log.info(className, "Player " + playername
 							+ " already registered");
 
 					try {
@@ -243,8 +240,7 @@ public class EscapeServer implements Runnable {
 					}
 				}
 			} else {
-				System.out.println("Socket already registered");
-
+				log.info(className, "Socket already registered.");
 				try {
 					dOutput.writeBytes("You are already registered.\r\n");
 				} catch (IOException e) {
@@ -275,6 +271,8 @@ public class EscapeServer implements Runnable {
 
 			initialized = true;
 
+			// keep listening for incoming connections
+			// until we manually terminate the server or some error (we cannot recover from) occurs
 			while (!isStopped()) {
 				Socket clientSocket = null;
 				try {
@@ -288,13 +286,21 @@ public class EscapeServer implements Runnable {
 									+ clientSocket.getRemoteSocketAddress()
 											.toString());
 
+					// prepare an entry in the playerlist
+					// we might set the value later
+					// use client's socket as key
 					playerList.put(clientSocket, null);
 
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				threadPool.execute(new ConnectionThread(clientSocket));
 
+				// hand the client's socket to a new thread in the pool and
+				// start the thread
+				threadPool.execute(new PlayerInstance(clientSocket));
+
+				// as we just accepted a new connection, immediately print
+				// status
 				printPlayers();
 			}
 
@@ -321,6 +327,7 @@ public class EscapeServer implements Runnable {
 		int sum = 0;
 		for (Entry<Socket, Player> entry : playerList.entrySet()) {
 
+			// if no Player object, skip
 			if (entry.getValue() == null)
 				continue;
 
@@ -329,7 +336,6 @@ public class EscapeServer implements Runnable {
 		}
 
 		return sum;
-
 	}
 
 	/**
@@ -357,7 +363,7 @@ public class EscapeServer implements Runnable {
 	 * @return true when game is ready
 	 */
 	public static boolean ready() {
-		return (countPlayers(PlayerType.VIRTUAL) == REQUIRED_VIRTUAL && countPlayers(PlayerType.MOBILE) == REQUIRED_MOBILE);
+		return (countPlayers(PlayerType.VIRTUAL) == Settings.REQUIRED_VIRTUAL && countPlayers(PlayerType.MOBILE) == Settings.REQUIRED_MOBILE);
 	}
 
 	/**
@@ -371,22 +377,33 @@ public class EscapeServer implements Runnable {
 		return playerList.get(socket);
 	}
 
+	/**
+	 * Get a player by name.
+	 * 
+	 * @param playername
+	 *            the name of the player
+	 * @return the player object
+	 */
 	public static Player getPlayer(String playername) {
 		for (Entry<Socket, Player> entry : playerList.entrySet()) {
 
+			// if entry contains no Player object, ignore
 			if (entry.getValue() == null)
 				continue;
 
+			// player was found
 			if (playername.equals(entry.getValue().getName()))
 				return entry.getValue();
 
 		}
 
+		// no matches, return null
 		return null;
 	}
 
 	/**
-	 * Send a message to all connected players.
+	 * Send a message to all connected players. This will omit users without a
+	 * type.
 	 * 
 	 * @param message
 	 *            the message to be sent
@@ -400,10 +417,10 @@ public class EscapeServer implements Runnable {
 	}
 
 	/**
-	 * sends a message only if a player has type mobile
+	 * Send a message to all connected mobile clients.
 	 * 
 	 * @param message
-	 *            the string to be sent.
+	 *            the string to be sent
 	 */
 	public static void sendMobile(String message) {
 		for (Entry<Socket, Player> entry : playerList.entrySet()) {
@@ -415,10 +432,10 @@ public class EscapeServer implements Runnable {
 	}
 
 	/**
-	 * sends a message only if a player has type virtual
+	 * Send a message to all connected virtual clients.
 	 * 
 	 * @param message
-	 *            the string to be sent.
+	 *            the string to be sent
 	 */
 	public static void sendVirtual(String message) {
 		for (Entry<Socket, Player> entry : playerList.entrySet()) {
@@ -429,6 +446,9 @@ public class EscapeServer implements Runnable {
 		}
 	}
 
+	/**
+	 * Print all players, registered and unregistered.
+	 */
 	private static void printPlayers() {
 
 		if (playerList.isEmpty()) {

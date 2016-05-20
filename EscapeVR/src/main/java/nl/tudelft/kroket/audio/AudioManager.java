@@ -13,24 +13,32 @@ import com.jme3.scene.Node;
 
 /**
  * AudioManager object.
+ * 
  * @author Team Kroket
  *
  */
 public class AudioManager {
 	
+	/** Current class, used as tag for logger. */
 	private final String className = this.getClass().getSimpleName();
+	
+	/** Singleton logger instance. */
 	private Logger log = Logger.getInstance();
 	
+	/** Relative path for audio assets. */
 	private String rootPath = "Sound/";
 	
+	/** A HashMap object to reference all AudioNodes used. */
 	HashMap<String, AudioNode> audioNodes = new HashMap<String, AudioNode>();
-
+	
+	/** Handle to the AssetManager object. */
 	private AssetManager assetManager;
 
 	private Node rootNode;
 	
 	/**
 	 * Constructor for AudioManager object.
+	 * 
 	 * @param assetManager AssetManager instance
 	 * @param rootNode rootNode
 	 * @param rootPath relative root path to assets
@@ -46,6 +54,7 @@ public class AudioManager {
 	
 	/**
 	 * Load a file and create a new AudioNode.
+	 * 
 	 * @param path the path to the file
 	 * @param positional positional flag
 	 * @param looping looping flag
@@ -64,6 +73,7 @@ public class AudioManager {
 	
 	/**
 	 * Load a file into AudioManager.
+	 * 
 	 * @param name the name of the object
 	 * @param path the path to the file
 	 * @param positional positional flag
@@ -93,6 +103,7 @@ public class AudioManager {
 	
 	/**
 	 * Get a registered AudioNode object.
+	 * 
 	 * @param name the name of the object
 	 * @return the AudioNode object
 	 */
@@ -122,6 +133,7 @@ public class AudioManager {
 	
 	/**
 	 * Stop an audionode.
+	 * 
 	 * @param name the name of the audionode
 	 */
 	public void stop(String name) {

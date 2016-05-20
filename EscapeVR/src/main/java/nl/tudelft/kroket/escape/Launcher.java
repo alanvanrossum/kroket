@@ -4,6 +4,11 @@ import jmevr.app.VRApplication.PRECONFIG_PARAMETER;
 
 import com.jme3.system.AppSettings;
 
+/**
+ * Entry point for VR application.
+ * @author Team Kroket
+ *
+ */
 public class Launcher {
 
 	static EscapeVR mainApplication;
@@ -20,7 +25,8 @@ public class Launcher {
 
 		// set application/window title
 		settings.setTitle("EscapeVR");
-
+		
+		// throw settings at the application
 		mainApplication.setSettings(settings);
 
 		mainApplication.preconfigureVRApp(
@@ -38,7 +44,8 @@ public class Launcher {
 				PRECONFIG_PARAMETER.INSTANCE_VR_RENDERING, false);
 		mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.NO_GUI, false);
 		mainApplication.preconfigureFrustrumNearFar(0.1f, 512f);
-
+		
+		// finally, start the application
 		mainApplication.start();
 
 	}

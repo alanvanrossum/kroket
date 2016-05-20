@@ -35,12 +35,16 @@ public abstract class Screen {
 		this.assetManager = assetManager;
 		this.guiNode = guiNode;
 	}
-	
+
 	/**
 	 * Load an image as Picture object.
-	 * @param imgPath the relative path to the image
-	 * @param width the width of the image
-	 * @param height the height of the image
+	 * 
+	 * @param imgPath
+	 *            the relative path to the image
+	 * @param width
+	 *            the width of the image
+	 * @param height
+	 *            the height of the image
 	 * @return Picture
 	 */
 	public Picture loadImage(String imgPath, float width, float height) {

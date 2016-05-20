@@ -23,7 +23,10 @@ import nl.tudelft.kroket.log.Logger;
  */
 public final class InputHandler {
 
+	/** Current class, used as tag for logger. */
 	private final String className = this.getClass().getSimpleName();
+	
+	/** Singleton logger instance. */
 	private Logger log = Logger.getInstance();
 
 	/** Observer controls. */
