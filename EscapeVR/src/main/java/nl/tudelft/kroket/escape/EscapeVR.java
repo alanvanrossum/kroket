@@ -77,7 +77,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 	private void initAudioManager() {
 		audioManager = new AudioManager(getAssetManager(), rootNode, "Sound/");
 		audioManager.loadFile("waiting", "Soundtrack/waiting.wav", false,
-				false, 3);
+				true, 3);
 		audioManager.loadFile("ambient", "Soundtrack/ambient.wav", false, true,
 				2);
 		audioManager.loadFile("welcome", "Voice/intro2.wav", false, false, 5);
