@@ -64,7 +64,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 	private boolean forceUpdateState = true;
 
 	/** State to force game to. */
-	private GameState insertState = GameState.LOBBY; // start in lobby
+	private GameState insertState = GameState.PLAYING; // start in lobby
 
 	private AudioManager audioManager;
 	private InputHandler inputHandler;

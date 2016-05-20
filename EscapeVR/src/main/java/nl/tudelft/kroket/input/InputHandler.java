@@ -44,7 +44,7 @@ public final class InputHandler {
 			EventManager eventManager, boolean acceptInput) {
 
 		log.info(className, "Initializing...");
-                flying = false;
+                flying = true;
 		this.inputManager = inputManager;
 		this.observer = observer;
 		this.acceptInput = acceptInput;
