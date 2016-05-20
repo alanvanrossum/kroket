@@ -9,6 +9,7 @@ import nl.tudelft.kroket.log.Logger;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
 
+
 /**
  * ScreenManager used for handling overlays.
  * 
@@ -17,102 +18,117 @@ import com.jme3.scene.Node;
  */
 public class ScreenManager {
 
-	/** Current class, used as tag for logger. */
-	private final String className = this.getClass().getSimpleName();
+  /** Current class, used as tag for logger. */
+  private final String className = this.getClass().getSimpleName();
 
-	/** Singleton logger instance. */
-	private Logger log = Logger.getInstance();
+  /** Singleton logger instance. */
 
-	HashMap<String, Screen> screens = new HashMap<String, Screen>();
+  private Logger log = Logger.getInstance();
 
-	AssetManager assetManager;
-	Node guiNode;
-	float width, height;
+  HashMap<String, Screen> screens = new HashMap<String, Screen>();
 
-	/**
-	 * Constructor for ScreenManager.
-	 * 
-	 * @param assetManager
-	 *            reference to the AssetManager
-	 * @param guiNode
-	 *            reference to the guiNode
-	 * @param width
-	 *            the width of the overlays
-	 * @param height
-	 *            the height of the overlays
-	 */
-	public ScreenManager(AssetManager assetManager, Node guiNode, float width,
-			float height) {
+  AssetManager assetManager;
+  Node guiNode;
+  
+  float width;
+  float height;
 
-		log.info(className, "Initializing...");
 
-		this.assetManager = assetManager;
-		this.guiNode = guiNode;
-		this.width = width;
-		this.height = height;
-	}
+  /**
+   * Constructor for ScreenManager.
+   * 
+   * @param assetManager
+   *            reference to the AssetManager
+   * @param guiNode
+   *            reference to the guiNode
+   * @param width
+   *            the width of the overlays
+   * @param height
+   *            the height of the overlays
+   */
+  public ScreenManager(AssetManager assetManager, Node guiNode, float width,
+      float height) {
 
-	public void loadScreen(String name, Class<? extends Screen> screenClass) {
+    log.info(className, "Initializing...");
 
-		Screen newScreen = null;
-		try {
-			Constructor<? extends Screen> ctor = screenClass
-					.getDeclaredConstructor(AssetManager.class, Node.class,
-							float.class, float.class);
-			newScreen = ctor.newInstance(assetManager, guiNode, width, height);
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
+    this.assetManager = assetManager;
+    this.guiNode = guiNode;
+    this.width = width;
+    this.height = height;
+  }
 
-		// after initiating the screen, store it so we can reference it later
-		screens.put(name, newScreen);
-	}
+  /**
+   * The load screen method.
+   * 
+   * @param name - String
+   * @param screenClass - Class<? extends Screen>
+   */
+  public void loadScreen(String name, Class<? extends Screen> screenClass) {
 
-	/**
-	 * Get a screen by name.
-	 * 
-	 * @param name
-	 *            the name of the screen
-	 * @return Screen object, could be null if not found
-	 */
-	public Screen getScreen(String name) {
+    Screen newScreen = null;
+    try {
+      Constructor<? extends Screen> ctor = screenClass
+          .getDeclaredConstructor(AssetManager.class, Node.class,
+              float.class, float.class);
+      newScreen = ctor.newInstance(assetManager, guiNode, width, height);
 
-		if (!screens.containsKey(name)) {
-			log.error(className,
-					String.format("Screen %s does not exist.", name));
-			return null;
-		}
+    } catch (InstantiationException e) {
 
-		return screens.get(name);
-	}
+      e.printStackTrace();
+    } catch (NoSuchMethodException e) {
+      e.printStackTrace();
+    } catch (SecurityException e) {
+      e.printStackTrace();
+    } catch (IllegalArgumentException e) {
+      e.printStackTrace();
+    } catch (InvocationTargetException e) {
+      e.printStackTrace();
 
-	/**
-	 * Show a screen by name.
-	 * 
-	 * @param name
-	 *            the name of the screen
-	 */
-	public void showScreen(String name) {
-		getScreen(name).show();
-	}
+    } catch (IllegalAccessException e) {
+      e.printStackTrace();
+    }
 
-	/**
-	 * Hide a screen by name.
-	 * 
-	 * @param name
-	 *            the name of the screen
-	 */
-	public void hideScreen(String name) {
-		getScreen(name).hide();
-	}
+    // after initiating the screen, store it so we can reference it later
+    screens.put(name, newScreen);
+  }
+
+  /**
+   * Get a screen by name.
+   * 
+   * @param name
+   *            the name of the screen
+   * @return Screen object, could be null if not found
+   */
+
+  public Screen getScreen(String name) {
+
+    if (!screens.containsKey(name)) {
+      log.error(className,
+          String.format("Screen %s does not exist.", name));
+      return null;
+    }
+
+    return screens.get(name);
+  }
+
+
+  /**
+   * Show a screen by name.
+   * 
+   * @param name
+   *            the name of the screen
+   */
+  public void showScreen(String name) {
+    getScreen(name).show();
+  }
+
+  /**
+   * Hide a screen by name.
+   * 
+   * @param name
+   *            the name of the screen
+   */
+  public void hideScreen(String name) {
+    getScreen(name).hide();
+  }
 }

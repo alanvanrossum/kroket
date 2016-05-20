@@ -9,5 +9,5 @@ import java.util.EventObject;
  *
  */
 public interface Event {
-    public void handleEvent(EventObject e);
+  public void handleEvent(EventObject e);
 }

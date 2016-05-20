@@ -12,24 +12,25 @@ import com.jme3.scene.Node;
  */
 public class LobbyScreen extends Screen {
 
-	private final static String name = "lobby";
+  private static final String name = "lobby";
 
-	/**
-	 * Constructor for LobbyScreen overlay object.
-	 * 
-	 * @param assetManager
-	 *            reference to the AssetManager object
-	 * @param guiNode
-	 *            reference to the guiNode
-	 * @param width
-	 *            the width of the overlay
-	 * @param height
-	 *            the height of the overlay
-	 */
-	public LobbyScreen(AssetManager assetManager, Node guiNode, float width,
-			float height) {
-		super(name, assetManager, guiNode);
+  /**
+   * Constructor for LobbyScreen overlay object.
+   * 
+   * @param assetManager
+   *            reference to the AssetManager object
+   * @param guiNode
+   *            reference to the guiNode
+   * @param width
+   *            the width of the overlay
+   * @param height
+   *            the height of the overlay
+   */
+  public LobbyScreen(AssetManager assetManager, Node guiNode, float width,
+      float height) {
+    super(name, assetManager, guiNode);
 
-		overlay = loadImage("overlay/waiting.png", width, height);
-	}
+    overlay = loadImage("overlay/waiting.png", width, height);
+  }
 }
+

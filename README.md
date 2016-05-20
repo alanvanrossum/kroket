@@ -1,4 +1,4 @@
-# TI2806 - Contextproject
+﻿# TI2806 - Contextproject
 ## Computer Games context
 ### Team Kroket
 
@@ -36,7 +36,7 @@ For CI purposes, our app was relocated to a different repository, click [here](h
 - Sprint retrospective 2
 - Design document
 
-[Week 3 documents](https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek3)
+https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek3
 
 ### Week 4
 
@@ -44,15 +44,15 @@ For CI purposes, our app was relocated to a different repository, click [here](h
 - Sprint backlog 4
 - Sprint retrospective 3
 
-[Week 4 documents](https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek4)
+https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek4
 
 ### Week 5
 
-- Architecture design
+- (Architecture design)
 - Sprint backlog 5
 - Sprint retrospective 4
 
-[Week 5 documents](https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek5)
+https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek5
 
 ## Introduction
 
