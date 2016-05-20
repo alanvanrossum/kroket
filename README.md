@@ -39,7 +39,7 @@ https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek3
 
 https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek4
 
-### Week 4
+### Week 5
 
 - (Architecture design)
 - Sprint backlog 5
