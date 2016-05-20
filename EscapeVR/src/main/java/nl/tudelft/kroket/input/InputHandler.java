@@ -10,6 +10,7 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.JoyButtonTrigger;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 
 import nl.tudelft.kroket.event.EventManager;
@@ -34,6 +35,7 @@ public final class InputHandler {
 			rotateUp, rotateDown, tiltLeft, tiltRight, interact;
 
 	private InputManager inputManager;
+        private boolean flying;
 	private Spatial observer;
 	private boolean acceptInput = false;
 	private EventManager eventManager;
@@ -42,7 +44,7 @@ public final class InputHandler {
 			EventManager eventManager, boolean acceptInput) {
 
 		log.info(className, "Initializing...");
-
+                flying = false;
 		this.inputManager = inputManager;
 		this.observer = observer;
 		this.acceptInput = acceptInput;
@@ -165,15 +167,27 @@ public final class InputHandler {
 		float height = VRApplication.getFinalObserverPosition().getY();
 
 		// if (height < 8.6) {
-
-		if (moveForward) {
-			observer.move(VRApplication.getFinalObserverRotation()
-					.getRotationColumn(2).mult(tpf * 8f));
-		}
-		if (moveBackwards) {
-			observer.move(VRApplication.getFinalObserverRotation()
-					.getRotationColumn(2).mult(-tpf * 8f));
-		}
+                if(flying) {
+                    if (moveForward) {
+                            observer.move(VRApplication.getFinalObserverRotation()
+                                            .getRotationColumn(2).mult(tpf * 8f));
+                    }
+                    if (moveBackwards) {
+                            observer.move(VRApplication.getFinalObserverRotation()
+                                            .getRotationColumn(2).mult(-tpf * 8f));
+                    }
+                } else {
+                     if (moveForward) {
+                         Vector3f direction = VRApplication.getFinalObserverRotation().getRotationColumn(2);
+                         direction.setY(0);
+                            observer.move(direction.mult(tpf * 8f));
+                    }
+                       if (moveBackwards) {
+                         Vector3f direction = VRApplication.getFinalObserverRotation().getRotationColumn(2);
+                         direction.setY(0);
+                            observer.move(direction.mult(-tpf * 8f));
+                    }
+                }
 
 		// }
 
