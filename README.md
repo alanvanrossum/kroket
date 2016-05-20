@@ -1,15 +1,22 @@
-# TI2806 - Contextproject
+﻿# TI2806 - Contextproject
 ## Computer Games context
 ### Team Kroket
 
 [![Build Status](https://api.travis-ci.org/alanvanrossum/kroket.svg?branch=master)](https://travis-ci.org/alanvanrossum/kroket)
+
+For CI purposes, our app was relocated to a different repository, click [here](https://github.com/alanvanrossum/kroketapp/).
+
+
+# Documentation
+
+## Development documents
 
 ### Week 1
 
 - Top 3 game concepts 
 - Sprint Backlog 1  
 
-https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek1
+[Week 1 documents](https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek1)
 
 ### Week 2
 
@@ -18,7 +25,7 @@ https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek1
 - Architecture design 
 - Sprint Backlog 2  
 
-https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek2
+[Week 2 documents](https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek2)
 
 ### Week 3
 
@@ -46,3 +53,4 @@ https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek4
 - Sprint retrospective 4
 
 https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek5
+

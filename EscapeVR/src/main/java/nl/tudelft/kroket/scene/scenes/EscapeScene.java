@@ -4,6 +4,10 @@ import nl.tudelft.kroket.scene.Scene;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
+import com.jme3.post.FilterPostProcessor;
+import com.jme3.post.filters.FogFilter;
+import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
@@ -11,96 +15,230 @@ import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.MagFilter;
 import com.jme3.texture.Texture.MinFilter;
 
+/**
+ * EscapeScene object.
+ * 
+ * @author Team Kroket
+ *
+ */
 public class EscapeScene extends Scene {
 
-	private String materialPath = "Common/MatDefs/Misc/Unshaded.j3md";
+  float translationY = 3f;
 
-	public EscapeScene(String name, AssetManager assetManager, Node rootNode) {
-		super(name, assetManager, rootNode);
-	}
+  float roomDepth = 12f;
+  float roomWidth = 9f;
+  float roomHeight = 6f;
 
-	public void createScene() {
+  private ColorRGBA gasColor = new ColorRGBA(0.3f, 0.9f, 0.2f, 1.0f);
 
-		createWalls("Textures/brick_wall.jpg");
+  private String materialPath = "Common/MatDefs/Misc/Unshaded.j3md";
 
-		createFloor("Textures/dirty_floor.png");
-		createCeiling("Textures/dirty_ceiling4.png");
-	}
+  public EscapeScene(String name, AssetManager assetManager, Node rootNode,
+      ViewPort viewPort) {
+    super(name, assetManager, rootNode, viewPort);
 
-	private void createWalls(String texturePath) {
+  }
 
-		Texture wallTexture = assetManager.loadTexture(texturePath);
-		wallTexture.setMagFilter(MagFilter.Nearest);
-		wallTexture.setMinFilter(MinFilter.Trilinear);
-		wallTexture.setAnisotropicFilter(16);
+  /**
+   * The create scene method.
+   */
+  public void createScene() {
 
-		Material wallMaterial = new Material(assetManager, materialPath);
-		wallMaterial.setTexture("ColorMap", wallTexture);
+    createWalls("Textures/brick_wall.jpg");
 
-		Geometry wall1 = new Geometry("wall1", new Box(.5f, 6f, 6f));
-		wall1.setMaterial(wallMaterial);
-		wall1.move(-12, 5, 0);
-		rootNode.attachChild(wall1);
-		objects.add(wall1);
+    createFloor("Textures/dirty_floor.png");
 
-		Geometry wall2 = new Geometry("wall2", new Box(.5f, 6f, 6f));
-		wall2.setMaterial(wallMaterial);
-		wall2.move(12, 5, 0);
-		rootNode.attachChild(wall2);
-		objects.add(wall2);
+    createCeiling("Textures/dirty_floor.png");
 
-		Geometry wall3 = new Geometry("wall3", new Box(12f, 6f, .5f));
-		wall3.setMaterial(wallMaterial);
-		wall3.move(0, 5, 6);
-		rootNode.attachChild(wall3);
-		objects.add(wall3);
+    createDoor("Textures/door.jpg");
 
-		Geometry wall4 = new Geometry("wall4", new Box(12f, 6f, .5f));
-		wall4.setMaterial(wallMaterial);
-		wall4.move(0, 5, -6);
-		rootNode.attachChild(wall4);
-		objects.add(wall4);
-	}
+    createGas();
 
-	private void createFloor(String texturePath) {
+    createPainting("Textures/Painting/painting.jpg");
+    createPainting2("Textures/Painting/painting2.jpg");
+  }
 
-		Texture floorTexture = assetManager.loadTexture(texturePath);
-		floorTexture.setMagFilter(MagFilter.Nearest);
-		floorTexture.setMinFilter(MinFilter.Trilinear);
-		floorTexture.setAnisotropicFilter(16);
+  /**
+   * Create four walls using a texture.
+   * 
+   * @param texturePath
+   *            the relative path to the texture
+   */
+  private void createWalls(String texturePath) {
 
-		Material floorMaterial = new Material(assetManager, materialPath);
-		floorMaterial.setTexture("ColorMap", floorTexture);
+    Texture wallTexture = assetManager.loadTexture(texturePath);
+    wallTexture.setMagFilter(MagFilter.Nearest);
+    wallTexture.setMinFilter(MinFilter.Trilinear);
+    wallTexture.setAnisotropicFilter(16);
 
-		Geometry floor = new Geometry("floor", new Box(6f, 1f, 3f));
+    Material wallMaterial = new Material(assetManager, materialPath);
+    wallMaterial.setTexture("ColorMap", wallTexture);
 
-		floor.setLocalScale(2f, 0.5f, 2f);
-		floor.move(0f, -1.5f, 0f);
+    // wall to the right of player spawn
+    Geometry wall1 = new Geometry("wall-east", new Box(.1f, roomHeight,
+        roomDepth));
+    wall1.setMaterial(wallMaterial);
+    wall1.move(-roomWidth, translationY, 0);
+    addObject("wall-east", wall1);
 
-		floor.setMaterial(floorMaterial);
+    // wall to the left of player spawn
+    Geometry wall2 = new Geometry("wall-west", new Box(.1f, roomHeight,
+        roomDepth));
+    wall2.setMaterial(wallMaterial);
+    wall2.move(roomWidth, translationY, 0);
+    addObject("wall-west", wall2);
 
-		rootNode.attachChild(floor);
-		objects.add(floor);
-	}
+    // wall in front of player
+    Geometry wall3 = new Geometry("wall-north", new Box(roomWidth,
+        roomHeight, .1f));
+    wall3.setMaterial(wallMaterial);
+    wall3.move(0, translationY, roomDepth);
+    addObject("wall-north", wall3);
 
-	private void createCeiling(String texturePath) {
-		Texture ceilingTexture = assetManager.loadTexture(texturePath);
-		ceilingTexture.setMagFilter(MagFilter.Nearest);
-		ceilingTexture.setMinFilter(MinFilter.Trilinear);
-		ceilingTexture.setAnisotropicFilter(16);
+    // wall behind player spawn
+    Geometry wall4 = new Geometry("wall-south", new Box(roomWidth,
+        roomHeight, .1f));
+    wall4.setMaterial(wallMaterial);
+    wall4.move(0, translationY, -roomDepth);
+    addObject("wall-south", wall4);
+  }
 
-		Material ceilingMaterial = new Material(assetManager, materialPath);
-		ceilingMaterial.setTexture("ColorMap", ceilingTexture);
+  /**
+   * Create a floor object.
+   * 
+   * @param texturePath
+   *            the relative path to the texture
+   */
 
-		Geometry ceiling = new Geometry("floor", new Box(6f, 1f, 3f));
+  private void createFloor(String texturePath) {
 
-		ceiling.setLocalScale(2f, 0.5f, 2f);
-		ceiling.move(0f, 12f, 0f);
+    Texture floorTexture = assetManager.loadTexture(texturePath);
+    floorTexture.setMagFilter(MagFilter.Nearest);
+    floorTexture.setMinFilter(MinFilter.Trilinear);
+    floorTexture.setAnisotropicFilter(16);
 
-		ceiling.setMaterial(ceilingMaterial);
-		
-		rootNode.attachChild(ceiling);
-		objects.add(ceiling);
-	}
+    Material floorMaterial = new Material(assetManager, materialPath);
+    floorMaterial.setTexture("ColorMap", floorTexture);
+
+    Geometry floor = new Geometry("floor", new Box(roomWidth, .1f,
+        roomDepth));
+    floor.move(0f, translationY - roomHeight, 0f);
+    floor.setMaterial(floorMaterial);
+
+    addObject("floor", floor);
+  }
+
+  /**
+   * Create and draw a ceiling.
+   * 
+   * @param texturePath
+   *            the relative path to the texture
+   */
+
+  private void createCeiling(String texturePath) {
+    Texture ceilingTexture = assetManager.loadTexture(texturePath);
+    ceilingTexture.setMagFilter(MagFilter.Nearest);
+    ceilingTexture.setMinFilter(MinFilter.Trilinear);
+    ceilingTexture.setAnisotropicFilter(16);
+
+    Material ceilingMaterial = new Material(assetManager, materialPath);
+    ceilingMaterial.setTexture("ColorMap", ceilingTexture);
+
+    Geometry ceiling = new Geometry("ceiling", new Box(roomWidth, .1f,
+        roomDepth));
+
+    ceiling.move(0f, translationY + roomHeight, 0f);
+    ceiling.setMaterial(ceilingMaterial);
+
+    addObject("ceiling", ceiling);
+  }
+
+  /**
+   * Create and draw a floor.
+   * 
+   * @param texturePath
+   *            the relative path to the texture
+   */
+  private void createDoor(String texturePath) {
+
+    float doorWidth = 1.8f;
+    float doorHeight = 3.5f;
+
+    Texture doorTexture = assetManager.loadTexture(texturePath);
+    doorTexture.setMagFilter(MagFilter.Nearest);
+    doorTexture.setMinFilter(MinFilter.Trilinear);
+    doorTexture.setAnisotropicFilter(16);
+
+    Material doorMaterial = new Material(assetManager, materialPath);
+    doorMaterial.setTexture("ColorMap", doorTexture);
+
+    Geometry door = new Geometry("door",
+        new Box(doorWidth, doorHeight, .2f));
+
+    door.move(0, translationY - 2.5f, roomDepth);
+    door.setMaterial(doorMaterial);
+
+    addObject("door", door);
+  }
+
+  private void createPainting(String texturePath) {
+    float paintingWidth = 2.5f;
+    float paintingHeight = 3.0f;
+
+    Texture doorTexture = assetManager.loadTexture(texturePath);
+    doorTexture.setMagFilter(MagFilter.Nearest);
+    doorTexture.setMinFilter(MinFilter.Trilinear);
+    doorTexture.setAnisotropicFilter(16);
+
+    Material paintingMaterial = new Material(assetManager, materialPath);
+    paintingMaterial.setTexture("ColorMap", doorTexture);
+
+    Geometry painting = new Geometry("painting", new Box(.01f,
+        paintingHeight, paintingWidth));
+
+    painting.move(roomWidth - 0.1f, translationY, 0);
+
+    painting.setMaterial(paintingMaterial);
+
+    addObject("painting", painting);
+  }
+
+  private void createPainting2(String texturePath) {
+    float paintingWidth = 2.5f;
+    float paintingHeight = 3.0f;
+
+    Texture doorTexture = assetManager.loadTexture(texturePath);
+    doorTexture.setMagFilter(MagFilter.Nearest);
+    doorTexture.setMinFilter(MinFilter.Trilinear);
+    doorTexture.setAnisotropicFilter(16);
+
+    Material paintingMaterial = new Material(assetManager, materialPath);
+    paintingMaterial.setTexture("ColorMap", doorTexture);
+
+    Geometry painting = new Geometry("painting2", new Box(paintingWidth,
+        paintingHeight, 0.1f));
+
+    painting.move(-2f, translationY, -roomDepth + 0.1f);
+
+    painting.setMaterial(paintingMaterial);
+
+    addObject("painting2", painting);
+  }
+
+  /**
+   * Add gas to the scene.
+   */
+  public void createGas() {
+
+    FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+    FogFilter fog = new FogFilter();
+    fog.setFogColor(gasColor);
+    fog.setFogDistance(1000);
+    fog.setFogDensity(2.0f);
+    fpp.addFilter(fog);
+    viewPort.addProcessor(fpp);
+
+
+  }
 
 }
