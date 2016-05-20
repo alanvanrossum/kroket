@@ -10,128 +10,199 @@ import nl.tudelft.kroket.log.Logger;
 
 public class NetworkClient {
 
-	private final String className = this.getClass().getSimpleName();
-	private Logger log = Logger.getInstance();
 
-	private static final String CRLF = "\r\n"; // newline
+  /** Current class, used as tag for logger. */
+  private final String className = this.getClass().getSimpleName();
+  
+  /** Singleton logger instance. */
+  private Logger log = Logger.getInstance();
+  
+  /** Carriage-return, line-feed. */
+  private static final String CRLF = "\r\n"; // newline
+  
+  /** The socket we're using to connect to the other endpoint. */
 
-	private Socket socket = null;
+  private Socket socket = null;
 
-	private DataOutputStream dataOutputStream;
-	private DataInputStream dataInputStream;
+  private DataOutputStream dataOutputStream;
+  private DataInputStream dataInputStream;
 
-	private String remoteHost;
-	private int remotePort;
+  
+  /** Remote host's name or IP address. */
+  private String remoteHost;
+  
+  /** Remote host's portnumber. */
+  private int remotePort;
+  
+  /**
+   * Constructor for TCP NetworkClient object.
+   * @param host string of the host to connect to
+   * @param port port of the host to connect to
+   */
 
-	public NetworkClient(String host, int port) {
+  public NetworkClient(String host, int port) {
 
-		log.info(className, "Initializing...");
+    log.info(className, "Initializing...");
 
-		this.remoteHost = host;
-		this.remotePort = port;
-	}
+    this.remoteHost = host;
+    this.remotePort = port;
+  }
 
-	private boolean initialised;
-	private boolean connected;
+  private boolean initialised;
+  private boolean connected;
 
-	public boolean isInitialised() {
+  
+  /**
+   * Check whether the socket is initialised.
+   * 
+   * @return if the socket is initialised
+   */
+  public boolean isInitialised() {
 
-		if (socket == null)
-			return false;
-
-		return initialised;
-	}
-
-	public void setInitialised(boolean initialised) {
-		this.initialised = initialised;
-	}
-
-	public boolean isConnected() {
-
-		if (!isInitialised())
-			return false;
-
-		return connected;
-	}
-
-	public void setConnected(boolean connected) {
-		this.connected = connected;
-	}
-
-	public DataInputStream getStream() {
-		return dataInputStream;
-	}
-
-	public boolean connect(String host, int port) {
-
-		log.info(className,
-				String.format("Trying to connect to %s:%d...", host, port));
-
-		try {
-			socket = new Socket(host, port);
-
-			if (socket == null) {
-				return false;
-			}
-
-			setInitialised(true);
-
-			dataOutputStream = new DataOutputStream(socket.getOutputStream());
-			dataInputStream = new DataInputStream(socket.getInputStream());
-
-			setConnected(true);
-			return true;
-		} catch (UnknownHostException e) {
-			System.out.println(e);
-		} catch (IOException e) {
-			System.out.println(e);
-		}
-
-		setConnected(false);
+    if (socket == null) {
 		return false;
 	}
 
-	public void sendMessage(String message) {
+    return initialised;
+  }
 
-		if (!isConnected())
-			return;
+  
+  /**
+   * Set socket initalised value.
+   * 
+   * @param initialised - boolean
+   */
+  public void setInitialised(boolean initialised) {
+    this.initialised = initialised;
+  }
+  
+  /**
+   * Check whether the client is connected.
+   * 
+   * @return true if the client is connected.
+   */
+  public boolean isConnected() {
+    
+    // can't be connected if socket
+    // isn't even initialised
 
-		if (!message.endsWith(CRLF))
-			message += CRLF;
-
-		try {
-			dataOutputStream.writeBytes(message);
-		} catch (IOException e) {
-			setConnected(false);
-		}
+    if (!isInitialised()) {
+		return false;
 	}
 
-	public void close() {
+    return connected;
+  }
 
-		setInitialised(false);
-		setConnected(false);
+  public void setConnected(boolean connected) {
+    this.connected = connected;
+  }
 
-		try {
-			if (socket != null)
-				socket.close();
+  /**
+   * Get the client's DataInputStream handle.
+   * 
+   * @return the DataInputStream handle.
+   */
+  public DataInputStream getStream() {
+    return dataInputStream;
+  }
+  
+  /**
+   * Connect to a remote socket.
+   * 
+   * @param host string of the host to connect to
+   * @param port number of the host to connect to
+   * @return true if succesful
+   */
 
-			if (dataInputStream != null)
-				dataInputStream.close();
+  public boolean connect(String host, int port) {
 
-			if (dataOutputStream != null)
-				dataOutputStream.close();
-			
-		} catch (IOException e) {
-			System.out.println(e);
-		}
+    log.info(className,
+        String.format("Trying to connect to %s:%d...", host, port));
 
-		socket = null;
-		dataInputStream = null;
-		dataOutputStream = null;
+    try {
+      socket = new Socket(host, port);
+
+      if (socket == null) {
+        return false;
+      }
+
+      setInitialised(true);
+
+      dataOutputStream = new DataOutputStream(socket.getOutputStream());
+      dataInputStream = new DataInputStream(socket.getInputStream());
+
+      setConnected(true);
+      return true;
+    } catch (UnknownHostException e) {
+      System.out.println(e);
+    } catch (IOException e) {
+      System.out.println(e);
+    }
+
+    setConnected(false);
+    return false;
+  }
+  
+  /**
+   * Send a message to the dataoutputstream.
+   * 
+   * @param message the message to send
+   */
+  public void sendMessage(String message) {
+
+    if (!isConnected()) {
+		return;
 	}
 
-	public boolean connect() {
-		return connect(remoteHost, remotePort);
-
+    if (!message.endsWith(CRLF)) {
+		message += CRLF;
 	}
+
+    try {
+      dataOutputStream.writeBytes(message);
+    } catch (IOException e) {
+      setConnected(false);
+    }
+  }
+
+  
+  /**
+   * Close the socket.
+   */
+  public void close() {
+
+    setInitialised(false);
+    setConnected(false);
+
+    try {
+      if (socket != null) {
+		socket.close();
+	}
+
+      if (dataInputStream != null) {
+        dataInputStream.close();
+      }
+
+      if (dataOutputStream != null) {
+        dataOutputStream.close();
+      }
+      
+    } catch (IOException e) {
+      System.out.println(e);
+    }
+
+    socket = null;
+    dataInputStream = null;
+    dataOutputStream = null;
+  }
+  
+  /**
+   * Connect to remote host.
+   * 
+   * @return true if connection established
+   */
+  public boolean connect() {
+    return connect(remoteHost, remotePort);
+
+  }
 }
