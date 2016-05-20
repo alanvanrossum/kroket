@@ -38,3 +38,11 @@ https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek3
 - Sprint retrospective 3
 
 https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek4
+
+### Week 4
+
+- (Architecture design)
+- Sprint backlog 5
+- Sprint retrospective 4
+
+https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek5
