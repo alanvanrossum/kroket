@@ -25,8 +25,10 @@ public class Launcher {
 
 		// set application/window title
 		settings.setTitle("EscapeVR");
+
 		
 		// throw settings at the application
+
 		mainApplication.setSettings(settings);
 
 		mainApplication.preconfigureVRApp(
@@ -46,6 +48,7 @@ public class Launcher {
 		mainApplication.preconfigureFrustrumNearFar(0.1f, 512f);
 		
 		// finally, start the application
+
 		mainApplication.start();
 
 	}

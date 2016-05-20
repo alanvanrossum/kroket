@@ -10,6 +10,7 @@ import nl.tudelft.kroket.log.Logger;
 
 public class NetworkClient {
 
+
 	/** Current class, used as tag for logger. */
 	private final String className = this.getClass().getSimpleName();
 	
@@ -20,10 +21,12 @@ public class NetworkClient {
 	private static final String CRLF = "\r\n"; // newline
 	
 	/** The socket we're using to connect to the other endpoint. */
+
 	private Socket socket = null;
 
 	private DataOutputStream dataOutputStream;
 	private DataInputStream dataInputStream;
+
 	
 	/** Remote host's name or IP address. */
 	private String remoteHost;
@@ -36,6 +39,7 @@ public class NetworkClient {
 	 * @param host string of the host to connect to
 	 * @param port port of the host to connect to
 	 */
+
 	public NetworkClient(String host, int port) {
 
 		log.info(className, "Initializing...");
@@ -46,6 +50,7 @@ public class NetworkClient {
 
 	private boolean initialised;
 	private boolean connected;
+
 	
 	/**
 	 * Check whether the socket is initialised.
@@ -59,6 +64,7 @@ public class NetworkClient {
 
 		return initialised;
 	}
+
 	
 	/**
 	 * Set socket initalised value.
@@ -78,6 +84,7 @@ public class NetworkClient {
 		
 		// can't be connected if socket
 		// isn't even initialised
+
 		if (!isInitialised())
 			return false;
 
@@ -104,6 +111,7 @@ public class NetworkClient {
 	 * @param port number of the host to connect to
 	 * @return true if succesful
 	 */
+
 	public boolean connect(String host, int port) {
 
 		log.info(className,
@@ -152,6 +160,7 @@ public class NetworkClient {
 			setConnected(false);
 		}
 	}
+
 	
 	/**
 	 * Close the socket.

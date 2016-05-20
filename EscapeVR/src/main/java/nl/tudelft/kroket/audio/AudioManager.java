@@ -32,6 +32,7 @@ public class AudioManager {
 	HashMap<String, AudioNode> audioNodes = new HashMap<String, AudioNode>();
 	
 	/** Handle to the AssetManager object. */
+
 	private AssetManager assetManager;
 
 	private Node rootNode;
@@ -43,6 +44,7 @@ public class AudioManager {
 	 * @param rootNode rootNode
 	 * @param rootPath relative root path to assets
 	 */
+
 	public AudioManager(AssetManager assetManager, Node rootNode, String rootPath) {
 		
 		log.info(className, "Initializing...");
@@ -142,6 +144,7 @@ public class AudioManager {
 		
 		if (node.getStatus() == AudioSource.Status.Playing)
 			getNode(name).stop();
+
 	}
 	
 	/**
@@ -157,6 +160,7 @@ public class AudioManager {
 	 * @param name the name of the node
 	 * @return the playback time.
 	 */
+
 	public float getPlaybackTime(String name) {
 		return getNode(name).getPlaybackTime();
 	}
