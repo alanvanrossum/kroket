@@ -74,5 +74,4 @@ You'll need:
 - 1 Oculus Rift connected to a computer
 - 2 friends
 - 2 Android Smartphones with the EscapeApp installed
-- To be ready to laugh
 
