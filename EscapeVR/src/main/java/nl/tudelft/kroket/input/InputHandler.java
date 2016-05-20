@@ -50,10 +50,12 @@ public final class InputHandler {
 		this.acceptInput = acceptInput;
 		setEventManager(eventManager);
 
+
 		setAcceptInput(acceptInput);
 
 		initControls();
 		initJoysticks();
+
 
 		if (eventManager == null) {
 			log.debug(className, "Event manager is null");
@@ -65,6 +67,7 @@ public final class InputHandler {
 
 	public void setEventManager(EventManager em) {
 		this.eventManager = em;
+
 	}
 
 	public void setAcceptInput(boolean acceptInput) {
@@ -106,6 +109,7 @@ public final class InputHandler {
 		inputManager.addMapping("tiltleft", new KeyTrigger(KeyInput.KEY_Y));
 		inputManager.addMapping("tiltright", new KeyTrigger(KeyInput.KEY_H));
 
+
 		inputManager.addListener(actionListener, "forward");
 		inputManager.addListener(actionListener, "back");
 		inputManager.addListener(actionListener, "left");
@@ -115,6 +119,7 @@ public final class InputHandler {
 		inputManager.addListener(actionListener, "decShift");
 		inputManager.addListener(actionListener, "filter");
 		inputManager.addListener(actionListener, "dumpImages");
+
 		inputManager.addListener(actionListener, "goup");
 		inputManager.addListener(actionListener, "godown");
 		inputManager.addListener(actionListener, "tiltleft");
@@ -156,6 +161,7 @@ public final class InputHandler {
 			log.debug(className, "Joystick/gamepad controls registered.");
 		}
 	}
+
 
 	/**
 	 * Handle user input. This should be called upon refresh.
@@ -233,6 +239,7 @@ public final class InputHandler {
 			observer.rotate(0, 0, 0.75f * tpf);
 		}
 
+
 		if (rotateLeft) {
 			observer.rotate(0, 0.75f * tpf, 0);
 		}
@@ -240,11 +247,13 @@ public final class InputHandler {
 			observer.rotate(0, -0.75f * tpf, 0);
 		}
 
+
 	}
 	
 	/**
 	 * Default ActionListener object, used to process user input.
 	 */
+
 	private ActionListener actionListener = new ActionListener() {
 
 		public void onAction(String name, boolean keyPressed, float tpf) {
@@ -254,8 +263,10 @@ public final class InputHandler {
 				return;
 
 			if (keyPressed) {
+
 				// log.debug(className, "You have pressed : " + name);
 			 }
+
 
 			if (name.equals("incShift") && keyPressed) {
 				VRGuiManager.adjustGuiDistance(-0.1f);
@@ -291,6 +302,7 @@ public final class InputHandler {
 				} else {
 					moveBackwards = false;
 				}
+
 			} else if (name.equals("goup")) {
 				if (keyPressed) {
 					rotateUp = true;
@@ -321,6 +333,7 @@ public final class InputHandler {
 				} else {
 					tiltRight = false;
 				}
+
 			} else if (name.equals("dumpImages")) {
 				OpenVR.getCompositor().CompositorDumpImages.apply();
 			} else if (name.equals("left")) {
@@ -335,6 +348,7 @@ public final class InputHandler {
 				} else {
 					rotateRight = false;
 				}
+
 			} else if (name.equals("toggle")) {
 				if (keyPressed) {
 					interact = true;

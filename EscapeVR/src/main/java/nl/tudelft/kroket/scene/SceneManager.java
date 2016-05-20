@@ -42,10 +42,12 @@ public class SceneManager {
 	 */
 	public SceneManager(AssetManager assetManager, Node rootNode,
 			ViewPort viewPort) {
+
 		log.info(className, "Initializing...");
 
 		this.assetManager = assetManager;
 		this.rootNode = rootNode;
+
 		this.viewPort = viewPort;
 	}
 
@@ -61,11 +63,13 @@ public class SceneManager {
 
 		Scene newScene = null;
 		try {
+
 			Constructor<? extends Scene> ctor = sceneClass
 					.getDeclaredConstructor(String.class, AssetManager.class,
 							Node.class, ViewPort.class);
 			newScene = ctor.newInstance(name, assetManager, rootNode, viewPort);
 		} catch (InstantiationException e) {
+
 			e.printStackTrace();
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
@@ -75,6 +79,7 @@ public class SceneManager {
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
+
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -90,9 +95,11 @@ public class SceneManager {
 	 * @param name
 	 *            the name of the scene.
 	 */
+
 	public void destroyScene(String name) {
 		getScene(name).destroyScene();
 	}
+
 
 	/**
 	 * Get a screen by name.

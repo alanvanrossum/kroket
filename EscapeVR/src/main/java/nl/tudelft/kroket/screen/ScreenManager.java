@@ -9,6 +9,7 @@ import nl.tudelft.kroket.log.Logger;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
 
+
 /**
  * ScreenManager used for handling overlays.
  * 
@@ -21,6 +22,7 @@ public class ScreenManager {
 	private final String className = this.getClass().getSimpleName();
 
 	/** Singleton logger instance. */
+
 	private Logger log = Logger.getInstance();
 
 	HashMap<String, Screen> screens = new HashMap<String, Screen>();
@@ -28,6 +30,7 @@ public class ScreenManager {
 	AssetManager assetManager;
 	Node guiNode;
 	float width, height;
+
 
 	/**
 	 * Constructor for ScreenManager.
@@ -60,7 +63,9 @@ public class ScreenManager {
 					.getDeclaredConstructor(AssetManager.class, Node.class,
 							float.class, float.class);
 			newScreen = ctor.newInstance(assetManager, guiNode, width, height);
+
 		} catch (InstantiationException e) {
+
 			e.printStackTrace();
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
@@ -70,6 +75,7 @@ public class ScreenManager {
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
+
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
@@ -85,6 +91,7 @@ public class ScreenManager {
 	 *            the name of the screen
 	 * @return Screen object, could be null if not found
 	 */
+
 	public Screen getScreen(String name) {
 
 		if (!screens.containsKey(name)) {
@@ -95,6 +102,7 @@ public class ScreenManager {
 
 		return screens.get(name);
 	}
+
 
 	/**
 	 * Show a screen by name.

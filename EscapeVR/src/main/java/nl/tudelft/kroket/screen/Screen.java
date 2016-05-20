@@ -74,8 +74,8 @@ public abstract class Screen {
 	/**
 	 * Hide the overlay.
 	 */
+
 	public void hide() {
 		guiNode.detachChild(overlay);
 	}
-
 }

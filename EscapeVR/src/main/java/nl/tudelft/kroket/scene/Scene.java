@@ -43,10 +43,12 @@ public abstract class Scene {
 	 * Get the AssetManager reference used by this Scene.
 	 * @return the AssetManager used
 	 */
+
 	public AssetManager getAssetManager() {
 		return assetManager;
 	}
 	
+
 	/**
 	 * Get the rootNode used by this scene.
 	 * @return Node object
@@ -55,6 +57,7 @@ public abstract class Scene {
 		return rootNode;
 	}
 	
+
 	/**
 	 * Get an object by name. 
 	 * @param name the name of the object
@@ -72,6 +75,7 @@ public abstract class Scene {
 	public void addObject(String name, Spatial object) {
 		rootNode.attachChild(object);
 		objects.put(name, object);
+
 	}
 
 	public abstract void createScene();
@@ -86,5 +90,6 @@ public abstract class Scene {
 			rootNode.detachChild(object);
 		}
 	}
+
 
 }

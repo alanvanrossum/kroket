@@ -36,6 +36,7 @@ public class EscapeScene extends Scene {
 	public EscapeScene(String name, AssetManager assetManager, Node rootNode,
 			ViewPort viewPort) {
 		super(name, assetManager, rootNode, viewPort);
+
 	}
 
 	public void createScene() {
@@ -43,6 +44,7 @@ public class EscapeScene extends Scene {
 		createWalls("Textures/brick_wall.jpg");
 
 		createFloor("Textures/dirty_floor.png");
+
 		createCeiling("Textures/dirty_floor.png");
 
 		createDoor("Textures/door.jpg");
@@ -104,6 +106,7 @@ public class EscapeScene extends Scene {
 	 * @param texturePath
 	 *            the relative path to the texture
 	 */
+
 	private void createFloor(String texturePath) {
 
 		Texture floorTexture = assetManager.loadTexture(texturePath);
@@ -128,6 +131,7 @@ public class EscapeScene extends Scene {
 	 * @param texturePath
 	 *            the relative path to the texture
 	 */
+
 	private void createCeiling(String texturePath) {
 		Texture ceilingTexture = assetManager.loadTexture(texturePath);
 		ceilingTexture.setMagFilter(MagFilter.Nearest);
@@ -230,6 +234,7 @@ public class EscapeScene extends Scene {
 		fog.setFogDensity(2.0f);
 		fpp.addFilter(fog);
 		viewPort.addProcessor(fpp);
+
 
 	}
 

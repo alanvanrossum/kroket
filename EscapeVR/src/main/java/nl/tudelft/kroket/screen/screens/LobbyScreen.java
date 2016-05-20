@@ -33,3 +33,4 @@ public class LobbyScreen extends Screen {
 		overlay = loadImage("overlay/waiting.png", width, height);
 	}
 }
+

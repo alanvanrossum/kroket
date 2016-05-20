@@ -8,12 +8,14 @@ import nl.tudelft.kroket.audio.AudioManager;
 import nl.tudelft.kroket.event.EventListener;
 import nl.tudelft.kroket.event.EventManager;
 import nl.tudelft.kroket.event.events.InteractionEvent;
+
 import nl.tudelft.kroket.input.InputHandler;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.net.NetworkClient;
 import nl.tudelft.kroket.scene.SceneManager;
 import nl.tudelft.kroket.scene.scenes.EscapeScene;
 import nl.tudelft.kroket.screen.HeadUpDisplay;
+
 import nl.tudelft.kroket.screen.ScreenManager;
 import nl.tudelft.kroket.screen.screens.LobbyScreen;
 import jmevr.app.VRApplication;
@@ -32,12 +34,14 @@ import com.jme3.scene.Spatial;
 import com.jme3.ui.Picture;
 import com.jme3.util.SkyFactory;
 
+
 public class EscapeVR extends VRApplication implements EventListener {
 
 	/** Current class, used as tag for logger. */
 	private final String className = this.getClass().getSimpleName();
 
 	/** Singleton logger instance. */
+
 	private Logger log = Logger.getInstance();
 
 	/** Hostname of the gamehost. */
@@ -45,6 +49,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
 	/** Portnumber of the gamehost. */
 	private static int PORTNUM = 1234;
+
 
 	EventManager eventManager;
 
@@ -65,6 +70,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
 	/** State to force game to. */
 	private GameState insertState = GameState.PLAYING; // start in lobby
+
 
 	private AudioManager audioManager;
 	private InputHandler inputHandler;
@@ -93,11 +99,13 @@ public class EscapeVR extends VRApplication implements EventListener {
 	private void initSceneManager() {
 		sceneManager = new SceneManager(getAssetManager(), rootNode,
 				getViewPort());
+
 		sceneManager.loadScene("escape", EscapeScene.class);
 	}
 
 	private void initScreenManager() {
 		Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
+
 
 		screenManager = new ScreenManager(getAssetManager(), guiNode,
 				guiCanvasSize.getX(), guiCanvasSize.getY());
@@ -109,6 +117,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 		Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
 		hud = new HeadUpDisplay(getAssetManager(), guiNode, guiCanvasSize);
 	}
+
 
 	private void initNetworkClient() {
 		client = new NetworkClient(HOSTNAME, PORTNUM);
@@ -125,10 +134,12 @@ public class EscapeVR extends VRApplication implements EventListener {
 						if (!client.connect()) {
 							log.info(className,
 									"Failed to connect. Retrying...");
+
 							hud.setCenterText("Trying to connect to server...");
 							client.close();
 							try {
 								Thread.sleep(SECRECONN * 1000);
+
 							} catch (InterruptedException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -172,11 +183,13 @@ public class EscapeVR extends VRApplication implements EventListener {
 
 		initObjects();
 
+
 		initHeadUpDisplay();
 		initSceneManager();
 		initAudioManager();
 		eventManager = new EventManager(rootNode);
 		initInputHandler();
+
 
 		initScreenManager();
 		initNetworkClient();
@@ -188,6 +201,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 		eventManager.registerTrigger("painting2", 4);
 		eventManager.registerTrigger("door", 2);
 
+
 	}
 
 	/**
@@ -196,6 +210,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 	private void initObjects() {
 		// Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
 		observer = new Node("observer");
+
 
 		Spatial sky = SkyFactory.createSky(getAssetManager(),
 				"Textures/Sky/Bright/spheremap.png",
@@ -215,6 +230,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
 		// use magic VR mouse cusor (same usage as non-VR mouse cursor)
 		getInputManager().setCursorVisible(true);
+
 		// /** Add fog to a scene */
 		// FilterPostProcessor fpp=new FilterPostProcessor(getAssetManager());
 		// FogFilter fog=new FogFilter();
@@ -226,6 +242,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 	}
 
 	/**
+
 	 * Main method to update the scene.
 	 */
 	@Override
@@ -354,6 +371,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
 		if (line.equals("START")) {
 			screenManager.hideScreen("lobby");
+
 
 			// do not call setGameState or switchState here as those run in
 			// a different thread, use updateStates and insertState instead

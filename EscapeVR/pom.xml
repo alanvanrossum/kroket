@@ -22,11 +22,12 @@
 		</repository>
 
 		<repository>
-			<snapshots>
+               	<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
 			<id>bintray-jmonkeyengine-org.jmonkeyengine</id>
 			<url>http://dl.bintray.com/jmonkeyengine/org.jmonkeyengine</url>
+
 		</repository>
 
 		<repository>
