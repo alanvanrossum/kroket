@@ -7,6 +7,8 @@
 For CI purposes, our app was relocated to a different repository, click [here](https://github.com/alanvanrossum/kroketapp/).
 
 
+[![Kroket game studios](http://i.imgur.com/mzLuJ9p.png)]
+
 # Documentation
 
 ## Development documents
