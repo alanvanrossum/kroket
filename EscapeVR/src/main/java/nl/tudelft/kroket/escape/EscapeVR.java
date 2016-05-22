@@ -250,7 +250,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 	public void simpleUpdate(float tpf) {
 
 		if (forceUpdateState) {
-			setGameState(insertState);
+			switchState(currentState, insertState);
 			forceUpdateState = false;
 		}
 
@@ -314,8 +314,9 @@ public class EscapeVR extends VRApplication implements EventListener {
 		if (currentState == state) {
 			return;
 		}
-
-		switchState(currentState, state);
+		insertState = state;
+		forceUpdateState = true;
+		
 	}
 
 	/**
@@ -401,15 +402,9 @@ public class EscapeVR extends VRApplication implements EventListener {
 		if (line.equals("START")) {
 			screenManager.hideScreen("lobby");
 
-			// do not call setGameState or switchState here as those run in
-			// a different thread, use updateStates and insertState instead
-			forceUpdateState = true;
-
-			// to skip the intro, set insertState to PLAYING
-			// insertState = GameState.PLAYING
-
-			insertState = GameState.PLAYING;
-
+	
+			
+			setGameState(GameState.PLAYING);
 			hud.setCenterText("");
 		} else if (line.startsWith("INITVR[")) {
 
