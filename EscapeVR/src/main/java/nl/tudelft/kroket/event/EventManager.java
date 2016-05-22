@@ -17,102 +17,105 @@ import com.jme3.scene.Spatial;
 
 public class EventManager {
 
-  /** Current class, used as tag for logger. */
-  private final String className = this.getClass().getSimpleName();
+	/** Current class, used as tag for logger. */
+	private final String className = this.getClass().getSimpleName();
 
-  /** Singleton logger instance. */
-  private Logger log = Logger.getInstance();
+	/** Singleton logger instance. */
+	private Logger log = Logger.getInstance();
 
-  private HashMap<String, EventObject> eventList = new HashMap<String, EventObject>();
-  private List<EventListener> listenerList = new ArrayList<EventListener>();
+	private HashMap<String, EventObject> eventList = new HashMap<String, EventObject>();
+	private List<EventListener> listenerList = new ArrayList<EventListener>();
 
-  private final int INPUT_GRACE_PERIOD = 400;
+	private final int INPUT_GRACE_PERIOD = 400;
 
-  ActionListener actionListener;
+	ActionListener actionListener;
 
-  long prevInput = 0;
+	long prevInput = 0;
 
-  private Node rootNode;
+	private Node rootNode;
 
-  private HashMap<String, Float> triggers = new HashMap<String, Float>();
+	private HashMap<String, Float> triggers = new HashMap<String, Float>();
 
-  /** 
-   * constructor of the event manager.
-   * 
-   * @param root - node
-   */
-  public EventManager(Node root) {
+	/**
+	 * constructor of the event manager.
+	 * 
+	 * @param root
+	 *            - node
+	 */
+	public EventManager(Node root) {
+		
+		log.info(className, "Initializing...");
 
-    this.rootNode = root;
+		this.rootNode = root;
 
-    actionListener = new ActionListener() {
+		actionListener = new ActionListener() {
 
-      private final Node rn = rootNode;
+			private final Node rn = rootNode;
 
-      public void onAction(String name, boolean keyPressed, float tpf) {
+			public void onAction(String name, boolean keyPressed, float tpf) {
 
-        if (!keyPressed) {
-          return;
-        }
+				if (!keyPressed) {
+					return;
+				}
 
-        long now = System.currentTimeMillis();
-        long delta = now - prevInput;
+				long now = System.currentTimeMillis();
+				long delta = now - prevInput;
 
-        if (delta < INPUT_GRACE_PERIOD) {
-          return;
-        }
+				if (delta < INPUT_GRACE_PERIOD) {
+					return;
+				}
 
-        prevInput = now;
+				prevInput = now;
 
-        for (Entry<String, Float> entry : triggers.entrySet()) {
+				for (Entry<String, Float> entry : triggers.entrySet()) {
 
-          Spatial object = rn.getChild(entry.getKey());
+					Spatial object = rn.getChild(entry.getKey());
 
-          if (InteractionEvent.checkConditions(object,
-              entry.getValue(), name)) {
-            InteractionEvent event = new InteractionEvent(this,
-                entry.getKey());
-            addEvent("interaction", event);
+					if (InteractionEvent.checkConditions(object,
+							entry.getValue(), name)) {
+						InteractionEvent event = new InteractionEvent(this,
+								entry.getKey());
+						addEvent("interaction", event);
 
-          }
-        }
-        fireEvents();
+					}
+				}
+				fireEvents();
 
-      }
+			}
 
-    };
-  }
+		};
+	}
 
-  public void registerTrigger(String objName, float threshold) {
-    triggers.put(objName, threshold);
-  }
+	public void registerTrigger(String objName, float threshold) {
+		triggers.put(objName, threshold);
+	}
 
-  private synchronized void fireEvents() {
-    Iterator<EventListener> i = listenerList.iterator();
-    for (EventObject event : eventList.values()) {
-      while (i.hasNext()) {
+	private synchronized void fireEvents() {
+		Iterator<EventListener> i = listenerList.iterator();
+		for (EventObject event : eventList.values()) {
+			while (i.hasNext()) {
 
-        ((EventListener) i.next()).handleEvent(event);
-      }
-    }
+				((EventListener) i.next()).handleEvent(event);
+			}
+		}
 
-    eventList.clear();
-  }
+		eventList.clear();
+	}
 
-  public synchronized void addEvent(String type, EventObject event) {
-    eventList.put(type, event);
-  }
+	public synchronized void addEvent(String type, EventObject event) {
+		eventList.put(type, event);
+	}
 
-  public synchronized void addListener(EventListener listener) {
-    listenerList.add(listener);
-  }
+	public synchronized void addListener(EventListener listener) {
+		listenerList.add(listener);
+	}
 
-  public synchronized void removeListener(EventListener listener) {
-    listenerList.remove(listener);
-  }
+	public synchronized void removeListener(EventListener listener) {
+		listenerList.remove(listener);
+	}
 
-  public InputListener getActionListener() {
-    return actionListener;
-  }
+	public InputListener getActionListener() {
+		return actionListener;
+	}
 
 }

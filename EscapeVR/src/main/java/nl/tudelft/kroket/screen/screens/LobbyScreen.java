@@ -32,5 +32,21 @@ public class LobbyScreen extends Screen {
 
     overlay = loadImage("overlay/waiting.png", width, height);
   }
+  
+
+  /**
+   * Show the overlay.
+   */
+  public void show() {
+    guiNode.attachChild(overlay);
+  }
+
+  /**
+   * Hide the overlay.
+   */
+
+  public void hide() {
+    guiNode.detachChild(overlay);
+  }
 }
 
