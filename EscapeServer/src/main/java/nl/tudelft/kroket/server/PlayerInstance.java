@@ -51,7 +51,8 @@ public class PlayerInstance implements Runnable {
 		try {
 			return PlayerType.valueOf(typeString);
 		} catch (IllegalArgumentException e) {
-			LOG.info(className, String.format("WARNING: Invalid type input: %s", typeString));
+			LOG.info(className, String.format(
+					"WARNING: Invalid type input: %s", typeString));
 			return PlayerType.NONE;
 		}
 	}

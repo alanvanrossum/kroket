@@ -255,7 +255,7 @@ public class EscapeServer implements Runnable {
 
 					// let everyone know a new player registered with the server
 					sendAll("Player " + player.getName() + " entered the game.");
-					
+
 					return player;
 				} else {
 
@@ -493,7 +493,6 @@ public class EscapeServer implements Runnable {
 	public static void sendVirtual(final String message) {
 		for (Entry<Socket, Player> entry : playerList.entrySet()) {
 
-			
 			if (entry.getValue() == null)
 				continue;
 			if (entry.getValue().getType() == PlayerType.VIRTUAL) {

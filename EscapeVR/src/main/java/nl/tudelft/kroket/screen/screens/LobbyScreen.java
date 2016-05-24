@@ -18,21 +18,19 @@ public class LobbyScreen extends Screen {
    * Constructor for LobbyScreen overlay object.
    * 
    * @param assetManager
-   *            reference to the AssetManager object
+   *          reference to the AssetManager object
    * @param guiNode
-   *            reference to the guiNode
+   *          reference to the guiNode
    * @param width
-   *            the width of the overlay
+   *          the width of the overlay
    * @param height
-   *            the height of the overlay
+   *          the height of the overlay
    */
-  public LobbyScreen(AssetManager assetManager, Node guiNode, float width,
-      float height) {
+  public LobbyScreen(AssetManager assetManager, Node guiNode, float width, float height) {
     super(name, assetManager, guiNode);
 
     overlay = loadImage("overlay/waiting.png", width, height);
   }
-  
 
   /**
    * Show the overlay.
@@ -49,4 +47,3 @@ public class LobbyScreen extends Screen {
     guiNode.detachChild(overlay);
   }
 }
-

@@ -6,6 +6,7 @@ import com.jme3.system.AppSettings;
 
 /**
  * Entry point for VR application.
+ * 
  * @author Team Kroket
  *
  */
@@ -15,7 +16,9 @@ public class Launcher {
 
   /**
    * The main method.
-   * @param args - String[]
+   * 
+   * @param args
+   *          - String[]
    */
   public static void main(String[] args) {
     mainApplication = new EscapeVR();
@@ -30,27 +33,20 @@ public class Launcher {
     // set application/window title
     settings.setTitle("EscapeVR");
 
-    
     // throw settings at the application
 
     mainApplication.setSettings(settings);
 
-    mainApplication.preconfigureVRApp(
-        PRECONFIG_PARAMETER.USE_CUSTOM_DISTORTION, false);
-    mainApplication.preconfigureVRApp(
-        PRECONFIG_PARAMETER.ENABLE_MIRROR_WINDOW, false);
-    mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.FORCE_VR_MODE,
-        false);
-    mainApplication.preconfigureVRApp(
-        PRECONFIG_PARAMETER.SET_GUI_CURVED_SURFACE, true);
+    mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.USE_CUSTOM_DISTORTION, false);
+    mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.ENABLE_MIRROR_WINDOW, false);
+    mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.FORCE_VR_MODE, false);
+    mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.SET_GUI_CURVED_SURFACE, true);
     mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.FLIP_EYES, false);
-    mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.SET_GUI_OVERDRAW,
-        true);
-    mainApplication.preconfigureVRApp(
-        PRECONFIG_PARAMETER.INSTANCE_VR_RENDERING, false);
+    mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.SET_GUI_OVERDRAW, true);
+    mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.INSTANCE_VR_RENDERING, false);
     mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.NO_GUI, false);
     mainApplication.preconfigureFrustrumNearFar(0.1f, 512f);
-    
+
     // finally, start the application
 
     mainApplication.start();
