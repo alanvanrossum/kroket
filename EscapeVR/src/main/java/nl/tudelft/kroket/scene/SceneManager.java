@@ -118,5 +118,9 @@ public class SceneManager {
 
     return scenes.get(name);
   }
+  
+  public HashMap<String, Scene> getScenes(){
+    return scenes;
+  }
 
 }
