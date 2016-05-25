@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>nl.tudelft.kroket</groupId>
-	<artifactId>EscapeServer</artifactId>
-	<version>0.4-SNAPSHOT</version>
+	<artifactId>EscapeHost</artifactId>
+	<version>0.5-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>EscapeServer</name>
+	<name>EscapeHost</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
@@ -35,7 +35,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>nl.tudelft.kroket.server.EscapeServer</mainClass>
+							<mainClass>nl.tudelft.kroket.server.EscapeHost</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>

@@ -125,6 +125,6 @@ public final class Logger {
         System.out.println(output);
       }
     }
-  }
 
+  }
 }

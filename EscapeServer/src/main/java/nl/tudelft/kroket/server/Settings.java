@@ -21,4 +21,6 @@ public class Settings {
 
   /** Number of seconds until retrying to bind to the socket. */
   public static final int INTERVAL_SOCKET_RETRY = 5;
+
+  public static final int THREAD_POOL_MAX = 10;
 }

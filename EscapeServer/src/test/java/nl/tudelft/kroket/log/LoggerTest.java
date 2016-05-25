@@ -18,7 +18,7 @@ public class LoggerTest {
 
   /**
    * Test method for
-   * {@link nl.tudelft.kroket.log.Logger#setLevel(nl.tudelft.kroket.log.Logger.LogLevel)}.
+   * {@link nl.tudelft.kroket.log.Logger#setLevel(nl.tudelft.kroket.log.Logger.LogLevel)} .
    */
   @Test
   public void testLevel() {
@@ -35,7 +35,7 @@ public class LoggerTest {
   }
 
   /**
-   * Test method for {@link nl.tudelft.kroket.log.Logger#info(java.lang.String, java.lang.String)}.
+   * Test method for {@link nl.tudelft.kroket.log.Logger#info(java.lang.String, java.lang.String)} .
    */
   @Test
   public void testInfo() {
@@ -43,7 +43,8 @@ public class LoggerTest {
   }
 
   /**
-   * Test method for {@link nl.tudelft.kroket.log.Logger#debug(java.lang.String, java.lang.String)}.
+   * Test method for {@link nl.tudelft.kroket.log.Logger#debug(java.lang.String, java.lang.String)}
+   * .
    */
   @Test
   public void testDebug() {
@@ -51,7 +52,8 @@ public class LoggerTest {
   }
 
   /**
-   * Test method for {@link nl.tudelft.kroket.log.Logger#error(java.lang.String, java.lang.String)}.
+   * Test method for {@link nl.tudelft.kroket.log.Logger#error(java.lang.String, java.lang.String)}
+   * .
    */
   @Test
   public void testError() {
