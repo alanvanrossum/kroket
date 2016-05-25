@@ -25,6 +25,8 @@
 *.war
 *.ear
 
+*.checkstyle
+
 # Project specific: EscapeVR
 /EscapeVR/target/
 /EscapeVR/dist/

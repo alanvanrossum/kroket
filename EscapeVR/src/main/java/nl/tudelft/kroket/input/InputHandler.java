@@ -26,42 +26,40 @@ public final class InputHandler {
 
   /** Current class, used as tag for logger. */
   private final String className = this.getClass().getSimpleName();
-  
+
   /** Singleton logger instance. */
   private Logger log = Logger.getInstance();
 
   /** Observer controls. */
-  private boolean moveForward, moveBackwards, rotateLeft, rotateRight,
-      rotateUp, rotateDown, tiltLeft, tiltRight, interact;
+  private boolean moveForward, moveBackwards, rotateLeft, rotateRight, rotateUp, rotateDown,
+      tiltLeft, tiltRight, interact;
 
   private InputManager inputManager;
-        private boolean flying;
+  private boolean flying;
   private Spatial observer;
   private boolean acceptInput = false;
   private EventManager eventManager;
 
-  public InputHandler(InputManager inputManager, Spatial observer,
-      EventManager eventManager, boolean acceptInput) {
+  public InputHandler(InputManager inputManager, Spatial observer, EventManager eventManager,
+      boolean acceptInput) {
 
     log.info(className, "Initializing...");
-                flying = true;
+    flying = true;
     this.inputManager = inputManager;
     this.observer = observer;
     this.acceptInput = acceptInput;
     setEventManager(eventManager);
-
 
     setAcceptInput(acceptInput);
 
     initControls();
     initJoysticks();
 
-
     if (eventManager == null) {
       log.debug(className, "Event manager is null");
     } else {
-      inputManager.addListener(eventManager.getActionListener(),
-          "Button A", "Button B", "Button X", "Button Y");
+      inputManager.addListener(eventManager.getActionListener(), "Button A", "Button B",
+          "Button X", "Button Y");
     }
   }
 
@@ -74,6 +72,7 @@ public final class InputHandler {
     this.acceptInput = acceptInput;
   }
   
+
   /**
    * Initialize keyboard controls.
    */
@@ -95,20 +94,17 @@ public final class InputHandler {
     inputManager.addMapping("dumpImages", new KeyTrigger(KeyInput.KEY_I));
 
     // register numpad keys, for when we don't have a keypad
-    inputManager.addMapping("Button A",
-        new KeyTrigger(KeyInput.KEY_NUMPAD1));
-    inputManager.addMapping("Button B",
-        new KeyTrigger(KeyInput.KEY_NUMPAD2));
-    inputManager.addMapping("Button X",
-        new KeyTrigger(KeyInput.KEY_NUMPAD3));
-    inputManager.addMapping("Button Y",
-        new KeyTrigger(KeyInput.KEY_NUMPAD4));
+    inputManager.addMapping("Button A", new KeyTrigger(KeyInput.KEY_NUMPAD1));
+    inputManager.addMapping("Button B", new KeyTrigger(KeyInput.KEY_NUMPAD2));
+    inputManager.addMapping("Button X", new KeyTrigger(KeyInput.KEY_NUMPAD3));
+    inputManager.addMapping("Button Y", new KeyTrigger(KeyInput.KEY_NUMPAD4));
+
+    inputManager.addMapping("Button A", new KeyTrigger(KeyInput.KEY_SPACE));
 
     inputManager.addMapping("goup", new KeyTrigger(KeyInput.KEY_U));
     inputManager.addMapping("godown", new KeyTrigger(KeyInput.KEY_J));
     inputManager.addMapping("tiltleft", new KeyTrigger(KeyInput.KEY_Y));
     inputManager.addMapping("tiltright", new KeyTrigger(KeyInput.KEY_H));
-
 
     inputManager.addListener(actionListener, "forward");
     inputManager.addListener(actionListener, "back");
@@ -155,32 +151,29 @@ public final class InputHandler {
       inputManager.addMapping("Button X", new JoyButtonTrigger(0, 2));
       inputManager.addMapping("Button Y", new JoyButtonTrigger(0, 3));
 
-      inputManager.addListener(actionListener, "Button A", "Button B",
-          "Button X", "Button Y");
+      inputManager.addListener(actionListener, "Button A", "Button B", "Button X", "Button Y");
 
       log.debug(className, "Joystick/gamepad controls registered.");
     }
   }
 
-
   /**
    * Handle user input. This should be called upon refresh.
    * 
-   * @param tpf time per frame
+   * @param tpf
+   *          time per frame
    */
   public void handleInput(float tpf) {
 
-    float height = VRApplication.getFinalObserverPosition().getY();
+    // float height = VRApplication.getFinalObserverPosition().getY();
 
-    // if (height < 8.6) {
     if (flying) {
       if (moveForward) {
-        observer.move(VRApplication.getFinalObserverRotation()
-            .getRotationColumn(2).mult(tpf * 8f));
+        observer.move(VRApplication.getFinalObserverRotation().getRotationColumn(2).mult(tpf * 8f));
       }
       if (moveBackwards) {
-        observer.move(VRApplication.getFinalObserverRotation()
-            .getRotationColumn(2).mult(-tpf * 8f));
+        observer
+            .move(VRApplication.getFinalObserverRotation().getRotationColumn(2).mult(-tpf * 8f));
       }
     } else {
       if (moveForward) {
@@ -195,61 +188,62 @@ public final class InputHandler {
       }
     }
 
-    // }
-
-    // else
-    // observer.move(0, -1, 0);
-
     float roomDepth = 12f;
     float roomWidth = 9f;
     float roomHeight = 6f;
 
+    float collisionThreshold = 0.9f;
+    float collisionOffset = 8.0f;
+    float deltaCorrected = collisionOffset * tpf;
+
+    float speedMovement = 0.75f;
+    float deltaMovement = speedMovement * tpf;
+
     // collide X
-    if (observer.getLocalTranslation().x > roomWidth - 1) {
-      observer.move(-8 * tpf, 0, 0);
+    if (observer.getLocalTranslation().x > roomWidth - collisionThreshold) {
+      observer.move(-deltaCorrected, 0, 0);
     }
-    if (observer.getLocalTranslation().x < -roomWidth + 1) {
-      observer.move(8 * tpf, 0, 0);
+    if (observer.getLocalTranslation().x < -roomWidth + collisionThreshold) {
+      observer.move(deltaCorrected, 0, 0);
     }
     // collideZ
-    if (observer.getLocalTranslation().z > roomDepth - 1) {
-      observer.move(0, 0, -8 * tpf);
+    if (observer.getLocalTranslation().z > roomDepth - collisionThreshold) {
+      observer.move(0, 0, -deltaCorrected);
     }
-    if (observer.getLocalTranslation().z < -roomDepth + 1) {
-      observer.move(0, 0, 8 * tpf);
+    if (observer.getLocalTranslation().z < -roomDepth + collisionThreshold) {
+      observer.move(0, 0, deltaCorrected);
     }
     // roof
     if (observer.getLocalTranslation().y > roomHeight) {
-      observer.move(0, -8 * tpf, 0);
+      observer.move(0, -deltaCorrected, 0);
     }
     // floor
     if (observer.getLocalTranslation().y < 0) {
-      observer.move(0, 8 * tpf, 0);
-    }
-    if (rotateUp) {
-      observer.rotate(-0.75f * tpf, 0, 0);
+      observer.move(0, deltaCorrected, 0);
     }
     if (rotateDown) {
-      observer.rotate(0.75f * tpf, 0, 0);
+      observer.rotate(deltaMovement, 0, 0);
+    }
+    if (rotateUp) {
+      observer.rotate(-deltaMovement, 0, 0);
+    }
+
+    if (tiltRight) {
+      observer.rotate(0, 0, deltaMovement);
     }
     if (tiltLeft) {
-      observer.rotate(0, 0, -0.75f * tpf);
+      observer.rotate(0, 0, -deltaMovement);
     }
-    if (tiltRight) {
-      observer.rotate(0, 0, 0.75f * tpf);
-    }
-
 
     if (rotateLeft) {
-      observer.rotate(0, 0.75f * tpf, 0);
+      observer.rotate(0, deltaMovement, 0);
     }
     if (rotateRight) {
-      observer.rotate(0, -0.75f * tpf, 0);
+      observer.rotate(0, -deltaMovement, 0);
     }
 
-
   }
-  
+
   /**
    * Default ActionListener object, used to process user input.
    */
@@ -267,7 +261,6 @@ public final class InputHandler {
 
         // log.debug(className, "You have pressed : " + name);
       }
-
 
       if (name.equals("incShift") && keyPressed) {
         VRGuiManager.adjustGuiDistance(-0.1f);
@@ -335,7 +328,9 @@ public final class InputHandler {
           tiltRight = false;
         }
 
-      } else if (name.equals("dumpImages")) {
+        // VRApplication.getVRHardware() will be null if no VR
+        // hardware is connected, so dumpImages would crash
+      } else if (VRApplication.getVRHardware() != null && name.equals("dumpImages")) {
         OpenVR.getCompositor().CompositorDumpImages.apply();
       } else if (name.equals("left")) {
         if (keyPressed) {
