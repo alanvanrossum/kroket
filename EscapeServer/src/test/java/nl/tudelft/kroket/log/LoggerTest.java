@@ -10,15 +10,14 @@ import org.junit.Test;
 
 public class LoggerTest {
 
-  
   /** The singleton reference to the Logger instance. */
   private static final Logger log = Logger.getInstance();
 
   /** Get current class name, used for logging output. */
   private final String className = this.getClass().getSimpleName();
-  
+
   /**
-   * Test method for 
+   * Test method for
    * {@link nl.tudelft.kroket.log.Logger#setLevel(nl.tudelft.kroket.log.Logger.LogLevel)}.
    */
   @Test
@@ -36,8 +35,7 @@ public class LoggerTest {
   }
 
   /**
-   * Test method for 
-   * {@link nl.tudelft.kroket.log.Logger#info(java.lang.String, java.lang.String)}.
+   * Test method for {@link nl.tudelft.kroket.log.Logger#info(java.lang.String, java.lang.String)}.
    */
   @Test
   public void testInfo() {
@@ -45,8 +43,7 @@ public class LoggerTest {
   }
 
   /**
-   * Test method for 
-   * {@link nl.tudelft.kroket.log.Logger#debug(java.lang.String, java.lang.String)}.
+   * Test method for {@link nl.tudelft.kroket.log.Logger#debug(java.lang.String, java.lang.String)}.
    */
   @Test
   public void testDebug() {
@@ -54,8 +51,7 @@ public class LoggerTest {
   }
 
   /**
-   * Test method for 
-   * {@link nl.tudelft.kroket.log.Logger#error(java.lang.String, java.lang.String)}.
+   * Test method for {@link nl.tudelft.kroket.log.Logger#error(java.lang.String, java.lang.String)}.
    */
   @Test
   public void testError() {

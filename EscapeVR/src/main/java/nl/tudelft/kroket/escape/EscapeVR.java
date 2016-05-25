@@ -231,7 +231,6 @@ public class EscapeVR extends VRApplication implements EventListener {
   }
 
   /**
-   * 
    * Main method to update the scene.
    */
   @Override

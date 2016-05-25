@@ -12,5 +12,5 @@ import nl.tudelft.kroket.event.events.InteractionEvent;
  */
 public interface EventListener {
   public void handleEvent(EventObject event);
- 
+
 }
