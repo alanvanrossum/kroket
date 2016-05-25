@@ -58,7 +58,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   Spatial observer;
 
   /** Current gamestate. */
-  private GameState currentState;
+  private GameState currentState = GameState.NONE;
 
   private boolean forceUpdateState = true;
 
