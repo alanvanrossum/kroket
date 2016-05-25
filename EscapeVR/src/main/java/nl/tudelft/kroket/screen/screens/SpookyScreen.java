@@ -14,6 +14,8 @@ import com.jme3.scene.Node;
 public class SpookyScreen extends Screen {
 
   private static final String name = "spooky";
+  
+  private long displayTime = 1000;
 
   private long hideTime = 0;
 
@@ -41,22 +43,16 @@ public class SpookyScreen extends Screen {
   @Override
   public void show() {
 
-    hideTime = System.currentTimeMillis() + 1000;
+    hideTime = System.currentTimeMillis() + displayTime;
 
     guiNode.attachChild(overlay);
   }
-
+  
+  @Override
   public void update() {
     if (System.currentTimeMillis() > hideTime) {
       hide();
     }
   }
 
-  /**
-   * Hide the overlay.
-   */
-
-  public void hide() {
-    guiNode.detachChild(overlay);
-  }
 }

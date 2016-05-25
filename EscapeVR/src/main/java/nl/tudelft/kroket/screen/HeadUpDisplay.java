@@ -21,7 +21,7 @@ public class HeadUpDisplay {
   BitmapText centerTextLabel;
   long centerTextTime = 0;
 
-  BitmapText topText;
+  BitmapText timerTextLabel;
 
   BitmapFont guiFont;
 
@@ -47,6 +47,14 @@ public class HeadUpDisplay {
     centerTextLabel.setSize(24);
 
     guiNode.attachChild(centerTextLabel);
+
+    timerTextLabel = createLabel(assetManager, "Interface/Fonts/Default.fnt",
+        guiCanvasSize.getX() * 0.5f - 145, (guiCanvasSize.getY() * 0.5f) + 245,
+        guiCanvasSize.getX(), guiCanvasSize.getY());
+    timerTextLabel.setSize(24);
+
+    guiNode.attachChild(timerTextLabel);
+
   }
 
   /**
@@ -56,9 +64,9 @@ public class HeadUpDisplay {
    *          assetmanager instance
    * @param fontpath
    *          path to the font asset
-   * @param x
+   * @param xPosition
    *          the x-coordinate to position the label to
-   * @param y
+   * @param yPosition
    *          the y-coordinate to position the label to
    * @param width
    *          the width of the label
@@ -66,12 +74,12 @@ public class HeadUpDisplay {
    *          the height of the label
    * @return the bitmap object
    */
-  protected BitmapText createLabel(AssetManager assetManager, String fontpath, float x, float y,
-      float width, float height) {
+  protected BitmapText createLabel(AssetManager assetManager, String fontpath, float xPosition,
+      float yPosition, float width, float height) {
     BitmapFont fnt = assetManager.loadFont(fontpath);
     BitmapText txt = new BitmapText(fnt, false);
     txt.setBox(new Rectangle(0, 0, width, height));
-    txt.setLocalTranslation(x, y, 0);
+    txt.setLocalTranslation(xPosition, yPosition, 0);
     return txt;
   }
 
@@ -90,13 +98,6 @@ public class HeadUpDisplay {
   }
 
   public void update() {
-
-    // log.debug(className, "update called");
-
-    // long current = System.currentTimeMillis();
-
-    // log.debug(className, "current = " + current + ", centerTextTime = " +
-    // centerTextTime);
 
     if (System.currentTimeMillis() > centerTextTime) {
       clearCenter();
