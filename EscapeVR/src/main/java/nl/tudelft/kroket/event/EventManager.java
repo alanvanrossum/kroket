@@ -36,12 +36,15 @@ public class EventManager {
 
   private HashMap<String, Float> triggers = new HashMap<String, Float>();
 
-  /** 
+  /**
    * constructor of the event manager.
    * 
-   * @param root - node
+   * @param root
+   *          - node
    */
   public EventManager(Node root) {
+
+    log.info(className, "Initializing...");
 
     this.rootNode = root;
 
@@ -68,10 +71,8 @@ public class EventManager {
 
           Spatial object = rn.getChild(entry.getKey());
 
-          if (InteractionEvent.checkConditions(object,
-              entry.getValue(), name)) {
-            InteractionEvent event = new InteractionEvent(this,
-                entry.getKey());
+          if (InteractionEvent.checkConditions(object, entry.getValue(), name)) {
+            InteractionEvent event = new InteractionEvent(this, entry.getKey());
             addEvent("interaction", event);
 
           }
@@ -88,11 +89,11 @@ public class EventManager {
   }
 
   private synchronized void fireEvents() {
-    Iterator<EventListener> i = listenerList.iterator();
+    Iterator<EventListener> iterator = listenerList.iterator();
     for (EventObject event : eventList.values()) {
-      while (i.hasNext()) {
+      while (iterator.hasNext()) {
 
-        ((EventListener) i.next()).handleEvent(event);
+        ((EventListener) iterator.next()).handleEvent(event);
       }
     }
 

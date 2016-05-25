@@ -23,54 +23,63 @@ public abstract class Scene {
   protected Node rootNode;
 
   protected ViewPort viewPort;
-  
+
   /**
    * Constructor for Scene object.
-   * @param name the name of the scene
-   * @param assetManager reference to the AssetManager
-   * @param rootNode reference to the rootNode used
-   * @param viewPort rerference to the viewPort used
+   * 
+   * @param name
+   *          the name of the scene
+   * @param assetManager
+   *          reference to the AssetManager
+   * @param rootNode
+   *          reference to the rootNode used
+   * @param viewPort
+   *          rerference to the viewPort used
    */
-  public Scene(String name, AssetManager assetManager, Node rootNode,
-      ViewPort viewPort) {
+  public Scene(String name, AssetManager assetManager, Node rootNode, ViewPort viewPort) {
     this.name = name;
     this.assetManager = assetManager;
     this.rootNode = rootNode;
     this.viewPort = viewPort;
   }
-  
+
   /**
    * Get the AssetManager reference used by this Scene.
+   * 
    * @return the AssetManager used
    */
 
   public AssetManager getAssetManager() {
     return assetManager;
   }
-  
 
   /**
    * Get the rootNode used by this scene.
+   * 
    * @return Node object
    */
   public Node getRootNode() {
     return rootNode;
   }
-  
 
   /**
-   * Get an object by name. 
-   * @param name the name of the object
+   * Get an object by name.
+   * 
+   * @param name
+   *          the name of the object
    * @return the object
    */
   public Spatial getObject(String name) {
     return objects.get(name);
   }
-  
+
   /**
    * Add an object to the rootNode to display it and store it.
-   * @param name the name of the object
-   * @param object the object
+   * 
+   * @param name
+   *          the name of the object
+   * @param object
+   *          the object
    */
   public void addObject(String name, Spatial object) {
     rootNode.attachChild(object);
@@ -81,7 +90,7 @@ public abstract class Scene {
   public abstract void createScene();
 
   // public abstract void destroyScene();
-  
+
   /**
    * Destroy the scene by detaching all children.
    */
@@ -90,6 +99,5 @@ public abstract class Scene {
       rootNode.detachChild(object);
     }
   }
-
 
 }

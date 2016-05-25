@@ -9,7 +9,6 @@ import nl.tudelft.kroket.log.Logger;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
 
-
 /**
  * ScreenManager used for handling overlays.
  * 
@@ -29,25 +28,23 @@ public class ScreenManager {
 
   AssetManager assetManager;
   Node guiNode;
-  
+
   float width;
   float height;
-
 
   /**
    * Constructor for ScreenManager.
    * 
    * @param assetManager
-   *            reference to the AssetManager
+   *          reference to the AssetManager
    * @param guiNode
-   *            reference to the guiNode
+   *          reference to the guiNode
    * @param width
-   *            the width of the overlays
+   *          the width of the overlays
    * @param height
-   *            the height of the overlays
+   *          the height of the overlays
    */
-  public ScreenManager(AssetManager assetManager, Node guiNode, float width,
-      float height) {
+  public ScreenManager(AssetManager assetManager, Node guiNode, float width, float height) {
 
     log.info(className, "Initializing...");
 
@@ -60,16 +57,17 @@ public class ScreenManager {
   /**
    * The load screen method.
    * 
-   * @param name - String
-   * @param screenClass - Class<? extends Screen>
+   * @param name
+   *          - String
+   * @param screenClass
+   *          - Class<? extends Screen>
    */
   public void loadScreen(String name, Class<? extends Screen> screenClass) {
 
     Screen newScreen = null;
     try {
-      Constructor<? extends Screen> ctor = screenClass
-          .getDeclaredConstructor(AssetManager.class, Node.class,
-              float.class, float.class);
+      Constructor<? extends Screen> ctor = screenClass.getDeclaredConstructor(AssetManager.class,
+          Node.class, float.class, float.class);
       newScreen = ctor.newInstance(assetManager, guiNode, width, height);
 
     } catch (InstantiationException e) {
@@ -96,29 +94,29 @@ public class ScreenManager {
    * Get a screen by name.
    * 
    * @param name
-   *            the name of the screen
+   *          the name of the screen
    * @return Screen object, could be null if not found
    */
 
   public Screen getScreen(String name) {
 
     if (!screens.containsKey(name)) {
-      log.error(className,
-          String.format("Screen %s does not exist.", name));
+      log.error(className, String.format("Screen %s does not exist.", name));
       return null;
     }
 
     return screens.get(name);
   }
 
-
   /**
    * Show a screen by name.
    * 
    * @param name
-   *            the name of the screen
+   *          the name of the screen
    */
   public void showScreen(String name) {
+
+    log.info(className, "Showing screen: " + name);
     getScreen(name).show();
   }
 
@@ -126,9 +124,15 @@ public class ScreenManager {
    * Hide a screen by name.
    * 
    * @param name
-   *            the name of the screen
+   *          the name of the screen
    */
   public void hideScreen(String name) {
     getScreen(name).hide();
+  }
+
+  public void update() {
+    for (Screen screen : screens.values()) {
+      screen.update();
+    }
   }
 }

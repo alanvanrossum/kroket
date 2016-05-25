@@ -1,6 +1,7 @@
 package nl.tudelft.kroket.screen.screens;
 
 import nl.tudelft.kroket.screen.Screen;
+
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
 
@@ -10,9 +11,11 @@ import com.jme3.scene.Node;
  * @author Team Kroket
  *
  */
-public class LobbyScreen extends Screen {
+public class SpookyScreen extends Screen {
 
-  private static final String name = "lobby";
+  private static final String name = "spooky";
+
+  private long hideTime = 0;
 
   /**
    * Constructor for LobbyScreen overlay object.
@@ -26,17 +29,27 @@ public class LobbyScreen extends Screen {
    * @param height
    *          the height of the overlay
    */
-  public LobbyScreen(AssetManager assetManager, Node guiNode, float width, float height) {
+  public SpookyScreen(AssetManager assetManager, Node guiNode, float width, float height) {
     super(name, assetManager, guiNode);
 
-    overlay = loadImage("overlay/waiting.png", width, height);
+    overlay = loadImage("overlay/spooky_face.png", width, height);
   }
 
   /**
    * Show the overlay.
    */
+  @Override
   public void show() {
+
+    hideTime = System.currentTimeMillis() + 1000;
+
     guiNode.attachChild(overlay);
+  }
+
+  public void update() {
+    if (System.currentTimeMillis() > hideTime) {
+      hide();
+    }
   }
 
   /**

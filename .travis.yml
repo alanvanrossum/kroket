@@ -6,7 +6,16 @@ env:
   - TEST_DIR=EscapeServer
   - TEST_DIR=EscapeVR
 
-script: cd $TEST_DIR && mvn site -B
+before_install:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+
+script: 
+  - cd $TEST_DIR
+  - mvn clean test -B 
+
+after_script:  
+  - mvn site -B
 
 after_script:
   - echo "== Speciaal voor Jurgeb en Sander =="

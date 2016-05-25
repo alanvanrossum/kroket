@@ -14,7 +14,7 @@ public abstract class Screen {
 
   String name;
   AssetManager assetManager;
-  Node guiNode;
+  protected Node guiNode;
   String rootPath = "Textures/";
   protected Picture overlay;
 
@@ -22,13 +22,13 @@ public abstract class Screen {
    * Constructor for Screen overlay object.
    * 
    * @param assetManager
-   *            reference to the AssetManager object
+   *          reference to the AssetManager object
    * @param guiNode
-   *            reference to the guiNode
+   *          reference to the guiNode
    * @param width
-   *            the width of the overlay
+   *          the width of the overlay
    * @param height
-   *            the height of the overlay
+   *          the height of the overlay
    */
   public Screen(String name, AssetManager assetManager, Node guiNode) {
     this.name = name;
@@ -40,11 +40,11 @@ public abstract class Screen {
    * Load an image as Picture object.
    * 
    * @param imgPath
-   *            the relative path to the image
+   *          the relative path to the image
    * @param width
-   *            the width of the image
+   *          the width of the image
    * @param height
-   *            the height of the image
+   *          the height of the image
    * @return Picture
    */
   public Picture loadImage(String imgPath, float width, float height) {
@@ -74,8 +74,12 @@ public abstract class Screen {
   /**
    * Hide the overlay.
    */
-
   public void hide() {
     guiNode.detachChild(overlay);
   }
+
+  public void update() {
+
+  }
+
 }
