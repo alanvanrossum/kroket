@@ -89,8 +89,6 @@ public abstract class Scene {
 
   public abstract void createScene();
 
-  // public abstract void destroyScene();
-
   /**
    * Destroy the scene by detaching all children.
    */

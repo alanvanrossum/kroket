@@ -58,7 +58,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   Spatial observer;
 
   /** Current gamestate. */
-  private GameState currentState = GameState.NONE;
+  private GameState currentState;
 
   private boolean forceUpdateState = true;
 
@@ -66,6 +66,9 @@ public class EscapeVR extends VRApplication implements EventListener {
   private GameState insertState = GameState.LOBBY; // start in lobby
 
   // private long initTime = System.currentTimeMillis();
+
+  private String remoteHost;
+  private int remotePort;
 
   static Random rand = new Random();
 
@@ -153,7 +156,6 @@ public class EscapeVR extends VRApplication implements EventListener {
           log.info(className, "Trying to register client...");
 
           client.sendMessage("REGISTER[Rift-User][VIRTUAL]");
-          client.sendMessage("TYPE[VIRTUAL]");
 
           DataInputStream stream = client.getStream();
 
@@ -223,8 +225,8 @@ public class EscapeVR extends VRApplication implements EventListener {
     VRApplication.setObserver(observer);
     rootNode.attachChild(observer);
 
-    // use magic VR mouse cusor (same usage as non-VR mouse cursor)
-    // getInputManager().setCursorVisible(true);
+    // do not use magic VR mouse cusor (same usage as non-VR mouse cursor)
+    getInputManager().setCursorVisible(false);
 
   }
 
@@ -359,14 +361,6 @@ public class EscapeVR extends VRApplication implements EventListener {
       audioManager.play("letthegamebegin");
       audioManager.play("ambient");
       spookyTime = System.currentTimeMillis() + randInt(20, 120) * 1000;
-      // System.out.println("spookyTime = " + spookyTime);
-      // System.out.println("currentTime = " +
-      // System.currentTimeMillis());
-
-      // System.out.println("Creating gas...");
-      // EscapeScene escapeScene = ((EscapeScene) sceneManager
-      // .getScene("escape"));
-      // escapeScene.createGas();
 
       break;
     case NONE:
@@ -464,6 +458,36 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     }
 
+  }
+
+  /**
+   * @return the remoteHost
+   */
+  public String getRemoteHost() {
+    return remoteHost;
+  }
+
+  /**
+   * @param remoteHost
+   *          the remoteHost to set
+   */
+  public void setRemoteHost(String remoteHost) {
+    this.remoteHost = remoteHost;
+  }
+
+  /**
+   * @return the remotePort
+   */
+  public int getRemotePort() {
+    return remotePort;
+  }
+
+  /**
+   * @param remotePort
+   *          the remotePort to set
+   */
+  public void setRemotePort(int remotePort) {
+    this.remotePort = remotePort;
   }
 
 }

@@ -21,7 +21,16 @@ public class Launcher {
    *          - String[]
    */
   public static void main(String[] args) {
+
+    String remoteHost = "127.0.0.1";
+
+    if (args.length > 1) {
+      remoteHost = args[0];
+    }
+
     mainApplication = new EscapeVR();
+
+    mainApplication.setRemoteHost(remoteHost);
 
     // create AppSettings object to enable joysticks/gamepads
     // and set the title
@@ -38,9 +47,9 @@ public class Launcher {
     mainApplication.setSettings(settings);
 
     mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.USE_CUSTOM_DISTORTION, false);
-    mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.ENABLE_MIRROR_WINDOW, false);
+    mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.ENABLE_MIRROR_WINDOW, true);
     mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.FORCE_VR_MODE, false);
-    mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.SET_GUI_CURVED_SURFACE, true);
+    mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.SET_GUI_CURVED_SURFACE, false);
     mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.FLIP_EYES, false);
     mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.SET_GUI_OVERDRAW, true);
     mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.INSTANCE_VR_RENDERING, false);
@@ -48,7 +57,6 @@ public class Launcher {
     mainApplication.preconfigureFrustrumNearFar(0.1f, 512f);
 
     // finally, start the application
-
     mainApplication.start();
 
   }

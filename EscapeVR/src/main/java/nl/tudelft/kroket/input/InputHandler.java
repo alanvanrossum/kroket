@@ -71,6 +71,7 @@ public final class InputHandler {
   public void setAcceptInput(boolean acceptInput) {
     this.acceptInput = acceptInput;
   }
+  
 
   /**
    * Initialize keyboard controls.
