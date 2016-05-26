@@ -56,6 +56,7 @@ public class AudioManager {
     this.rootPath = rootPath;
     this.rootNode = rootNode;
   }
+  
 
   /**
    * Load a file and create a new AudioNode.

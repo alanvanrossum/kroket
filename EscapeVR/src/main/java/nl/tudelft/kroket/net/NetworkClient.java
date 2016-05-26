@@ -25,11 +25,6 @@ public class NetworkClient {
   private DataOutputStream dataOutputStream;
   private DataInputStream dataInputStream;
 
-  /** Remote host's name or IP address. */
-  private String remoteHost;
-
-  /** Remote host's portnumber. */
-  private int remotePort;
 
   /**
    * Constructor for TCP NetworkClient object.
@@ -40,12 +35,9 @@ public class NetworkClient {
    *          port of the host to connect to
    */
 
-  public NetworkClient(String host, int port) {
+  public NetworkClient() {
 
     log.info(className, "Initializing...");
-
-    this.remoteHost = host;
-    this.remotePort = port;
   }
 
   private boolean initialised;
@@ -187,8 +179,8 @@ public class NetworkClient {
         dataOutputStream.close();
       }
 
-    } catch (IOException e) {
-      System.out.println(e);
+    } catch (IOException exception) {
+      System.out.println(exception);
     }
 
     socket = null;
@@ -196,13 +188,4 @@ public class NetworkClient {
     dataOutputStream = null;
   }
 
-  /**
-   * Connect to remote host.
-   * 
-   * @return true if connection established
-   */
-  public boolean connect() {
-    return connect(remoteHost, remotePort);
-
-  }
 }

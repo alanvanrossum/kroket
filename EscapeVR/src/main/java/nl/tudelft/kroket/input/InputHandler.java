@@ -32,7 +32,7 @@ public final class InputHandler {
 
   /** Observer controls. */
   private boolean moveForward, moveBackwards, rotateLeft, rotateRight, rotateUp, rotateDown,
-      tiltLeft, tiltRight, interact;
+      tiltLeft, tiltRight;
 
   private InputManager inputManager;
   private boolean flying;
@@ -91,7 +91,7 @@ public final class InputHandler {
     inputManager.addMapping("left", new KeyTrigger(KeyInput.KEY_A));
     inputManager.addMapping("right", new KeyTrigger(KeyInput.KEY_D));
     inputManager.addMapping("filter", new KeyTrigger(KeyInput.KEY_F));
-    inputManager.addMapping("dumpImages", new KeyTrigger(KeyInput.KEY_I));
+   // inputManager.addMapping("dumpImages", new KeyTrigger(KeyInput.KEY_I));
 
     // register numpad keys, for when we don't have a keypad
     inputManager.addMapping("Button A", new KeyTrigger(KeyInput.KEY_NUMPAD1));
@@ -101,10 +101,10 @@ public final class InputHandler {
 
     inputManager.addMapping("Button A", new KeyTrigger(KeyInput.KEY_SPACE));
 
-    inputManager.addMapping("goup", new KeyTrigger(KeyInput.KEY_U));
-    inputManager.addMapping("godown", new KeyTrigger(KeyInput.KEY_J));
-    inputManager.addMapping("tiltleft", new KeyTrigger(KeyInput.KEY_Y));
-    inputManager.addMapping("tiltright", new KeyTrigger(KeyInput.KEY_H));
+    inputManager.addMapping("goup", new KeyTrigger(KeyInput.KEY_J));
+    inputManager.addMapping("godown", new KeyTrigger(KeyInput.KEY_U));
+    inputManager.addMapping("tiltleft", new KeyTrigger(KeyInput.KEY_H));
+    inputManager.addMapping("tiltright", new KeyTrigger(KeyInput.KEY_K));
 
     inputManager.addListener(actionListener, "forward");
     inputManager.addListener(actionListener, "back");
@@ -345,13 +345,7 @@ public final class InputHandler {
           rotateRight = false;
         }
 
-      } else if (name.equals("toggle")) {
-        if (keyPressed) {
-          interact = true;
-        } else {
-          interact = false;
-        }
-      }
+      } 
 
     }
   };
