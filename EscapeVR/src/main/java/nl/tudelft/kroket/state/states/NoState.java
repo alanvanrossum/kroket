@@ -4,7 +4,7 @@ import nl.tudelft.kroket.escape.SetUp;
 import nl.tudelft.kroket.escape.Launcher;
 import nl.tudelft.kroket.state.State;
 
-public class NoState extends State{
+public class NoState implements State{
 
   public NoState(){
 

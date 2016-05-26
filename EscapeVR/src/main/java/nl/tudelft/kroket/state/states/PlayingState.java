@@ -5,7 +5,7 @@ import nl.tudelft.kroket.escape.Launcher;
 import nl.tudelft.kroket.escape.EscapeVR;
 import nl.tudelft.kroket.state.State;
 
-public class PlayingState extends State{
+public class PlayingState implements State{
 
   private SetUp escape;
 

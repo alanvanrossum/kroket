@@ -7,7 +7,7 @@ import nl.tudelft.kroket.escape.Launcher;
 import nl.tudelft.kroket.escape.EscapeVR.GameState;
 import nl.tudelft.kroket.state.State;
 
-public class IntroState extends State {
+public class IntroState implements State {
   
   private SetUp setUp; 
   
