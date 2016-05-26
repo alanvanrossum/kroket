@@ -18,7 +18,9 @@ public class ClientThread extends Thread {
   private String remoteHost;
   private int remotePort;
 
-  private int reconnInterval = 5;
+  private final int reconnInterval = 5;
+  
+  private String playerName = "RIFT-USER";
 
   EscapeVR callback;
   HeadUpDisplay hud;
@@ -36,6 +38,10 @@ public class ClientThread extends Thread {
 
     this.remoteHost = remoteHost;
     this.remotePort = remotePort;
+  }
+  
+  public void setPlayerName(String playerName) {
+      this.playerName = playerName;
   }
 
   private void sleep(int seconds) {
@@ -75,7 +81,7 @@ public class ClientThread extends Thread {
       hud.setCenterText("Connected, trying to register client.");
       log.info(className, "Trying to register client...");
 
-      client.sendMessage("REGISTER[Rift-User][VIRTUAL]");
+      client.sendMessage(String.format("REGISTER[%s][VIRTUAL]", playerName));
 
       DataInputStream stream = client.getStream();
 

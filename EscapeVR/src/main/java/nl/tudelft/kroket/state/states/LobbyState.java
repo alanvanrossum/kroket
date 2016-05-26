@@ -39,7 +39,6 @@ public class LobbyState implements GameState {
   }
 
   public static GameState getInstance() {
-    // TODO Auto-generated method stub
     return instance;
   }
 
