@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
+import nl.tudelft.kroket.escape.Launcher;
 import nl.tudelft.kroket.log.Logger;
 
 import com.jme3.asset.AssetManager;
@@ -44,12 +45,12 @@ public class ScreenManager {
    * @param height
    *          the height of the overlays
    */
-  public ScreenManager(AssetManager assetManager, Node guiNode, float width, float height) {
+  public ScreenManager(float width, float height) {
 
     log.info(className, "Initializing...");
 
-    this.assetManager = assetManager;
-    this.guiNode = guiNode;
+    this.assetManager = Launcher.mainApplication.getAssetManager();
+    this.guiNode = Launcher.mainApplication.getGuiNode();
     this.width = width;
     this.height = height;
   }

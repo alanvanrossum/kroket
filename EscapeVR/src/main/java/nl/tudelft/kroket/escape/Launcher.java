@@ -12,7 +12,7 @@ import com.jme3.system.AppSettings;
  */
 public class Launcher {
 
-  static EscapeVR mainApplication;
+  public static EscapeVR mainApplication;
 
   /**
    * The main method.
@@ -21,16 +21,14 @@ public class Launcher {
    *          - String[]
    */
   public static void main(String[] args) {
-
+    
     String remoteHost = "127.0.0.1";
 
     if (args.length > 1) {
       remoteHost = args[0];
     }
 
-    mainApplication = new EscapeVR();
-
-    mainApplication.setRemoteHost(remoteHost);
+    mainApplication = new EscapeVR(remoteHost);
 
     // create AppSettings object to enable joysticks/gamepads
     // and set the title
@@ -58,6 +56,7 @@ public class Launcher {
 
     // finally, start the application
     mainApplication.start();
+
 
   }
 

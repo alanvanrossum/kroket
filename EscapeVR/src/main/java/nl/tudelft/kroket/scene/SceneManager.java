@@ -8,6 +8,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 
+import nl.tudelft.kroket.escape.Launcher;
 import nl.tudelft.kroket.log.Logger;
 
 public class SceneManager {
@@ -40,15 +41,14 @@ public class SceneManager {
    * @param viewPort
    *            reference to the ViewPort
    */
-  public SceneManager(AssetManager assetManager, Node rootNode,
-      ViewPort viewPort) {
+  public SceneManager() {
 
     log.info(className, "Initializing...");
 
-    this.assetManager = assetManager;
-    this.rootNode = rootNode;
+    this.assetManager = Launcher.mainApplication.getAssetManager();
+    this.rootNode = Launcher.mainApplication.getRootNode();
 
-    this.viewPort = viewPort;
+    this.viewPort = Launcher.mainApplication.getViewPort();
   }
 
   /**
@@ -117,6 +117,10 @@ public class SceneManager {
     }
 
     return scenes.get(name);
+  }
+  
+  public HashMap<String, Scene> getScenes(){
+    return scenes;
   }
 
 }

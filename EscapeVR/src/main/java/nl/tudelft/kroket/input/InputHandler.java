@@ -13,6 +13,7 @@ import com.jme3.input.controls.KeyTrigger;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 
+import nl.tudelft.kroket.escape.Launcher;
 import nl.tudelft.kroket.event.EventManager;
 import nl.tudelft.kroket.log.Logger;
 
@@ -40,12 +41,12 @@ public final class InputHandler {
   private boolean acceptInput = false;
   private EventManager eventManager;
 
-  public InputHandler(InputManager inputManager, Spatial observer, EventManager eventManager,
+  public InputHandler(Spatial observer, EventManager eventManager,
       boolean acceptInput) {
 
     log.info(className, "Initializing...");
     flying = true;
-    this.inputManager = inputManager;
+    this.inputManager = Launcher.mainApplication.getInputManager();
     this.observer = observer;
     this.acceptInput = acceptInput;
     setEventManager(eventManager);

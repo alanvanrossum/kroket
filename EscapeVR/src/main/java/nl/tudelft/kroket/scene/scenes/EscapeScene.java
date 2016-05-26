@@ -31,6 +31,8 @@ public class EscapeScene extends Scene {
 
   private ColorRGBA gasColor = new ColorRGBA(0.3f, 0.9f, 0.2f, 1.0f);
 
+
+
   private String materialPath = "Common/MatDefs/Misc/Unshaded.j3md";
 
   public EscapeScene(String name, AssetManager assetManager, Node rootNode,
@@ -238,7 +240,21 @@ public class EscapeScene extends Scene {
     fpp.addFilter(fog);
     viewPort.addProcessor(fpp);
 
-
+  }
+  
+/**
+ * equals method for EscapeScene.
+ * returns true if all attributes are equal.
+ */
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof EscapeScene) {
+      EscapeScene that = (EscapeScene)obj;
+      return (this.translationY == that.translationY && this.roomDepth == that.roomDepth
+          && this.roomWidth == that.roomWidth && this.roomHeight == that.roomHeight
+          && this.gasColor.equals(that.gasColor) && this.materialPath.equals(that.materialPath));
+    }
+    return false;
   }
 
 }

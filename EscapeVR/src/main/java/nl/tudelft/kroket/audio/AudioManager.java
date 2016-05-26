@@ -2,6 +2,7 @@ package nl.tudelft.kroket.audio;
 
 import java.util.HashMap;
 
+import nl.tudelft.kroket.escape.Launcher;
 import nl.tudelft.kroket.log.Logger;
 
 import com.jme3.asset.AssetManager;
@@ -48,13 +49,13 @@ public class AudioManager {
    *          relative root path to assets
    */
 
-  public AudioManager(AssetManager assetManager, Node rootNode, String rootPath) {
+  public AudioManager(String rootPath) {
 
     log.info(className, "Initializing...");
 
-    this.assetManager = assetManager;
+    this.assetManager = Launcher.mainApplication.getAssetManager();
     this.rootPath = rootPath;
-    this.rootNode = rootNode;
+    this.rootNode = Launcher.mainApplication.getRootNode();
   }
 
   /**
@@ -185,6 +186,10 @@ public class AudioManager {
 
   public float getPlaybackTime(String name) {
     return getNode(name).getPlaybackTime();
+  }
+  
+  public HashMap<String, AudioNode> getAudioNodes(){
+    return audioNodes;
   }
 
 }
