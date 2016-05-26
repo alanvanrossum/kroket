@@ -1,8 +1,10 @@
 package nl.tudelft.kroket.escape;
 
+import java.util.EventObject;
 import java.util.Random;
 
 import jmevr.app.VRApplication;
+import nl.tudelft.kroket.event.EventListener;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.state.State;
 import nl.tudelft.kroket.state.states.IntroState;
@@ -15,7 +17,7 @@ import com.jme3.audio.AudioSource;
 import com.jme3.input.InputManager;
 import com.jme3.scene.Node;
 
-public class EscapeVR extends VRApplication{
+public class EscapeVR extends VRApplication implements EventListener{
 
   private SetUp setUp;
   private boolean forceUpdateState = true;
@@ -50,7 +52,7 @@ public class EscapeVR extends VRApplication{
     }
 
     initSetUp();
-    getSetUp().setRemoteHost(remoteHost);
+    setRemoteHost(remoteHost);
   }
 
   /**
@@ -164,4 +166,25 @@ public class EscapeVR extends VRApplication{
     return randomNum;
   }
 
+  /**
+   * @return the remoteHost
+   */
+  public String getRemoteHost() {
+    return remoteHost;
+  }
+
+  /**
+   * @param remoteHost
+   *          the remoteHost to set
+   */
+  public void setRemoteHost(String remoteHost) {
+    this.remoteHost = remoteHost;
+  }
+
+  @Override
+  public void handleEvent(EventObject event) {
+    setUp.handleEvent(event);
+    
+  }
+  
 }

@@ -56,7 +56,6 @@ public class SetUp implements EventListener {
  
   // private long initTime = System.currentTimeMillis();
 
-  private String remoteHost;
   private int remotePort;
 
   private EventManager eventManager;
@@ -321,20 +320,6 @@ public class SetUp implements EventListener {
 
   }
 
-  /**
-   * @return the remoteHost
-   */
-  public String getRemoteHost() {
-    return remoteHost;
-  }
-
-  /**
-   * @param remoteHost
-   *          the remoteHost to set
-   */
-  public void setRemoteHost(String remoteHost) {
-    this.remoteHost = remoteHost;
-  }
 
   /**
    * @return the remotePort
