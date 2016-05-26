@@ -221,26 +221,40 @@ public final class InputHandler {
       observer.move(0, deltaCorrected, 0);
     }
     if (rotateDown) {
-      observer.rotate(deltaMovement, 0, 0);
+      rotateX(deltaMovement);
     }
     if (rotateUp) {
-      observer.rotate(-deltaMovement, 0, 0);
+      rotateX(-deltaMovement);
+    }
+    
+    if (rotateLeft) {
+      rotateY(deltaMovement);
+    }
+    if (rotateRight) {
+      rotateY(-deltaMovement);
     }
 
     if (tiltRight) {
-      observer.rotate(0, 0, deltaMovement);
+      rotateZ(deltaMovement);
     }
     if (tiltLeft) {
-      observer.rotate(0, 0, -deltaMovement);
+      rotateZ(-deltaMovement);
     }
 
-    if (rotateLeft) {
-      observer.rotate(0, deltaMovement, 0);
-    }
-    if (rotateRight) {
-      observer.rotate(0, -deltaMovement, 0);
-    }
 
+
+  }
+  
+  private void rotateX(float delta) {
+    observer.rotate(delta, 0, 0);
+  }
+  
+  private void rotateY(float delta) {
+    observer.rotate(0, delta, 0);
+  }
+  
+  private void rotateZ(float delta) {
+    observer.rotate(0, 0, delta);
   }
 
   /**
