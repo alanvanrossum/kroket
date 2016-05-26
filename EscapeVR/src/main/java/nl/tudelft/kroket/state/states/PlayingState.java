@@ -35,6 +35,8 @@ public class PlayingState implements GameState {
     sceneManager.getScene("escape").createScene();
     audioManager.play("letthegamebegin");
     audioManager.play("ambient");
+    
+    
 
     setSpookyTime(INTERVAL_SPOOKYTIME_LOWER, INTERVAL_SPOOKYTIME_UPPER);
   }
@@ -68,10 +70,6 @@ public class PlayingState implements GameState {
     return randomNum;
   }
 
-  @Override
-  public void update(InputHandler inputHandler, float tpf) {
-    inputHandler.handleInput(tpf);
-    
-  }
+
 
 }

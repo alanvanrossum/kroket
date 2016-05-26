@@ -71,7 +71,6 @@ public final class InputHandler {
   public void setAcceptInput(boolean acceptInput) {
     this.acceptInput = acceptInput;
   }
-  
 
   /**
    * Initialize keyboard controls.
@@ -91,7 +90,7 @@ public final class InputHandler {
     inputManager.addMapping("left", new KeyTrigger(KeyInput.KEY_A));
     inputManager.addMapping("right", new KeyTrigger(KeyInput.KEY_D));
     inputManager.addMapping("filter", new KeyTrigger(KeyInput.KEY_F));
-   // inputManager.addMapping("dumpImages", new KeyTrigger(KeyInput.KEY_I));
+    // inputManager.addMapping("dumpImages", new KeyTrigger(KeyInput.KEY_I));
 
     // register numpad keys, for when we don't have a keypad
     inputManager.addMapping("Button A", new KeyTrigger(KeyInput.KEY_NUMPAD1));
@@ -256,31 +255,13 @@ public final class InputHandler {
       if (!acceptInput) {
         return;
       }
-
-      if (keyPressed) {
-
-        // log.debug(className, "You have pressed : " + name);
-      }
-
+      
       if (name.equals("incShift") && keyPressed) {
         VRGuiManager.adjustGuiDistance(-0.1f);
       } else if (name.equals("decShift") && keyPressed) {
         VRGuiManager.adjustGuiDistance(0.1f);
       }
 
-      // else if (name.equals("filter") && keyPressed) {
-      // // adding filters in realtime
-      // CartoonSSAO cartfilt = new CartoonSSAO();
-      // FilterPostProcessor fpp = new FilterPostProcessor(
-      // getAssetManager());
-      // fpp.addFilter(cartfilt);
-      // getViewPort().addProcessor(fpp);
-      // // filters added to main viewport during runtime,
-      // // move them into VR processing
-      // // (won't do anything if not in VR mode)
-      // VRApplication.moveScreenProcessingToVR();
-      // }
-      //
       if (name.equals("toggle")) {
         VRGuiManager.positionGui();
       }
@@ -345,7 +326,7 @@ public final class InputHandler {
           rotateRight = false;
         }
 
-      } 
+      }
 
     }
   };

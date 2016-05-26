@@ -23,7 +23,10 @@ public class Launcher {
   public static void main(String[] args) {
 
     String remoteHost = "127.0.0.1";
-
+    
+    
+    // allow remote address to be set using commandline arguments
+    // (for now)
     if (args.length > 1) {
       remoteHost = args[0];
     }

@@ -19,10 +19,7 @@ public class LobbyState implements GameState {
 
   }
 
-  @Override
-  public void update(InputHandler inputHandler, float tpf) {
 
-  }
 
   @Override
   public void begin(AudioManager audioManager, SceneManager sceneManager,
@@ -44,7 +41,7 @@ public class LobbyState implements GameState {
 
   @Override
   public void update(InputHandler inputHandler, ScreenManager screenManager, float tpf) {
-    //inputHandler.handleInput(tpf);
+    inputHandler.handleInput(tpf);
     
   }
 

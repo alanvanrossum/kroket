@@ -2,12 +2,14 @@ package nl.tudelft.kroket.escape;
 
 import java.util.EventObject;
 import java.util.HashMap;
+
 import nl.tudelft.kroket.audio.AudioManager;
 import nl.tudelft.kroket.event.EventListener;
 import nl.tudelft.kroket.event.EventManager;
 import nl.tudelft.kroket.event.events.InteractionEvent;
 import nl.tudelft.kroket.input.InputHandler;
 import nl.tudelft.kroket.log.Logger;
+import nl.tudelft.kroket.log.Logger.LogLevel;
 import nl.tudelft.kroket.net.ClientThread;
 import nl.tudelft.kroket.net.protocol.CommandParser;
 import nl.tudelft.kroket.scene.SceneManager;
@@ -18,6 +20,7 @@ import nl.tudelft.kroket.screen.screens.LobbyScreen;
 import nl.tudelft.kroket.screen.screens.SpookyScreen;
 import nl.tudelft.kroket.state.GameState;
 import nl.tudelft.kroket.state.StateManager;
+import nl.tudelft.kroket.state.states.LobbyState;
 import nl.tudelft.kroket.state.states.PlayingState;
 import jmevr.app.VRApplication;
 import jmevr.util.VRGuiManager;
@@ -33,6 +36,9 @@ import com.jme3.util.SkyFactory;
  * The EscapeVR class.
  */
 public class EscapeVR extends VRApplication implements EventListener {
+
+  /** Debug flag. */
+  private final boolean DEBUG = true;
 
   /** Current class, used as tag for logger. */
   private final String className = this.getClass().getSimpleName();
@@ -59,7 +65,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   private ClientThread clientThread;
 
-  private GameState initialState = PlayingState.getInstance();
+  private GameState initialState = LobbyState.getInstance();
 
   private void initStateManager() {
     stateManager = new StateManager(audioManager, inputHandler, sceneManager, screenManager,
@@ -135,8 +141,10 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     inputHandler.setAcceptInput(true);
 
-    // stateManager.setGameState(PlayingState.getInstance());
-
+    if (DEBUG) {
+      stateManager.setGameState(PlayingState.getInstance());
+      log.setLevel(LogLevel.ALL);
+    }
   }
 
   /**

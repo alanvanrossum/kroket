@@ -6,6 +6,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Simple command parser class (static) for parsing remote input strings.
+ * 
+ * @author Team Kroket
+ *
+ */
 public class CommandParser {
 
   /** Regular expression pattern to recognise parameters in commands. */

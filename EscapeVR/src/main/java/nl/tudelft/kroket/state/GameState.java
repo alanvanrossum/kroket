@@ -12,8 +12,6 @@ public interface GameState {
 
   public void stop(AudioManager audioManager, SceneManager sceneManager, ScreenManager screenManager);
 
-  public void update(InputHandler inputHandler, float tpf);
-
   public void update(InputHandler inputHandler, ScreenManager screenManager, float tpf);
 
 }

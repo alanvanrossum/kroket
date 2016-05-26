@@ -25,18 +25,10 @@ public class NetworkClient {
   private DataOutputStream dataOutputStream;
   private DataInputStream dataInputStream;
 
-
   /**
    * Constructor for TCP NetworkClient object.
-   * 
-   * @param host
-   *          string of the host to connect to
-   * @param port
-   *          port of the host to connect to
    */
-
   public NetworkClient() {
-
     log.info(className, "Initializing...");
   }
 
@@ -73,9 +65,6 @@ public class NetworkClient {
    * @return true if the client is connected.
    */
   public boolean isConnected() {
-
-    // can't be connected if socket
-    // isn't even initialised
 
     if (!isInitialised()) {
       return false;

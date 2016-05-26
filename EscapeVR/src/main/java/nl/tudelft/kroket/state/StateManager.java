@@ -12,14 +12,6 @@ public class StateManager {
   private SceneManager sceneManager;
   private ScreenManager screenManager;
 
-  // public StateManager(AudioManager audioManager, InputHandler inputHandler, SceneManager
-  // sceneManager, ScreenManager screenManager) {
-  // this.audioManager = audioManager;
-  // this.inputHandler = inputHandler;
-  // this.sceneManager = sceneManager;
-  // this.screenManager = screenManager;
-  // }
-
   public StateManager(AudioManager audioManager, InputHandler inputHandler,
       SceneManager sceneManager, ScreenManager screenManager, GameState initialState) {
     this.audioManager = audioManager;
@@ -29,6 +21,8 @@ public class StateManager {
 
     this.currentState = initialState;
 
+    inputHandler.setAcceptInput(true);
+
     currentState.begin(audioManager, sceneManager, screenManager);
   }
 
@@ -36,7 +30,7 @@ public class StateManager {
 
     screenManager.update(tpf);
 
-    currentState.update(inputHandler, tpf);
+    currentState.update(inputHandler, screenManager, tpf);
   }
 
   private GameState currentState;
