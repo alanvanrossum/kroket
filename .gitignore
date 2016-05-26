@@ -33,6 +33,3 @@
 /EscapeVR/build/
 /EscapeVR/bin/
 /EscapeVR/nbproject/private/
-
-# Project specific: EscapeServer
-/EscapeServer/target/

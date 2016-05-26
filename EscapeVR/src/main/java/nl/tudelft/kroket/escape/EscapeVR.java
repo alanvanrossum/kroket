@@ -63,7 +63,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   private boolean forceUpdateState = true;
 
   /** State to force game to. */
-  private GameState insertState = GameState.LOBBY; // start in lobby
+  private GameState insertState = GameState.PLAYING; // start in lobby
 
   // private long initTime = System.currentTimeMillis();
 
@@ -226,7 +226,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     rootNode.attachChild(observer);
 
     // do not use magic VR mouse cusor (same usage as non-VR mouse cursor)
-    getInputManager().setCursorVisible(false);
+    getInputManager().setCursorVisible(true);
 
   }
 
