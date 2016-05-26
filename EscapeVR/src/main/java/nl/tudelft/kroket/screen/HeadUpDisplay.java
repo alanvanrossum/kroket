@@ -1,5 +1,6 @@
 package nl.tudelft.kroket.screen;
 
+import nl.tudelft.kroket.escape.Launcher;
 import nl.tudelft.kroket.log.Logger;
 
 import com.jme3.asset.AssetManager;
@@ -30,30 +31,26 @@ public class HeadUpDisplay {
 
   /**
    * The HeadUpDisplay constructor.
-   * 
-   * @param assetManager
-   *          - AssetManager
-   * @param guiNode
-   *          - Node
    * @param guiCanvasSize
    *          - Vector2f
    */
-  public HeadUpDisplay(AssetManager assetManager, Node guiNode, Vector2f guiCanvasSize) {
-    guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
+  public HeadUpDisplay( Vector2f guiCanvasSize) {
+    AssetManager as = Launcher.mainApplication.getAssetManager();
+    guiFont = as.loadFont("Interface/Fonts/Default.fnt");
 
-    centerTextLabel = createLabel(assetManager, "Interface/Fonts/Default.fnt",
+    centerTextLabel = createLabel(as, "Interface/Fonts/Default.fnt",
         guiCanvasSize.getX() * 0.5f - 145, (guiCanvasSize.getY() * 0.5f) - 145,
         guiCanvasSize.getX(), guiCanvasSize.getY());
     centerTextLabel.setSize(24);
 
-    guiNode.attachChild(centerTextLabel);
+    Launcher.mainApplication.getGuiNode().attachChild(centerTextLabel);
 
-    timerTextLabel = createLabel(assetManager, "Interface/Fonts/Default.fnt",
+    timerTextLabel = createLabel(as, "Interface/Fonts/Default.fnt",
         guiCanvasSize.getX() * 0.5f - 145, (guiCanvasSize.getY() * 0.5f) + 245,
         guiCanvasSize.getX(), guiCanvasSize.getY());
     timerTextLabel.setSize(24);
 
-    guiNode.attachChild(timerTextLabel);
+    Launcher.mainApplication.getGuiNode().attachChild(timerTextLabel);
 
   }
 

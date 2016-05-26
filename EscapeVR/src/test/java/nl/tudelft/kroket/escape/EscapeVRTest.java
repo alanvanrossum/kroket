@@ -1,12 +1,16 @@
-/**
- * 
- */
 package nl.tudelft.kroket.escape;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+/**
+ * Class for simple unit tests for the EscapeVR class.
+ * @author Kroket
+ *
+ */
 public class EscapeVRTest {
 
 //  /**
@@ -26,7 +30,7 @@ public class EscapeVRTest {
 //  }
 //
 //  /**
-//   * Test method for {@link nl.tudelft.kroket.escape.EscapeVR#createLabel(com.jme3.asset.AssetManager, java.lang.String, float, float, float, float)}.
+//   * Test method for createlabel.
 //   */
 //  @Test
 //  public void testCreateLabel() {
@@ -34,7 +38,7 @@ public class EscapeVRTest {
 //  }
 //
 //  /**
-//   * Test method for {@link nl.tudelft.kroket.escape.EscapeVR#setGameState(nl.tudelft.kroket.escape.EscapeVR.GameState)}.
+//   * Test method for setgamestate.
 //   */
 //  @Test
 //  public void testSetGameState() {
