@@ -24,7 +24,7 @@ public class Launcher {
 
     String remoteHost = "127.0.0.1";
 
-    if (args.length > 1) {
+    if (args.length > 1 && !args[0].isEmpty()) {
       remoteHost = args[0];
     }
 

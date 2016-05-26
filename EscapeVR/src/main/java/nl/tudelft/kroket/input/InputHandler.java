@@ -32,14 +32,13 @@ public final class InputHandler {
 
   /** Observer controls. */
   private boolean moveForward, moveBackwards, rotateLeft, rotateRight, rotateUp, rotateDown,
-      tiltLeft, tiltRight, interact;
+      tiltLeft, tiltRight;
 
   private InputManager inputManager;
   private boolean flying;
   private Spatial observer;
   private boolean acceptInput = false;
-  private EventManager eventManager;
-
+  
   public InputHandler(InputManager inputManager, Spatial observer, EventManager eventManager,
       boolean acceptInput) {
 
@@ -64,7 +63,6 @@ public final class InputHandler {
   }
 
   public void setEventManager(EventManager em) {
-    this.eventManager = em;
 
   }
 
@@ -347,9 +345,7 @@ public final class InputHandler {
 
       } else if (name.equals("toggle")) {
         if (keyPressed) {
-          interact = true;
         } else {
-          interact = false;
         }
       }
 
