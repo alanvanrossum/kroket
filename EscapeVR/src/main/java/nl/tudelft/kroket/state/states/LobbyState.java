@@ -19,8 +19,6 @@ public class LobbyState implements GameState {
 
   }
 
-
-
   @Override
   public void begin(AudioManager audioManager, SceneManager sceneManager,
       ScreenManager screenManager) {
@@ -42,7 +40,7 @@ public class LobbyState implements GameState {
   @Override
   public void update(InputHandler inputHandler, ScreenManager screenManager, float tpf) {
     inputHandler.handleInput(tpf);
-    
+
   }
 
 }
