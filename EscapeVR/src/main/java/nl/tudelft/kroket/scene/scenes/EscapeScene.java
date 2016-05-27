@@ -224,7 +224,7 @@ public class EscapeScene extends Scene {
 
     addObject("painting2", painting);
   }
-
+  
   /**
    * Add gas to the scene.
    */

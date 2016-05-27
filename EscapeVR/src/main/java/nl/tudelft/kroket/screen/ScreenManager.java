@@ -129,11 +129,11 @@ public class ScreenManager {
   public void hideScreen(String name) {
     getScreen(name).hide();
   }
-  
+
   /**
    * Update the screen.
    */
-  public void update() {
+  public void update(float tpf) {
     for (Screen screen : screens.values()) {
       screen.update();
     }

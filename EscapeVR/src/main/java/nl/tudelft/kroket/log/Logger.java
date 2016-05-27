@@ -87,6 +87,12 @@ public class Logger {
 
     print(LogLevel.ERROR, tag, message);
   }
+  
+  private String formatOutput(LogLevel level, String tag, String message) {
+    String output = "[" + timeFormat.format(new Date()) + "]: "
+        + String.format(msgFormat, level, tag, message);
+    return output;
+  }
 
   /**
    * Print the message to standard output.
@@ -106,9 +112,7 @@ public class Logger {
 
     // only print messages if our settings allow us to
     if (level.ordinal() <= getLevel().ordinal()) {
-      String output = "[" + timeFormat.format(new Date()) + "]: "
-          + String.format(msgFormat, level, tag, message);
-
+      String output = formatOutput(level, tag, message);
       if (level == LogLevel.ERROR) {
         System.err.println(output);
       } else {

@@ -1,5 +1,6 @@
-package nl.tudelft.kroket.escape;
+package nl.tudelft.kroket;
 
+import nl.tudelft.kroket.escape.EscapeVR;
 import jmevr.app.VRApplication.PRECONFIG_PARAMETER;
 
 import com.jme3.system.AppSettings;
@@ -24,6 +25,8 @@ public class Launcher {
 
     String remoteHost = "127.0.0.1";
 
+    // allow remote address to be set using commandline arguments
+    // (for now)
     if (args.length > 1) {
       remoteHost = args[0];
     }
