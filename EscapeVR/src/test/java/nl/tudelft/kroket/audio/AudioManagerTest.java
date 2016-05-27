@@ -76,34 +76,7 @@ public class AudioManagerTest {
 
     assertTrue(audioManager.getNode("waiting").getStatus() == AudioSource.Status.Playing);
   }
-
-  /**
-   * Test for the stop audio method.
-   */
-  @Test
-  public void testStopAudio() {
-    audioManager.loadFile("waiting", "Soundtrack/waiting.wav", false, false, 5);
-    audioManager.loadFile("ambient", "Soundtrack/ambient.wav", false, false, 5);
-    //audioManager.getNode("waiting").play();
-    //audioManager.stopAudio();
-    for(AudioNode an : audioManager.getAudioNodes().values()){
-      //assertEquals(an.getStatus(), AudioSource.Status.Stopped);
-    }
-  }
   
-  /**
-   * Test for the stop method.
-   */
-  @Test
-  public void testStop() {
-    audioManager.loadFile("waiting", "Soundtrack/waiting.wav", false, false, 5);
-    //audioManager.getNode("waiting").play();
-    //audioManager.stopAudio();
-    //temp until we find how to start an audiorenderer that is not null
-    audioManager.getNode("waiting").setStatus(AudioSource.Status.Stopped); 
-
-    assertTrue(audioManager.getNode("waiting").getStatus() == AudioSource.Status.Stopped);
-  }
 
   /**
    * Test if the getNode method returns a node that is in the
