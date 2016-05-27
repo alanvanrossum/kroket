@@ -25,8 +25,8 @@ public class HeadUpDisplay {
 
   BitmapFont guiFont;
 
-  // clear text after 20 seconds
-  long delayTextClear = 8 * 1000;
+  // clear text after 8 seconds
+  private final long delayTextClear = 8 * 1000;
 
   /**
    * The HeadUpDisplay constructor.

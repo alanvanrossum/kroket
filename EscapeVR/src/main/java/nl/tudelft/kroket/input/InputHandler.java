@@ -32,7 +32,7 @@ public final class InputHandler {
 
   /** Observer controls. */
   private boolean moveForward, moveBackwards, rotateLeft, rotateRight, rotateUp, rotateDown,
-      tiltLeft, tiltRight, interact;
+      tiltLeft, tiltRight;
 
   private InputManager inputManager;
   private boolean flying;
@@ -71,7 +71,6 @@ public final class InputHandler {
   public void setAcceptInput(boolean acceptInput) {
     this.acceptInput = acceptInput;
   }
-  
 
   /**
    * Initialize keyboard controls.
@@ -91,7 +90,7 @@ public final class InputHandler {
     inputManager.addMapping("left", new KeyTrigger(KeyInput.KEY_A));
     inputManager.addMapping("right", new KeyTrigger(KeyInput.KEY_D));
     inputManager.addMapping("filter", new KeyTrigger(KeyInput.KEY_F));
-    inputManager.addMapping("dumpImages", new KeyTrigger(KeyInput.KEY_I));
+    // inputManager.addMapping("dumpImages", new KeyTrigger(KeyInput.KEY_I));
 
     // register numpad keys, for when we don't have a keypad
     inputManager.addMapping("Button A", new KeyTrigger(KeyInput.KEY_NUMPAD1));
@@ -101,10 +100,10 @@ public final class InputHandler {
 
     inputManager.addMapping("Button A", new KeyTrigger(KeyInput.KEY_SPACE));
 
-    inputManager.addMapping("goup", new KeyTrigger(KeyInput.KEY_U));
-    inputManager.addMapping("godown", new KeyTrigger(KeyInput.KEY_J));
-    inputManager.addMapping("tiltleft", new KeyTrigger(KeyInput.KEY_Y));
-    inputManager.addMapping("tiltright", new KeyTrigger(KeyInput.KEY_H));
+    inputManager.addMapping("goup", new KeyTrigger(KeyInput.KEY_J));
+    inputManager.addMapping("godown", new KeyTrigger(KeyInput.KEY_U));
+    inputManager.addMapping("tiltleft", new KeyTrigger(KeyInput.KEY_H));
+    inputManager.addMapping("tiltright", new KeyTrigger(KeyInput.KEY_K));
 
     inputManager.addListener(actionListener, "forward");
     inputManager.addListener(actionListener, "back");
@@ -222,26 +221,40 @@ public final class InputHandler {
       observer.move(0, deltaCorrected, 0);
     }
     if (rotateDown) {
-      observer.rotate(deltaMovement, 0, 0);
+      rotateX(deltaMovement);
     }
     if (rotateUp) {
-      observer.rotate(-deltaMovement, 0, 0);
+      rotateX(-deltaMovement);
+    }
+    
+    if (rotateLeft) {
+      rotateY(deltaMovement);
+    }
+    if (rotateRight) {
+      rotateY(-deltaMovement);
     }
 
     if (tiltRight) {
-      observer.rotate(0, 0, deltaMovement);
+      rotateZ(deltaMovement);
     }
     if (tiltLeft) {
-      observer.rotate(0, 0, -deltaMovement);
+      rotateZ(-deltaMovement);
     }
 
-    if (rotateLeft) {
-      observer.rotate(0, deltaMovement, 0);
-    }
-    if (rotateRight) {
-      observer.rotate(0, -deltaMovement, 0);
-    }
 
+
+  }
+  
+  private void rotateX(float delta) {
+    observer.rotate(delta, 0, 0);
+  }
+  
+  private void rotateY(float delta) {
+    observer.rotate(0, delta, 0);
+  }
+  
+  private void rotateZ(float delta) {
+    observer.rotate(0, 0, delta);
   }
 
   /**
@@ -256,31 +269,13 @@ public final class InputHandler {
       if (!acceptInput) {
         return;
       }
-
-      if (keyPressed) {
-
-        // log.debug(className, "You have pressed : " + name);
-      }
-
+      
       if (name.equals("incShift") && keyPressed) {
         VRGuiManager.adjustGuiDistance(-0.1f);
       } else if (name.equals("decShift") && keyPressed) {
         VRGuiManager.adjustGuiDistance(0.1f);
       }
 
-      // else if (name.equals("filter") && keyPressed) {
-      // // adding filters in realtime
-      // CartoonSSAO cartfilt = new CartoonSSAO();
-      // FilterPostProcessor fpp = new FilterPostProcessor(
-      // getAssetManager());
-      // fpp.addFilter(cartfilt);
-      // getViewPort().addProcessor(fpp);
-      // // filters added to main viewport during runtime,
-      // // move them into VR processing
-      // // (won't do anything if not in VR mode)
-      // VRApplication.moveScreenProcessingToVR();
-      // }
-      //
       if (name.equals("toggle")) {
         VRGuiManager.positionGui();
       }
@@ -345,12 +340,6 @@ public final class InputHandler {
           rotateRight = false;
         }
 
-      } else if (name.equals("toggle")) {
-        if (keyPressed) {
-          interact = true;
-        } else {
-          interact = false;
-        }
       }
 
     }

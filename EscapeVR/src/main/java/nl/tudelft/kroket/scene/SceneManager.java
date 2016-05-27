@@ -29,6 +29,8 @@ public class SceneManager {
 
   /** Reference to the ViewPort object. */
   private ViewPort viewPort;
+  
+ // private SceneManager instance = new SceneManager(getAssetManager(), getRootNode(), getViewPort());
 
   /**
    * Constructor for SceneManager object.

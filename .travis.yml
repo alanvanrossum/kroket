@@ -11,10 +11,7 @@ before_install:
 
 script: 
   - cd $TEST_DIR
-  - mvn clean test -B 
-
-after_script:  
-  - mvn site -B
+  - mvn clean install site -B 
 
 after_script:
   - echo "== Speciaal voor Jurgeb en Sander =="
