@@ -3,6 +3,9 @@ package nl.tudelft.kroket.escape;
 import java.util.EventObject;
 import java.util.HashMap;
 
+import jmevr.app.VRApplication;
+import jmevr.util.VRGuiManager;
+import jmevr.util.VRGuiManager.POSITIONING_MODE;
 import nl.tudelft.kroket.audio.AudioManager;
 import nl.tudelft.kroket.event.EventListener;
 import nl.tudelft.kroket.event.EventManager;
@@ -22,9 +25,6 @@ import nl.tudelft.kroket.state.GameState;
 import nl.tudelft.kroket.state.StateManager;
 import nl.tudelft.kroket.state.states.LobbyState;
 import nl.tudelft.kroket.state.states.PlayingState;
-import jmevr.app.VRApplication;
-import jmevr.util.VRGuiManager;
-import jmevr.util.VRGuiManager.POSITIONING_MODE;
 
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;

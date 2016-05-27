@@ -3,13 +3,16 @@ package nl.tudelft.kroket.scene.scenes;
 import nl.tudelft.kroket.scene.Scene;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.FogFilter;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.MagFilter;
@@ -33,8 +36,7 @@ public class EscapeScene extends Scene {
 
   private String materialPath = "Common/MatDefs/Misc/Unshaded.j3md";
 
-  public EscapeScene(String name, AssetManager assetManager, Node rootNode,
-      ViewPort viewPort) {
+  public EscapeScene(String name, AssetManager assetManager, Node rootNode, ViewPort viewPort) {
     super(name, assetManager, rootNode, viewPort);
 
   }
@@ -56,13 +58,28 @@ public class EscapeScene extends Scene {
 
     createPainting("Textures/Painting/painting.jpg");
     createPainting2("Textures/Painting/painting2.jpg");
+
+    createLight();
+    createCube();
+  }
+
+  private void createLight() {
+    DirectionalLight sun = new DirectionalLight();
+    sun.setDirection((new Vector3f(0, 5, 0)).normalizeLocal());
+    sun.setColor(ColorRGBA.White);
+    rootNode.addLight(sun);
+  }
+
+  private void createCube() {
+    Spatial cube = assetManager.loadModel("Models/blaap/blaap.j3o");
+    rootNode.attachChild(cube);
   }
 
   /**
    * Create four walls using a texture.
    * 
    * @param texturePath
-   *            the relative path to the texture
+   *          the relative path to the texture
    */
   private void createWalls(String texturePath) {
 
@@ -75,29 +92,25 @@ public class EscapeScene extends Scene {
     wallMaterial.setTexture("ColorMap", wallTexture);
 
     // wall to the right of player spawn
-    Geometry wall1 = new Geometry("wall-east", new Box(.1f, roomHeight,
-        roomDepth));
+    Geometry wall1 = new Geometry("wall-east", new Box(.1f, roomHeight, roomDepth));
     wall1.setMaterial(wallMaterial);
     wall1.move(-roomWidth, translationY, 0);
     addObject("wall-east", wall1);
 
     // wall to the left of player spawn
-    Geometry wall2 = new Geometry("wall-west", new Box(.1f, roomHeight,
-        roomDepth));
+    Geometry wall2 = new Geometry("wall-west", new Box(.1f, roomHeight, roomDepth));
     wall2.setMaterial(wallMaterial);
     wall2.move(roomWidth, translationY, 0);
     addObject("wall-west", wall2);
 
     // wall in front of player
-    Geometry wall3 = new Geometry("wall-north", new Box(roomWidth,
-        roomHeight, .1f));
+    Geometry wall3 = new Geometry("wall-north", new Box(roomWidth, roomHeight, .1f));
     wall3.setMaterial(wallMaterial);
     wall3.move(0, translationY, roomDepth);
     addObject("wall-north", wall3);
 
     // wall behind player spawn
-    Geometry wall4 = new Geometry("wall-south", new Box(roomWidth,
-        roomHeight, .1f));
+    Geometry wall4 = new Geometry("wall-south", new Box(roomWidth, roomHeight, .1f));
     wall4.setMaterial(wallMaterial);
     wall4.move(0, translationY, -roomDepth);
     addObject("wall-south", wall4);
@@ -107,7 +120,7 @@ public class EscapeScene extends Scene {
    * Create a floor object.
    * 
    * @param texturePath
-   *            the relative path to the texture
+   *          the relative path to the texture
    */
 
   private void createFloor(String texturePath) {
@@ -120,8 +133,7 @@ public class EscapeScene extends Scene {
     Material floorMaterial = new Material(assetManager, materialPath);
     floorMaterial.setTexture("ColorMap", floorTexture);
 
-    Geometry floor = new Geometry("floor", new Box(roomWidth, .1f,
-        roomDepth));
+    Geometry floor = new Geometry("floor", new Box(roomWidth, .1f, roomDepth));
     floor.move(0f, translationY - roomHeight, 0f);
     floor.setMaterial(floorMaterial);
 
@@ -132,7 +144,7 @@ public class EscapeScene extends Scene {
    * Create and draw a ceiling.
    * 
    * @param texturePath
-   *            the relative path to the texture
+   *          the relative path to the texture
    */
 
   private void createCeiling(String texturePath) {
@@ -144,8 +156,7 @@ public class EscapeScene extends Scene {
     Material ceilingMaterial = new Material(assetManager, materialPath);
     ceilingMaterial.setTexture("ColorMap", ceilingTexture);
 
-    Geometry ceiling = new Geometry("ceiling", new Box(roomWidth, .1f,
-        roomDepth));
+    Geometry ceiling = new Geometry("ceiling", new Box(roomWidth, .1f, roomDepth));
 
     ceiling.move(0f, translationY + roomHeight, 0f);
     ceiling.setMaterial(ceilingMaterial);
@@ -157,7 +168,7 @@ public class EscapeScene extends Scene {
    * Create and draw a floor.
    * 
    * @param texturePath
-   *            the relative path to the texture
+   *          the relative path to the texture
    */
   private void createDoor(String texturePath) {
 
@@ -172,8 +183,7 @@ public class EscapeScene extends Scene {
     Material doorMaterial = new Material(assetManager, materialPath);
     doorMaterial.setTexture("ColorMap", doorTexture);
 
-    Geometry door = new Geometry("door",
-        new Box(doorWidth, doorHeight, .2f));
+    Geometry door = new Geometry("door", new Box(doorWidth, doorHeight, .2f));
 
     door.move(0, translationY - 2.5f, roomDepth);
     door.setMaterial(doorMaterial);
@@ -193,8 +203,7 @@ public class EscapeScene extends Scene {
     Material paintingMaterial = new Material(assetManager, materialPath);
     paintingMaterial.setTexture("ColorMap", doorTexture);
 
-    Geometry painting = new Geometry("painting", new Box(.01f,
-        paintingHeight, paintingWidth));
+    Geometry painting = new Geometry("painting", new Box(.01f, paintingHeight, paintingWidth));
 
     painting.move(roomWidth - 0.1f, translationY, 0);
 
@@ -215,8 +224,7 @@ public class EscapeScene extends Scene {
     Material paintingMaterial = new Material(assetManager, materialPath);
     paintingMaterial.setTexture("ColorMap", doorTexture);
 
-    Geometry painting = new Geometry("painting2", new Box(paintingWidth,
-        paintingHeight, 0.1f));
+    Geometry painting = new Geometry("painting2", new Box(paintingWidth, paintingHeight, 0.1f));
 
     painting.move(-2f, translationY, -roomDepth + 0.1f);
 
@@ -224,7 +232,7 @@ public class EscapeScene extends Scene {
 
     addObject("painting2", painting);
   }
-  
+
   /**
    * Add gas to the scene.
    */
@@ -238,7 +246,22 @@ public class EscapeScene extends Scene {
     fpp.addFilter(fog);
     viewPort.addProcessor(fpp);
 
+  }
 
+  /**
+   * Equals method for EscapeScene.
+   * 
+   * returns true if all attributes are equal
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof EscapeScene) {
+      EscapeScene that = (EscapeScene) obj;
+      return (this.translationY == that.translationY && this.roomDepth == that.roomDepth
+          && this.roomWidth == that.roomWidth && this.roomHeight == that.roomHeight
+          && this.gasColor.equals(that.gasColor) && this.materialPath.equals(that.materialPath));
+    }
+    return false;
   }
 
 }
