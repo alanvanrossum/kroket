@@ -5,8 +5,10 @@ import nl.tudelft.kroket.scene.Scene;
 import com.jme3.asset.AssetManager;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
+import com.jme3.light.SpotLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.FogFilter;
@@ -62,6 +64,7 @@ public class EscapeScene extends Scene {
 
     // createDesk("Models/desk.obj", "Models/desktex/DeskWood_Diffuse.tga");
 
+     createLight(-2, 5, -2); 
     createLight(2.8f, 2.8f, -2.8f);
     createLight(2.8f, -2.8f, -2.8f);
 
@@ -69,11 +72,56 @@ public class EscapeScene extends Scene {
     // createIrene();
 
     createCube();
+    
+    createLamp();
+    createWalls("Textures/test_wall.png");
+    //createFloor("Textures/wall.png");
+    
+    
+    createSurfaces();
+    
+//    createLight(5, -2, 5);
+    
 
+    /** A cone-shaped spotlight with location, direction, range */
+    SpotLight spot = new SpotLight(); 
+    spot = new SpotLight(); 
+    spot.setSpotRange(500); 
+    spot.setSpotOuterAngle(20 * FastMath.DEG_TO_RAD); 
+    spot.setSpotInnerAngle(15 * FastMath.DEG_TO_RAD); 
+    spot.setDirection(new Vector3f(0, -1, 0)); 
+    spot.setPosition(new Vector3f(0, 4, 0)); 
+    rootNode.addLight(spot); 
+    
+    /** A white ambient light source. */ 
+    AmbientLight ambient = new AmbientLight();
+    ambient.setColor(ColorRGBA.White);
+    rootNode.addLight(ambient);    
+    
+    /** A white, directional light source */ 
+    DirectionalLight sun = new DirectionalLight();
+    sun.setDirection((new Vector3f(-0.5f, -0.5f, -0.5f)).normalizeLocal());
+    sun.setColor(ColorRGBA.White);
+    rootNode.addLight(sun); 
+  }
+  
+  
+    private void createSurfaces() {
+    Spatial surface = assetManager.loadModel("Models/flat/flat.j3o");
+    surface.move(0, 4, 0);
+    rootNode.attachChild(surface);
+  }
+  
+  
+  private void createLamp() {
+    Spatial lamp = assetManager.loadModel("Models/Petroleum_Lamp/Petroleum_Lamp.j3o");
+    lamp.move(5, -0.33f, 5);
+    rootNode.attachChild(lamp);
   }
 
   private void createCube() {
     Spatial cube = assetManager.loadModel("Models/tudcube/tudcube.j3o");
+    cube.move(-2, -2, -2);
     rootNode.attachChild(cube);
   }
 
