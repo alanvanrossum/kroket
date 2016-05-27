@@ -59,8 +59,8 @@ public class EscapeScene extends Scene {
     createPainting("Textures/Painting/painting.jpg");
     createPainting2("Textures/Painting/painting2.jpg");
 
-    createLight();
-    createCube();
+   // createLight();
+   //createCube();
   }
 
   private void createLight() {
@@ -71,7 +71,7 @@ public class EscapeScene extends Scene {
   }
 
   private void createCube() {
-    Spatial cube = assetManager.loadModel("Models/blaap/blaap.j3o");
+    Spatial cube = assetManager.loadModel("Models/tudcube/tudcube.j3o");
     rootNode.attachChild(cube);
   }
 
