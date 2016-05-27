@@ -71,7 +71,7 @@ public class EscapeScene extends Scene {
   }
 
   private void createCube() {
-    Spatial cube = assetManager.loadModel("Models/tudcube/tudcube.j3o");
+    Spatial cube = assetManager.loadModel("Models/blaap/blaap.j3o");
     rootNode.attachChild(cube);
   }
 
