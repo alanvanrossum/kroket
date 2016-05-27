@@ -6,6 +6,7 @@
 
 For CI purposes, our app was relocated to a different repository, click [here](https://github.com/alanvanrossum/kroketapp/).
 
+Our gamehost is located [here](https://github.com/alanvanrossum/krokethost/).
 
 [![Kroket game studios](http://i.imgur.com/mzLuJ9p.png)](https://github.com/alanvanrossum/kroket)
 
@@ -55,6 +56,14 @@ For CI purposes, our app was relocated to a different repository, click [here](h
 - Sprint retrospective 4
 
 [Week 5 documents](https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek5)
+
+### Week 6
+
+- Architecture design
+- Sprint backlog 6
+- Sprint retrospective 5
+
+[Week 6 documents](https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek6)
 
 ## Introduction
 

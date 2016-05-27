@@ -1,20 +1,14 @@
 package nl.tudelft.kroket.event;
 
+import java.util.EventObject;
+
 /**
  * EventListener interface.
+ * 
  * @author Team Kroket
  *
  */
-public interface EventListener extends Event {
-
-  // please do NOT remove this interface
-  
-//  @Override
-//  public default void handleEvent(EventObject e) {
-//    
-//    if (e instanceof InteractionEvent) {
-//      System.out.println("event received: " + e.toString());
-//    }
-//  }
+public interface EventListener {
+  public void handleEvent(EventObject event);
 
 }

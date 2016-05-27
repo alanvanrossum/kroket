@@ -21,9 +21,10 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
+
+*.checkstyle
 
 # Project specific: EscapeVR
 /EscapeVR/target/
@@ -32,6 +33,3 @@
 /EscapeVR/build/
 /EscapeVR/bin/
 /EscapeVR/nbproject/private/
-
-# Project specific: EscapeServer
-/EscapeServer/target/
