@@ -2,13 +2,13 @@
 ## Computer Games context
 ### Team Kroket
 
-[![Build Status](https://api.travis-ci.org/alanvanrossum/kroket.svg?branch=master)](https://travis-ci.org/alanvanrossum/kroket)
-
-For CI purposes, our app was relocated to a different repository, click [here](https://github.com/alanvanrossum/kroketapp/).
-
-Our gamehost is located [here](https://github.com/alanvanrossum/krokethost/).
-
 [![Kroket game studios](http://i.imgur.com/hQs8FMT.png)](https://github.com/alanvanrossum/kroket)
+
+| Repository        | Build status  | 
+| ----------------- |:-------------:|
+| [Main (VR client) repository](https://github.com/alanvanrossum/kroket/) 	| [![Build Status](https://api.travis-ci.org/alanvanrossum/kroket.svg?branch=master)](https://travis-ci.org/alanvanrossum/kroket)|
+| [Gamehost/server repository](https://github.com/alanvanrossum/krokethost/)  | [![Build Status](https://api.travis-ci.org/alanvanrossum/krokethost.svg?branch=master)](https://travis-ci.org/alanvanrossum/krokethost)|
+| [Android client repository](https://github.com/alanvanrossum/kroketapp/)    | [![Build Status](https://api.travis-ci.org/alanvanrossum/kroketapp.svg?branch=master)](https://travis-ci.org/alanvanrossum/kroketapp)|
 
 # Documentation
 
