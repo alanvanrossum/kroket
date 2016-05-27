@@ -58,7 +58,7 @@ public class EscapeScene extends Scene {
 
     createPainting("Textures/Painting/painting.jpg");
     createPainting2("Textures/Painting/painting2.jpg");
-    
+
     createLight();
     createCube();
   }
@@ -246,6 +246,22 @@ public class EscapeScene extends Scene {
     fpp.addFilter(fog);
     viewPort.addProcessor(fpp);
 
+  }
+
+  /**
+   * Equals method for EscapeScene.
+   * 
+   * returns true if all attributes are equal
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof EscapeScene) {
+      EscapeScene that = (EscapeScene) obj;
+      return (this.translationY == that.translationY && this.roomDepth == that.roomDepth
+          && this.roomWidth == that.roomWidth && this.roomHeight == that.roomHeight
+          && this.gasColor.equals(that.gasColor) && this.materialPath.equals(that.materialPath));
+    }
+    return false;
   }
 
 }
