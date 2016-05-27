@@ -187,5 +187,9 @@ public class AudioManager {
   public float getPlaybackTime(String name) {
     return getNode(name).getPlaybackTime();
   }
+  
+  public HashMap<String, AudioNode> getAudioNodes(){
+    return audioNodes;
+  }
 
 }
