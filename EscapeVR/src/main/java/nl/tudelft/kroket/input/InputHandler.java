@@ -1,9 +1,6 @@
 package nl.tudelft.kroket.input;
 
 import jmevr.app.VRApplication;
-import jmevr.input.OpenVR;
-import jmevr.util.VRGuiManager;
-
 import com.jme3.input.InputManager;
 import com.jme3.input.Joystick;
 import com.jme3.input.KeyInput;
@@ -109,11 +106,6 @@ public final class InputHandler {
     inputManager.addListener(actionListener, "back");
     inputManager.addListener(actionListener, "left");
     inputManager.addListener(actionListener, "right");
-    inputManager.addListener(actionListener, "toggle");
-    inputManager.addListener(actionListener, "incShift");
-    inputManager.addListener(actionListener, "decShift");
-    inputManager.addListener(actionListener, "filter");
-    inputManager.addListener(actionListener, "dumpImages");
 
     inputManager.addListener(actionListener, "goup");
     inputManager.addListener(actionListener, "godown");
@@ -136,8 +128,6 @@ public final class InputHandler {
     if (joysticks == null || joysticks.length == 0) {
       log.debug(className, "No joystick/gamepad found.");
     } else {
-
-      // System.out.println("joysticks.length = " + joysticks.length);
 
       Joystick joy = joysticks[0];
 
@@ -164,7 +154,18 @@ public final class InputHandler {
    */
   public void handleInput(float tpf) {
 
-    // float height = VRApplication.getFinalObserverPosition().getY();
+    handleMovement(tpf);
+
+    float collisionThreshold = 0.9f;
+    float collisionOffset = 8.0f;
+    handleCollision(collisionOffset, collisionThreshold, tpf);
+
+    float speedMovement = 0.75f;
+    float deltaMovement = speedMovement * tpf;
+    handleRotation(deltaMovement);
+  }
+
+  private void handleMovement(float tpf) {
 
     if (flying) {
       if (moveForward) {
@@ -186,17 +187,16 @@ public final class InputHandler {
         observer.move(direction.mult(-tpf * 8f));
       }
     }
+  }
 
+  private void handleCollision(float collisionOffset, float collisionThreshold, float tpf) {
+
+    // currently using fixed boundaries
     float roomDepth = 12f;
     float roomWidth = 9f;
     float roomHeight = 6f;
 
-    float collisionThreshold = 0.9f;
-    float collisionOffset = 8.0f;
     float deltaCorrected = collisionOffset * tpf;
-
-    float speedMovement = 0.75f;
-    float deltaMovement = speedMovement * tpf;
 
     // collide X
     if (observer.getLocalTranslation().x > roomWidth - collisionThreshold) {
@@ -220,13 +220,16 @@ public final class InputHandler {
     if (observer.getLocalTranslation().y < 0) {
       observer.move(0, deltaCorrected, 0);
     }
+  }
+
+  private void handleRotation(float deltaMovement) {
     if (rotateDown) {
       rotateX(deltaMovement);
     }
     if (rotateUp) {
       rotateX(-deltaMovement);
     }
-    
+
     if (rotateLeft) {
       rotateY(deltaMovement);
     }
@@ -240,19 +243,16 @@ public final class InputHandler {
     if (tiltLeft) {
       rotateZ(-deltaMovement);
     }
-
-
-
   }
-  
+
   private void rotateX(float delta) {
     observer.rotate(delta, 0, 0);
   }
-  
+
   private void rotateY(float delta) {
     observer.rotate(0, delta, 0);
   }
-  
+
   private void rotateZ(float delta) {
     observer.rotate(0, 0, delta);
   }
@@ -269,16 +269,7 @@ public final class InputHandler {
       if (!acceptInput) {
         return;
       }
-      
-      if (name.equals("incShift") && keyPressed) {
-        VRGuiManager.adjustGuiDistance(-0.1f);
-      } else if (name.equals("decShift") && keyPressed) {
-        VRGuiManager.adjustGuiDistance(0.1f);
-      }
 
-      if (name.equals("toggle")) {
-        VRGuiManager.positionGui();
-      }
       if (name.equals("forward")) {
         if (keyPressed) {
           moveForward = true;
@@ -322,11 +313,6 @@ public final class InputHandler {
         } else {
           tiltRight = false;
         }
-
-        // VRApplication.getVRHardware() will be null if no VR
-        // hardware is connected, so dumpImages would crash
-      } else if (VRApplication.getVRHardware() != null && name.equals("dumpImages")) {
-        OpenVR.getCompositor().CompositorDumpImages.apply();
       } else if (name.equals("left")) {
         if (keyPressed) {
           rotateLeft = true;
