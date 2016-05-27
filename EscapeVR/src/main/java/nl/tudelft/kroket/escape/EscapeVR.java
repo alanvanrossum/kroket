@@ -38,7 +38,7 @@ import com.jme3.util.SkyFactory;
 public class EscapeVR extends VRApplication implements EventListener {
 
   /** Debug flag. */
-  private final boolean DEBUG = false;
+  private final boolean DEBUG = true;
 
   /** Current class, used as tag for logger. */
   private final String className = this.getClass().getSimpleName();
@@ -51,6 +51,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   /** Observer object. */
   Spatial observer;
+  
 
   private String remoteHost;
   private int remotePort;

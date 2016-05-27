@@ -3,6 +3,7 @@ package nl.tudelft.kroket.scene.scenes;
 import nl.tudelft.kroket.scene.Scene;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -46,33 +47,73 @@ public class EscapeScene extends Scene {
    */
   public void createScene() {
 
-    createWalls("Textures/brick_wall.jpg");
+    // createWalls("Textures/brick_wall.jpg");
 
-    createFloor("Textures/dirty_floor.png");
+    // createFloor("Textures/dirty_floor.png");
 
-    createCeiling("Textures/dirty_floor.png");
+    // createCeiling("Textures/dirty_floor.png");
 
-    createDoor("Textures/door.jpg");
+    // createDoor("Textures/door.jpg");
 
-    createGas();
+    // createGas();
 
-    createPainting("Textures/Painting/painting.jpg");
-    createPainting2("Textures/Painting/painting2.jpg");
+    // createPainting("Textures/Painting/painting.jpg");
+    // createPainting2("Textures/Painting/painting2.jpg");
 
-   // createLight();
-   //createCube();
-  }
+    // createDesk("Models/desk.obj", "Models/desktex/DeskWood_Diffuse.tga");
 
-  private void createLight() {
-    DirectionalLight sun = new DirectionalLight();
-    sun.setDirection((new Vector3f(0, 5, 0)).normalizeLocal());
-    sun.setColor(ColorRGBA.White);
-    rootNode.addLight(sun);
+    createLight(2.8f, 2.8f, -2.8f);
+    createLight(2.8f, -2.8f, -2.8f);
+
+    // createLamp("", "");
+    // createIrene();
+
+    createCube();
+
   }
 
   private void createCube() {
     Spatial cube = assetManager.loadModel("Models/tudcube/tudcube.j3o");
     rootNode.attachChild(cube);
+  }
+
+  /**
+   * Places a light in the scene.
+   * 
+   * @param x
+   *          the x-co of the light
+   * @param y
+   *          the y-co of the light
+   * @param z
+   *          the z-co of the light
+   */
+  private void createLight(float x, float y, float z) {
+    DirectionalLight dl = new DirectionalLight();
+    dl.setColor(ColorRGBA.White);
+    dl.setDirection(new Vector3f(x, y, z).normalizeLocal());
+    rootNode.addLight(dl);
+  }
+
+  public void createIrene() {
+
+    /** A white ambient light source. */
+    AmbientLight ambient = new AmbientLight();
+    ambient.setColor(ColorRGBA.White);
+    rootNode.addLight(ambient);
+
+    Spatial lamp = assetManager.loadModel("Models/Petroleum_Lamp/Petroleum_Lamp.j3o");
+
+    rootNode.attachChild(lamp);
+
+    DirectionalLight sun = new DirectionalLight();
+    sun.setDirection((new Vector3f(0, 5, 0)).normalizeLocal());
+    sun.setColor(ColorRGBA.White);
+    rootNode.addLight(sun);
+
+    DirectionalLight sun2 = new DirectionalLight();
+    sun2.setDirection((new Vector3f(0, -5, 0)));
+    sun2.setColor(ColorRGBA.White);
+    rootNode.addLight(sun2);
   }
 
   /**
@@ -226,7 +267,7 @@ public class EscapeScene extends Scene {
 
     Geometry painting = new Geometry("painting2", new Box(paintingWidth, paintingHeight, 0.1f));
 
-    painting.move(-2f, translationY, -roomDepth + 0.1f);
+    painting.move(-2f, translationY + 2, -roomDepth + 0.1f);
 
     painting.setMaterial(paintingMaterial);
 
@@ -246,22 +287,6 @@ public class EscapeScene extends Scene {
     fpp.addFilter(fog);
     viewPort.addProcessor(fpp);
 
-  }
-
-  /**
-   * Equals method for EscapeScene.
-   * 
-   * returns true if all attributes are equal
-   */
-  @Override
-  public boolean equals(Object obj) {
-    if (obj instanceof EscapeScene) {
-      EscapeScene that = (EscapeScene) obj;
-      return (this.translationY == that.translationY && this.roomDepth == that.roomDepth
-          && this.roomWidth == that.roomWidth && this.roomHeight == that.roomHeight
-          && this.gasColor.equals(that.gasColor) && this.materialPath.equals(that.materialPath));
-    }
-    return false;
   }
 
 }
