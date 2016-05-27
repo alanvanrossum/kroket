@@ -75,10 +75,11 @@ public class EscapeScene extends Scene {
     
     createLamp();
     createWalls("Textures/test_wall.png");
-    //createFloor("Textures/wall.png");
+    createFloor("Textures/wall.png");
     
     
     createSurfaces();
+    addKroket();
     
 //    createLight(5, -2, 5);
     
@@ -105,6 +106,12 @@ public class EscapeScene extends Scene {
     rootNode.addLight(sun); 
   }
   
+  private void addKroket() {
+
+    Spatial surface = assetManager.loadModel("Models/kroket/kroket.j3o");
+    surface.move(3, -2, -3);
+    rootNode.attachChild(surface);
+  }
   
     private void createSurfaces() {
     Spatial surface = assetManager.loadModel("Models/flat/flat.j3o");
