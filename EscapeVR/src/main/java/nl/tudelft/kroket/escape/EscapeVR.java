@@ -38,7 +38,7 @@ import com.jme3.util.SkyFactory;
 public class EscapeVR extends VRApplication implements EventListener {
 
   /** Debug flag. */
-  private final boolean DEBUG = true;
+  private final boolean DEBUG = false;
 
   /** Current class, used as tag for logger. */
   private final String className = this.getClass().getSimpleName();
@@ -66,6 +66,10 @@ public class EscapeVR extends VRApplication implements EventListener {
   private ClientThread clientThread;
 
   private GameState initialState = LobbyState.getInstance();
+
+ // private GameState playingState = PlayingState.getInstance();
+
+  private boolean forceUpdate = false;
 
   private void initStateManager() {
     stateManager = new StateManager(audioManager, inputHandler, sceneManager, screenManager,
@@ -183,6 +187,11 @@ public class EscapeVR extends VRApplication implements EventListener {
     stateManager.update(tpf);
 
     hud.update();
+
+    if (forceUpdate) {
+      stateManager.setGameState(PlayingState.getInstance());
+      forceUpdate = false;
+    }
   }
 
   /**
@@ -199,7 +208,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
       switch (command.get("command")) {
       case "START":
-        stateManager.setGameState(PlayingState.getInstance());
+        forceUpdate = true;
         hud.setCenterText("");
         break;
       case "INITVR":
