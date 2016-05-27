@@ -270,7 +270,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     }
 
     hud.update();
-    screenManager.update();
+   // screenManager.update();
 
     // System.out.println("currentTimeMilis/1000 = " +
     // System.currentTimeMillis()/1000);

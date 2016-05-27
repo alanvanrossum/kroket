@@ -47,7 +47,7 @@ public class EscapeScene extends Scene {
    */
   public void createScene() {
 
-    createWalls("Textures/brick_wall.jpg");
+   // createWalls("Textures/brick_wall.jpg");
 
     createFloor("Textures/dirty_floor.png");
 
@@ -67,7 +67,14 @@ public class EscapeScene extends Scene {
 
     // createLamp("", "");
     createIrene();
+    
+    createCube();
 
+  }
+  
+  private void createCube() {
+      Spatial cube = assetManager.loadModel("Models/tudcube/tudcube.j3o");
+      rootNode.attachChild(cube);
   }
 
   /**
