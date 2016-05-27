@@ -49,16 +49,16 @@ public class EscapeScene extends Scene {
 
    // createWalls("Textures/brick_wall.jpg");
 
-    createFloor("Textures/dirty_floor.png");
+   // createFloor("Textures/dirty_floor.png");
 
-    createCeiling("Textures/dirty_floor.png");
+    //createCeiling("Textures/dirty_floor.png");
 
-    createDoor("Textures/door.jpg");
+   // createDoor("Textures/door.jpg");
 
-    createGas();
+   // createGas();
 
-    createPainting("Textures/Painting/painting.jpg");
-    createPainting2("Textures/Painting/painting2.jpg");
+    //createPainting("Textures/Painting/painting.jpg");
+    //createPainting2("Textures/Painting/painting2.jpg");
 
     // createDesk("Models/desk.obj", "Models/desktex/DeskWood_Diffuse.tga");
 
@@ -66,7 +66,7 @@ public class EscapeScene extends Scene {
     createLight(2.8f, -2.8f, -2.8f);
 
     // createLamp("", "");
-    createIrene();
+    //createIrene();
     
     createCube();
 
