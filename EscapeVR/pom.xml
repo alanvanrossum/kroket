@@ -83,7 +83,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>nl.tudelft.kroket.escape.Launcher</mainClass>
+							<mainClass>nl.tudelft.kroket.Launcher</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
@@ -246,12 +246,6 @@
 			<version>${jme3.version}</version>
 		</dependency>
 
-
-		<dependency>
-			<groupId>teamkroket</groupId>
-			<artifactId>jmvr</artifactId>
-			<version>0.0.0</version>
-		</dependency>
 
 	</dependencies>
 

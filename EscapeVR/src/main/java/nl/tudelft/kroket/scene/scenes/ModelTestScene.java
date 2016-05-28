@@ -78,6 +78,8 @@ public class ModelTestScene extends Scene {
     createIrene();
     
     createFloor("Textures/logo.bmp");
+    
+    createTurret();
   }
 
   private void addColors() {
@@ -108,6 +110,13 @@ public class ModelTestScene extends Scene {
     Spatial cube = assetManager.loadModel("Models/tudcube/tudcube.j3o");
     cube.move(-2, 0, -2);
     rootNode.attachChild(cube);
+  }
+  
+  private void createTurret() {
+    Spatial turret = assetManager.loadModel("Models/portalturret/portalturret.j3o");
+    turret.move(-2, -3, 5);
+    turret.scale(0.06f);
+    rootNode.attachChild(turret);
   }
 
   /**
