@@ -59,8 +59,8 @@ public class EscapeScene extends Scene {
     createPainting("Textures/Painting/painting.jpg");
     createPainting2("Textures/Painting/painting2.jpg");
 
-   // createLight();
-   //createCube();
+    // createLight();
+    // createCube();
   }
 
   private void createLight() {
@@ -262,6 +262,11 @@ public class EscapeScene extends Scene {
           && this.gasColor.equals(that.gasColor) && this.materialPath.equals(that.materialPath));
     }
     return false;
+  }
+
+  @Override
+  public Vector3f getBoundaries() {
+    return new Vector3f(roomWidth, roomHeight, roomDepth);
   }
 
 }

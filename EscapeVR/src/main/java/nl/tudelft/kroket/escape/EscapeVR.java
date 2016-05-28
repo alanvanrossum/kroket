@@ -11,6 +11,9 @@ import nl.tudelft.kroket.event.EventListener;
 import nl.tudelft.kroket.event.EventManager;
 import nl.tudelft.kroket.event.events.InteractionEvent;
 import nl.tudelft.kroket.input.InputHandler;
+import nl.tudelft.kroket.input.interaction.CollisionHandler;
+import nl.tudelft.kroket.input.interaction.MovementHandler;
+import nl.tudelft.kroket.input.interaction.RotationHandler;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.log.Logger.LogLevel;
 import nl.tudelft.kroket.net.ClientThread;
@@ -38,7 +41,7 @@ import com.jme3.util.SkyFactory;
 public class EscapeVR extends VRApplication implements EventListener {
 
   /** Debug flag. */
-  private final boolean DEBUG = false;
+  private final boolean DEBUG = true;
 
   /** Current class, used as tag for logger. */
   private final String className = this.getClass().getSimpleName();
@@ -67,7 +70,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   private GameState initialState = LobbyState.getInstance();
 
- // private GameState playingState = PlayingState.getInstance();
+  // private GameState playingState = PlayingState.getInstance();
 
   private boolean forceUpdate = false;
 
@@ -86,7 +89,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   }
 
   private void initInputHandler() {
-    inputHandler = new InputHandler(getInputManager(), observer, eventManager, false);
+    inputHandler = new InputHandler(getInputManager(), observer, eventManager);
   }
 
   private void initSceneManager() {
@@ -126,24 +129,26 @@ public class EscapeVR extends VRApplication implements EventListener {
     }
 
     initObjects();
-
     initHeadUpDisplay();
     initSceneManager();
     initAudioManager();
-    eventManager = new EventManager(rootNode);
     initInputHandler();
-
     initScreenManager();
     initNetworkClient();
-
     initStateManager();
 
-    eventManager.addListener(this);
-    eventManager.registerTrigger("painting", 4);
-    eventManager.registerTrigger("painting2", 4);
-    eventManager.registerTrigger("door", 3.5f);
+    eventManager = new EventManager(observer, rootNode);
+    inputHandler.registerMappings(new RotationHandler(observer), "left", "right", "lookup",
+        "lookdown", "tiltleft", "tiltright");
+    inputHandler.registerMappings(new MovementHandler(observer), "forward", "back");
+    inputHandler.registerMappings(eventManager, "Button A", "Button B", "Button X", "Button Y");
+    
+    inputHandler.registerListener(new CollisionHandler(observer, sceneManager.getScene("escape").getBoundaries()));
 
-    inputHandler.setAcceptInput(true);
+    eventManager.registerObjectInteractionTrigger("painting", 4);
+    eventManager.registerObjectInteractionTrigger("painting2", 4);
+    eventManager.registerObjectInteractionTrigger("door", 3.5f);
+    eventManager.addListener(this);
 
     if (DEBUG) {
       stateManager.setGameState(PlayingState.getInstance());
