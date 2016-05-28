@@ -17,6 +17,7 @@ import nl.tudelft.kroket.net.ClientThread;
 import nl.tudelft.kroket.net.protocol.CommandParser;
 import nl.tudelft.kroket.scene.SceneManager;
 import nl.tudelft.kroket.scene.scenes.EscapeScene;
+import nl.tudelft.kroket.scene.scenes.ModelTestScene;
 import nl.tudelft.kroket.screen.HeadUpDisplay;
 import nl.tudelft.kroket.screen.ScreenManager;
 import nl.tudelft.kroket.screen.screens.LobbyScreen;
@@ -24,6 +25,7 @@ import nl.tudelft.kroket.screen.screens.SpookyScreen;
 import nl.tudelft.kroket.state.GameState;
 import nl.tudelft.kroket.state.StateManager;
 import nl.tudelft.kroket.state.states.LobbyState;
+import nl.tudelft.kroket.state.states.ModelTestState;
 import nl.tudelft.kroket.state.states.PlayingState;
 
 import com.jme3.math.Vector2f;
@@ -51,7 +53,6 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   /** Observer object. */
   Spatial observer;
-  
 
   private String remoteHost;
   private int remotePort;
@@ -68,7 +69,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   private GameState initialState = LobbyState.getInstance();
 
- // private GameState playingState = PlayingState.getInstance();
+  // private GameState playingState = PlayingState.getInstance();
 
   private boolean forceUpdate = false;
 
@@ -84,6 +85,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     audioManager.loadFile("welcome", "Voice/intro2.wav", false, false, 5);
     audioManager.loadFile("letthegamebegin", "Voice/letthegamebegin3.wav", false, false, 5);
     audioManager.loadFile("muhaha", "Voice/muhaha.wav", false, false, 5);
+    audioManager.loadFile("testing", "Voice/portal2/mp_hub_return04.ogg", false, false, 1);
   }
 
   private void initInputHandler() {
@@ -93,6 +95,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   private void initSceneManager() {
     sceneManager = new SceneManager(getAssetManager(), rootNode, getViewPort());
     sceneManager.loadScene("escape", EscapeScene.class);
+    sceneManager.loadScene("modeltest", ModelTestScene.class);
   }
 
   private void initScreenManager() {
@@ -147,7 +150,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     inputHandler.setAcceptInput(true);
 
     if (DEBUG) {
-      stateManager.setGameState(PlayingState.getInstance());
+      stateManager.setGameState(ModelTestState.getInstance());
       log.setLevel(LogLevel.ALL);
     }
   }
@@ -190,7 +193,11 @@ public class EscapeVR extends VRApplication implements EventListener {
     hud.update();
 
     if (forceUpdate) {
-      stateManager.setGameState(PlayingState.getInstance());
+      if (DEBUG) {
+        stateManager.setGameState(ModelTestState.getInstance());
+      } else {
+        stateManager.setGameState(PlayingState.getInstance());
+      }
       forceUpdate = false;
     }
   }

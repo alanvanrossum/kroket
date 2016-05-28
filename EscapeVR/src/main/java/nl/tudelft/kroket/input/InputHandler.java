@@ -158,7 +158,7 @@ public final class InputHandler {
 
     float collisionThreshold = 0.9f;
     float collisionOffset = 8.0f;
-    handleCollision(collisionOffset, collisionThreshold, tpf);
+    //handleCollision(collisionOffset, collisionThreshold, tpf);
 
     float speedMovement = 0.75f;
     float deltaMovement = speedMovement * tpf;
