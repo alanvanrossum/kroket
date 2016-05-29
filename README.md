@@ -88,3 +88,21 @@ You'll need:
 - 2 Android Smartphones with the EscapeApp installed
 - To get ready to laugh
 
+#### Step 1: Installing the server
+Install and run the EscapeHost application. The EscapeHost will listen (by defaulft) on port TCP/1234. If you are behind a NAT device, please configure it to forward incoming connections.
+The server (EscapeHost) will automatically deal with all clients connecting and start the game when everyone is ready.
+
+#### Step 2: Installing the VR client
+Connect your Oculus Rift to a computer and install EscapeVR on this machine. This can be the same computer you're running the EscapeHost on.
+
+#### Step 3: Installing the Mobile client
+Install EscapeApp to at least two Android mobile devices. 
+
+#### Step 4: Connect the clients to the server
+Run EscapeVR and make sure it connects to the EscapeHost. 
+On both Android devices, run the EscapeApp and make sure both are connected to the EscapeHost.
+
+#### Step 5: Start the game
+The EscapeHost will start the game when everyone is connected and ready to play.
+
+Enjoy your game!
