@@ -87,7 +87,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     audioManager.loadFile("letthegamebegin", "Voice/letthegamebegin3.wav", false, false, 5);
     audioManager.loadFile("muhaha", "Voice/muhaha.wav", false, false, 5);
     audioManager
-    .loadFile("turret", "Voice/portal2/turret/turret_autosearch_6.ogg", false, false, 1);
+        .loadFile("turret", "Voice/portal2/turret/turret_autosearch_6.ogg", false, false, 1);
   }
 
   private void initInputHandler() {
@@ -263,6 +263,9 @@ public class EscapeVR extends VRApplication implements EventListener {
       clientThread.sendMessage(String.format("INTERACT[%s]", objectName));
 
       switch (objectName) {
+      case "portalturret-geom-0":
+        audioManager.getNode("turret").play();
+        break;
       case "door":
         // play spooky muhaha sound when player interacts with door
         audioManager.getNode("muhaha").play();
