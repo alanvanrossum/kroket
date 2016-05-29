@@ -96,7 +96,7 @@ public class HeadUpDisplay {
     centerTextTime = System.currentTimeMillis() + (time * 1000);
     centerTextLabel.setText(text);
   }
-
+  
   public void update() {
 
     if (System.currentTimeMillis() > centerTextTime) {
