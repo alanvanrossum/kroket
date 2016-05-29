@@ -91,6 +91,25 @@ public class EscapeScene extends Scene {
     
     addTurret();
     addDesk();
+    
+    addKnight1();
+    addKnight2();
+  }
+  
+  private void addKnight1() {
+    Spatial knight1 = assetManager.loadModel("Models/knight1/knight1.j3o");
+    knight1.scale(0.15f);
+    knight1.move(-6.2f, 2f, 2f);
+    knight1.rotate(-0.5f * FastMath.PI, 0.5f * FastMath.PI, 0f);
+    rootNode.attachChild(knight1);
+  }
+  
+  private void addKnight2() {
+    Spatial knight2 = assetManager.loadModel("Models/knight2/knight2.j3o");
+    knight2.scale(0.15f);
+    knight2.move(-6.2f, 2f, 2f);
+    knight2.rotate(-0.5f * FastMath.PI, 0.5f * FastMath.PI, 0f);
+    rootNode.attachChild(knight2);
   }
 
   private void addDesk() {
