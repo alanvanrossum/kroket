@@ -21,8 +21,6 @@ public class StateManager {
 
     this.currentState = initialState;
 
-    inputHandler.setAcceptInput(true);
-
     currentState.begin(audioManager, sceneManager, screenManager);
   }
 

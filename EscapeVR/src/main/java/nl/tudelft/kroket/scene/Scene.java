@@ -1,7 +1,9 @@
 package nl.tudelft.kroket.scene;
 
 import java.util.HashMap;
+
 import com.jme3.asset.AssetManager;
+import com.jme3.math.Vector3f;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
@@ -88,6 +90,8 @@ public abstract class Scene {
   }
 
   public abstract void createScene();
+  
+  public abstract Vector3f getBoundaries();
 
   /**
    * Destroy the scene by detaching all children.

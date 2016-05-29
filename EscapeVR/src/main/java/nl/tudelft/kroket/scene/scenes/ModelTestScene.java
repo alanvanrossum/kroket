@@ -199,4 +199,10 @@ public class ModelTestScene extends Scene {
     addObject("floor", floor);
   }
 
+  @Override
+  public Vector3f getBoundaries() {
+    // TODO Auto-generated method stub
+    return new Vector3f(80f, 80f, 80f);
+  }
+
 }

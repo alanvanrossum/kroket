@@ -11,6 +11,9 @@ import nl.tudelft.kroket.event.EventListener;
 import nl.tudelft.kroket.event.EventManager;
 import nl.tudelft.kroket.event.events.InteractionEvent;
 import nl.tudelft.kroket.input.InputHandler;
+import nl.tudelft.kroket.input.interaction.CollisionHandler;
+import nl.tudelft.kroket.input.interaction.MovementHandler;
+import nl.tudelft.kroket.input.interaction.RotationHandler;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.log.Logger.LogLevel;
 import nl.tudelft.kroket.net.ClientThread;
@@ -86,11 +89,12 @@ public class EscapeVR extends VRApplication implements EventListener {
     audioManager.loadFile("letthegamebegin", "Voice/letthegamebegin3.wav", false, false, 5);
     audioManager.loadFile("muhaha", "Voice/muhaha.wav", false, false, 5);
     audioManager.loadFile("testing", "Voice/portal2/mp_hub_return04.ogg", false, false, 1);
-    audioManager.loadFile("turret", "Voice/portal2/turret/turret_autosearch_6.ogg", false, false, 1);
+    audioManager
+        .loadFile("turret", "Voice/portal2/turret/turret_autosearch_6.ogg", false, false, 1);
   }
 
   private void initInputHandler() {
-    inputHandler = new InputHandler(getInputManager(), observer, eventManager, false);
+    inputHandler = new InputHandler(getInputManager(), observer, eventManager);
   }
 
   private void initSceneManager() {
@@ -131,33 +135,35 @@ public class EscapeVR extends VRApplication implements EventListener {
     }
 
     initObjects();
-
     initHeadUpDisplay();
     initSceneManager();
     initAudioManager();
-    eventManager = new EventManager(rootNode);
     initInputHandler();
-
     initScreenManager();
     initNetworkClient();
-
     initStateManager();
-    
+
     if (DEBUG) {
       stateManager.setGameState(ModelTestState.getInstance());
       log.setLevel(LogLevel.ALL);
     }
 
+    eventManager = new EventManager(observer, rootNode);
+    inputHandler.registerMappings(new RotationHandler(observer), "left", "right", "lookup",
+        "lookdown", "tiltleft", "tiltright");
+    inputHandler.registerMappings(new MovementHandler(observer), "forward", "back");
+    inputHandler.registerMappings(eventManager, "Button A", "Button B", "Button X", "Button Y");
+
+    inputHandler.registerListener(new CollisionHandler(observer, sceneManager.getScene("escape")
+        .getBoundaries()));
+
     eventManager.addListener(this);
-    eventManager.registerTrigger("painting", 4);
-    eventManager.registerTrigger("painting2", 4);
-    eventManager.registerTrigger("door", 3.5f);
-    eventManager.registerTrigger("portalturret-geom-0", 3.5f);
-    eventManager.registerTrigger("companioncube-geom-0", 3.5f);
-    //eventManager.registerTrigger("");
 
-    inputHandler.setAcceptInput(true);
-
+    eventManager.registerObjectInteractionTrigger("painting", 4);
+    eventManager.registerObjectInteractionTrigger("painting2", 4);
+    eventManager.registerObjectInteractionTrigger("door", 3.5f);
+    eventManager.registerObjectInteractionTrigger("portalturret-geom-0", 3.5f);
+    eventManager.registerObjectInteractionTrigger("companioncube-geom-0", 3.5f);
 
   }
 

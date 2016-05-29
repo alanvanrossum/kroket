@@ -27,7 +27,7 @@ public class Launcher {
 
     // allow remote address to be set using commandline arguments
     // (for now)
-    if (args.length > 1) {
+    if (args.length > 1 && !args[0].isEmpty()) {
       remoteHost = args[0];
     }
 

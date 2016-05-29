@@ -264,4 +264,9 @@ public class EscapeScene extends Scene {
     return false;
   }
 
+  @Override
+  public Vector3f getBoundaries() {
+    return new Vector3f(roomWidth, roomHeight, roomDepth);
+  }
+
 }
