@@ -61,6 +61,14 @@ public class EscapeScene extends Scene {
 
     // createLight();
     // createCube();
+    
+    addLamp();
+  }
+
+  private void addLamp() {
+    Spatial lamp = assetManager.loadModel("Models/Petroleum_Lamp/Petroleum_Lamp.j3o");
+    rootNode.attachChild(lamp);
+    
   }
 
   private void createLight() {
