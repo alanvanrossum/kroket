@@ -86,6 +86,8 @@ public class EscapeVR extends VRApplication implements EventListener {
     audioManager.loadFile("welcome", "Voice/intro2.wav", false, false, 5);
     audioManager.loadFile("letthegamebegin", "Voice/letthegamebegin3.wav", false, false, 5);
     audioManager.loadFile("muhaha", "Voice/muhaha.wav", false, false, 5);
+    audioManager
+    .loadFile("turret", "Voice/portal2/turret/turret_autosearch_6.ogg", false, false, 1);
   }
 
   private void initInputHandler() {
@@ -142,12 +144,15 @@ public class EscapeVR extends VRApplication implements EventListener {
         "lookdown", "tiltleft", "tiltright");
     inputHandler.registerMappings(new MovementHandler(observer), "forward", "back");
     inputHandler.registerMappings(eventManager, "Button A", "Button B", "Button X", "Button Y");
-    
-    inputHandler.registerListener(new CollisionHandler(observer, sceneManager.getScene("escape").getBoundaries()));
+
+    inputHandler.registerListener(new CollisionHandler(observer, sceneManager.getScene("escape")
+        .getBoundaries()));
 
     eventManager.registerObjectInteractionTrigger("painting", 4);
     eventManager.registerObjectInteractionTrigger("painting2", 4);
     eventManager.registerObjectInteractionTrigger("door", 3.5f);
+    eventManager.registerObjectInteractionTrigger("portalturret-geom-0", 3.5f);
+
     eventManager.addListener(this);
 
     if (DEBUG) {
