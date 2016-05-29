@@ -20,12 +20,11 @@ public class PlayingState implements GameState {
   private long spookyTime;
 
   private static Random rand = new Random();
-  
+
   private final int INTERVAL_SPOOKYTIME_LOWER = 20;
   private final int INTERVAL_SPOOKYTIME_UPPER = 120;
 
   public static GameState getInstance() {
-    // TODO Auto-generated method stub
     return instance;
   }
 
@@ -35,8 +34,6 @@ public class PlayingState implements GameState {
     sceneManager.getScene("escape").createScene();
     audioManager.play("letthegamebegin");
     audioManager.play("ambient");
-    
-    
 
     setSpookyTime(INTERVAL_SPOOKYTIME_LOWER, INTERVAL_SPOOKYTIME_UPPER);
   }
@@ -50,13 +47,13 @@ public class PlayingState implements GameState {
   @Override
   public void update(InputHandler inputHandler, ScreenManager screenManager, float tpf) {
     inputHandler.handleInput(tpf);
-    
+
     if (spookyTime >= System.currentTimeMillis()) {
       screenManager.showScreen("spooky");
       setSpookyTime(INTERVAL_SPOOKYTIME_LOWER, INTERVAL_SPOOKYTIME_UPPER);
     }
   }
-  
+
   private void setSpookyTime(int lowerInterval, int upperInterval) {
     spookyTime = System.currentTimeMillis() + randInt(lowerInterval, upperInterval) * 1000;
   }
@@ -69,7 +66,5 @@ public class PlayingState implements GameState {
 
     return randomNum;
   }
-
-
 
 }

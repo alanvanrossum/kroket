@@ -90,6 +90,15 @@ public class EscapeScene extends Scene {
     rootNode.addLight(sun);
     
     addTurret();
+    addDesk();
+  }
+
+  private void addDesk() {
+    Spatial desk = assetManager.loadModel("Models/Desk/Desk.j3o");
+    desk.scale(1.2f);
+    desk.move(6.5f, -translationY + 0.2f, -9.5f);
+    rootNode.attachChild(desk);
+    
   }
 
   private void addLamp() {
