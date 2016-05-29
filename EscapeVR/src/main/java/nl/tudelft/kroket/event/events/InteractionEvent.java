@@ -29,6 +29,16 @@ public class InteractionEvent extends EventObject {
    */
   public static boolean checkConditions(Spatial object, float threshold, String button) {
 
+    if (object == null) {
+    
+      System.out.println("object == null");
+      return false;
+    }
+    else
+    {
+      System.out.println("object = " + object.getName());
+    }
+    
     float distance = VRApplication.getFinalObserverPosition().distance(
         object.getWorldBound().getCenter());
 

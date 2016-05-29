@@ -71,6 +71,19 @@ public class EventManager {
         for (Entry<String, Float> entry : triggers.entrySet()) {
 
           Spatial object = rn.getChild(entry.getKey());
+          
+          
+          System.out.println("attached children: ");
+          for (Spatial spatial : rn.getChildren()) {
+            System.out.println(spatial.getName());
+          }
+          System.out.println("-------------------");
+          
+          System.out.println("key = " + entry.getKey());
+          
+          if (object == null) {
+            System.out.println("not found");
+          }
 
           if (InteractionEvent.checkConditions(object, entry.getValue(), name)) {
             InteractionEvent event = new InteractionEvent(this, entry.getKey());

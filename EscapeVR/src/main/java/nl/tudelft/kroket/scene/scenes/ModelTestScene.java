@@ -76,10 +76,27 @@ public class ModelTestScene extends Scene {
     rootNode.addLight(sun);
 
     createIrene();
-    
+
     createFloor("Textures/logo.bmp");
-    
+
     createTurret();
+
+    createCompanionCube();
+    
+    createSafe();
+  }
+  
+  private void createSafe() {
+    Spatial safe = assetManager.loadModel("Models/safe/safe.j3o");
+    safe.move(5, 0, 3);
+    safe.scale(0.2f);
+    addObject("safe", safe);
+  }
+
+  private void createCompanionCube() {
+    Spatial cc = assetManager.loadModel("Models/companioncube/companioncube.j3o");
+    cc.move(0, -4, 0);
+    addObject("companioncube", cc);
   }
 
   private void addColors() {
@@ -109,14 +126,14 @@ public class ModelTestScene extends Scene {
   private void createCube() {
     Spatial cube = assetManager.loadModel("Models/tudcube/tudcube.j3o");
     cube.move(-2, 0, -2);
-    rootNode.attachChild(cube);
+    addObject("cube", cube);
   }
-  
+
   private void createTurret() {
     Spatial turret = assetManager.loadModel("Models/portalturret/portalturret.j3o");
-    turret.move(-2, -3, 5);
+    turret.move(-2, -3.5f, 5);
     turret.scale(0.06f);
-    rootNode.attachChild(turret);
+    addObject("turret", turret);
   }
 
   /**
@@ -157,7 +174,7 @@ public class ModelTestScene extends Scene {
     sun2.setColor(ColorRGBA.White);
     rootNode.addLight(sun2);
   }
-  
+
   /**
    * Create a floor object.
    * 
