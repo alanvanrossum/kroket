@@ -62,6 +62,8 @@
     <pathelement location="${maven.repo.local}/org/ejml/denseC64/0.27/denseC64-0.27.jar"/>
     <pathelement location="${maven.repo.local}/org/ejml/core/0.27/core-0.27.jar"/>
     <pathelement location="${maven.repo.local}/teamkroket/jmvr/0.0.0/jmvr-0.0.0.jar"/>
+	<pathelement location="${maven.repo.local}/libs/com/jme3/vr/jme3-jbullet/3.1.0-SNAPSHOT/jme3-jbullet-3.1.0-SNAPSHOT.jar"/>
+	<pathelement location="${maven.repo.local}/libs/com/bulletphysics/jbullet/3.1.0-SNAPSHOT/jbullet-3.1.0-SNAPSHOT"/>
   </path>
   <path id="build.test.classpath">
     <pathelement location="${maven.repo.local}/junit/junit/3.8.1/junit-3.8.1.jar"/>
