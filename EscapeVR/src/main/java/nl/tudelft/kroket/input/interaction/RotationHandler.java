@@ -59,12 +59,12 @@ public class RotationHandler extends InteractionHandler implements ActionListene
     handleRotation(deltaMovement);
     
     
-    player.setPhysicsLocation(observer.getLocalTranslation());
-    //player.setPhysicsLocation(VRApplication.getFinalObserverPosition());
+ //   player.setPhysicsLocation(observer.getLocalTranslation());
+  //  player.setPhysicsLocation(VRApplication.getFinalObserverPosition());
     
     System.out.println("Player is at " + player.getPhysicsLocation().toString());
     System.out.println("Observer is at " + observer.getLocalTranslation().toString());
-  //  observer.move(player.getPhysicsLocation());
+ //   observer.move(player.getPhysicsLocation());
     
   }
 
@@ -99,18 +99,18 @@ public class RotationHandler extends InteractionHandler implements ActionListene
     observer.rotate(0, delta, 0);
     
     //player.jump();
-    
-    player.setPhysicsLocation(new Vector3f(0f, 
-        player.getPhysicsLocation().getY() + delta, 0f
-    ));
+//    
+//    player.setPhysicsLocation(new Vector3f(0f, 
+//        player.getPhysicsLocation().getY() + delta, 0f
+//    ));
   }
 
   private void rotateZ(float delta) {
     observer.rotate(0, 0, delta);
     
-    player.setPhysicsLocation(new Vector3f(0f, 0f,
-        player.getPhysicsLocation().getZ() + delta
-    ));
+    //player.setPhysicsLocation(new Vector3f(0f, 0f,
+     //   player.getPhysicsLocation().getZ() + delta
+    //));
     
   }
 

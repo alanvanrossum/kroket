@@ -3,6 +3,7 @@ package nl.tudelft.kroket.scene.scenes;
 import nl.tudelft.kroket.scene.Scene;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
@@ -41,10 +42,13 @@ public class EscapeScene extends Scene {
   private ColorRGBA gasColor = new ColorRGBA(0.3f, 0.9f, 0.2f, 1.0f);
 
   private String materialPath = "Common/MatDefs/Misc/Unshaded.j3md";
+  
+  BulletAppState bulletAppState;
 
-  public EscapeScene(String name, AssetManager assetManager, Node rootNode, ViewPort viewPort) {
+  public EscapeScene(String name, AssetManager assetManager, Node rootNode, ViewPort viewPort, BulletAppState bulletAppState) {
     super(name, assetManager, rootNode, viewPort);
-
+    
+    this.bulletAppState = bulletAppState;
   }
 
   /**
@@ -233,7 +237,7 @@ public class EscapeScene extends Scene {
     RigidBodyControl rigidBody = new RigidBodyControl(cshape, 0);
     rigidBody.setPhysicsLocation(floor.getLocalTranslation());
     
-    
+    bulletAppState.getPhysicsSpace().add(rigidBody);
     rootNode.addControl(rigidBody);
   }
 

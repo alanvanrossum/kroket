@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.bullet.BulletAppState;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 
@@ -30,6 +31,8 @@ public class SceneManager {
   /** Reference to the ViewPort object. */
   private ViewPort viewPort;
   
+  BulletAppState bulletAppState;
+  
  // private SceneManager instance = new SceneManager(getAssetManager(), getRootNode(), getViewPort());
 
   /**
@@ -41,9 +44,10 @@ public class SceneManager {
    *            reference to the rootNode used in the scene
    * @param viewPort
    *            reference to the ViewPort
+   * @param bulletAppState 
    */
   public SceneManager(AssetManager assetManager, Node rootNode,
-      ViewPort viewPort) {
+      ViewPort viewPort, BulletAppState bulletAppState) {
 
     log.info(className, "Initializing...");
 
@@ -51,6 +55,8 @@ public class SceneManager {
     this.rootNode = rootNode;
 
     this.viewPort = viewPort;
+    
+    this.bulletAppState = bulletAppState;
   }
 
   /**
@@ -68,8 +74,8 @@ public class SceneManager {
 
       Constructor<? extends Scene> ctor = sceneClass
           .getDeclaredConstructor(String.class, AssetManager.class,
-              Node.class, ViewPort.class);
-      newScene = ctor.newInstance(name, assetManager, rootNode, viewPort);
+              Node.class, ViewPort.class, BulletAppState.class);
+      newScene = ctor.newInstance(name, assetManager, rootNode, viewPort, bulletAppState);
     } catch (InstantiationException e) {
 
       e.printStackTrace();
