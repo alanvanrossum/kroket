@@ -202,8 +202,8 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     observer.addControl(player);
 
-    //bulletAppState.getPhysicsSpace().add(player);
-    bulletAppState.getPhysicsSpace().add(observer);
+    bulletAppState.getPhysicsSpace().add(player);
+   // bulletAppState.getPhysicsSpace().add(observer);
 
     // bulletAppState.getPhysicsSpace().add(player);
 
@@ -222,7 +222,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     player.setEnabled(true);
 
-    rootNode.attachChild(observer);
+    //rootNode.attachChild(observer);
 
     // do not use magic VR mouse cusor (same usage as non-VR mouse cursor)
     getInputManager().setCursorVisible(true);
@@ -252,7 +252,9 @@ public class EscapeVR extends VRApplication implements EventListener {
     player.setViewDirection(observer.getLocalRotation().getRotationColumn(2));
     
     // makes player float? no idea what im doing
-    player.setPhysicsLocation(observer.getLocalTranslation());
+   // player.setPhysicsLocation(observer.getLocalTranslation());
+    
+    observer.setLocalTranslation(player.getPhysicsLocation());
   }
 
   /**

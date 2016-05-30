@@ -172,8 +172,12 @@ public class EscapeScene extends Scene {
     RigidBodyControl rigidBody = new RigidBodyControl(cshape, 0);
     rigidBody.setPhysicsLocation(spatial.getLocalTranslation());
 
+    spatial.addControl(rigidBody);
+    
     bulletAppState.getPhysicsSpace().add(rigidBody);
-    rootNode.addControl(rigidBody);
+   // rootNode.addControl(rigidBody);
+    
+    
   }
 
   /**
