@@ -10,8 +10,10 @@ public interface GameState {
   public void begin(AudioManager audioManager, SceneManager sceneManager,
       ScreenManager screenManager);
 
+
+  public void update(AudioManager audioManager, InputHandler inputHandler, ScreenManager screenManager, float tpf);
+  
   public void stop(AudioManager audioManager, SceneManager sceneManager, ScreenManager screenManager);
 
-  public void update(InputHandler inputHandler, ScreenManager screenManager, float tpf);
 
 }

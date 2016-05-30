@@ -46,4 +46,10 @@ public class LobbyScreen extends Screen {
   public void hide() {
     guiNode.detachChild(overlay);
   }
+
+  @Override
+  public void update() {
+    // TODO Auto-generated method stub
+    
+  }
 }

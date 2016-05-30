@@ -18,7 +18,7 @@ public class CollisionHandler extends InteractionHandler {
     super(observer);
 
     this.boundaries = boundaries;
-    
+
     enableRestriction();
   }
 
