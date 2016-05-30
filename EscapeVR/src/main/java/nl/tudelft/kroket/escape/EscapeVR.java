@@ -190,20 +190,20 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     getStateManager().attach(bulletAppState);
 
-    CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(1.5f, 6f, 1);
-    player = new CharacterControl(capsuleShape, 0.05f);
-    player.setJumpSpeed(20);
+    CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(1.8f, 6f, 1);
+    player = new CharacterControl(capsuleShape, 0.10f);
+   // player.setJumpSpeed(20);
     // player.setFallSpeed(30);
-    player.setGravity(10);
+    player.setGravity(20);
 
-    observer.setLocalTranslation(new Vector3f(0.0f, 15.0f, 0.0f));
+    observer.setLocalTranslation(new Vector3f(0.0f, 6.0f, 0.0f));
     player.setPhysicsLocation(observer.getLocalTranslation());
     // player.setSpatial(observer);
 
     observer.addControl(player);
 
-    bulletAppState.getPhysicsSpace().add(player);
-   // bulletAppState.getPhysicsSpace().add(observer);
+    //bulletAppState.getPhysicsSpace().add(player);
+    bulletAppState.getPhysicsSpace().add(observer);
 
     // bulletAppState.getPhysicsSpace().add(player);
 
@@ -241,15 +241,18 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     bulletAppState.update(tpf);
 
-    
-
     if (forceUpdate) {
       stateHandler.setGameState(PlayingState.getInstance());
       forceUpdate = false;
     }
+
+    // if (initialized)
+    inputHandler.handleInput(tpf);
     
-    if (initialized)
-      inputHandler.handleInput(tpf);
+    player.setViewDirection(observer.getLocalRotation().getRotationColumn(2));
+    
+    // makes player float? no idea what im doing
+    player.setPhysicsLocation(observer.getLocalTranslation());
   }
 
   /**

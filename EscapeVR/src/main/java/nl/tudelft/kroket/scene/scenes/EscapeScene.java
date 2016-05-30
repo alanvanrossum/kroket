@@ -42,12 +42,13 @@ public class EscapeScene extends Scene {
   private ColorRGBA gasColor = new ColorRGBA(0.3f, 0.9f, 0.2f, 1.0f);
 
   private String materialPath = "Common/MatDefs/Misc/Unshaded.j3md";
-  
+
   BulletAppState bulletAppState;
 
-  public EscapeScene(String name, AssetManager assetManager, Node rootNode, ViewPort viewPort, BulletAppState bulletAppState) {
+  public EscapeScene(String name, AssetManager assetManager, Node rootNode, ViewPort viewPort,
+      BulletAppState bulletAppState) {
     super(name, assetManager, rootNode, viewPort);
-    
+
     this.bulletAppState = bulletAppState;
   }
 
@@ -87,7 +88,7 @@ public class EscapeScene extends Scene {
 
     /** A white ambient light source. */
     AmbientLight ambient = new AmbientLight();
-    ambient.setColor(ColorRGBA.White);  
+    ambient.setColor(ColorRGBA.White);
     rootNode.addLight(ambient);
 
     /** A white, directional light source */
@@ -95,27 +96,24 @@ public class EscapeScene extends Scene {
     sun.setDirection((new Vector3f(-0.5f, -0.5f, -0.5f)).normalizeLocal());
     sun.setColor(ColorRGBA.White);
     rootNode.addLight(sun);
-    
+
     addTurret();
     addDesk();
-    
+
     addKnight1();
     addKnight2();
-    
+
     addSafe();
   }
-  
-  
-  
+
   private void addSafe() {
 
-      Spatial safe = assetManager.loadModel("Models/safe/safe.j3o");
-      safe.scale(0.03f);
-      // 6 opzij, 8 naar achter :p
-      safe.move(-6.8f, -3, -10.1f);
-      rootNode.attachChild(safe);
+    Spatial safe = assetManager.loadModel("Models/safe/safe.j3o");
+    safe.scale(0.03f);
+    // 6 opzij, 8 naar achter :p
+    safe.move(-6.8f, -3, -11.0f);
+    rootNode.attachChild(safe);
 
-    
   }
 
   private void addKnight1() {
@@ -125,7 +123,7 @@ public class EscapeScene extends Scene {
     knight1.rotate(-0.5f * FastMath.PI, 0.5f * FastMath.PI, 0f);
     rootNode.attachChild(knight1);
   }
-  
+
   private void addKnight2() {
     Spatial knight2 = assetManager.loadModel("Models/knight2/knight2.j3o");
     knight2.scale(0.15f);
@@ -139,7 +137,7 @@ public class EscapeScene extends Scene {
     desk.scale(1.2f);
     desk.move(6.5f, -translationY + 0.2f, -9.5f);
     rootNode.attachChild(desk);
-    
+
   }
 
   private void addLamp() {
@@ -148,7 +146,7 @@ public class EscapeScene extends Scene {
     rootNode.attachChild(lamp);
 
   }
-  
+
   private void addTurret() {
     Spatial turret = assetManager.loadModel("Models/portalturret/portalturret.j3o");
     turret.move(-2, -3.5f, 5);
@@ -167,6 +165,15 @@ public class EscapeScene extends Scene {
   private void createCube() {
     Spatial cube = assetManager.loadModel("Models/tudcube/tudcube.j3o");
     rootNode.attachChild(cube);
+  }
+
+  private void addRigid(Spatial spatial) {
+    CollisionShape cshape = CollisionShapeFactory.createMeshShape(spatial);
+    RigidBodyControl rigidBody = new RigidBodyControl(cshape, 0);
+    rigidBody.setPhysicsLocation(spatial.getLocalTranslation());
+
+    bulletAppState.getPhysicsSpace().add(rigidBody);
+    rootNode.addControl(rigidBody);
   }
 
   /**
@@ -189,24 +196,32 @@ public class EscapeScene extends Scene {
     Geometry wall1 = new Geometry("wall-east", new Box(.1f, roomHeight, roomDepth));
     wall1.setMaterial(wallMaterial);
     wall1.move(-roomWidth, translationY, 0);
+
+    addRigid(wall1);
     addObject("wall-east", wall1);
 
     // wall to the left of player spawn
-    Geometry wall2 = new Geometry("wall-west", new Box(.1f, roomHeight, roomDepth));
+    Geometry wall2 = new Geometry("wall-west", new Box(1.0f, roomHeight, roomDepth));
     wall2.setMaterial(wallMaterial);
     wall2.move(roomWidth, translationY, 0);
+
+    addRigid(wall2);
     addObject("wall-west", wall2);
 
     // wall in front of player
-    Geometry wall3 = new Geometry("wall-north", new Box(roomWidth, roomHeight, .1f));
+    Geometry wall3 = new Geometry("wall-north", new Box(roomWidth, roomHeight, 1.0f));
     wall3.setMaterial(wallMaterial);
     wall3.move(0, translationY, roomDepth);
+
+    addRigid(wall3);
     addObject("wall-north", wall3);
 
     // wall behind player spawn
-    Geometry wall4 = new Geometry("wall-south", new Box(roomWidth, roomHeight, .1f));
+    Geometry wall4 = new Geometry("wall-south", new Box(roomWidth, roomHeight, 1.0f));
     wall4.setMaterial(wallMaterial);
     wall4.move(0, translationY, -roomDepth);
+
+    addRigid(wall4);
     addObject("wall-south", wall4);
   }
 
@@ -227,18 +242,13 @@ public class EscapeScene extends Scene {
     Material floorMaterial = new Material(assetManager, materialPath);
     floorMaterial.setTexture("ColorMap", floorTexture);
 
-    Geometry floor = new Geometry("floor", new Box(roomWidth, .1f, roomDepth));
+    Geometry floor = new Geometry("floor", new Box(roomWidth, 1.0f, roomDepth));
     floor.move(0f, translationY - roomHeight, 0f);
     floor.setMaterial(floorMaterial);
 
     addObject("floor", floor);
-    
-    CollisionShape cshape = CollisionShapeFactory.createMeshShape(floor);
-    RigidBodyControl rigidBody = new RigidBodyControl(cshape, 0);
-    rigidBody.setPhysicsLocation(floor.getLocalTranslation());
-    
-    bulletAppState.getPhysicsSpace().add(rigidBody);
-    rootNode.addControl(rigidBody);
+
+    addRigid(floor);
   }
 
   /**
@@ -257,7 +267,7 @@ public class EscapeScene extends Scene {
     Material ceilingMaterial = new Material(assetManager, materialPath);
     ceilingMaterial.setTexture("ColorMap", ceilingTexture);
 
-    Geometry ceiling = new Geometry("ceiling", new Box(roomWidth, .1f, roomDepth));
+    Geometry ceiling = new Geometry("ceiling", new Box(roomWidth, 1.0f, roomDepth));
 
     ceiling.move(0f, translationY + roomHeight, 0f);
     ceiling.setMaterial(ceilingMaterial);
@@ -306,7 +316,7 @@ public class EscapeScene extends Scene {
 
     Geometry painting = new Geometry("painting", new Box(.01f, paintingHeight, paintingWidth));
 
-    painting.move(roomWidth - 0.1f, translationY, 0);
+    painting.move(roomWidth - 1.0f, translationY, 0);
 
     painting.setMaterial(paintingMaterial);
 
@@ -325,9 +335,9 @@ public class EscapeScene extends Scene {
     Material paintingMaterial = new Material(assetManager, materialPath);
     paintingMaterial.setTexture("ColorMap", doorTexture);
 
-    Geometry painting = new Geometry("painting2", new Box(paintingWidth, paintingHeight, 0.1f));
+    Geometry painting = new Geometry("painting2", new Box(paintingWidth, paintingHeight, 1.0f));
 
-    painting.move(-2f, translationY, -roomDepth + 0.1f);
+    painting.move(-2f, translationY, -roomDepth + 1.0f);
 
     painting.setMaterial(paintingMaterial);
 

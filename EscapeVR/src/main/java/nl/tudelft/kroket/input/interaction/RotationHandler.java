@@ -93,11 +93,15 @@ public class RotationHandler extends InteractionHandler implements ActionListene
 
   private void rotateX(float delta) {
     observer.rotate(delta, 0, 0);
+
   }
 
   private void rotateY(float delta) {
+    
+//    player.getPhysicsLocation().add(new Vector3f(0, delta, 0));
     observer.rotate(0, delta, 0);
     
+  //  player.setViewDirection(observer.getLocalTranslation());
     //player.jump();
 //    
 //    player.setPhysicsLocation(new Vector3f(0f, 
@@ -108,6 +112,7 @@ public class RotationHandler extends InteractionHandler implements ActionListene
   private void rotateZ(float delta) {
     observer.rotate(0, 0, delta);
     
+    //player.setViewDirection(observer.getLocalTranslation());
     //player.setPhysicsLocation(new Vector3f(0f, 0f,
      //   player.getPhysicsLocation().getZ() + delta
     //));

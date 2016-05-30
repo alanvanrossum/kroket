@@ -51,11 +51,13 @@ public class MovementHandler extends InteractionHandler implements ActionListene
       if (moveForward) {
         observer.move(VRApplication.getFinalObserverRotation().getRotationColumn(2)
             .mult(tpf * movementSpeed));
-       // player.setPhysicsLocation(observer.getLocalTranslation());
+       //player.setPhysicsLocation(observer.getLocalTranslation());
+        player.setPhysicsLocation(observer.getLocalTranslation());
       }
       if (moveBackwards) {
         observer.move(VRApplication.getFinalObserverRotation().getRotationColumn(2)
             .mult(-tpf * movementSpeed));
+       // player.setPhysicsLocation(observer.getLocalTranslation());
         player.setPhysicsLocation(observer.getLocalTranslation());
       }
     } else {
@@ -63,13 +65,14 @@ public class MovementHandler extends InteractionHandler implements ActionListene
         Vector3f direction = VRApplication.getFinalObserverRotation().getRotationColumn(2);
         direction.setY(0);
         observer.move(direction.mult(tpf * movementSpeed));
-        player.setPhysicsLocation(observer.getLocalTranslation());
+        //player.setPhysicsLocation(observer.getLocalTranslation());
       }
       if (moveBackwards) {
         Vector3f direction = VRApplication.getFinalObserverRotation().getRotationColumn(2);
         direction.setY(0);
         observer.move(direction.mult(-tpf * movementSpeed));
-        player.setPhysicsLocation(observer.getLocalTranslation());
+        //player.setPhysicsLocation(observer.getLocalTranslation());
+        //player.setPhysicsLocation(observer.getLocalTranslation());
 
       }
     }

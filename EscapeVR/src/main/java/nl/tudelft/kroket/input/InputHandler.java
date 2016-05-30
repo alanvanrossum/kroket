@@ -44,7 +44,7 @@ public class InputHandler {
     log.info(className, "Initializing...");
 
     this.inputManager = inputManager;
-    //this.observer = observer;
+    // this.observer = observer;
 
     initKeyControls();
     initJoysticks();
@@ -139,10 +139,9 @@ public class InputHandler {
     for (InteractionHandler actionListener : listeners) {
       actionListener.update(tpf);
     }
-
+    
+    
 
   }
-
-
 
 }
