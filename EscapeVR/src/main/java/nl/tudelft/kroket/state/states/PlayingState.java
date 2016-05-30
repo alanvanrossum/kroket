@@ -48,17 +48,24 @@ public class PlayingState implements GameState {
   }
 
   @Override
-  public void update(InputHandler inputHandler, ScreenManager screenManager, float tpf) {
+  public void update(AudioManager audioManager, InputHandler inputHandler, ScreenManager screenManager, float tpf) {
     inputHandler.handleInput(tpf);
     
-    if (spookyTime >= System.currentTimeMillis()) {
+    if (spookyTime <= System.currentTimeMillis()) {
       screenManager.showScreen("spooky");
       setSpookyTime(INTERVAL_SPOOKYTIME_LOWER, INTERVAL_SPOOKYTIME_UPPER);
     }
   }
   
   private void setSpookyTime(int lowerInterval, int upperInterval) {
-    spookyTime = System.currentTimeMillis() + randInt(lowerInterval, upperInterval) * 1000;
+    
+    int seconds = randInt(lowerInterval, upperInterval);
+    
+    System.out.println("Setting spookytime to display in " + seconds);
+    
+    spookyTime = System.currentTimeMillis() + seconds * 1000;
+    
+    
   }
 
   public static int randInt(int min, int max) {

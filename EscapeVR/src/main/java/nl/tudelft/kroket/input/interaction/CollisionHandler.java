@@ -18,8 +18,8 @@ public class CollisionHandler extends InteractionHandler {
     super(observer);
 
     this.boundaries = boundaries;
-    
-    enableRestriction();
+
+   // enableRestriction();
   }
 
   private void handleCollision(float collisionOffset, float collisionThreshold, float tpf) {

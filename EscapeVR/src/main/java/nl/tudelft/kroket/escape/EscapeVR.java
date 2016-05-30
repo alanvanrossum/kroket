@@ -156,6 +156,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     eventManager.addListener(this);
 
     if (DEBUG) {
+      System.out.println("Switching gamestate");
       stateManager.setGameState(PlayingState.getInstance());
       log.setLevel(LogLevel.ALL);
     }

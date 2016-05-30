@@ -90,6 +90,49 @@ public class EscapeScene extends Scene {
     rootNode.addLight(sun);
     
     addTurret();
+    addDesk();
+    
+    addKnight1();
+    addKnight2();
+    
+    addSafe();
+  }
+  
+  
+  
+  private void addSafe() {
+
+      Spatial safe = assetManager.loadModel("Models/safe/safe.j3o");
+      safe.scale(0.03f);
+      // 6 opzij, 8 naar achter :p
+      safe.move(-6.8f, -3, -10.1f);
+      rootNode.attachChild(safe);
+
+    
+  }
+
+  private void addKnight1() {
+    Spatial knight1 = assetManager.loadModel("Models/knight1/knight1.j3o");
+    knight1.scale(0.15f);
+    knight1.move(-6.2f, 2f, 2f);
+    knight1.rotate(-0.5f * FastMath.PI, 0.5f * FastMath.PI, 0f);
+    rootNode.attachChild(knight1);
+  }
+  
+  private void addKnight2() {
+    Spatial knight2 = assetManager.loadModel("Models/knight2/knight2.j3o");
+    knight2.scale(0.15f);
+    knight2.move(-6.2f, 2f, 2f);
+    knight2.rotate(-0.5f * FastMath.PI, 0.5f * FastMath.PI, 0f);
+    rootNode.attachChild(knight2);
+  }
+
+  private void addDesk() {
+    Spatial desk = assetManager.loadModel("Models/Desk/Desk.j3o");
+    desk.scale(1.2f);
+    desk.move(6.5f, -translationY + 0.2f, -9.5f);
+    rootNode.attachChild(desk);
+    
   }
 
   private void addLamp() {

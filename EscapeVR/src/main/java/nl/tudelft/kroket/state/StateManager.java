@@ -26,9 +26,14 @@ public class StateManager {
 
   public void update(float tpf) {
 
+    
+    //System.out.println("StateManager.update()");
+    
+    //System.out.println("Current state = " + currentState.getClass().getSimpleName());
+    
     screenManager.update(tpf);
 
-    currentState.update(inputHandler, screenManager, tpf);
+    currentState.update(audioManager, inputHandler, screenManager, tpf);
   }
 
   private GameState currentState;
@@ -43,6 +48,7 @@ public class StateManager {
 
     // do not switch state if already in given state
     if (currentState == state) {
+      System.err.println("currentState == state");
       return;
     }
 
@@ -75,6 +81,8 @@ public class StateManager {
 
     stopState(oldState);
     startState(newState);
+    
+    currentState = newState;
   }
 
 }
