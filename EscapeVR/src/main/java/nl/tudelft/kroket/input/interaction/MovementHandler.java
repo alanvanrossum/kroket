@@ -22,8 +22,6 @@ public class MovementHandler extends InteractionHandler implements ActionListene
 
   private boolean moveForward, moveBackwards;
 
-  private boolean flying = true;
-
   @Override
   public void onAction(String name, boolean keyPressed, float tpf) {
 
@@ -40,12 +38,9 @@ public class MovementHandler extends InteractionHandler implements ActionListene
         moveBackwards = false;
       }
     }
-    // update(tpf);
   }
 
   public void update(float tpf) {
-
-    // / System.out.println("MovementHandler.update()");
 
     if (moveForward) {
       // observer.move(VRApplication.getFinalObserverRotation().getRotationColumn(2)
@@ -57,25 +52,16 @@ public class MovementHandler extends InteractionHandler implements ActionListene
           .mult(tpf * movementSpeed));
       // player.setPhysicsLocation(observer.getWorldTranslation());
 
-    }
-    if (moveBackwards) {
+    } else if (moveBackwards) {
       player.setWalkDirection(VRApplication.getFinalObserverRotation().getRotationColumn(2)
           .mult(-tpf * movementSpeed));
       // observer.move(VRApplication.getFinalObserverRotation().getRotationColumn(2)
       // .mult(-tpf * movementSpeed));
       // player.setPhysicsLocation(observer.getLocalTranslation());
       // player.setWalkDirection(VRApplication.getFinalObserverRotation().getRotationColumn(2));
-    }
-
-    if (!moveForward && !moveBackwards)
+    } else {
       player.setWalkDirection(new Vector3f(0, 0, 0));
-
-    // System.out.println("updating...");
-
-    // player.setViewDirection(observer.getLocalTranslation());
-    // player.setPhysicsLocation(observer.getLocalTranslation());
-    // observer.setLocalTranslation(player.getPhysicsLocation());
-
+    }
   }
 
 }

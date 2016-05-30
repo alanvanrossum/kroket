@@ -12,6 +12,7 @@ import nl.tudelft.kroket.event.EventListener;
 import nl.tudelft.kroket.event.EventManager;
 import nl.tudelft.kroket.event.events.InteractionEvent;
 import nl.tudelft.kroket.input.InputHandler;
+import nl.tudelft.kroket.input.interaction.CollisionHandler;
 import nl.tudelft.kroket.input.interaction.MovementHandler;
 import nl.tudelft.kroket.input.interaction.RotationHandler;
 import nl.tudelft.kroket.log.Logger;
@@ -101,8 +102,8 @@ public class EscapeVR extends VRApplication implements EventListener {
   private void initInputHandler() {
     inputHandler = new InputHandler(getInputManager());
     inputHandler.setAcceptInput(false);
-    // inputHandler.registerListener(new CollisionHandler(observer, sceneManager.getScene("escape")
-    // .getSceneBounds()));
+     inputHandler.registerListener(new CollisionHandler(observer, sceneManager.getScene("escape")
+     .getSceneBounds()));
     inputHandler.registerMappings(new RotationHandler(observer, player), "left", "right", "lookup",
         "lookdown", "tiltleft", "tiltright");
     inputHandler.registerMappings(new MovementHandler(observer, player), "forward", "back");
