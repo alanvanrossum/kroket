@@ -103,7 +103,9 @@ public class EscapeScene extends Scene {
   private void addSafe() {
 
       Spatial safe = assetManager.loadModel("Models/safe/safe.j3o");
-      safe.scale(0.02f);
+      safe.scale(0.03f);
+      // 6 opzij, 8 naar achter :p
+      safe.move(-6.8f, -3, -10.1f);
       rootNode.attachChild(safe);
 
     
