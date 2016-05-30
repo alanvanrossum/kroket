@@ -43,22 +43,12 @@ public class MovementHandler extends InteractionHandler implements ActionListene
   public void update(float tpf) {
 
     if (moveForward) {
-      // observer.move(VRApplication.getFinalObserverRotation().getRotationColumn(2)
-      // .mult(tpf * movementSpeed));
-      // player.setPhysicsLocation(observer.getLocalTranslation());
-      // player.setPhysicsLocation(VRApplication.getFinalObserverRotation().getRotationColumn(2)
-      // .mult(tpf * movementSpeed));
       player.setWalkDirection(VRApplication.getFinalObserverRotation().getRotationColumn(2)
           .mult(tpf * movementSpeed));
-      // player.setPhysicsLocation(observer.getWorldTranslation());
 
     } else if (moveBackwards) {
       player.setWalkDirection(VRApplication.getFinalObserverRotation().getRotationColumn(2)
           .mult(-tpf * movementSpeed));
-      // observer.move(VRApplication.getFinalObserverRotation().getRotationColumn(2)
-      // .mult(-tpf * movementSpeed));
-      // player.setPhysicsLocation(observer.getLocalTranslation());
-      // player.setWalkDirection(VRApplication.getFinalObserverRotation().getRotationColumn(2));
     } else {
       player.setWalkDirection(new Vector3f(0, 0, 0));
     }

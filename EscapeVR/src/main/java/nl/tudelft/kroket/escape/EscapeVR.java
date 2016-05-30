@@ -102,8 +102,8 @@ public class EscapeVR extends VRApplication implements EventListener {
   private void initInputHandler() {
     inputHandler = new InputHandler(getInputManager());
     inputHandler.setAcceptInput(false);
-     inputHandler.registerListener(new CollisionHandler(observer, sceneManager.getScene("escape")
-     .getSceneBounds()));
+    inputHandler.registerListener(new CollisionHandler(observer, sceneManager.getScene("escape")
+        .getSceneBounds()));
     inputHandler.registerMappings(new RotationHandler(observer, player), "left", "right", "lookup",
         "lookdown", "tiltleft", "tiltright");
     inputHandler.registerMappings(new MovementHandler(observer, player), "forward", "back");
@@ -151,8 +151,8 @@ public class EscapeVR extends VRApplication implements EventListener {
     observer = new Node("observer");
 
     bulletAppState = new BulletAppState();
-    bulletAppState.setThreadingType(BulletAppState.ThreadingType.PARALLEL);
-    bulletAppState.setDebugEnabled(true);
+    // bulletAppState.setThreadingType(BulletAppState.ThreadingType.PARALLEL);
+    // bulletAppState.setDebugEnabled(true);
 
     getStateManager().attach(bulletAppState);
 
