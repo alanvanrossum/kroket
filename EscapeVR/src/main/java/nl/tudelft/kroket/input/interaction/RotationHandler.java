@@ -3,6 +3,7 @@ package nl.tudelft.kroket.input.interaction;
 import nl.tudelft.kroket.input.InteractionHandler;
 import jmevr.app.VRApplication;
 
+import com.jme3.bullet.control.CharacterControl;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
@@ -18,9 +19,13 @@ public class RotationHandler extends InteractionHandler implements ActionListene
 
   private boolean tiltRight;
   private boolean tiltLeft;
+  
+  private CharacterControl player;
 
-  public RotationHandler(Spatial observer) {
+  public RotationHandler(Spatial observer,  CharacterControl player) {
     super(observer);
+    
+    this.player = player;
   }
 
   @Override
@@ -52,6 +57,15 @@ public class RotationHandler extends InteractionHandler implements ActionListene
 
     float deltaMovement = rotationSpeed * tpf;
     handleRotation(deltaMovement);
+    
+    
+    player.setPhysicsLocation(observer.getLocalTranslation());
+    //player.setPhysicsLocation(VRApplication.getFinalObserverPosition());
+    
+    System.out.println("Player is at " + player.getPhysicsLocation().toString());
+    System.out.println("Observer is at " + observer.getLocalTranslation().toString());
+  //  observer.move(player.getPhysicsLocation());
+    
   }
 
   private void handleRotation(float deltaMovement) {
@@ -83,10 +97,21 @@ public class RotationHandler extends InteractionHandler implements ActionListene
 
   private void rotateY(float delta) {
     observer.rotate(0, delta, 0);
+    
+    //player.jump();
+    
+    player.setPhysicsLocation(new Vector3f(0f, 
+        player.getPhysicsLocation().getY() + delta, 0f
+    ));
   }
 
   private void rotateZ(float delta) {
     observer.rotate(0, 0, delta);
+    
+    player.setPhysicsLocation(new Vector3f(0f, 0f,
+        player.getPhysicsLocation().getZ() + delta
+    ));
+    
   }
 
 }

@@ -49,7 +49,7 @@ public class PlayingState implements GameState {
 
   @Override
   public void update(AudioManager audioManager, InputHandler inputHandler, ScreenManager screenManager, float tpf) {
-    inputHandler.handleInput(tpf);
+ //   inputHandler.handleInput(tpf);
     
     if (spookyTime <= System.currentTimeMillis()) {
       screenManager.showScreen("spooky");

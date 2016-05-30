@@ -25,10 +25,13 @@ import nl.tudelft.kroket.screen.ScreenManager;
 import nl.tudelft.kroket.screen.screens.LobbyScreen;
 import nl.tudelft.kroket.screen.screens.SpookyScreen;
 import nl.tudelft.kroket.state.GameState;
-import nl.tudelft.kroket.state.StateManager;
+import nl.tudelft.kroket.state.StateHandler;
 import nl.tudelft.kroket.state.states.LobbyState;
 import nl.tudelft.kroket.state.states.PlayingState;
 
+import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
+import com.jme3.bullet.control.CharacterControl;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
@@ -55,10 +58,12 @@ public class EscapeVR extends VRApplication implements EventListener {
   /** Observer object. */
   Spatial observer;
 
+  private CharacterControl player;
+
   private String remoteHost;
   private int remotePort;
 
-  private StateManager stateManager;
+  private StateHandler stateHandler;
   private EventManager eventManager;
   private AudioManager audioManager;
   private InputHandler inputHandler;
@@ -74,8 +79,10 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   private boolean forceUpdate = false;
 
+  private BulletAppState bulletAppState;
+
   private void initStateManager() {
-    stateManager = new StateManager(audioManager, inputHandler, sceneManager, screenManager,
+    stateHandler = new StateHandler(audioManager, inputHandler, sceneManager, screenManager,
         initialState);
   }
 
@@ -92,6 +99,15 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   private void initInputHandler() {
     inputHandler = new InputHandler(getInputManager(), observer, eventManager);
+    inputHandler.registerMappings(new RotationHandler(observer, player), "left", "right", "lookup",
+        "lookdown", "tiltleft", "tiltright");
+    inputHandler.registerMappings(new MovementHandler(observer, player), "forward", "back");
+    inputHandler.registerMappings(eventManager, "Button A", "Button B", "Button X", "Button Y");
+
+//    inputHandler.registerListener(new CollisionHandler(observer, sceneManager.getScene("escape")
+//        .getBoundaries()));
+    
+    
   }
 
   private void initSceneManager() {
@@ -138,15 +154,10 @@ public class EscapeVR extends VRApplication implements EventListener {
     initScreenManager();
     initNetworkClient();
     initStateManager();
+    
+    bulletAppState.getPhysicsSpace().add(observer);
 
     eventManager = new EventManager(observer, rootNode);
-    inputHandler.registerMappings(new RotationHandler(observer), "left", "right", "lookup",
-        "lookdown", "tiltleft", "tiltright");
-    inputHandler.registerMappings(new MovementHandler(observer), "forward", "back");
-    inputHandler.registerMappings(eventManager, "Button A", "Button B", "Button X", "Button Y");
-
-    inputHandler.registerListener(new CollisionHandler(observer, sceneManager.getScene("escape")
-        .getBoundaries()));
 
     eventManager.registerObjectInteractionTrigger("painting", 4);
     eventManager.registerObjectInteractionTrigger("painting2", 4);
@@ -157,7 +168,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     if (DEBUG) {
       System.out.println("Switching gamestate");
-      stateManager.setGameState(PlayingState.getInstance());
+      stateHandler.setGameState(PlayingState.getInstance());
       log.setLevel(LogLevel.ALL);
     }
   }
@@ -169,6 +180,25 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     // Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
     observer = new Node("observer");
+
+    bulletAppState = new BulletAppState();
+    bulletAppState.setThreadingType(BulletAppState.ThreadingType.PARALLEL);
+    bulletAppState.setDebugEnabled(true);
+    
+    getStateManager().attach(bulletAppState);
+
+    CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(1.5f, 6f, 1);
+    player = new CharacterControl(capsuleShape, 0.05f);
+    player.setJumpSpeed(20);
+   // player.setFallSpeed(30);
+    player.setGravity(20);
+    player.setPhysicsLocation(new Vector3f(0, 0, 0));
+
+    player.setSpatial(observer);
+
+    observer.addControl(player);
+    
+   
 
     Spatial sky = SkyFactory.createSky(getAssetManager(), "Textures/Sky/Bright/spheremap.png",
         SkyFactory.EnvMapType.EquirectMap);
@@ -182,6 +212,10 @@ public class EscapeVR extends VRApplication implements EventListener {
     observer.setLocalTranslation(new Vector3f(0.0f, 0.0f, 0.0f));
 
     VRApplication.setObserver(observer);
+
+    player.setEnabled(true);
+
+    
     rootNode.attachChild(observer);
 
     // do not use magic VR mouse cusor (same usage as non-VR mouse cursor)
@@ -195,12 +229,14 @@ public class EscapeVR extends VRApplication implements EventListener {
   @Override
   public void simpleUpdate(float tpf) {
 
-    stateManager.update(tpf);
+    stateHandler.update(tpf);
 
     hud.update();
+    
+    bulletAppState.update(tpf);
 
     if (forceUpdate) {
-      stateManager.setGameState(PlayingState.getInstance());
+      stateHandler.setGameState(PlayingState.getInstance());
       forceUpdate = false;
     }
   }

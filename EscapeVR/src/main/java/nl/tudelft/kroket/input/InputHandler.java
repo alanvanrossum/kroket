@@ -44,7 +44,7 @@ public class InputHandler {
     log.info(className, "Initializing...");
 
     this.inputManager = inputManager;
-    this.observer = observer;
+    //this.observer = observer;
 
     initKeyControls();
     initJoysticks();

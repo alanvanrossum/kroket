@@ -3,6 +3,9 @@ package nl.tudelft.kroket.scene.scenes;
 import nl.tudelft.kroket.scene.Scene;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.bullet.collision.shapes.CollisionShape;
+import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.SpotLight;
@@ -225,6 +228,13 @@ public class EscapeScene extends Scene {
     floor.setMaterial(floorMaterial);
 
     addObject("floor", floor);
+    
+    CollisionShape cshape = CollisionShapeFactory.createMeshShape(floor);
+    RigidBodyControl rigidBody = new RigidBodyControl(cshape, 0);
+    rigidBody.setPhysicsLocation(floor.getLocalTranslation());
+    
+    
+    rootNode.addControl(rigidBody);
   }
 
   /**

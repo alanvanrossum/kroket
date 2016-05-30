@@ -5,14 +5,14 @@ import nl.tudelft.kroket.input.InputHandler;
 import nl.tudelft.kroket.scene.SceneManager;
 import nl.tudelft.kroket.screen.ScreenManager;
 
-public class StateManager {
+public class StateHandler {
 
   private AudioManager audioManager;
   private InputHandler inputHandler;
   private SceneManager sceneManager;
   private ScreenManager screenManager;
 
-  public StateManager(AudioManager audioManager, InputHandler inputHandler,
+  public StateHandler(AudioManager audioManager, InputHandler inputHandler,
       SceneManager sceneManager, ScreenManager screenManager, GameState initialState) {
     this.audioManager = audioManager;
     this.inputHandler = inputHandler;
