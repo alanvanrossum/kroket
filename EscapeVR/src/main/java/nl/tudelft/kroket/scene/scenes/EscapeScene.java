@@ -94,8 +94,21 @@ public class EscapeScene extends Scene {
     
     addKnight1();
     addKnight2();
+    
+    addSafe();
   }
   
+  
+  
+  private void addSafe() {
+
+      Spatial safe = assetManager.loadModel("Models/safe/safe.j3o");
+      safe.scale(0.02f);
+      rootNode.attachChild(safe);
+
+    
+  }
+
   private void addKnight1() {
     Spatial knight1 = assetManager.loadModel("Models/knight1/knight1.j3o");
     knight1.scale(0.15f);
