@@ -45,7 +45,7 @@ public class MovementHandler extends InteractionHandler implements ActionListene
 
   public void update(float tpf) {
 
-    System.out.println("MovementHandler.update()");
+   /// System.out.println("MovementHandler.update()");
 
     if (flying) {
       if (moveForward) {

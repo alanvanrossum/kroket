@@ -31,6 +31,8 @@ public class InteractionEvent extends EventObject {
 
     float distance = VRApplication.getFinalObserverPosition().distance(
         object.getWorldBound().getCenter());
+    
+    System.out.println("distance = " + distance);
 
     return (distance <= threshold && button.equals("Button A"));
   }

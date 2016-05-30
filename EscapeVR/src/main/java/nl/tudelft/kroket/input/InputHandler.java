@@ -35,16 +35,14 @@ public class InputHandler {
   private Logger log = Logger.getInstance();
 
   private InputManager inputManager;
-  private Spatial observer;
 
   private List<InteractionHandler> listeners = new ArrayList<InteractionHandler>();
 
-  public InputHandler(InputManager inputManager, Spatial observer, EventManager eventManager) {
+  public InputHandler(InputManager inputManager) {
 
     log.info(className, "Initializing...");
 
     this.inputManager = inputManager;
-    // this.observer = observer;
 
     initKeyControls();
     initJoysticks();
@@ -62,6 +60,10 @@ public class InputHandler {
   }
 
   public void registerMappings(InteractionHandler listener, String... mappingNames) {
+    
+    if (listener == null) {
+      throw new IllegalArgumentException("Listener is null");
+    }
 
     registerListener(listener);
 
@@ -91,7 +93,8 @@ public class InputHandler {
     inputManager.addMapping("Button Y", new KeyTrigger(KeyInput.KEY_NUMPAD4));
 
     inputManager.addMapping("Button A", new KeyTrigger(KeyInput.KEY_SPACE));
-
+    inputManager.addMapping("Spacebar", new KeyTrigger(KeyInput.KEY_SPACE));
+    
     inputManager.addMapping("lookup", new KeyTrigger(KeyInput.KEY_J));
     inputManager.addMapping("lookdown", new KeyTrigger(KeyInput.KEY_U));
     inputManager.addMapping("tiltleft", new KeyTrigger(KeyInput.KEY_H));

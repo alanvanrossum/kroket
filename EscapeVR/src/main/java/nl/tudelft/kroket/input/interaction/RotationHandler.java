@@ -62,8 +62,8 @@ public class RotationHandler extends InteractionHandler implements ActionListene
  //   player.setPhysicsLocation(observer.getLocalTranslation());
   //  player.setPhysicsLocation(VRApplication.getFinalObserverPosition());
     
-    System.out.println("Player is at " + player.getPhysicsLocation().toString());
-    System.out.println("Observer is at " + observer.getLocalTranslation().toString());
+   // System.out.println("Player is at " + player.getPhysicsLocation().toString());
+    //System.out.println("Observer is at " + observer.getLocalTranslation().toString());
  //   observer.move(player.getPhysicsLocation());
     
   }

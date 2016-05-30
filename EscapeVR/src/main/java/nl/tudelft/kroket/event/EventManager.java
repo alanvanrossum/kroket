@@ -85,6 +85,8 @@ public class EventManager extends InteractionHandler implements ActionListener {
     if (!isPressed) {
       return;
     }
+    
+    System.out.println("onaction name = " + name);
 
     long now = System.currentTimeMillis();
     long delta = now - prevInput;

@@ -81,8 +81,6 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   private BulletAppState bulletAppState;
 
-  private boolean initialized = false;
-
   private void initStateManager() {
     stateHandler = new StateHandler(audioManager, inputHandler, sceneManager, screenManager,
         initialState);
@@ -100,14 +98,14 @@ public class EscapeVR extends VRApplication implements EventListener {
   }
 
   private void initInputHandler() {
-    inputHandler = new InputHandler(getInputManager(), observer, eventManager);
+    inputHandler = new InputHandler(getInputManager());
     inputHandler.registerMappings(new RotationHandler(observer, player), "left", "right", "lookup",
         "lookdown", "tiltleft", "tiltright");
     inputHandler.registerMappings(new MovementHandler(observer, player), "forward", "back");
     inputHandler.registerMappings(eventManager, "Button A", "Button B", "Button X", "Button Y");
 
-    // inputHandler.registerListener(new CollisionHandler(observer, sceneManager.getScene("escape")
-    // .getBoundaries()));
+    inputHandler.registerListener(new CollisionHandler(observer, sceneManager.getScene("escape")
+        .getBoundaries()));
 
   }
 
@@ -151,20 +149,18 @@ public class EscapeVR extends VRApplication implements EventListener {
     initHeadUpDisplay();
     initSceneManager();
     initAudioManager();
+    eventManager = new EventManager(observer, rootNode);
     initInputHandler();
     initScreenManager();
     initNetworkClient();
     initStateManager();
 
-    bulletAppState.getPhysicsSpace().add(observer);
-
-    eventManager = new EventManager(observer, rootNode);
+    // bulletAppState.getPhysicsSpace().add(observer);
 
     eventManager.registerObjectInteractionTrigger("painting", 4);
     eventManager.registerObjectInteractionTrigger("painting2", 4);
     eventManager.registerObjectInteractionTrigger("door", 3.5f);
     eventManager.registerObjectInteractionTrigger("portalturret-geom-0", 3.5f);
-
     eventManager.addListener(this);
 
     if (DEBUG) {
@@ -173,7 +169,6 @@ public class EscapeVR extends VRApplication implements EventListener {
       log.setLevel(LogLevel.ALL);
     }
 
-    initialized = true;
   }
 
   /**
@@ -192,7 +187,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(1.8f, 6f, 1);
     player = new CharacterControl(capsuleShape, 0.10f);
-   // player.setJumpSpeed(20);
+    // player.setJumpSpeed(20);
     // player.setFallSpeed(30);
     player.setGravity(20);
 
@@ -203,7 +198,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     observer.addControl(player);
 
     bulletAppState.getPhysicsSpace().add(player);
-   // bulletAppState.getPhysicsSpace().add(observer);
+    // bulletAppState.getPhysicsSpace().add(observer);
 
     // bulletAppState.getPhysicsSpace().add(player);
 
@@ -222,7 +217,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     player.setEnabled(true);
 
-    //rootNode.attachChild(observer);
+    // rootNode.attachChild(observer);
 
     // do not use magic VR mouse cusor (same usage as non-VR mouse cursor)
     getInputManager().setCursorVisible(true);
@@ -244,17 +239,21 @@ public class EscapeVR extends VRApplication implements EventListener {
     if (forceUpdate) {
       stateHandler.setGameState(PlayingState.getInstance());
       forceUpdate = false;
+      observer.setLocalTranslation(new Vector3f(0.0f, 6.0f, 0.0f));
+      player.setPhysicsLocation(observer.getLocalTranslation());
     }
 
     // if (initialized)
     inputHandler.handleInput(tpf);
-    
+
     player.setViewDirection(observer.getLocalRotation().getRotationColumn(2));
-    
+
     // makes player float? no idea what im doing
-   // player.setPhysicsLocation(observer.getLocalTranslation());
-    
+    // player.setPhysicsLocation(observer.getLocalTranslation());
+
     observer.setLocalTranslation(player.getPhysicsLocation());
+
+    eventManager.update(tpf);
   }
 
   /**
