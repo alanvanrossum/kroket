@@ -2,20 +2,26 @@ package nl.tudelft.kroket.state;
 
 import nl.tudelft.kroket.audio.AudioManager;
 import nl.tudelft.kroket.input.InputHandler;
+import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.scene.SceneManager;
 import nl.tudelft.kroket.screen.ScreenManager;
 
 public class StateHandler {
 
+  /** Current class, used as tag for logger. */
+  private final String className = this.getClass().getSimpleName();
+
+  /** Singleton logger instance. */
+  private Logger log = Logger.getInstance();
+
   private AudioManager audioManager;
-  private InputHandler inputHandler;
   private SceneManager sceneManager;
   private ScreenManager screenManager;
 
-  public StateHandler(AudioManager audioManager, InputHandler inputHandler,
-      SceneManager sceneManager, ScreenManager screenManager, GameState initialState) {
+  public StateHandler(AudioManager audioManager, SceneManager sceneManager,
+      ScreenManager screenManager, GameState initialState) {
     this.audioManager = audioManager;
-    this.inputHandler = inputHandler;
+    // this.inputHandler = inputHandler;
     this.sceneManager = sceneManager;
     this.screenManager = screenManager;
 
@@ -25,15 +31,9 @@ public class StateHandler {
   }
 
   public void update(float tpf) {
-
-    
-    //System.out.println("StateManager.update()");
-    
-    //System.out.println("Current state = " + currentState.getClass().getSimpleName());
-    
     screenManager.update(tpf);
 
-    currentState.update(audioManager, inputHandler, screenManager, tpf);
+    currentState.update(audioManager, screenManager, tpf);
   }
 
   private GameState currentState;
@@ -52,15 +52,19 @@ public class StateHandler {
       return;
     }
 
+    log.debug(className, "setGameState: " + state.getClass().getSimpleName());
+
     switchState(currentState, state);
 
   }
 
   private void stopState(GameState state) {
+    log.debug(className, "stopState: " + state.getClass().getSimpleName());
     state.stop(audioManager, sceneManager, screenManager);
   }
 
   private void startState(GameState state) {
+    log.debug(className, "startState: " + state.getClass().getSimpleName());
     state.begin(audioManager, sceneManager, screenManager);
   }
 
@@ -79,10 +83,14 @@ public class StateHandler {
       return;
     }
 
+    log.debug(className, "Switching state from " + oldState.getClass().getSimpleName() + " to "
+        + newState.getClass().getSimpleName());
+
     stopState(oldState);
     startState(newState);
-    
+
     currentState = newState;
+    log.debug(className, "current state is now: " + currentState.getClass().getSimpleName());
   }
 
 }

@@ -2,6 +2,7 @@ package nl.tudelft.kroket.escape;
 
 import java.util.EventObject;
 import java.util.HashMap;
+import java.util.List;
 
 import jmevr.app.VRApplication;
 import jmevr.util.VRGuiManager;
@@ -11,7 +12,6 @@ import nl.tudelft.kroket.event.EventListener;
 import nl.tudelft.kroket.event.EventManager;
 import nl.tudelft.kroket.event.events.InteractionEvent;
 import nl.tudelft.kroket.input.InputHandler;
-import nl.tudelft.kroket.input.interaction.CollisionHandler;
 import nl.tudelft.kroket.input.interaction.MovementHandler;
 import nl.tudelft.kroket.input.interaction.RotationHandler;
 import nl.tudelft.kroket.log.Logger;
@@ -58,6 +58,8 @@ public class EscapeVR extends VRApplication implements EventListener {
   /** Observer object. */
   Spatial observer;
 
+  private Vector3f initLocation = new Vector3f(0, 5f, 0);
+
   private CharacterControl player;
 
   private String remoteHost;
@@ -81,9 +83,8 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   private BulletAppState bulletAppState;
 
-  private void initStateManager() {
-    stateHandler = new StateHandler(audioManager, inputHandler, sceneManager, screenManager,
-        initialState);
+  private void initStateHandler() {
+    stateHandler = new StateHandler(audioManager, sceneManager, screenManager, initialState);
   }
 
   private void initAudioManager() {
@@ -99,13 +100,13 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   private void initInputHandler() {
     inputHandler = new InputHandler(getInputManager());
+    inputHandler.setAcceptInput(false);
+    // inputHandler.registerListener(new CollisionHandler(observer, sceneManager.getScene("escape")
+    // .getSceneBounds()));
     inputHandler.registerMappings(new RotationHandler(observer, player), "left", "right", "lookup",
         "lookdown", "tiltleft", "tiltright");
     inputHandler.registerMappings(new MovementHandler(observer, player), "forward", "back");
     inputHandler.registerMappings(eventManager, "Button A", "Button B", "Button X", "Button Y");
-
-    inputHandler.registerListener(new CollisionHandler(observer, sceneManager.getScene("escape")
-        .getBoundaries()));
 
   }
 
@@ -145,37 +146,6 @@ public class EscapeVR extends VRApplication implements EventListener {
       System.out.println("Attached device: " + VRApplication.getVRHardware().getName());
     }
 
-    initObjects();
-    initHeadUpDisplay();
-    initSceneManager();
-    initAudioManager();
-    eventManager = new EventManager(observer, rootNode);
-    initInputHandler();
-    initScreenManager();
-    initNetworkClient();
-    initStateManager();
-
-    // bulletAppState.getPhysicsSpace().add(observer);
-
-    eventManager.registerObjectInteractionTrigger("painting", 4);
-    eventManager.registerObjectInteractionTrigger("painting2", 4);
-    eventManager.registerObjectInteractionTrigger("door", 3.5f);
-    eventManager.registerObjectInteractionTrigger("portalturret-geom-0", 3.5f);
-    eventManager.addListener(this);
-
-    if (DEBUG) {
-      System.out.println("Switching gamestate");
-      stateHandler.setGameState(PlayingState.getInstance());
-      log.setLevel(LogLevel.ALL);
-    }
-
-  }
-
-  /**
-   * Initialize the scene.
-   */
-  private void initObjects() {
-
     // Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
     observer = new Node("observer");
 
@@ -191,10 +161,10 @@ public class EscapeVR extends VRApplication implements EventListener {
     // player.setFallSpeed(30);
     player.setGravity(20);
 
-    observer.setLocalTranslation(new Vector3f(0.0f, 6.0f, 0.0f));
-    player.setPhysicsLocation(observer.getLocalTranslation());
-    // player.setSpatial(observer);
-
+    player.setPhysicsLocation(initLocation);
+    // observer.setLocalTranslation(initLocation);
+    player.setSpatial(observer);
+    // observer.setLocalTranslation(initLocation);
     observer.addControl(player);
 
     bulletAppState.getPhysicsSpace().add(player);
@@ -222,6 +192,40 @@ public class EscapeVR extends VRApplication implements EventListener {
     // do not use magic VR mouse cusor (same usage as non-VR mouse cursor)
     getInputManager().setCursorVisible(true);
 
+    initHeadUpDisplay();
+    initSceneManager();
+    eventManager = new EventManager(observer, rootNode);
+    initInputHandler();
+    initAudioManager();
+
+    initScreenManager();
+    initNetworkClient();
+    initStateHandler();
+
+    // bulletAppState.getPhysicsSpace().add(observer);
+
+    // eventManager.registerObjectInteractionTrigger("painting", 4);
+    // eventManager.registerObjectInteractionTrigger("painting2", 4);
+    // eventManager.registerObjectInteractionTrigger("door", 3.5f);
+    // eventManager.registerObjectInteractionTrigger("portalturret-geom-0", 3.5f);
+    eventManager.addListener(this);
+
+    if (DEBUG) {
+      forceUpdate = true;
+      log.setLevel(LogLevel.ALL);
+    }
+
+  }
+
+  private void registerTriggers() {
+    List<Spatial> objects = rootNode.getChildren();
+
+    for (Spatial object : objects) {
+      if (object == null)
+        continue;
+
+      eventManager.registerObjectInteractionTrigger(object.getName(), 4f);
+    }
   }
 
   /**
@@ -230,28 +234,29 @@ public class EscapeVR extends VRApplication implements EventListener {
   @Override
   public void simpleUpdate(float tpf) {
 
-    stateHandler.update(tpf);
-
-    hud.update();
-
-    bulletAppState.update(tpf);
-
     if (forceUpdate) {
+      player.setPhysicsLocation(initLocation);
+      observer.setLocalTranslation(initLocation);
       stateHandler.setGameState(PlayingState.getInstance());
       forceUpdate = false;
-      observer.setLocalTranslation(new Vector3f(0.0f, 6.0f, 0.0f));
-      player.setPhysicsLocation(observer.getLocalTranslation());
+      inputHandler.setAcceptInput(true);
+      registerTriggers();
     }
 
-    // if (initialized)
     inputHandler.handleInput(tpf);
 
-    player.setViewDirection(observer.getLocalRotation().getRotationColumn(2));
+    if (player.getPhysicsLocation().getY() < 0) {
+      player.setPhysicsLocation(initLocation);
+    } else {
+      // attach observer to player, comment this to have some odd spectator view
+      observer.setLocalTranslation(player.getPhysicsLocation());
+    }
+    stateHandler.update(tpf);
+    hud.update();
+    bulletAppState.update(tpf);
 
     // makes player float? no idea what im doing
     // player.setPhysicsLocation(observer.getLocalTranslation());
-
-    observer.setLocalTranslation(player.getPhysicsLocation());
 
     eventManager.update(tpf);
   }

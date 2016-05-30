@@ -37,6 +37,22 @@ public class InputHandler {
   private InputManager inputManager;
 
   private List<InteractionHandler> listeners = new ArrayList<InteractionHandler>();
+  
+  private boolean acceptInput = false;
+
+  /**
+   * @return the acceptInput
+   */
+  public boolean isAcceptInput() {
+    return acceptInput;
+  }
+
+  /**
+   * @param acceptInput the acceptInput to set
+   */
+  public void setAcceptInput(boolean acceptInput) {
+    this.acceptInput = acceptInput;
+  }
 
   public InputHandler(InputManager inputManager) {
 
@@ -138,6 +154,9 @@ public class InputHandler {
    *          time per frame
    */
   public void handleInput(float tpf) {
+    
+    if (!acceptInput) 
+      return;
 
     for (InteractionHandler actionListener : listeners) {
       actionListener.update(tpf);

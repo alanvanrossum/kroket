@@ -40,61 +40,42 @@ public class MovementHandler extends InteractionHandler implements ActionListene
         moveBackwards = false;
       }
     }
-    update(tpf);
+    // update(tpf);
   }
 
   public void update(float tpf) {
 
-   /// System.out.println("MovementHandler.update()");
+    // / System.out.println("MovementHandler.update()");
 
-    if (flying) {
-      if (moveForward) {
-       //observer.move(VRApplication.getFinalObserverRotation().getRotationColumn(2)
-         //   .mult(tpf * movementSpeed));
-       //player.setPhysicsLocation(observer.getLocalTranslation());
-    //    player.setPhysicsLocation(VRApplication.getFinalObserverRotation().getRotationColumn(2)
-     //       .mult(tpf * movementSpeed));
-       player.setWalkDirection(VRApplication.getFinalObserverRotation().getRotationColumn(2)
-              .mult(tpf * movementSpeed));
-     //  player.setPhysicsLocation(observer.getWorldTranslation());
-       
-     
-      }
-      if (moveBackwards) {
-        player.setWalkDirection(VRApplication.getFinalObserverRotation().getRotationColumn(2)
-            .mult(-tpf * movementSpeed));
-        //observer.move(VRApplication.getFinalObserverRotation().getRotationColumn(2)
-         //   .mult(-tpf * movementSpeed));
-       // player.setPhysicsLocation(observer.getLocalTranslation());
-       // player.setWalkDirection(VRApplication.getFinalObserverRotation().getRotationColumn(2)); 
-      }
-    } else {
-      if (moveForward) {
-        Vector3f direction = VRApplication.getFinalObserverRotation().getRotationColumn(2);
-        direction.setY(0);
-        observer.move(direction.mult(tpf * movementSpeed));
-        player.setPhysicsLocation(observer.getLocalTranslation());
-      }
-      if (moveBackwards) {
-        Vector3f direction = VRApplication.getFinalObserverRotation().getRotationColumn(2);
-        direction.setY(0);
-        observer.move(direction.mult(-tpf * movementSpeed));
-        //player.setPhysicsLocation(observer.getLocalTranslation());
-        player.setPhysicsLocation(observer.getLocalTranslation());
+    if (moveForward) {
+      // observer.move(VRApplication.getFinalObserverRotation().getRotationColumn(2)
+      // .mult(tpf * movementSpeed));
+      // player.setPhysicsLocation(observer.getLocalTranslation());
+      // player.setPhysicsLocation(VRApplication.getFinalObserverRotation().getRotationColumn(2)
+      // .mult(tpf * movementSpeed));
+      player.setWalkDirection(VRApplication.getFinalObserverRotation().getRotationColumn(2)
+          .mult(tpf * movementSpeed));
+      // player.setPhysicsLocation(observer.getWorldTranslation());
 
-      }
     }
-    
+    if (moveBackwards) {
+      player.setWalkDirection(VRApplication.getFinalObserverRotation().getRotationColumn(2)
+          .mult(-tpf * movementSpeed));
+      // observer.move(VRApplication.getFinalObserverRotation().getRotationColumn(2)
+      // .mult(-tpf * movementSpeed));
+      // player.setPhysicsLocation(observer.getLocalTranslation());
+      // player.setWalkDirection(VRApplication.getFinalObserverRotation().getRotationColumn(2));
+    }
+
     if (!moveForward && !moveBackwards)
       player.setWalkDirection(new Vector3f(0, 0, 0));
 
     // System.out.println("updating...");
 
     // player.setViewDirection(observer.getLocalTranslation());
-    //player.setPhysicsLocation(observer.getLocalTranslation());
-    //observer.setLocalTranslation(player.getPhysicsLocation());
-    
-    
+    // player.setPhysicsLocation(observer.getLocalTranslation());
+    // observer.setLocalTranslation(player.getPhysicsLocation());
+
   }
 
 }

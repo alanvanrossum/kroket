@@ -91,7 +91,7 @@ public abstract class Scene {
 
   public abstract void createScene();
   
-  public abstract Vector3f getBoundaries();
+  public abstract Vector3f getSceneBounds();
 
   /**
    * Destroy the scene by detaching all children.

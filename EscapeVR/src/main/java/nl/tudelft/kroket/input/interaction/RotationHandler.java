@@ -49,7 +49,7 @@ public class RotationHandler extends InteractionHandler implements ActionListene
       tiltRight = keyPressed;
     }
 
-    update(tpf);
+ //   update(tpf);
 
   }
 
@@ -89,6 +89,8 @@ public class RotationHandler extends InteractionHandler implements ActionListene
     if (tiltLeft) {
       rotateZ(-deltaMovement);
     }
+    
+    player.setViewDirection(observer.getLocalRotation().getRotationColumn(2));
   }
 
   private void rotateX(float delta) {

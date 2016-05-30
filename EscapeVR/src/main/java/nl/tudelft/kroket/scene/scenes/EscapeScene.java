@@ -173,11 +173,10 @@ public class EscapeScene extends Scene {
     rigidBody.setPhysicsLocation(spatial.getLocalTranslation());
 
     spatial.addControl(rigidBody);
-    
+
     bulletAppState.getPhysicsSpace().add(rigidBody);
-   // rootNode.addControl(rigidBody);
-    
-    
+    // rootNode.addControl(rigidBody);
+
   }
 
   /**
@@ -380,7 +379,7 @@ public class EscapeScene extends Scene {
   }
 
   @Override
-  public Vector3f getBoundaries() {
+  public Vector3f getSceneBounds() {
     return new Vector3f(roomWidth, roomHeight, roomDepth);
   }
 

@@ -10,17 +10,20 @@ import nl.tudelft.kroket.screen.ScreenManager;
 import nl.tudelft.kroket.state.GameState;
 
 public class PlayingState implements GameState {
+  
+  /** Current class, used as tag for logger. */
+  private final String className = this.getClass().getSimpleName();
 
   /** The unique singleton instance of this class. */
   private static PlayingState instance = new PlayingState();
 
   /** The singleton reference to the Logger instance. */
-  private static Logger logger = Logger.getInstance();
+  private static Logger log = Logger.getInstance();
 
   private long spookyTime;
 
   private static Random rand = new Random();
-  
+
   private final int INTERVAL_SPOOKYTIME_LOWER = 20;
   private final int INTERVAL_SPOOKYTIME_UPPER = 120;
 
@@ -35,8 +38,6 @@ public class PlayingState implements GameState {
     sceneManager.getScene("escape").createScene();
     audioManager.play("letthegamebegin");
     audioManager.play("ambient");
-    
-    
 
     setSpookyTime(INTERVAL_SPOOKYTIME_LOWER, INTERVAL_SPOOKYTIME_UPPER);
   }
@@ -48,24 +49,23 @@ public class PlayingState implements GameState {
   }
 
   @Override
-  public void update(AudioManager audioManager, InputHandler inputHandler, ScreenManager screenManager, float tpf) {
- //   inputHandler.handleInput(tpf);
-    
+  public void update(AudioManager audioManager, ScreenManager screenManager, float tpf) {
+    // inputHandler.handleInput(tpf);
+
     if (spookyTime <= System.currentTimeMillis()) {
       screenManager.showScreen("spooky");
       setSpookyTime(INTERVAL_SPOOKYTIME_LOWER, INTERVAL_SPOOKYTIME_UPPER);
     }
   }
-  
+
   private void setSpookyTime(int lowerInterval, int upperInterval) {
-    
+
     int seconds = randInt(lowerInterval, upperInterval);
-    
-    System.out.println("Setting spookytime to display in " + seconds);
-    
+
+    log.info(className, "Spooky overlay will be shown in " + seconds + " seconds");
+
     spookyTime = System.currentTimeMillis() + seconds * 1000;
-    
-    
+
   }
 
   public static int randInt(int min, int max) {
@@ -76,7 +76,5 @@ public class PlayingState implements GameState {
 
     return randomNum;
   }
-
-
 
 }

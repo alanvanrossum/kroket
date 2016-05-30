@@ -9,6 +9,9 @@ import nl.tudelft.kroket.state.GameState;
 
 public class LobbyState implements GameState {
 
+  /** Current class, used as tag for logger. */
+  private final String className = this.getClass().getSimpleName();
+
   /** The unique singleton instance of this class. */
   private static LobbyState instance = new LobbyState();
 
@@ -38,10 +41,7 @@ public class LobbyState implements GameState {
   }
 
   @Override
-  public void update(AudioManager audioManager, InputHandler inputHandler, ScreenManager screenManager, float tpf) {
-    
-    System.out.println("LobbyState.update");
-    inputHandler.handleInput(tpf);
+  public void update(AudioManager audioManager, ScreenManager screenManager, float tpf) {
 
   }
 
