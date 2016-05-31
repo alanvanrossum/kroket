@@ -154,7 +154,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     eventManager.registerObjectInteractionTrigger("painting2", 4);
     eventManager.registerObjectInteractionTrigger("door", 3.5f);
     eventManager.registerObjectInteractionTrigger("portalturret-geom-0", 3.5f);
-    eventManager.registerObjectInteractionTrigger("knight1-geom-0", 4f); //moeten de knopjes worden
+    eventManager.registerObjectInteractionTrigger("fourbuttons2-objnode", 4f); 
 
     eventManager.addListener(this);
 
@@ -233,6 +233,7 @@ public class EscapeVR extends VRApplication implements EventListener {
           } else if (command.get("param_0").equals("doneB")) {
             log.info(className, "Minigame B completed.");
             hud.setCenterText("Minigame B complete!", 10);
+            sceneManager.extendEscapeScene("C");
           } else if (command.get("param_0").equals("doneC")) {
             screenManager.getScreen("controller").hide();
             log.info(className, "Minigame C completed.");
@@ -247,11 +248,11 @@ public class EscapeVR extends VRApplication implements EventListener {
             log.info(className, "Minigame B started.");
             hud.setCenterText("Minigame B started!", 10);
           } else if (command.get("param_0").equals("startC")) {
-            System.out.println("startC was received");
             screenManager.getScreen("controller").show();
             log.info(className, "Minigame C started.");
             hud.setCenterText("Minigame C started!", 10);
             hud.setCenterText("Enter the color sequence by\nusing the colored buttons on\nthe right of your controller!", 20);
+            //... .parseColors(CommandParser.parseParams(line);
           } else if (command.get("param_0").equals("startD")) {
             log.info(className, "Minigame D started.");
             hud.setCenterText("Minigame D started!", 10);
@@ -303,7 +304,7 @@ public class EscapeVR extends VRApplication implements EventListener {
       case "painting2":
         clientThread.sendMessage("INITM[startB]");
         break;
-      case "knight1-geom-0":
+      case "fourbuttons2-objnode":
         clientThread.sendMessage("INITM[startC]");
       default:
         break;
