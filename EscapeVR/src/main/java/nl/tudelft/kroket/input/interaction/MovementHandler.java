@@ -11,6 +11,8 @@ import com.jme3.scene.Spatial;
 public class MovementHandler extends InteractionHandler implements ActionListener {
 
   private final float movementSpeed = 90f;
+  
+  private Vector3f walkDirection = new Vector3f();
 
   private CharacterControl player;
 
@@ -42,16 +44,21 @@ public class MovementHandler extends InteractionHandler implements ActionListene
 
   public void update(float tpf) {
 
+    observer.setLocalTranslation(player.getPhysicsLocation());
+    
+    walkDirection.set(0, 0, 0);
+    
     if (moveForward) {
-      player.setWalkDirection(VRApplication.getFinalObserverRotation().getRotationColumn(2)
-          .mult(tpf * movementSpeed));
+        walkDirection.addLocal(VRApplication.getFinalObserverRotation().getRotationColumn(2)
+            .mult(tpf * movementSpeed));
 
     } else if (moveBackwards) {
-      player.setWalkDirection(VRApplication.getFinalObserverRotation().getRotationColumn(2)
+      walkDirection.addLocal(VRApplication.getFinalObserverRotation().getRotationColumn(2)
           .mult(-tpf * movementSpeed));
-    } else {
-      player.setWalkDirection(new Vector3f(0, 0, 0));
     }
+    player.setWalkDirection(walkDirection);
+    observer.setLocalTranslation(player.getPhysicsLocation());
+    
    
   }
 

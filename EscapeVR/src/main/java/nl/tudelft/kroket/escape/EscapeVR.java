@@ -149,6 +149,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     // Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
     observer = new Node("observer");
+    observer.setLocalTranslation(initLocation);
 
     bulletAppState = new BulletAppState();
     // bulletAppState.setThreadingType(BulletAppState.ThreadingType.PARALLEL);
@@ -167,6 +168,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     player.setSpatial(observer);
     // observer.setLocalTranslation(initLocation);
     observer.addControl(player);
+    
 
     bulletAppState.getPhysicsSpace().add(player);
     // bulletAppState.getPhysicsSpace().add(observer);
