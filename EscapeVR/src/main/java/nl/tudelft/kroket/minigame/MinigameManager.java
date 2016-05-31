@@ -25,6 +25,8 @@ public class MinigameManager implements EventListener {
       return;
     
     currentGame.handleEvent(event);
+    
+    
   }
   
   public void launchGame(Minigame minigame) {

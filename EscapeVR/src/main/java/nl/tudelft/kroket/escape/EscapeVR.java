@@ -164,6 +164,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     eventManager.addListener(this);
 
     mgManager = new MinigameManager();
+    eventManager.addListener(mgManager);
 
     if (DEBUG) {
       System.out.println("Switching gamestate");
@@ -291,9 +292,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   @Override
   public void handleEvent(EventObject e) {
 
-    System.out.println("handleEvent in escapevr, object = " + e.toString());
-
-    mgManager.handleEvent(e);
+//    System.out.println("handleEvent in escapevr, object = " + e.toString());
 
     if (e instanceof InteractionEvent) {
       InteractionEvent interactionEvent = (InteractionEvent) e;
