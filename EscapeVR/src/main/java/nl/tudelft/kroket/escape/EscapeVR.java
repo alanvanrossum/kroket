@@ -1,5 +1,6 @@
 package nl.tudelft.kroket.escape;
 
+import java.util.Arrays;
 import java.util.EventObject;
 import java.util.HashMap;
 
@@ -16,6 +17,8 @@ import nl.tudelft.kroket.input.interaction.MovementHandler;
 import nl.tudelft.kroket.input.interaction.RotationHandler;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.log.Logger.LogLevel;
+import nl.tudelft.kroket.minigame.MinigameManager;
+import nl.tudelft.kroket.minigame.minigames.ColorSequenceMinigame;
 import nl.tudelft.kroket.net.ClientThread;
 import nl.tudelft.kroket.net.protocol.CommandParser;
 import nl.tudelft.kroket.scene.SceneManager;
@@ -67,6 +70,8 @@ public class EscapeVR extends VRApplication implements EventListener {
   private ScreenManager screenManager;
   private HeadUpDisplay hud;
 
+  private MinigameManager mgManager;
+
   private ClientThread clientThread;
 
   private GameState initialState = LobbyState.getInstance();
@@ -87,8 +92,8 @@ public class EscapeVR extends VRApplication implements EventListener {
     audioManager.loadFile("welcome", "Voice/intro2.wav", false, false, 5);
     audioManager.loadFile("letthegamebegin", "Voice/letthegamebegin3.wav", false, false, 5);
     audioManager.loadFile("muhaha", "Voice/muhaha.wav", false, false, 5);
-    audioManager
-        .loadFile("turret", "Voice/portal2/turret/turret_autosearch_6.ogg", false, false, 1);
+    audioManager.loadFile("turret", "Voice/portal2/turret/turret_autosearch_6.ogg", false, false,
+        1);
   }
 
   private void initInputHandler() {
@@ -147,16 +152,18 @@ public class EscapeVR extends VRApplication implements EventListener {
     inputHandler.registerMappings(new MovementHandler(observer), "forward", "back");
     inputHandler.registerMappings(eventManager, "Button A", "Button B", "Button X", "Button Y");
 
-    inputHandler.registerListener(new CollisionHandler(observer, sceneManager.getScene("escape")
-        .getBoundaries()));
+    inputHandler.registerListener(
+        new CollisionHandler(observer, sceneManager.getScene("escape").getBoundaries()));
 
     eventManager.registerObjectInteractionTrigger("painting", 4);
     eventManager.registerObjectInteractionTrigger("painting2", 4);
     eventManager.registerObjectInteractionTrigger("door", 3.5f);
     eventManager.registerObjectInteractionTrigger("portalturret-geom-0", 3.5f);
-    eventManager.registerObjectInteractionTrigger("fourbuttons2-objnode", 4f); 
+    // eventManager.registerObjectInteractionTrigger("fourbuttons2-objnode", 4f);
 
     eventManager.addListener(this);
+
+    mgManager = new MinigameManager();
 
     if (DEBUG) {
       System.out.println("Switching gamestate");
@@ -206,6 +213,8 @@ public class EscapeVR extends VRApplication implements EventListener {
       stateManager.setGameState(PlayingState.getInstance());
       forceUpdate = false;
     }
+    
+    mgManager.update(tpf);
   }
 
   /**
@@ -251,8 +260,10 @@ public class EscapeVR extends VRApplication implements EventListener {
             screenManager.getScreen("controller").show();
             log.info(className, "Minigame C started.");
             hud.setCenterText("Minigame C started!", 10);
-            hud.setCenterText("Enter the color sequence by\nusing the colored buttons on\nthe right of your controller!", 20);
-            //... .parseColors(CommandParser.parseParams(line);
+            hud.setCenterText(
+                "Enter the color sequence by\nusing the colored buttons on\nthe right of your controller!",
+                20);
+            // ... .parseColors(CommandParser.parseParams(line);
           } else if (command.get("param_0").equals("startD")) {
             log.info(className, "Minigame D started.");
             hud.setCenterText("Minigame D started!", 10);
@@ -280,6 +291,10 @@ public class EscapeVR extends VRApplication implements EventListener {
   @Override
   public void handleEvent(EventObject e) {
 
+    System.out.println("handleEvent in escapevr, object = " + e.toString());
+
+    mgManager.handleEvent(e);
+
     if (e instanceof InteractionEvent) {
       InteractionEvent interactionEvent = (InteractionEvent) e;
 
@@ -294,9 +309,18 @@ public class EscapeVR extends VRApplication implements EventListener {
         audioManager.getNode("turret").play();
         break;
       case "door":
+        System.out.println("Muhahaha???");
         // play spooky muhaha sound when player interacts with door
         audioManager.getNode("muhaha").play();
         hud.setCenterText("Muhahaha! You will never escape!", 5);
+
+        mgManager.launchGame(ColorSequenceMinigame.getInstance());
+
+        if (mgManager.getCurrent() instanceof ColorSequenceMinigame) {
+          ((ColorSequenceMinigame) mgManager.getCurrent())
+              .setSequence(Arrays.asList("Aap", "Noot", "Mies", "Irene"));
+        }
+
         break;
       case "painting":
         clientThread.sendMessage("INITM[startA]");

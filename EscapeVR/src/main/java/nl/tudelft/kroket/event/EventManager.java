@@ -25,7 +25,7 @@ public class EventManager extends InteractionHandler implements ActionListener {
   /** Singleton logger instance. */
   private Logger log = Logger.getInstance();
 
-  private HashMap<String, EventObject> eventList = new HashMap<String, EventObject>();
+  private List<EventObject> eventList = new ArrayList<EventObject>();
   private List<EventListener> listenerList = new ArrayList<EventListener>();
 
   private final int INPUT_GRACE_PERIOD = 400;
@@ -54,11 +54,12 @@ public class EventManager extends InteractionHandler implements ActionListener {
   }
 
   private synchronized void fireEvents() {
-    Iterator<EventListener> iterator = listenerList.iterator();
-    for (EventObject event : eventList.values()) {
-      while (iterator.hasNext()) {
 
-        ((EventListener) iterator.next()).handleEvent(event);
+    for (EventObject event : eventList) {
+      for (EventListener listener : listenerList) {
+
+        ((EventListener) listener).handleEvent(event);
+
       }
     }
 
@@ -66,7 +67,13 @@ public class EventManager extends InteractionHandler implements ActionListener {
   }
 
   public synchronized void addEvent(String type, EventObject event) {
-    eventList.put(type, event);
+    eventList.add(event);
+
+//    System.out.println("Events in list:");
+//
+//    for (EventObject entry : eventList) {
+//      System.out.println(entry);
+//    }
   }
 
   public synchronized void addListener(EventListener listener) {
@@ -87,6 +94,8 @@ public class EventManager extends InteractionHandler implements ActionListener {
       return;
     }
 
+    System.out.println("onAction");
+
     long now = System.currentTimeMillis();
     long delta = now - prevInput;
 
@@ -96,25 +105,25 @@ public class EventManager extends InteractionHandler implements ActionListener {
 
     prevInput = now;
 
+    ButtonPressEvent bbEvent = new ButtonPressEvent(this, name);
+    addEvent("buttonpress", bbEvent);
+
     for (Entry<String, Float> entry : triggers.entrySet()) {
 
       Spatial object = rootNode.getChild(entry.getKey());
 
       if (object == null) {
-        log.error(
-            className,
-            String.format("Warning: object '%s' does not exist in current scene (null)",
-                entry.getKey()));
+        log.error(className, String
+            .format("Warning: object '%s' does not exist in current scene (null)", entry.getKey()));
 
-      } else
+      } else {
 
-      if (InteractionEvent.checkConditions(object, entry.getValue(), name)) {
-        InteractionEvent event = new InteractionEvent(this, entry.getKey());
-        addEvent("interaction", event);
+        if (InteractionEvent.checkConditions(object, entry.getValue(), name)) {
+          InteractionEvent interactionEvent = new InteractionEvent(this, entry.getKey());
+          addEvent("interaction", interactionEvent);
+        }
+
       }
-      
-      ButtonPressEvent event = new ButtonPressEvent(this, entry.getKey());
-      addEvent("buttonpress", event);
     }
     fireEvents();
 

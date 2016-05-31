@@ -41,4 +41,8 @@ public class MinigameManager implements EventListener {
     currentGame.update(tpf);
   }
   
+  public Minigame getCurrent() {
+    return currentGame;
+  }
+  
 }
