@@ -39,7 +39,10 @@ public class LobbyState implements GameState {
 
   @Override
   public void update(AudioManager audioManager, InputHandler inputHandler, ScreenManager screenManager, float tpf) {
+    
+    System.out.println("LobbyState.update");
     inputHandler.handleInput(tpf);
+
   }
 
 }
