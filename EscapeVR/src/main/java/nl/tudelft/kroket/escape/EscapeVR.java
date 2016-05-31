@@ -95,15 +95,15 @@ public class EscapeVR extends VRApplication implements EventListener {
     audioManager.loadFile("welcome", "Voice/intro2.wav", false, false, 5);
     audioManager.loadFile("letthegamebegin", "Voice/letthegamebegin3.wav", false, false, 5);
     audioManager.loadFile("muhaha", "Voice/muhaha.wav", false, false, 5);
-    audioManager
-        .loadFile("turret", "Voice/portal2/turret/turret_autosearch_6.ogg", false, false, 1);
+    audioManager.loadFile("turret", "Voice/portal2/turret/turret_autosearch_6.ogg", false, false,
+        1);
   }
 
   private void initInputHandler() {
     inputHandler = new InputHandler(getInputManager());
     inputHandler.setAcceptInput(false);
-    inputHandler.registerListener(new CollisionHandler(observer, sceneManager.getScene("escape")
-        .getSceneBounds()));
+    inputHandler.registerListener(
+        new CollisionHandler(observer, sceneManager.getScene("escape").getSceneBounds()));
     inputHandler.registerMappings(new RotationHandler(observer, player), "left", "right", "lookup",
         "lookdown", "tiltleft", "tiltright");
     inputHandler.registerMappings(new MovementHandler(observer, player), "forward", "back");
@@ -152,7 +152,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     bulletAppState = new BulletAppState();
     // bulletAppState.setThreadingType(BulletAppState.ThreadingType.PARALLEL);
-    // bulletAppState.setDebugEnabled(true);
+    bulletAppState.setDebugEnabled(true);
 
     getStateManager().attach(bulletAppState);
 

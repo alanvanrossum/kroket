@@ -52,6 +52,7 @@ public class MovementHandler extends InteractionHandler implements ActionListene
     } else {
       player.setWalkDirection(new Vector3f(0, 0, 0));
     }
+   
   }
 
 }

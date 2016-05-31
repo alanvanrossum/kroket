@@ -152,6 +152,8 @@ public class EscapeScene extends Scene {
     turret.move(-2, -3.5f, 5);
     turret.scale(0.06f);
     addObject("turret", turret);
+    
+    addRigid(turret);
   }
 
   private void createLight() {
