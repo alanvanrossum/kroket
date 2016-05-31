@@ -226,10 +226,28 @@ public class EscapeVR extends VRApplication implements EventListener {
         if (command.containsKey("param_0")) {
           if (command.get("param_0").equals("doneA")) {
             log.info(className, "Minigame A completed.");
-            hud.setCenterText("Minigame A complete!", 30);
+            hud.setCenterText("Minigame A complete!", 10);
           } else if (command.get("param_0").equals("doneB")) {
             log.info(className, "Minigame B completed.");
-            hud.setCenterText("Minigame B complete!", 30);
+            hud.setCenterText("Minigame B complete!", 10);
+          } else if (command.get("param_0").equals("doneC")) {
+            log.info(className, "Minigame C completed.");
+            hud.setCenterText("Minigame C complete!", 10);
+          } else if (command.get("param_0").equals("doneD")) {
+            log.info(className, "Minigame D completed.");
+            hud.setCenterText("Minigame D complete!", 10);
+          } else if (command.get("param_0").equals("startA")) {
+            log.info(className, "Minigame A started.");
+            hud.setCenterText("Minigame A started!", 10);
+          } else if (command.get("param_0").equals("startB")) {
+            log.info(className, "Minigame B started.");
+            hud.setCenterText("Minigame B started!", 10);
+          } else if (command.get("param_0").equals("startC")) {
+            log.info(className, "Minigame C started.");
+            hud.setCenterText("Minigame C started!", 10);
+          } else if (command.get("param_0").equals("startD")) {
+            log.info(className, "Minigame D started.");
+            hud.setCenterText("Minigame D started!", 10);
           }
         }
         break;
@@ -274,11 +292,9 @@ public class EscapeVR extends VRApplication implements EventListener {
         break;
       case "painting":
         clientThread.sendMessage("INITM[startA]");
-        hud.setCenterText("Minigame A started!", 10);
         break;
       case "painting2":
         clientThread.sendMessage("INITM[startB]");
-        hud.setCenterText("Minigame B started!", 10);
         break;
       default:
         break;
