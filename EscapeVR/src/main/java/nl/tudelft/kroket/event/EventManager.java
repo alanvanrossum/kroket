@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
+import nl.tudelft.kroket.event.events.ButtonPressEvent;
 import nl.tudelft.kroket.event.events.InteractionEvent;
 import nl.tudelft.kroket.input.InteractionHandler;
 import nl.tudelft.kroket.log.Logger;
@@ -111,6 +112,9 @@ public class EventManager extends InteractionHandler implements ActionListener {
         InteractionEvent event = new InteractionEvent(this, entry.getKey());
         addEvent("interaction", event);
       }
+      
+      ButtonPressEvent event = new ButtonPressEvent(this, entry.getKey());
+      addEvent("buttonpress", event);
     }
     fireEvents();
 
