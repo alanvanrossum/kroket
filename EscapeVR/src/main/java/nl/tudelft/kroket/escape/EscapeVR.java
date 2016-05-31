@@ -22,6 +22,7 @@ import nl.tudelft.kroket.scene.SceneManager;
 import nl.tudelft.kroket.scene.scenes.EscapeScene;
 import nl.tudelft.kroket.screen.HeadUpDisplay;
 import nl.tudelft.kroket.screen.ScreenManager;
+import nl.tudelft.kroket.screen.screens.ControllerScreen;
 import nl.tudelft.kroket.screen.screens.LobbyScreen;
 import nl.tudelft.kroket.screen.screens.SpookyScreen;
 import nl.tudelft.kroket.state.GameState;
@@ -107,6 +108,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     screenManager.loadScreen("lobby", LobbyScreen.class);
     screenManager.loadScreen("spooky", SpookyScreen.class);
+    screenManager.loadScreen("controller", ControllerScreen.class);
   }
 
   private void initHeadUpDisplay() {
@@ -152,6 +154,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     eventManager.registerObjectInteractionTrigger("painting2", 4);
     eventManager.registerObjectInteractionTrigger("door", 3.5f);
     eventManager.registerObjectInteractionTrigger("portalturret-geom-0", 3.5f);
+    eventManager.registerObjectInteractionTrigger("knight1-geom-0", 4f); //moeten de knopjes worden
 
     eventManager.addListener(this);
 
@@ -231,6 +234,7 @@ public class EscapeVR extends VRApplication implements EventListener {
             log.info(className, "Minigame B completed.");
             hud.setCenterText("Minigame B complete!", 10);
           } else if (command.get("param_0").equals("doneC")) {
+            screenManager.getScreen("controller").hide();
             log.info(className, "Minigame C completed.");
             hud.setCenterText("Minigame C complete!", 10);
           } else if (command.get("param_0").equals("doneD")) {
@@ -243,8 +247,11 @@ public class EscapeVR extends VRApplication implements EventListener {
             log.info(className, "Minigame B started.");
             hud.setCenterText("Minigame B started!", 10);
           } else if (command.get("param_0").equals("startC")) {
+            System.out.println("startC was received");
+            screenManager.getScreen("controller").show();
             log.info(className, "Minigame C started.");
             hud.setCenterText("Minigame C started!", 10);
+            hud.setCenterText("Enter the color sequence by\nusing the colored buttons on\nthe right of your controller!", 20);
           } else if (command.get("param_0").equals("startD")) {
             log.info(className, "Minigame D started.");
             hud.setCenterText("Minigame D started!", 10);
@@ -296,6 +303,8 @@ public class EscapeVR extends VRApplication implements EventListener {
       case "painting2":
         clientThread.sendMessage("INITM[startB]");
         break;
+      case "knight1-geom-0":
+        clientThread.sendMessage("INITM[startC]");
       default:
         break;
       }
