@@ -71,7 +71,7 @@ public class AudioManager {
    *          volume (integer)
    * @return the created AudioNode
    */
-  private AudioNode createNode(String path, boolean positional, boolean looping, int volume) {
+  private AudioNode createNode(String path, boolean positional, boolean looping, float volume) {
     String fullPath = rootPath + path;
 
     AudioNode node = new AudioNode(assetManager, fullPath, DataType.Buffer);
@@ -95,7 +95,7 @@ public class AudioManager {
    * @param volume
    *          volume (integer)
    */
-  public void loadFile(String name, String path, boolean positional, boolean looping, int volume) {
+  public void loadFile(String name, String path, boolean positional, boolean looping, float volume) {
 
     AudioNode node = createNode(path, positional, looping, volume);
 

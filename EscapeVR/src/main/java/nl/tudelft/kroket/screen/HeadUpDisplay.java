@@ -42,7 +42,7 @@ public class HeadUpDisplay {
     guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
 
     centerTextLabel = createLabel(assetManager, "Interface/Fonts/Default.fnt",
-        guiCanvasSize.getX() * 0.5f - 145, (guiCanvasSize.getY() * 0.5f) - 145,
+        guiCanvasSize.getX() * 0.5f - 180, (guiCanvasSize.getY() * 0.5f) - 180,
         guiCanvasSize.getX(), guiCanvasSize.getY());
     centerTextLabel.setSize(32);
 

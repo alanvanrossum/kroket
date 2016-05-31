@@ -87,13 +87,14 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   private void initAudioManager() {
     audioManager = new AudioManager(getAssetManager(), rootNode, "Sound/");
-    audioManager.loadFile("waiting", "Soundtrack/waiting.wav", false, true, 3);
-    audioManager.loadFile("ambient", "Soundtrack/ambient.wav", false, true, 2);
-    audioManager.loadFile("welcome", "Voice/intro2.wav", false, false, 5);
-    audioManager.loadFile("letthegamebegin", "Voice/letthegamebegin3.wav", false, false, 5);
-    audioManager.loadFile("muhaha", "Voice/muhaha.wav", false, false, 5);
+    audioManager.loadFile("waiting", "Soundtrack/waiting.wav", false, true, 0.75f);
+    //audioManager.loadFile("ambient", "Soundtrack/ambient.wav", false, true, 2);
+    audioManager.loadFile("ambient", "Soundtrack/alone.wav", false, true, 0.75f);
+    audioManager.loadFile("welcome", "Voice/intro2.wav", false, false, 0.5f);
+    audioManager.loadFile("letthegamebegin", "Voice/letthegamebegin3.wav", false, false, 1.0f);
+    audioManager.loadFile("muhaha", "Voice/muhaha.wav", false, false, 1.0f);
     audioManager.loadFile("turret", "Voice/portal2/turret/turret_autosearch_6.ogg", false, false,
-        1);
+        0.7f);
   }
 
   private void initInputHandler() {
@@ -314,7 +315,6 @@ public class EscapeVR extends VRApplication implements EventListener {
         hud.setCenterText("Muhahaha! You will never escape!", 5);
 
         mgManager.launchGame(ColorSequenceMinigame.getInstance());
-
         if (mgManager.getCurrent() instanceof ColorSequenceMinigame) {
           ((ColorSequenceMinigame) mgManager.getCurrent())
               .setSequence(Arrays.asList("Aap", "Noot", "Mies", "Irene"));
