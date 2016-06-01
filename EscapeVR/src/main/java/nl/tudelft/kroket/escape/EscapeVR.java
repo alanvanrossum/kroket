@@ -82,20 +82,21 @@ public class EscapeVR extends VRApplication implements EventListener {
   private HeadUpDisplay hud;
 
   private MinigameManager mgManager;
-
+  
+  /** Thread reference used for the TCP connection. */
   private ClientThread clientThread;
 
+  /** The initial state of the game. */
   private GameState initialState = LobbyState.getInstance();
 
-  // private GameState playingState = PlayingState.getInstance();
-
-  private boolean forceUpdate = false;
-
+  /** List of all rigid objects. */
   private List<String> rigidObjects = new ArrayList<String>(
       Arrays.asList("safe-objnode", "knight1-geom-0", "knight2-geom-0", "Desk-objnode"));
 
   // private CollisionHandler collisionHandler;
   private MovementHandler movementHandler;
+
+  private GameState currentState;
 
   private void initStateManager() {
     stateManager = new StateManager(audioManager, inputHandler, sceneManager, screenManager,
@@ -110,7 +111,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     audioManager.loadFile("letthegamebegin", "Voice/letthegamebegin3.wav", false, false, 1.0f);
     audioManager.loadFile("muhaha", "Voice/muhaha.wav", false, false, 1.0f);
     audioManager.loadFile("turret", "Voice/portal2/turret/turret_autosearch_6.ogg", false, false,
-        0.7f);
+        0.5f);
   }
 
   private void initInputHandler() {
@@ -128,6 +129,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     screenManager = new ScreenManager(getAssetManager(), guiNode, guiCanvasSize.getX(),
         guiCanvasSize.getY());
 
+    // pre-load all screens
     screenManager.loadScreen("lobby", LobbyScreen.class);
     screenManager.loadScreen("spooky", SpookyScreen.class);
     screenManager.loadScreen("controller", ControllerScreen.class);
@@ -154,7 +156,35 @@ public class EscapeVR extends VRApplication implements EventListener {
       System.out.println("Attached device: " + VRApplication.getVRHardware().getName());
     }
 
-    initObjects();
+    // Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
+
+    // create a sphere around the observer for our collision detection
+    Sphere sphere = new Sphere(10, 50, 0.4f);
+    observer = new Geometry("observer", sphere);
+
+    // the sphere should have no shaded material
+    Material mat = new Material(getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+    observer.setMaterial(mat);
+
+    Spatial sky = SkyFactory.createSky(getAssetManager(), "Textures/Sky/Bright/spheremap.png",
+        SkyFactory.EnvMapType.EquirectMap);
+    rootNode.attachChild(sky);
+
+    // test any positioning mode here (defaults to AUTO_CAM_ALL)
+    VRGuiManager.setPositioningMode(POSITIONING_MODE.AUTO_CAM_ALL_SKIP_PITCH);
+    VRGuiManager.setGuiScale(0.4f);
+    VRGuiManager.setPositioningElasticity(10f);
+
+    observer.setLocalTranslation(spawnPosition);
+
+    VRApplication.setObserver(observer);
+    rootNode.attachChild(observer);
+
+    // do not use magic VR mouse cusor (same usage as non-VR mouse cursor)
+    getInputManager().setCursorVisible(true);
+    // observer.setModelBound(bound);
+    
+    
     initHeadUpDisplay();
     initSceneManager();
     initAudioManager();
@@ -180,49 +210,28 @@ public class EscapeVR extends VRApplication implements EventListener {
     eventManager.addListener(mgManager);
 
     if (DEBUG) {
-      System.out.println("Switching gamestate");
-      stateManager.setGameState(PlayingState.getInstance());
+      // when in debug mode, force the game to
+      // playing state
+      setGameState(PlayingState.getInstance());
       log.setLevel(LogLevel.ALL);
+    } else {
+      setGameState(initialState);
     }
-
-    registerObjects();
   }
 
   /**
-   * Initialize the scene.
+   * Set the current game state.
+   * 
+   * @param state
+   *          the gamestate
    */
-  private void initObjects() {
-    // Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
-
-    // create a sphere around the observer for our collision detection
-    Sphere sphere = new Sphere(10, 50, 0.4f);
-    observer = new Geometry("observer", sphere);
-
-    
-    // the sphere should have no shaded material
-    Material mat = new Material(getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-    observer.setMaterial(mat);
-
-    Spatial sky = SkyFactory.createSky(getAssetManager(), "Textures/Sky/Bright/spheremap.png",
-        SkyFactory.EnvMapType.EquirectMap);
-    rootNode.attachChild(sky);
-
-    // test any positioning mode here (defaults to AUTO_CAM_ALL)
-    VRGuiManager.setPositioningMode(POSITIONING_MODE.AUTO_CAM_ALL_SKIP_PITCH);
-    VRGuiManager.setGuiScale(0.4f);
-    VRGuiManager.setPositioningElasticity(10f);
-
-    observer.setLocalTranslation(spawnPosition);
-
-    VRApplication.setObserver(observer);
-    rootNode.attachChild(observer);
-
-    // do not use magic VR mouse cusor (same usage as non-VR mouse cursor)
-    getInputManager().setCursorVisible(true);
-    // observer.setModelBound(bound);
-
+  private void setGameState(GameState state) {
+    this.currentState = state;
   }
 
+  /**
+   * Register all objects in the environment.
+   */
   private void registerObjects() {
 
     log.debug(className, "Registering objects...");
@@ -231,12 +240,19 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     for (Spatial object : objects) {
 
+      // ignore objects that are null
       if (object == null)
         continue;
 
+      // ignore AudioNodes
       if (object instanceof AudioNode)
         continue;
 
+      // ignore the observer as we can't interact with ourselves
+      if (object.getName().equals("observer"))
+        continue;
+      
+      // only process objects that extend either Geomtery or Node
       if (object instanceof Geometry || object instanceof Node) {
 
         log.debug(className, String.format("Registering trigger for %s", object.toString()));
@@ -244,6 +260,9 @@ public class EscapeVR extends VRApplication implements EventListener {
       }
     }
     
+    // register all rigid objects with the movementhandler
+    // the movementhandler will force the observer
+    // to stay away from these objects
     for (String objectName : rigidObjects) {
       movementHandler.addObject(objectName);
     }
@@ -251,7 +270,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   }
 
   /**
-   * Main method to update the scene.
+   * Main method to update the game.
    */
   @Override
   public void simpleUpdate(float tpf) {
@@ -260,9 +279,8 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     hud.update();
 
-    if (forceUpdate) {
-      stateManager.setGameState(PlayingState.getInstance());
-      forceUpdate = false;
+    if (stateManager.getCurrentState() != currentState) {
+      stateManager.setGameState(currentState);
       registerObjects();
     }
 
@@ -283,7 +301,8 @@ public class EscapeVR extends VRApplication implements EventListener {
 
       switch (command.get("command")) {
       case "START":
-        forceUpdate = true;
+        registerObjects();
+        setGameState(PlayingState.getInstance());
         hud.setCenterText("");
         break;
       case "INITVR":
@@ -347,7 +366,7 @@ public class EscapeVR extends VRApplication implements EventListener {
         audioManager.getNode("turret").play();
         break;
       case "door":
-        System.out.println("Muhahaha???");
+        log.info(className, "Muhahaha???");
         // Play spooky muhaha sound when player interacts with door
         audioManager.getNode("muhaha").play();
         hud.setCenterText("Muhahaha! You will never escape!", 5);

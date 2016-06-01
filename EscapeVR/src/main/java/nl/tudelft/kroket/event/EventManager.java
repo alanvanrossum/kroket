@@ -25,6 +25,8 @@ public class EventManager extends InteractionHandler implements ActionListener {
   private Logger log = Logger.getInstance();
 
   private List<EventObject> eventList = new ArrayList<EventObject>();
+  
+  /** List of all registered listeners. */
   private List<EventListener> listenerList = new ArrayList<EventListener>();
 
   private final int INPUT_GRACE_PERIOD = 200;
@@ -32,7 +34,8 @@ public class EventManager extends InteractionHandler implements ActionListener {
   long prevInput = 0;
 
   private Node rootNode;
-
+  
+  /** All registered triggers: the name of the object and the range. */
   private HashMap<String, Float> triggers = new HashMap<String, Float>();
 
   /**
@@ -48,10 +51,21 @@ public class EventManager extends InteractionHandler implements ActionListener {
     this.rootNode = root;
   }
 
+  /**
+   * Register an object to fire an InteractionEvent.
+   * 
+   * @param objName
+   *          the name of the object
+   * @param range
+   *          the range the player/observer has to be in (related to the object)
+   */
   public void registerObjectInteractionTrigger(String objName, float range) {
     triggers.put(objName, range);
   }
 
+  /**
+   * Fire/delegate all events we have in our list and forward them to all registered listeners.
+   */
   private synchronized void fireEvents() {
 
     for (EventObject event : eventList) {
@@ -65,6 +79,14 @@ public class EventManager extends InteractionHandler implements ActionListener {
     eventList.clear();
   }
 
+  /**
+   * Add an event to be fired.
+   * 
+   * @param type
+   *          the type/name of the event
+   * @param event
+   *          the event object
+   */
   public synchronized void addEvent(String type, EventObject event) {
     eventList.add(event);
 
@@ -75,46 +97,76 @@ public class EventManager extends InteractionHandler implements ActionListener {
     // }
   }
 
-  public synchronized void addListener(EventListener listener) {
+  /**
+   * Add a listener.
+   * 
+   * @param listener
+   *          object to be registered
+   */
+  public void addListener(EventListener listener) {
     listenerList.add(listener);
   }
 
-  public synchronized void removeListener(EventListener listener) {
+  /**
+   * Remove a listener.
+   * 
+   * @param listener
+   *          object to be removed
+   */
+  public void removeListener(EventListener listener) {
     listenerList.remove(listener);
   }
 
+  /**
+   * General update method.
+   */
   public void update(float tpf) {
+
+    // fire all events we registered
     fireEvents();
   }
 
   @Override
   public void onAction(String name, boolean isPressed, float tpf) {
+
+    // if the button wasn't pressed, ignore it
     if (!isPressed) {
       return;
     }
 
+    // get current system time
     long now = System.currentTimeMillis();
+
+    // compute difference between the current button press
+    // and previous button press
     long delta = now - prevInput;
 
+    // if the time between button presses is too short
+    // ignore the button press
     if (delta < INPUT_GRACE_PERIOD) {
       return;
     }
 
+    // store the current action's time so we can compare it later
     prevInput = now;
 
+    // register a new button press event
     addEvent("buttonpress", new ButtonPressEvent(this, name));
 
+    // loop over all object triggers
     for (Entry<String, Float> entry : triggers.entrySet()) {
 
+      // get the object from the rootnode
       Spatial object = rootNode.getChild(entry.getKey());
 
+      // check whether the object exists
       if (object == null) {
         log.error(className, String
             .format("Warning: object '%s' does not exist in current scene (null)", entry.getKey()));
 
       } else {
 
-        if (InteractionEvent.checkConditions(object, entry.getValue(), name) 
+        if (InteractionEvent.checkConditions(object, entry.getValue(), name)
             && !ColorSequenceMinigame.isActive()) {
           InteractionEvent interactionEvent = new InteractionEvent(this, entry.getKey());
           addEvent("interaction", interactionEvent);
@@ -122,6 +174,8 @@ public class EventManager extends InteractionHandler implements ActionListener {
 
       }
     }
+
+    // fire the events
     fireEvents();
 
   }

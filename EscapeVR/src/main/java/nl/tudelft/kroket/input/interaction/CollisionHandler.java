@@ -14,7 +14,12 @@ public class CollisionHandler extends InteractionHandler {
 
   float collisionThreshold = 0.9f;
   float collisionOffset = 8.0f;
-
+  
+  /**
+   * Constructs a CollisionHandler.
+   * @param observer the observer reference
+   * @param boundaries the boundaries to restrict the observer to
+   */
   public CollisionHandler(Spatial observer, Vector3f boundaries) {
     super(observer);
 
@@ -25,6 +30,8 @@ public class CollisionHandler extends InteractionHandler {
 
   private void handleCollision(float collisionOffset, float collisionThreshold, float tpf) {
 
+    // deltaCorrected is the distance we should use to push the 
+    // observer back with whenever it tries to move into the boundaries
     float deltaCorrected = collisionOffset * tpf;
 
     // collide X

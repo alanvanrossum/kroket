@@ -63,6 +63,10 @@ public class MovementHandler extends InteractionHandler implements ActionListene
     }
   }
 
+  /**
+   * Add an object we want to use 
+   * @param objectName
+   */
   public void addObject(String objectName) {
 
     if (objectList.contains(objectName))

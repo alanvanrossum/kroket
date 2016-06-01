@@ -41,6 +41,7 @@ public class RotationHandler extends InteractionHandler implements ActionListene
       tiltRight = keyPressed;
     }
 
+    // TODO: only call externally?
     update(tpf);
 
   }

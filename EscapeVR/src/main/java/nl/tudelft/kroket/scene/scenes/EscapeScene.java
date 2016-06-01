@@ -142,9 +142,8 @@ public class EscapeScene extends Scene {
 
   private void addLamp() {
     Spatial lamp = assetManager.loadModel("Models/Petroleum_Lamp/Petroleum_Lamp.j3o");
-    lamp.move(-2, -1, -2); // put the lamp on the floor
+    // lamp.move(-2, -3, -2); // put the lamp on the floor
     rootNode.attachChild(lamp);
-
   }
 
   private void addTurret() {
