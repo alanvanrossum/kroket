@@ -32,7 +32,6 @@ public class MinigameManager implements EventListener {
     this.clientThread = clientThread;
     this.screenManager = screenManager;
     this.sceneManager = sceneManager;
-    
   }
 
   @Override
@@ -41,8 +40,6 @@ public class MinigameManager implements EventListener {
       return;
     
     currentGame.handleEvent(event);
-    
-    
   }
   
   public void launchGame(Minigame minigame) {
@@ -52,8 +49,13 @@ public class MinigameManager implements EventListener {
     minigame.setHud(hud);
     minigame.setScreenManager(screenManager);
     minigame.setSceneManager(sceneManager);
+    minigame.setMinigameManager(this);
     
     currentGame.start(); 
+  }
+  
+  public void endGame() {
+    currentGame = null;
   }
   
   public void update(float tpf) {

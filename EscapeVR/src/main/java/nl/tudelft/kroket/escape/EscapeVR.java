@@ -1,8 +1,10 @@
 package nl.tudelft.kroket.escape;
 
-import java.util.EventObject;
-import java.util.HashMap;
-
+import com.jme3.math.Vector2f;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
+import com.jme3.util.SkyFactory;
 import jmevr.app.VRApplication;
 import jmevr.util.VRGuiManager;
 import jmevr.util.VRGuiManager.POSITIONING_MODE;
@@ -18,6 +20,9 @@ import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.log.Logger.LogLevel;
 import nl.tudelft.kroket.minigame.MinigameManager;
 import nl.tudelft.kroket.minigame.minigames.ColorSequenceMinigame;
+import nl.tudelft.kroket.minigame.minigames.GyroscopeMinigame;
+import nl.tudelft.kroket.minigame.minigames.PictureCodeMinigame;
+import nl.tudelft.kroket.minigame.minigames.TapMinigame;
 import nl.tudelft.kroket.net.ClientThread;
 import nl.tudelft.kroket.net.protocol.CommandParser;
 import nl.tudelft.kroket.scene.SceneManager;
@@ -32,11 +37,9 @@ import nl.tudelft.kroket.state.StateManager;
 import nl.tudelft.kroket.state.states.LobbyState;
 import nl.tudelft.kroket.state.states.PlayingState;
 
-import com.jme3.math.Vector2f;
-import com.jme3.math.Vector3f;
-import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
-import com.jme3.util.SkyFactory;
+import java.util.EventObject;
+import java.util.HashMap;
+
 
 /**
  * The EscapeVR class.
@@ -214,7 +217,7 @@ public class EscapeVR extends VRApplication implements EventListener {
       stateManager.setGameState(PlayingState.getInstance());
       forceUpdate = false;
     }
-    
+
     mgManager.update(tpf);
   }
 
@@ -237,44 +240,27 @@ public class EscapeVR extends VRApplication implements EventListener {
         break;
       case "INITVR":
         if (command.containsKey("param_0")) {
-          if (command.get("param_0").equals("doneA")) {
-            log.info(className, "Minigame A completed.");
-            hud.setCenterText("Minigame A complete!", 10);
-          } else if (command.get("param_0").equals("doneB")) {
-            log.info(className, "Minigame B completed.");
-            hud.setCenterText("Minigame B complete!", 10);
-            sceneManager.extendEscapeScene("C");
-          } else if (command.get("param_0").equals("doneC")) {
-//            screenManager.getScreen("controller").hide();
-//            log.info(className, "Minigame C completed.");
-//           hud.setCenterText("Minigame C complete!", 10);
-          } else if (command.get("param_0").equals("doneD")) {
-            log.info(className, "Minigame D completed.");
-            hud.setCenterText("Minigame D complete!", 10);
-          } else if (command.get("param_0").equals("startA")) {
-            log.info(className, "Minigame A started.");
-            hud.setCenterText("Minigame A started!", 10);
-          } else if (command.get("param_0").equals("startB")) {
-            log.info(className, "Minigame B started.");
-            hud.setCenterText("Minigame B started!", 10);
-          } else if (command.get("param_0").equals("startC")) {
-            //screenManager.getScreen("controller").show();
-            //log.info(className, "Minigame C started.");
-            //hud.setCenterText("Minigame C started!", 10);
-            //hud.setCenterText(
-            //    "Enter the color sequence by\nusing the colored buttons on\nthe right of your controller!",
-            //    20);
-            
-            //Launch the minigame and set the color sequence.
+          String action = command.get("param_0");
+
+          //End minigames
+          if (action.equals("doneA") || action.equals("doneB") || action.equals("doneC")
+              || action.equals("doneD")) {
+            mgManager.getCurrent().stop();
+            mgManager.endGame();
+
+            //Start minigames 
+          } else if (action.equals("startA")) {
+            mgManager.launchGame(PictureCodeMinigame.getInstance());
+          } else if (action.equals("startB")) {
+            mgManager.launchGame(TapMinigame.getInstance());
+          } else if (action.equals("startC")) {
             mgManager.launchGame(ColorSequenceMinigame.getInstance());
             if (mgManager.getCurrent() instanceof ColorSequenceMinigame) {
               ((ColorSequenceMinigame) mgManager.getCurrent())
-                  .parseColors(CommandParser.parseParams(line));
+              .parseColors(CommandParser.parseParams(line));
             }
-            
-          } else if (command.get("param_0").equals("startD")) {
-            log.info(className, "Minigame D started.");
-            hud.setCenterText("Minigame D started!", 10);
+          } else if (action.equals("startD")) {
+            mgManager.launchGame(GyroscopeMinigame.getInstance());
           }
         }
         break;
@@ -287,8 +273,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   /**
    * Main callback method for handling remote input from socket.
    * 
-   * @param messages
-   *          the input received from the socket
+   * @param message the input received from the socket.
    */
   public void receiveLoop(String message) {
     log.debug(className, "Message received: " + message);
@@ -297,12 +282,10 @@ public class EscapeVR extends VRApplication implements EventListener {
   }
 
   @Override
-  public void handleEvent(EventObject e) {
+  public void handleEvent(EventObject ev) {
 
-//    System.out.println("handleEvent in escapevr, object = " + e.toString());
-
-    if (e instanceof InteractionEvent) {
-      InteractionEvent interactionEvent = (InteractionEvent) e;
+    if (ev instanceof InteractionEvent) {
+      InteractionEvent interactionEvent = (InteractionEvent) ev;
 
       log.info(className, "Player interacted with object " + interactionEvent.getName());
 
@@ -311,25 +294,26 @@ public class EscapeVR extends VRApplication implements EventListener {
       clientThread.sendMessage(String.format("INTERACT[%s]", objectName));
 
       switch (objectName) {
-      case "portalturret-geom-0":
-        audioManager.getNode("turret").play();
-        break;
-      case "door":
-        System.out.println("Muhahaha???");
-        // play spooky muhaha sound when player interacts with door
-        audioManager.getNode("muhaha").play();
-        hud.setCenterText("Muhahaha! You will never escape!", 5);
-        break;
-      case "painting":
-        clientThread.sendMessage("INITM[startA]");
-        break;
-      case "painting2":
-        clientThread.sendMessage("INITM[startB]");
-        break;
-      case "fourbuttons2-objnode":
-        clientThread.sendMessage("INITM[startC]");
-      default:
-        break;
+        case "portalturret-geom-0":
+          audioManager.getNode("turret").play();
+          break;
+        case "door":
+          System.out.println("Muhahaha???");
+          //Play spooky muhaha sound when player interacts with door
+          audioManager.getNode("muhaha").play();
+          hud.setCenterText("Muhahaha! You will never escape!", 5);
+          break;
+        case "painting":
+          clientThread.sendMessage("INITM[startA]");
+          break;
+        case "painting2":
+          clientThread.sendMessage("INITM[startB]");
+          break;
+        case "fourbuttons2-objnode":
+          clientThread.sendMessage("INITM[startC]");
+          break;
+        default:
+          break;
       }
 
     }
@@ -337,6 +321,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   }
 
   /**
+   * Get the remote host.
    * @return the remoteHost
    */
   public String getRemoteHost() {
@@ -344,6 +329,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   }
 
   /**
+   * Set the remote host.
    * @param remoteHost
    *          the remoteHost to set
    */
@@ -352,6 +338,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   }
 
   /**
+   * Get the remote port.
    * @return the remotePort
    */
   public int getRemotePort() {
@@ -359,6 +346,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   }
 
   /**
+   * Set the remote port.
    * @param remotePort
    *          the remotePort to set
    */
