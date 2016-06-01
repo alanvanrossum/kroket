@@ -1,6 +1,5 @@
 package nl.tudelft.kroket.escape;
 
-import java.util.Arrays;
 import java.util.EventObject;
 import java.util.HashMap;
 

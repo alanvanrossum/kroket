@@ -60,6 +60,7 @@ public class ColorSequenceMinigame extends Minigame {
     //clientThread.sendMessage(Protocol.COMMAND_INIT_VR + "[doneC]");
     
     screenManager.getScreen("controller").hide();
+    hud.setCenterText("Minigame C complete!");
   }
 
   @Override
