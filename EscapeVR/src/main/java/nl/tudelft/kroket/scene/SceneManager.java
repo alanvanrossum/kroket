@@ -9,6 +9,7 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 
 import nl.tudelft.kroket.log.Logger;
+import nl.tudelft.kroket.scene.scenes.EscapeScene;
 
 public class SceneManager {
 
@@ -123,6 +124,15 @@ public class SceneManager {
   
   public HashMap<String, Scene> getScenes(){
     return scenes;
+  }
+  
+  public void extendEscapeScene(String state) {
+    switch (state) {
+    case "C":
+      ((EscapeScene) scenes.get("escape")).addButtons();
+      break;
+    }
+    
   }
 
 }
