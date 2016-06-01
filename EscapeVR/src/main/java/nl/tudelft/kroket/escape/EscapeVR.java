@@ -2,6 +2,7 @@ package nl.tudelft.kroket.escape;
 
 import java.util.EventObject;
 import java.util.HashMap;
+import java.util.List;
 
 import jmevr.app.VRApplication;
 import jmevr.util.VRGuiManager;
@@ -11,7 +12,7 @@ import nl.tudelft.kroket.event.EventListener;
 import nl.tudelft.kroket.event.EventManager;
 import nl.tudelft.kroket.event.events.InteractionEvent;
 import nl.tudelft.kroket.input.InputHandler;
-import nl.tudelft.kroket.input.interaction.CollisionHandler;
+
 import nl.tudelft.kroket.input.interaction.MovementHandler;
 import nl.tudelft.kroket.input.interaction.RotationHandler;
 import nl.tudelft.kroket.log.Logger;
@@ -29,10 +30,15 @@ import nl.tudelft.kroket.state.StateManager;
 import nl.tudelft.kroket.state.states.LobbyState;
 import nl.tudelft.kroket.state.states.PlayingState;
 
+import com.jme3.bounding.BoundingSphere;
+import com.jme3.material.Material;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.Camera;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.shape.Sphere;
 import com.jme3.util.SkyFactory;
 
 /**
@@ -74,6 +80,9 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   private boolean forceUpdate = false;
 
+  // private CollisionHandler collisionHandler;
+  private MovementHandler movementHandler;
+
   private void initStateManager() {
     stateManager = new StateManager(audioManager, inputHandler, sceneManager, screenManager,
         initialState);
@@ -86,8 +95,8 @@ public class EscapeVR extends VRApplication implements EventListener {
     audioManager.loadFile("welcome", "Voice/intro2.wav", false, false, 5);
     audioManager.loadFile("letthegamebegin", "Voice/letthegamebegin3.wav", false, false, 5);
     audioManager.loadFile("muhaha", "Voice/muhaha.wav", false, false, 5);
-    audioManager
-        .loadFile("turret", "Voice/portal2/turret/turret_autosearch_6.ogg", false, false, 1);
+    audioManager.loadFile("turret", "Voice/portal2/turret/turret_autosearch_6.ogg", false, false,
+        1);
   }
 
   private void initInputHandler() {
@@ -139,19 +148,17 @@ public class EscapeVR extends VRApplication implements EventListener {
     initNetworkClient();
     initStateManager();
 
+    movementHandler = new MovementHandler(observer);
+
     eventManager = new EventManager(observer, rootNode);
     inputHandler.registerMappings(new RotationHandler(observer), "left", "right", "lookup",
         "lookdown", "tiltleft", "tiltright");
-    inputHandler.registerMappings(new MovementHandler(observer), "forward", "back");
+    inputHandler.registerMappings(movementHandler, "forward", "back");
     inputHandler.registerMappings(eventManager, "Button A", "Button B", "Button X", "Button Y");
 
-    inputHandler.registerListener(new CollisionHandler(observer, sceneManager.getScene("escape")
-        .getBoundaries()));
+    // collisionHandler = new CollisionHandler(observer);
 
-    eventManager.registerObjectInteractionTrigger("painting", 4);
-    eventManager.registerObjectInteractionTrigger("painting2", 4);
-    eventManager.registerObjectInteractionTrigger("door", 3.5f);
-    eventManager.registerObjectInteractionTrigger("portalturret-geom-0", 3.5f);
+    // inputHandler.registerListener(collisionHandler);
 
     eventManager.addListener(this);
 
@@ -160,15 +167,19 @@ public class EscapeVR extends VRApplication implements EventListener {
       stateManager.setGameState(PlayingState.getInstance());
       log.setLevel(LogLevel.ALL);
     }
+
+    delegateSceneObjects();
   }
 
   /**
    * Initialize the scene.
    */
   private void initObjects() {
-
-    // Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
-    observer = new Node("observer");
+    // Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();.5
+    Sphere sp = new Sphere(10, 10, 1.0f);
+    observer = new Geometry("observer", sp);
+    Material mat = new Material(getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+    observer.setMaterial(mat);
 
     Spatial sky = SkyFactory.createSky(getAssetManager(), "Textures/Sky/Bright/spheremap.png",
         SkyFactory.EnvMapType.EquirectMap);
@@ -186,7 +197,35 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     // do not use magic VR mouse cusor (same usage as non-VR mouse cursor)
     getInputManager().setCursorVisible(true);
+    // observer.setModelBound(bound);
 
+    // System.out.println(observer.getWo);
+
+  }
+
+  private void delegateSceneObjects() {
+
+    System.out.println("delegating scene objects");
+
+    List<Spatial> objects = rootNode.getChildren();
+
+    for (Spatial object : objects) {
+
+      if (object == null)
+        continue;
+
+      System.out.println(object.toString());
+
+      if (object instanceof Geometry)
+        eventManager.registerObjectInteractionTrigger(object.getName(), 4f);
+      else if (object instanceof Node)
+        eventManager.registerObjectInteractionTrigger(object.getName(), 4f);
+
+    }
+
+    movementHandler.addObject(rootNode.getChild("wall-south"));
+    movementHandler.addObject(rootNode.getChild("wall-north"));
+    movementHandler.addObject(rootNode.getChild("safe-objnode"));
   }
 
   /**
@@ -202,6 +241,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     if (forceUpdate) {
       stateManager.setGameState(PlayingState.getInstance());
       forceUpdate = false;
+      delegateSceneObjects();
     }
   }
 

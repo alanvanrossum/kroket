@@ -3,17 +3,30 @@ package nl.tudelft.kroket.input.interaction;
 import nl.tudelft.kroket.input.InteractionHandler;
 import jmevr.app.VRApplication;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.jme3.input.controls.ActionListener;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 
 public class MovementHandler extends InteractionHandler implements ActionListener {
-  
+
   private final float movementSpeed = 8f;
 
   public MovementHandler(Spatial observer) {
     super(observer);
+
+    this.objectList = new ArrayList<Spatial>();
+
   }
+
+  private boolean restrictObserver;
+
+  float collisionThreshold = 3.2f;
+  float collisionOffset = 8.0f;
+
+  private List<Spatial> objectList;
 
   private boolean moveForward, moveBackwards;
 
@@ -37,28 +50,94 @@ public class MovementHandler extends InteractionHandler implements ActionListene
     }
   }
 
+  public void addObject(Spatial object) {
+    if (object == null)
+      return;
+
+    System.out.println("Adding collision object: " + object.getName());
+    objectList.add(object);
+  }
+
+  public void removeObject(Spatial object) {
+    if (object == null)
+      return;
+
+    objectList.remove(object);
+  }
+
+  private boolean allowMovement(Vector3f newPos) {
+
+    // boolean intersects = false;
+
+    for (Spatial object : objectList) {
+      if (object == null)
+        continue;
+
+      if (intersectsWith(object, newPos))
+        return false;
+    }
+    return true;
+  }
+
   public void update(float tpf) {
+
+    float deltaCorrected = collisionOffset * tpf;
 
     if (flying) {
       if (moveForward) {
-        observer.move(VRApplication.getFinalObserverRotation().getRotationColumn(2).mult(tpf * movementSpeed));
+
+        Vector3f newPos = VRApplication.getFinalObserverRotation().getRotationColumn(2)
+            .mult(tpf * movementSpeed);
+
+        Vector3f direction = newPos
+            .subtract(VRApplication.getFinalObserverRotation().getRotationColumn(2)).mult(tpf * movementSpeed);
+
+        if (allowMovement(newPos)) {
+          observer.move(newPos);
+        } 
+        else
+          observer.move(direction);
       }
       if (moveBackwards) {
-        observer
-            .move(VRApplication.getFinalObserverRotation().getRotationColumn(2).mult(-tpf * movementSpeed));
+        Vector3f newPos = VRApplication.getFinalObserverRotation().getRotationColumn(2)
+            .mult(-tpf * movementSpeed);
+
+        Vector3f direction = newPos
+            .subtract(VRApplication.getFinalObserverRotation().getRotationColumn(2)).mult(-tpf * movementSpeed);
+
+        if (allowMovement(newPos)) {
+          observer.move(newPos);
+        }
+        else
+          observer.move(direction);
       }
-    } else {
-      if (moveForward) {
-        Vector3f direction = VRApplication.getFinalObserverRotation().getRotationColumn(2);
-        direction.setY(0);
-        observer.move(direction.mult(tpf * movementSpeed));
-      }
-      if (moveBackwards) {
-        Vector3f direction = VRApplication.getFinalObserverRotation().getRotationColumn(2);
-        direction.setY(0);
-        observer.move(direction.mult(-tpf * movementSpeed));
-      }
+    } 
+    
+//    else {
+//      if (moveForward) {
+//        Vector3f direction = VRApplication.getFinalObserverRotation().getRotationColumn(2);
+//        direction.setY(0);
+//        observer.move(direction.mult(tpf * movementSpeed));
+//      }
+//      if (moveBackwards) {
+//        Vector3f direction = VRApplication.getFinalObserverRotation().getRotationColumn(2);
+//        direction.setY(0);
+//        observer.move(direction.mult(-tpf * movementSpeed));
+//      }
+//    }
+  }
+
+  private boolean intersectsWith(Spatial object, Vector3f newPos) {
+
+    boolean intersects = (object.getWorldBound()
+        .intersects(observer.clone(false).move(newPos).getWorldBound()));
+
+    if (intersects) {
+      System.out.println("Intersects with object: " + object.getName());
     }
+
+    return intersects;
+
   }
 
 }

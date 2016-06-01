@@ -178,23 +178,23 @@ public class EscapeScene extends Scene {
     Material wallMaterial = new Material(assetManager, materialPath);
     wallMaterial.setTexture("ColorMap", wallTexture);
 
-    // wall to the right of player spawn
-    Geometry wall1 = new Geometry("wall-east", new Box(.1f, roomHeight, roomDepth));
-    wall1.setMaterial(wallMaterial);
-    wall1.move(-roomWidth, translationY, 0);
-    addObject("wall-east", wall1);
-
-    // wall to the left of player spawn
-    Geometry wall2 = new Geometry("wall-west", new Box(.1f, roomHeight, roomDepth));
-    wall2.setMaterial(wallMaterial);
-    wall2.move(roomWidth, translationY, 0);
-    addObject("wall-west", wall2);
-
-    // wall in front of player
-    Geometry wall3 = new Geometry("wall-north", new Box(roomWidth, roomHeight, .1f));
-    wall3.setMaterial(wallMaterial);
-    wall3.move(0, translationY, roomDepth);
-    addObject("wall-north", wall3);
+//    // wall to the right of player spawn
+//    Geometry wall1 = new Geometry("wall-east", new Box(.1f, roomHeight, roomDepth));
+//    wall1.setMaterial(wallMaterial);
+//    wall1.move(-roomWidth, translationY, 0);
+//    addObject("wall-east", wall1);
+//
+//    // wall to the left of player spawn
+//    Geometry wall2 = new Geometry("wall-west", new Box(.1f, roomHeight, roomDepth));
+//    wall2.setMaterial(wallMaterial);
+//    wall2.move(roomWidth, translationY, 0);
+//    addObject("wall-west", wall2);
+//
+//    // wall in front of player
+//    Geometry wall3 = new Geometry("wall-north", new Box(roomWidth, roomHeight, .1f));
+//    wall3.setMaterial(wallMaterial);
+//    wall3.move(0, translationY, roomDepth);
+//    addObject("wall-north", wall3);
 
     // wall behind player spawn
     Geometry wall4 = new Geometry("wall-south", new Box(roomWidth, roomHeight, .1f));
