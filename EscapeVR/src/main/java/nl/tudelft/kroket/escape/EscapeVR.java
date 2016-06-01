@@ -176,7 +176,7 @@ public class EscapeVR extends VRApplication implements EventListener {
    */
   private void initObjects() {
     // Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();.5
-    Sphere sp = new Sphere(10, 10, 1.0f);
+    Sphere sp = new Sphere(10, 10, 0.2f);
     observer = new Geometry("observer", sp);
     Material mat = new Material(getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
     observer.setMaterial(mat);

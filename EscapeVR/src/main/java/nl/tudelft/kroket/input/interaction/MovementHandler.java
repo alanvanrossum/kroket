@@ -95,7 +95,7 @@ public class MovementHandler extends InteractionHandler implements ActionListene
         if (allowMovement(newPos)) {
           observer.move(newPos);
         } 
-        else
+        else if (allowMovement(direction))
           observer.move(direction);
       }
       if (moveBackwards) {
@@ -107,8 +107,8 @@ public class MovementHandler extends InteractionHandler implements ActionListene
 
         if (allowMovement(newPos)) {
           observer.move(newPos);
-        }
-        else
+        } 
+        else if (allowMovement(direction))
           observer.move(direction);
       }
     } 
