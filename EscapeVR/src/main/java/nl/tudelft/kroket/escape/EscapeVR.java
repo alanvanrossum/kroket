@@ -2,6 +2,7 @@ package nl.tudelft.kroket.escape;
 
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.util.SkyFactory;
@@ -39,6 +40,7 @@ import nl.tudelft.kroket.state.states.PlayingState;
 
 import java.util.EventObject;
 import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -140,6 +142,7 @@ public class EscapeVR extends VRApplication implements EventListener {
       System.out.println("Attached device: " + VRApplication.getVRHardware().getName());
     }
 
+    eventManager = new EventManager(observer, rootNode);
     initObjects();
     initHeadUpDisplay();
     initSceneManager();
@@ -149,7 +152,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     initNetworkClient();
     initStateManager();
 
-    eventManager = new EventManager(observer, rootNode);
+    
     inputHandler.registerMappings(new RotationHandler(observer), "left", "right", "lookup",
         "lookdown", "tiltleft", "tiltright");
     inputHandler.registerMappings(new MovementHandler(observer), "forward", "back");
@@ -163,6 +166,8 @@ public class EscapeVR extends VRApplication implements EventListener {
     eventManager.registerObjectInteractionTrigger("door", 3.5f);
     eventManager.registerObjectInteractionTrigger("portalturret-geom-0", 3.5f);
     eventManager.registerObjectInteractionTrigger("fourbuttons2-objnode", 4f);
+    eventManager.registerObjectInteractionTrigger("DeskLaptop-objnode", 4f);
+ 
 
     eventManager.addListener(this);
 
@@ -173,6 +178,29 @@ public class EscapeVR extends VRApplication implements EventListener {
       System.out.println("Switching gamestate");
       stateManager.setGameState(PlayingState.getInstance());
       log.setLevel(LogLevel.ALL);
+    }
+    
+    //registerInteractionObjects();
+  }
+  
+  /**
+   * Registers all objects so they can be interacted with.
+   */
+  private void registerInteractionObjects(){
+    List<Spatial> objects = rootNode.getChildren();
+    for (Spatial object : objects) {
+
+      if (object == null) {
+        continue;
+      }
+
+      System.out.println(object.toString());
+
+      if (object instanceof Geometry) {
+        eventManager.registerObjectInteractionTrigger(object.getName(), 4f);
+      } else if (object instanceof Node) {
+        eventManager.registerObjectInteractionTrigger(object.getName(), 4f);
+      }
     }
   }
 
@@ -306,7 +334,7 @@ public class EscapeVR extends VRApplication implements EventListener {
         case "painting":
           clientThread.sendMessage("INITM[startA]");
           break;
-        case "painting2":
+        case "DeskLaptop-objnode":
           clientThread.sendMessage("INITM[startB]");
           break;
         case "fourbuttons2-objnode":

@@ -33,6 +33,7 @@ public class InteractionEvent extends EventObject {
         object.getWorldBound().getCenter());
 
     return (distance <= threshold && button.equals("Button A"));
+
   }
 
   /**

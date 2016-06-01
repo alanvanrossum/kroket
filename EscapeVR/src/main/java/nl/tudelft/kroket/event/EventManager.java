@@ -50,8 +50,15 @@ public class EventManager extends InteractionHandler implements ActionListener {
     this.rootNode = root;
   }
 
+  /**
+   * Puts interactable object in hash map triggers.
+   * @param objName key to be put
+   * @param threshold value for the hashmap
+   */
   public void registerObjectInteractionTrigger(String objName, float threshold) {
-    triggers.put(objName, threshold);
+    if(!(objName == null)) {
+      triggers.put(objName, threshold);
+    }
   }
 
   private synchronized void fireEvents() {
@@ -70,11 +77,11 @@ public class EventManager extends InteractionHandler implements ActionListener {
   public synchronized void addEvent(String type, EventObject event) {
     eventList.add(event);
 
-//    System.out.println("Events in list:");
-//
-//    for (EventObject entry : eventList) {
-//      System.out.println(entry);
-//    }
+    //    System.out.println("Events in list:");
+    //
+    //    for (EventObject entry : eventList) {
+    //      System.out.println(entry);
+    //    }
   }
 
   public synchronized void addListener(EventListener listener) {
@@ -118,7 +125,6 @@ public class EventManager extends InteractionHandler implements ActionListener {
             .format("Warning: object '%s' does not exist in current scene (null)", entry.getKey()));
 
       } else {
-
         if (InteractionEvent.checkConditions(object, entry.getValue(), name) 
             && !ColorSequenceMinigame.running) {
           InteractionEvent interactionEvent = new InteractionEvent(this, entry.getKey());
