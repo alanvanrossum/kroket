@@ -11,6 +11,7 @@ import nl.tudelft.kroket.event.events.ButtonPressEvent;
 import nl.tudelft.kroket.event.events.InteractionEvent;
 import nl.tudelft.kroket.input.InteractionHandler;
 import nl.tudelft.kroket.log.Logger;
+import nl.tudelft.kroket.minigame.minigames.ColorSequenceMinigame;
 
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.InputListener;
@@ -94,7 +95,7 @@ public class EventManager extends InteractionHandler implements ActionListener {
       return;
     }
 
-    System.out.println("onAction");
+    System.out.println("onAction " + name);
 
     long now = System.currentTimeMillis();
     long delta = now - prevInput;
@@ -118,7 +119,8 @@ public class EventManager extends InteractionHandler implements ActionListener {
 
       } else {
 
-        if (InteractionEvent.checkConditions(object, entry.getValue(), name)) {
+        if (InteractionEvent.checkConditions(object, entry.getValue(), name) 
+            && !ColorSequenceMinigame.running) {
           InteractionEvent interactionEvent = new InteractionEvent(this, entry.getKey());
           addEvent("interaction", interactionEvent);
         }

@@ -113,7 +113,7 @@ public class EscapeScene extends Scene {
   public void addButtons() {
     Spatial buttons = assetManager.loadModel("Models/buttons/fourbuttons2.j3o");
     buttons.scale(0.15f);
-    buttons.move(3f, 2f, (float) (roomDepth - 0.1));
+    buttons.move(5f, 2f, (float) (roomDepth - 0.1));
     buttons.rotate(0f, -0.5f * FastMath.PI, 0.5f * FastMath.PI);
     rootNode.attachChild(buttons);
   }

@@ -160,11 +160,11 @@ public class EscapeVR extends VRApplication implements EventListener {
     eventManager.registerObjectInteractionTrigger("painting2", 4);
     eventManager.registerObjectInteractionTrigger("door", 3.5f);
     eventManager.registerObjectInteractionTrigger("portalturret-geom-0", 3.5f);
-    // eventManager.registerObjectInteractionTrigger("fourbuttons2-objnode", 4f);
+    eventManager.registerObjectInteractionTrigger("fourbuttons2-objnode", 4f);
 
     eventManager.addListener(this);
 
-    mgManager = new MinigameManager();
+    mgManager = new MinigameManager(hud, clientThread, screenManager, sceneManager);
     eventManager.addListener(mgManager);
 
     if (DEBUG) {
@@ -246,9 +246,9 @@ public class EscapeVR extends VRApplication implements EventListener {
             hud.setCenterText("Minigame B complete!", 10);
             sceneManager.extendEscapeScene("C");
           } else if (command.get("param_0").equals("doneC")) {
-            screenManager.getScreen("controller").hide();
-            log.info(className, "Minigame C completed.");
-            hud.setCenterText("Minigame C complete!", 10);
+//            screenManager.getScreen("controller").hide();
+//            log.info(className, "Minigame C completed.");
+//           hud.setCenterText("Minigame C complete!", 10);
           } else if (command.get("param_0").equals("doneD")) {
             log.info(className, "Minigame D completed.");
             hud.setCenterText("Minigame D complete!", 10);
@@ -259,13 +259,20 @@ public class EscapeVR extends VRApplication implements EventListener {
             log.info(className, "Minigame B started.");
             hud.setCenterText("Minigame B started!", 10);
           } else if (command.get("param_0").equals("startC")) {
-            screenManager.getScreen("controller").show();
-            log.info(className, "Minigame C started.");
-            hud.setCenterText("Minigame C started!", 10);
-            hud.setCenterText(
-                "Enter the color sequence by\nusing the colored buttons on\nthe right of your controller!",
-                20);
-            // ... .parseColors(CommandParser.parseParams(line);
+            //screenManager.getScreen("controller").show();
+            //log.info(className, "Minigame C started.");
+            //hud.setCenterText("Minigame C started!", 10);
+            //hud.setCenterText(
+            //    "Enter the color sequence by\nusing the colored buttons on\nthe right of your controller!",
+            //    20);
+            
+            //Launch the minigame and set the color sequence.
+            mgManager.launchGame(ColorSequenceMinigame.getInstance());
+            if (mgManager.getCurrent() instanceof ColorSequenceMinigame) {
+              ((ColorSequenceMinigame) mgManager.getCurrent())
+                  .parseColors(CommandParser.parseParams(line));
+            }
+            
           } else if (command.get("param_0").equals("startD")) {
             log.info(className, "Minigame D started.");
             hud.setCenterText("Minigame D started!", 10);
@@ -313,13 +320,6 @@ public class EscapeVR extends VRApplication implements EventListener {
         // play spooky muhaha sound when player interacts with door
         audioManager.getNode("muhaha").play();
         hud.setCenterText("Muhahaha! You will never escape!", 5);
-
-        mgManager.launchGame(ColorSequenceMinigame.getInstance());
-        if (mgManager.getCurrent() instanceof ColorSequenceMinigame) {
-          ((ColorSequenceMinigame) mgManager.getCurrent())
-              .setSequence(Arrays.asList("Aap", "Noot", "Mies", "Irene"));
-        }
-
         break;
       case "painting":
         clientThread.sendMessage("INITM[startA]");
