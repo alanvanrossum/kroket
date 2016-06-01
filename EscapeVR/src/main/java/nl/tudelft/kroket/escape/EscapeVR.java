@@ -195,9 +195,10 @@ public class EscapeVR extends VRApplication implements EventListener {
     // Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
 
     // create a sphere around the observer for our collision detection
-    Sphere sphere = new Sphere(10, 50, 0.75f);
+    Sphere sphere = new Sphere(10, 50, 0.4f);
     observer = new Geometry("observer", sphere);
 
+    
     // the sphere should have no shaded material
     Material mat = new Material(getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
     observer.setMaterial(mat);

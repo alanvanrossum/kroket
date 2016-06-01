@@ -64,11 +64,18 @@ public class MovementHandler extends InteractionHandler implements ActionListene
   }
 
   public void addObject(String objectName) {
+
+    if (objectList.contains(objectName))
+      return;
+
     log.debug(className, "Adding collision object: " + objectName);
     objectList.add(objectName);
   }
 
   public void removeObject(Spatial objectName) {
+    if (!objectList.contains(objectName))
+      return;
+
     log.debug(className, "Removing collision object: " + objectName);
     objectList.remove(objectName);
   }
@@ -105,7 +112,7 @@ public class MovementHandler extends InteractionHandler implements ActionListene
           .subtract(VRApplication.getFinalObserverRotation().getRotationColumn(2))
           .mult(tpf * movementSpeed);
 
-      if (allowMovement(newPosition)) {
+      if (allowMovement(newPosition.mult(movementSpeed))) {
         observer.move(newPosition);
       } else if (allowMovement(oldPosition))
         observer.move(oldPosition);
@@ -118,7 +125,7 @@ public class MovementHandler extends InteractionHandler implements ActionListene
           .subtract(VRApplication.getFinalObserverRotation().getRotationColumn(2))
           .mult(-tpf * movementSpeed);
 
-      if (allowMovement(newPosition)) {
+      if (allowMovement(newPosition.mult(movementSpeed))) {
         observer.move(newPosition);
       } else if (allowMovement(oldPosition))
         observer.move(oldPosition);
@@ -128,8 +135,8 @@ public class MovementHandler extends InteractionHandler implements ActionListene
 
   private boolean intersectsWith(Spatial object, Vector3f newPos) {
 
-    Spatial observerClone = observer.clone(false);
-    
+    // Spatial observerClone = observer.clone(false);
+
     boolean intersects = (object.getWorldBound()
         .intersects(observer.clone(false).move(newPos).getWorldBound()));
 
