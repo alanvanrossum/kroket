@@ -1,9 +1,12 @@
 package nl.tudelft.kroket.escape;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.util.List;
 
+import com.jme3.audio.AudioNode;
 import com.jme3.material.Material;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
@@ -51,7 +54,9 @@ import nl.tudelft.kroket.state.states.PlayingState;
 public class EscapeVR extends VRApplication implements EventListener {
 
   /** Debug flag. */
-  private final boolean DEBUG = false;
+  private final boolean DEBUG = true;
+
+  private static final Vector3f spawnPosition = new Vector3f(0, 0, 0);
 
   /** Current class, used as tag for logger. */
   private final String className = this.getClass().getSimpleName();
@@ -86,6 +91,9 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   private boolean forceUpdate = false;
 
+  private List<String> rigidObjects = new ArrayList<String>(
+      Arrays.asList("Buenos Aires", "Córdoba", "La Plata"));
+
   // private CollisionHandler collisionHandler;
   private MovementHandler movementHandler;
 
@@ -97,8 +105,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   private void initAudioManager() {
     audioManager = new AudioManager(getAssetManager(), rootNode, "Sound/");
     audioManager.loadFile("waiting", "Soundtrack/alone.wav", false, true, 0.75f);
-    // audioManager.loadFile("ambient", "Soundtrack/ambient.wav", false, true, 2);
-    audioManager.loadFile("ambient", "Soundtrack/alone.wav", false, true, 0.75f);
+    audioManager.loadFile("ambient", "Soundtrack/ambient.wav", false, true, 0.75f);
     audioManager.loadFile("welcome", "Voice/intro2.wav", false, false, 0.5f);
     audioManager.loadFile("letthegamebegin", "Voice/letthegamebegin3.wav", false, false, 1.0f);
     audioManager.loadFile("muhaha", "Voice/muhaha.wav", false, false, 1.0f);
@@ -156,7 +163,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     initNetworkClient();
     initStateManager();
 
-    movementHandler = new MovementHandler(observer);
+    movementHandler = new MovementHandler(observer, rootNode);
 
     eventManager = new EventManager(observer, rootNode);
     inputHandler.registerMappings(new RotationHandler(observer), "left", "right", "lookup",
@@ -186,11 +193,11 @@ public class EscapeVR extends VRApplication implements EventListener {
    */
   private void initObjects() {
     // Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
-    
+
     // create a sphere around the observer for our collision detection
-    Sphere sphere = new Sphere(10, 10, 0.2f);
+    Sphere sphere = new Sphere(10, 50, 0.75f);
     observer = new Geometry("observer", sphere);
-    
+
     // the sphere should have no shaded material
     Material mat = new Material(getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
     observer.setMaterial(mat);
@@ -204,7 +211,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     VRGuiManager.setGuiScale(0.4f);
     VRGuiManager.setPositioningElasticity(10f);
 
-    observer.setLocalTranslation(new Vector3f(0.0f, 0.0f, 0.0f));
+    observer.setLocalTranslation(spawnPosition);
 
     VRApplication.setObserver(observer);
     rootNode.attachChild(observer);
@@ -213,11 +220,13 @@ public class EscapeVR extends VRApplication implements EventListener {
     getInputManager().setCursorVisible(true);
     // observer.setModelBound(bound);
 
-    // System.out.println(observer.getWo);
+   
 
   }
 
   private void registerObjects() {
+
+    log.debug(className, "Registering objects...");
 
     List<Spatial> objects = rootNode.getChildren();
 
@@ -226,18 +235,20 @@ public class EscapeVR extends VRApplication implements EventListener {
       if (object == null)
         continue;
 
-      System.out.println(object.toString());
+      if (object instanceof AudioNode)
+        continue;
 
-      if (object instanceof Geometry)
-        eventManager.registerObjectInteractionTrigger(object.getName(), 4f);
-      else if (object instanceof Node)
-        eventManager.registerObjectInteractionTrigger(object.getName(), 4f);
+      if (object instanceof Geometry || object instanceof Node) {
 
+        log.debug(className, String.format("Registering trigger for %s", object.toString()));
+        eventManager.registerObjectInteractionTrigger(object.getName(), 4f);
+      }
     }
 
-    movementHandler.addObject(rootNode.getChild("wall-south"));
-    movementHandler.addObject(rootNode.getChild("wall-north"));
-    movementHandler.addObject(rootNode.getChild("safe-objnode"));
+    movementHandler.addObject("safe-objnode");
+    movementHandler.addObject("knight1-geom-0");
+    movementHandler.addObject("knight2-geom-0");
+    movementHandler.addObject("Desk-objnode");
   }
 
   /**

@@ -2,10 +2,19 @@ package nl.tudelft.kroket.state;
 
 import nl.tudelft.kroket.audio.AudioManager;
 import nl.tudelft.kroket.input.InputHandler;
+import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.scene.SceneManager;
 import nl.tudelft.kroket.screen.ScreenManager;
 
 public class StateManager {
+
+  /** Current class, used as tag for logger. */
+  private final String className = this.getClass().getSimpleName();
+
+  /** Singleton logger instance. */
+  private Logger log = Logger.getInstance();
+  
+  private GameState currentState;
 
   private AudioManager audioManager;
   private InputHandler inputHandler;
@@ -25,18 +34,13 @@ public class StateManager {
   }
 
   public void update(float tpf) {
-
-    
-    //System.out.println("StateManager.update()");
-    
-    //System.out.println("Current state = " + currentState.getClass().getSimpleName());
     
     screenManager.update(tpf);
 
     currentState.update(audioManager, inputHandler, screenManager, tpf);
   }
 
-  private GameState currentState;
+  
 
   /**
    * Set the current game state (not thread-safe).
@@ -57,10 +61,18 @@ public class StateManager {
   }
 
   private void stopState(GameState state) {
+    
+    log.debug(className, String.format("Stopping state %s",
+        state.getClass().getSimpleName()));
+    
     state.stop(audioManager, sceneManager, screenManager);
   }
 
   private void startState(GameState state) {
+    
+    log.debug(className, String.format("Starting state %s",
+        state.getClass().getSimpleName()));
+    
     state.begin(audioManager, sceneManager, screenManager);
   }
 
@@ -79,10 +91,17 @@ public class StateManager {
       return;
     }
 
+    log.debug(className, String.format("Switching state from %s to %s",
+        oldState.getClass().getSimpleName(), newState.getClass().getSimpleName()));
+
     stopState(oldState);
     startState(newState);
-    
+
     currentState = newState;
+  }
+  
+  public GameState getCurrentState() { 
+    return currentState;
   }
 
 }

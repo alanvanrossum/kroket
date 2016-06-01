@@ -25,15 +25,19 @@ public class ColorSequenceMinigame extends Minigame {
 
   /** The correct sequence of buttons. */
   private static List<String> sequenceList = new ArrayList<String>();
-  
-  /** Boolean which shows if this game is active. */
-  public static boolean running = false;
 
-  
-  private ColorSequenceMinigame() {}
+  /** Boolean which shows if this game is active. */
+  private static boolean running = false;
+
+  private ColorSequenceMinigame() {
+  }
 
   public static Minigame getInstance() {
     return instance;
+  }
+
+  public static boolean isActive() {
+    return running;
   }
 
   /**
@@ -44,7 +48,7 @@ public class ColorSequenceMinigame extends Minigame {
     log.info(className, "Starting ColorSequenceMinigame");
     buttonList.clear();
     running = true;
-    
+
     screenManager.getScreen("controller").show();
     hud.setCenterText("Minigame C started!", 10);
     hud.setCenterText(
@@ -60,10 +64,10 @@ public class ColorSequenceMinigame extends Minigame {
     log.info(className, "Stopping ColorSequenceMinigame");
     buttonList.clear();
     running = false;
-    
+
     clientThread.sendMessage(Protocol.COMMAND_INIT_MOBILE + "[doneC]");
     clientThread.sendMessage(Protocol.COMMAND_INIT_VR + "[doneC]");
-    
+
     screenManager.getScreen("controller").hide();
     hud.setCenterText("Minigame C complete!");
     minigameManager.endGame();
@@ -81,8 +85,8 @@ public class ColorSequenceMinigame extends Minigame {
       System.out.println("Entered sequence:");
       printList(buttonList);
     }
-    
-    //Check if the correct sequence is entered
+
+    // Check if the correct sequence is entered
     Boolean correct = checkSequence();
     if (correct) {
       this.stop();
@@ -91,8 +95,8 @@ public class ColorSequenceMinigame extends Minigame {
   }
 
   /**
-   * Handles the event of clicking a button.
-   * Keeps the buttonlist of the same of smaller size than the sequence.
+   * Handles the event of clicking a button. Keeps the buttonlist of the same of smaller size than
+   * the sequence.
    */
   @Override
   public void handleEvent(EventObject event) {
@@ -100,14 +104,14 @@ public class ColorSequenceMinigame extends Minigame {
     if (event instanceof ButtonPressEvent) {
       String buttonName = ((ButtonPressEvent) event).getName();
       buttonList.add(buttonName);
-      
-      //TODO Display the color pressed on the screen
-      
-      //Keep the lists the same size, by removing the first element
+
+      // TODO Display the color pressed on the screen
+
+      // Keep the lists the same size, by removing the first element
       if (buttonList.size() > sequenceList.size()) {
         buttonList = buttonList.subList(1, buttonList.size());
       }
-      
+
     }
   }
 
@@ -124,7 +128,8 @@ public class ColorSequenceMinigame extends Minigame {
   /**
    * Set the sequence; the correct answer;
    * 
-   * @param sequence the sequence to be set.
+   * @param sequence
+   *          the sequence to be set.
    */
   public void setSequence(List<String> sequence) {
     sequenceList = sequence;
@@ -133,32 +138,38 @@ public class ColorSequenceMinigame extends Minigame {
   /**
    * Print a list with strings.
    * 
-   * @param list the list to be printed.
+   * @param list
+   *          the list to be printed.
    */
   private void printList(List<String> list) {
     for (String button : list) {
       System.out.println(button);
     }
   }
-  
+
   /**
-   * Parse the colors received from the server by matching them to the button that should be 
-   * pressed and add this button to the sequenceList.
+   * Parse the colors received from the server by matching them to the button that should be pressed
+   * and add this button to the sequenceList.
    * 
-   * @param params the params from the command that contain the colors.
+   * @param params
+   *          the params from the command that contain the colors.
    */
   public void parseColors(List<String> params) {
     for (String colorString : params) {
       switch (colorString) {
-        case "RED": sequenceList.add("Button B");
-      break;
-        case "GREEN": sequenceList.add("Button A");
-      break;
-        case "BLUE": sequenceList.add("Button X");
-      break;
-        case "YELLOW": sequenceList.add("Button Y");
-      break;
-        default: 
+      case "RED":
+        sequenceList.add("Button B");
+        break;
+      case "GREEN":
+        sequenceList.add("Button A");
+        break;
+      case "BLUE":
+        sequenceList.add("Button X");
+        break;
+      case "YELLOW":
+        sequenceList.add("Button Y");
+        break;
+      default:
       }
     }
   }

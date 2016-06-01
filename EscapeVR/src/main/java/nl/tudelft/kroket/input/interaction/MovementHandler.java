@@ -1,6 +1,7 @@
 package nl.tudelft.kroket.input.interaction;
 
 import nl.tudelft.kroket.input.InteractionHandler;
+import nl.tudelft.kroket.log.Logger;
 import jmevr.app.VRApplication;
 
 import java.util.ArrayList;
@@ -8,25 +9,37 @@ import java.util.List;
 
 import com.jme3.input.controls.ActionListener;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
 public class MovementHandler extends InteractionHandler implements ActionListener {
 
+  /** Current class, used as tag for logger. */
+  private final String className = this.getClass().getSimpleName();
+
+  /** Singleton logger instance. */
+  private Logger log = Logger.getInstance();
+
   private final float movementSpeed = 8f;
 
-  public MovementHandler(Spatial observer) {
+  private Node rootNode;
+
+  public MovementHandler(Spatial observer, Node rootNode) {
     super(observer);
 
-    this.objectList = new ArrayList<Spatial>();
+    this.rootNode = rootNode;
+    this.objectList = new ArrayList<String>();
 
   }
 
-  private boolean restrictObserver;
+  private boolean restrictObserver = true;
 
   float collisionThreshold = 3.2f;
   float collisionOffset = 8.0f;
 
-  private List<Spatial> objectList;
+  // using a string here so that we only need to use the name
+  // so that this works even when objects aren't present in the hierarchy
+  private List<String> objectList;
 
   private boolean moveForward, moveBackwards;
 
@@ -50,26 +63,27 @@ public class MovementHandler extends InteractionHandler implements ActionListene
     }
   }
 
-  public void addObject(Spatial object) {
-    if (object == null)
-      return;
-
-    System.out.println("Adding collision object: " + object.getName());
-    objectList.add(object);
+  public void addObject(String objectName) {
+    log.debug(className, "Adding collision object: " + objectName);
+    objectList.add(objectName);
   }
 
-  public void removeObject(Spatial object) {
-    if (object == null)
-      return;
-
-    objectList.remove(object);
+  public void removeObject(Spatial objectName) {
+    log.debug(className, "Removing collision object: " + objectName);
+    objectList.remove(objectName);
   }
 
   private boolean allowMovement(Vector3f newPos) {
 
+    if (!restrictObserver)
+      return true;
+
     // boolean intersects = false;
 
-    for (Spatial object : objectList) {
+    for (String objectName : objectList) {
+
+      Spatial object = rootNode.getChild(objectName);
+
       if (object == null)
         continue;
 
@@ -117,9 +131,9 @@ public class MovementHandler extends InteractionHandler implements ActionListene
     boolean intersects = (object.getWorldBound()
         .intersects(observer.clone(false).move(newPos).getWorldBound()));
 
-    if (intersects) {
-      System.out.println("Intersects with object: " + object.getName());
-    }
+    // if (intersects) {
+    // log.debug(className, "Observer intersects with object: " + object.getName());
+    // }
 
     return intersects;
 

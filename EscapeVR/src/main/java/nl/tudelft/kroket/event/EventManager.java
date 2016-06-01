@@ -29,7 +29,7 @@ public class EventManager extends InteractionHandler implements ActionListener {
   private List<EventObject> eventList = new ArrayList<EventObject>();
   private List<EventListener> listenerList = new ArrayList<EventListener>();
 
-  private final int INPUT_GRACE_PERIOD = 400;
+  private final int INPUT_GRACE_PERIOD = 200;
 
   long prevInput = 0;
 
@@ -50,8 +50,8 @@ public class EventManager extends InteractionHandler implements ActionListener {
     this.rootNode = root;
   }
 
-  public void registerObjectInteractionTrigger(String objName, float threshold) {
-    triggers.put(objName, threshold);
+  public void registerObjectInteractionTrigger(String objName, float range) {
+    triggers.put(objName, range);
   }
 
   private synchronized void fireEvents() {
@@ -120,7 +120,7 @@ public class EventManager extends InteractionHandler implements ActionListener {
       } else {
 
         if (InteractionEvent.checkConditions(object, entry.getValue(), name) 
-            && !ColorSequenceMinigame.running) {
+            && !ColorSequenceMinigame.isActive()) {
           InteractionEvent interactionEvent = new InteractionEvent(this, entry.getKey());
           addEvent("interaction", interactionEvent);
         }

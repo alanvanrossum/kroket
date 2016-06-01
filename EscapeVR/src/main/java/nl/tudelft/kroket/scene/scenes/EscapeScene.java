@@ -80,7 +80,7 @@ public class EscapeScene extends Scene {
 
     /** A white ambient light source. */
     AmbientLight ambient = new AmbientLight();
-    ambient.setColor(ColorRGBA.White);  
+    ambient.setColor(ColorRGBA.White);
     rootNode.addLight(ambient);
 
     /** A white, directional light source */
@@ -88,26 +88,24 @@ public class EscapeScene extends Scene {
     sun.setDirection((new Vector3f(-0.5f, -0.5f, -0.5f)).normalizeLocal());
     sun.setColor(ColorRGBA.White);
     rootNode.addLight(sun);
-    
+
     addTurret();
     addDesk();
-    
+
     addKnight1();
     addKnight2();
-    
+
     addSafe();
-    
-    //addButtons();
+
+    // addButtons();
   }
-  
-  
-  
+
   private void addSafe() {
-      Spatial safe = assetManager.loadModel("Models/safe/safe.j3o");
-      safe.scale(0.03f);
-      // 6 opzij, 8 naar achter :p
-      safe.move(-6.8f, -3, -10.1f);
-      rootNode.attachChild(safe);
+    Spatial safe = assetManager.loadModel("Models/safe/safe.j3o");
+    safe.scale(0.03f);
+    // 6 opzij, 8 naar achter :p
+    safe.move(-6.8f, -3, -10.1f);
+    rootNode.attachChild(safe);
   }
 
   public void addButtons() {
@@ -117,7 +115,7 @@ public class EscapeScene extends Scene {
     buttons.rotate(0f, -0.5f * FastMath.PI, 0.5f * FastMath.PI);
     rootNode.attachChild(buttons);
   }
-  
+
   private void addKnight1() {
     Spatial knight1 = assetManager.loadModel("Models/knight1/knight1.j3o");
     knight1.scale(0.15f);
@@ -125,7 +123,7 @@ public class EscapeScene extends Scene {
     knight1.rotate(-0.5f * FastMath.PI, 0.5f * FastMath.PI, 0f);
     rootNode.attachChild(knight1);
   }
-  
+
   private void addKnight2() {
     Spatial knight2 = assetManager.loadModel("Models/knight2/knight2.j3o");
     knight2.scale(0.15f);
@@ -139,7 +137,7 @@ public class EscapeScene extends Scene {
     desk.scale(1.2f);
     desk.move(6.5f, -translationY + 0.2f, -9.5f);
     rootNode.attachChild(desk);
-    
+
   }
 
   private void addLamp() {
@@ -148,7 +146,7 @@ public class EscapeScene extends Scene {
     rootNode.attachChild(lamp);
 
   }
-  
+
   private void addTurret() {
     Spatial turret = assetManager.loadModel("Models/portalturret/portalturret.j3o");
     turret.move(-2, -3.5f, 5);
@@ -164,10 +162,10 @@ public class EscapeScene extends Scene {
 
   }
 
-  private void createCube() {
-    Spatial cube = assetManager.loadModel("Models/tudcube/tudcube.j3o");
-    rootNode.attachChild(cube);
-  }
+  // private void createCube() {
+  // Spatial cube = assetManager.loadModel("Models/tudcube/tudcube.j3o");
+  // rootNode.attachChild(cube);
+  // }
 
   /**
    * Create four walls using a texture.
@@ -185,23 +183,23 @@ public class EscapeScene extends Scene {
     Material wallMaterial = new Material(assetManager, materialPath);
     wallMaterial.setTexture("ColorMap", wallTexture);
 
-//    // wall to the right of player spawn
-//    Geometry wall1 = new Geometry("wall-east", new Box(.1f, roomHeight, roomDepth));
-//    wall1.setMaterial(wallMaterial);
-//    wall1.move(-roomWidth, translationY, 0);
-//    addObject("wall-east", wall1);
-//
-//    // wall to the left of player spawn
-//    Geometry wall2 = new Geometry("wall-west", new Box(.1f, roomHeight, roomDepth));
-//    wall2.setMaterial(wallMaterial);
-//    wall2.move(roomWidth, translationY, 0);
-//    addObject("wall-west", wall2);
-//
-//    // wall in front of player
-//    Geometry wall3 = new Geometry("wall-north", new Box(roomWidth, roomHeight, .1f));
-//    wall3.setMaterial(wallMaterial);
-//    wall3.move(0, translationY, roomDepth);
-//    addObject("wall-north", wall3);
+    // wall to the right of player spawn
+    Geometry wall1 = new Geometry("wall-east", new Box(.1f, roomHeight, roomDepth));
+    wall1.setMaterial(wallMaterial);
+    wall1.move(-roomWidth, translationY, 0);
+    addObject("wall-east", wall1);
+
+    // wall to the left of player spawn
+    Geometry wall2 = new Geometry("wall-west", new Box(.1f, roomHeight, roomDepth));
+    wall2.setMaterial(wallMaterial);
+    wall2.move(roomWidth, translationY, 0);
+    addObject("wall-west", wall2);
+
+    // wall in front of player
+    Geometry wall3 = new Geometry("wall-north", new Box(roomWidth, roomHeight, .1f));
+    wall3.setMaterial(wallMaterial);
+    wall3.move(0, translationY, roomDepth);
+    addObject("wall-north", wall3);
 
     // wall behind player spawn
     Geometry wall4 = new Geometry("wall-south", new Box(roomWidth, roomHeight, .1f));
