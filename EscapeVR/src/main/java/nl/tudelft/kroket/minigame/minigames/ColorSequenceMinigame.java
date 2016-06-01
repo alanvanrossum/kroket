@@ -1,17 +1,13 @@
 package nl.tudelft.kroket.minigame.minigames;
 
-import java.util.ArrayList;
-import java.util.EventObject;
-import java.util.List;
-
 import nl.tudelft.kroket.event.events.ButtonPressEvent;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.minigame.Minigame;
-import nl.tudelft.kroket.net.ClientThread;
 import nl.tudelft.kroket.net.protocol.Protocol;
-import nl.tudelft.kroket.scene.SceneManager;
-import nl.tudelft.kroket.screen.HeadUpDisplay;
-import nl.tudelft.kroket.screen.ScreenManager;
+
+import java.util.ArrayList;
+import java.util.EventObject;
+import java.util.List;
 
 public class ColorSequenceMinigame extends Minigame {
 
@@ -24,10 +20,13 @@ public class ColorSequenceMinigame extends Minigame {
   /** Singleton instance. */
   private static Minigame instance = new ColorSequenceMinigame();
 
+  /** The list of buttons pressed. */
   private static List<String> buttonList = new ArrayList<String>();
 
+  /** The correct sequence of buttons. */
   private static List<String> sequenceList = new ArrayList<String>();
   
+  /** Boolean which shows if this game is active. */
   public static boolean running = false;
 
   
@@ -37,6 +36,9 @@ public class ColorSequenceMinigame extends Minigame {
     return instance;
   }
 
+  /**
+   * Start the game.
+   */
   @Override
   public void start() {
     log.info(className, "Starting ColorSequenceMinigame");
@@ -50,6 +52,9 @@ public class ColorSequenceMinigame extends Minigame {
         20);
   }
 
+  /**
+   * Stop the game.
+   */
   @Override
   public void stop() {
     log.info(className, "Stopping ColorSequenceMinigame");
@@ -57,20 +62,24 @@ public class ColorSequenceMinigame extends Minigame {
     running = false;
     
     clientThread.sendMessage(Protocol.COMMAND_INIT_MOBILE + "[doneC]");
-    //clientThread.sendMessage(Protocol.COMMAND_INIT_VR + "[doneC]");
+    clientThread.sendMessage(Protocol.COMMAND_INIT_VR + "[doneC]");
     
     screenManager.getScreen("controller").hide();
     hud.setCenterText("Minigame C complete!");
+    minigameManager.endGame();
   }
 
+  /**
+   * The update method. Checks whether the sequence added is the correct one.
+   */
   @Override
   public void update(float tpf) {
 
     if ((System.currentTimeMillis() % 10000) == 0) {
       System.out.println("Required sequence:");
-      printList(this.sequenceList);
+      printList(sequenceList);
       System.out.println("Entered sequence:");
-      printList(this.buttonList);
+      printList(buttonList);
     }
     
     //Check if the correct sequence is entered
@@ -81,12 +90,15 @@ public class ColorSequenceMinigame extends Minigame {
 
   }
 
+  /**
+   * Handles the event of clicking a button.
+   * Keeps the buttonlist of the same of smaller size than the sequence.
+   */
   @Override
   public void handleEvent(EventObject event) {
 
     if (event instanceof ButtonPressEvent) {
       String buttonName = ((ButtonPressEvent) event).getName();
-      //System.out.println("pressed " + buttonName);
       buttonList.add(buttonName);
       
       //TODO Display the color pressed on the screen
@@ -99,15 +111,30 @@ public class ColorSequenceMinigame extends Minigame {
     }
   }
 
+  /**
+   * Checks whether the sequence entered is the correct one.
+   * 
+   * @return true iff it is correct.
+   */
   public boolean checkSequence() {
     // check hier of alle entries in buttonList hetzelfde zijn als sequenceList
     return sequenceList.equals(buttonList);
   }
 
+  /**
+   * Set the sequence; the correct answer;
+   * 
+   * @param sequence the sequence to be set.
+   */
   public void setSequence(List<String> sequence) {
-    this.sequenceList = sequence;
+    sequenceList = sequence;
   }
 
+  /**
+   * Print a list with strings.
+   * 
+   * @param list the list to be printed.
+   */
   private void printList(List<String> list) {
     for (String button : list) {
       System.out.println(button);
@@ -131,6 +158,7 @@ public class ColorSequenceMinigame extends Minigame {
       break;
         case "YELLOW": sequenceList.add("Button Y");
       break;
+        default: 
       }
     }
   }

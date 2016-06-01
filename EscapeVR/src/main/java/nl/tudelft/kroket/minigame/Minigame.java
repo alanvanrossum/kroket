@@ -1,11 +1,11 @@
 package nl.tudelft.kroket.minigame;
 
-import java.util.EventObject;
-
 import nl.tudelft.kroket.net.ClientThread;
 import nl.tudelft.kroket.scene.SceneManager;
 import nl.tudelft.kroket.screen.HeadUpDisplay;
 import nl.tudelft.kroket.screen.ScreenManager;
+
+import java.util.EventObject;
 
 public abstract class Minigame {
 
@@ -13,6 +13,7 @@ public abstract class Minigame {
   public ClientThread clientThread;
   public ScreenManager screenManager;
   public SceneManager sceneManager;
+  public MinigameManager minigameManager;
   
   public void setHud(HeadUpDisplay hud) {
     this.hud = hud;
@@ -29,6 +30,10 @@ public abstract class Minigame {
   public void setSceneManager(SceneManager sceneManager) {
     this.sceneManager = sceneManager;
   }
+  
+  public void setMinigameManager(MinigameManager minigameManager) {
+    this.minigameManager = minigameManager;
+  }
 
   public abstract void start();
   
@@ -37,5 +42,6 @@ public abstract class Minigame {
   public abstract void update(float tpf);
   
   public abstract void handleEvent(EventObject event);
+
   
 }
