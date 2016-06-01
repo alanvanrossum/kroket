@@ -281,6 +281,10 @@ public class EscapeVR extends VRApplication implements EventListener {
             mgManager.launchGame(PictureCodeMinigame.getInstance());
           } else if (action.equals("startB")) {
             mgManager.launchGame(TapMinigame.getInstance());
+            if (mgManager.getCurrent() instanceof TapMinigame) {
+                ((TapMinigame) mgManager.getCurrent())
+                .parseButtons(CommandParser.parseParams(line));
+              }
           } else if (action.equals("startC")) {
             mgManager.launchGame(ColorSequenceMinigame.getInstance());
             if (mgManager.getCurrent() instanceof ColorSequenceMinigame) {
@@ -334,7 +338,9 @@ public class EscapeVR extends VRApplication implements EventListener {
         case "painting":
           clientThread.sendMessage("INITM[startA]");
           break;
-        case "DeskLaptop-objnode":
+        
+        //case "DeskLaptop-objnode":
+        case "painting2":
           clientThread.sendMessage("INITM[startB]");
           break;
         case "fourbuttons2-objnode":

@@ -121,9 +121,16 @@ public class InputHandler {
       inputManager.addMapping("Button B", new JoyButtonTrigger(0, 1));
       inputManager.addMapping("Button X", new JoyButtonTrigger(0, 2));
       inputManager.addMapping("Button Y", new JoyButtonTrigger(0, 3));
+      
+      inputManager.addMapping("Button LB", new JoyButtonTrigger(0, 4));
+      inputManager.addMapping("Button RB", new JoyButtonTrigger(0, 5));
+      inputManager.addMapping("Button BACK", new JoyButtonTrigger(0, 6));
+      inputManager.addMapping("Button START", new JoyButtonTrigger(0, 7));
+      inputManager.addMapping("Button LT", new JoyButtonTrigger(0, 8));
+      inputManager.addMapping("Button RT", new JoyButtonTrigger(0, 9));
 
       // inputManager.addListener(actionListener, "Button A", "Button B", "Button X", "Button Y");
-
+      
       log.debug(className, "Joystick/gamepad controls registered.");
     }
   }

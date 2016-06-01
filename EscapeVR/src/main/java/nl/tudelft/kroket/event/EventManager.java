@@ -36,6 +36,14 @@ public class EventManager extends InteractionHandler implements ActionListener {
   private Node rootNode;
 
   private HashMap<String, Float> triggers = new HashMap<String, Float>();
+  
+  public static boolean holdA;
+
+public static boolean holdB;
+
+public static boolean holdX;
+
+public static boolean holdY;
 
   /**
    * constructor of the event manager.
@@ -99,9 +107,12 @@ public class EventManager extends InteractionHandler implements ActionListener {
   @Override
   public void onAction(String name, boolean isPressed, float tpf) {
     if (!isPressed) {
-      return;
+        setBooleanHeld(name, false);
+    	return;
     }
 
+    setBooleanHeld(name, true);
+    
     System.out.println("onAction " + name);
 
     long now = System.currentTimeMillis();
@@ -135,5 +146,40 @@ public class EventManager extends InteractionHandler implements ActionListener {
     }
     fireEvents();
 
+  }
+   
+  public void setBooleanHeld(String name, boolean setTo) {
+	  if(name == "Button A"){
+		  holdA = setTo;
+	  }
+	  if(name == "Button B"){
+		  holdB = setTo;
+	  }
+	  if(name == "Button X"){
+		  holdX = setTo;
+	  }
+	  if(name == "Button Y"){
+		  holdY = setTo;
+	  }
+  }
+  
+  
+  public static boolean getHold(String name) {
+	  if(name == "Button A"){
+		  return holdA;
+	  }
+	  if(name == "Button B"){
+		  return holdB;
+	  }
+	  if(name == "Button X"){
+		  return holdX;
+	  }
+	  if(name == "Button Y"){
+		  return holdY;
+	  }  
+	  else{
+		  return false;
+	  }
+  
   }
 }
