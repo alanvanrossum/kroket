@@ -96,19 +96,26 @@ public class EscapeScene extends Scene {
     addKnight2();
 
     addSafe();
+    
+    //addButtons();
   }
 
   private void addSafe() {
-
     Spatial safe = assetManager.loadModel("Models/safe/safe.j3o");
     safe.scale(0.03f);
     // 6 opzij, 8 naar achter :p
     safe.move(-6.8f, -3, -10.1f);
     rootNode.attachChild(safe);
-
-
   }
 
+  public void addButtons() {
+    Spatial buttons = assetManager.loadModel("Models/buttons/fourbuttons2.j3o");
+    buttons.scale(0.15f);
+    buttons.move(5f, 2f, (float) (roomDepth - 0.1));
+    buttons.rotate(0f, -0.5f * FastMath.PI, 0.5f * FastMath.PI);
+    rootNode.attachChild(buttons);
+  }
+  
   private void addKnight1() {
     Spatial knight1 = assetManager.loadModel("Models/knight1/knight1.j3o");
     knight1.scale(0.15f);
