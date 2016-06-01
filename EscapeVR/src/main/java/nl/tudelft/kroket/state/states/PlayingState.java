@@ -14,8 +14,11 @@ public class PlayingState implements GameState {
   /** The unique singleton instance of this class. */
   private static PlayingState instance = new PlayingState();
 
-  /** The singleton reference to the Logger instance. */
-  private static Logger logger = Logger.getInstance();
+  /** Current class, used as tag for logger. */
+  private final String className = this.getClass().getSimpleName();
+
+  /** Singleton logger instance. */
+  private Logger log = Logger.getInstance();
 
   private long spookyTime;
 
@@ -61,11 +64,9 @@ public class PlayingState implements GameState {
     
     int seconds = randInt(lowerInterval, upperInterval);
     
-    System.out.println("Setting spookytime to display in " + seconds);
+    log.info(className, String.format("Setting spookytime to display in %d...", seconds));
     
     spookyTime = System.currentTimeMillis() + seconds * 1000;
-    
-    
   }
 
   public static int randInt(int min, int max) {

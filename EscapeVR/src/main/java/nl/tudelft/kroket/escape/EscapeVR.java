@@ -92,7 +92,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   private boolean forceUpdate = false;
 
   private List<String> rigidObjects = new ArrayList<String>(
-      Arrays.asList("Buenos Aires", "Córdoba", "La Plata"));
+      Arrays.asList("safe-objnode", "knight1-geom-0", "knight2-geom-0", "Desk-objnode"));
 
   // private CollisionHandler collisionHandler;
   private MovementHandler movementHandler;
@@ -114,7 +114,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   }
 
   private void initInputHandler() {
-    inputHandler = new InputHandler(getInputManager(), observer, eventManager);
+    inputHandler = new InputHandler(getInputManager(), eventManager);
   }
 
   private void initSceneManager() {
@@ -220,8 +220,6 @@ public class EscapeVR extends VRApplication implements EventListener {
     getInputManager().setCursorVisible(true);
     // observer.setModelBound(bound);
 
-   
-
   }
 
   private void registerObjects() {
@@ -244,11 +242,11 @@ public class EscapeVR extends VRApplication implements EventListener {
         eventManager.registerObjectInteractionTrigger(object.getName(), 4f);
       }
     }
+    
+    for (String objectName : rigidObjects) {
+      movementHandler.addObject(objectName);
+    }
 
-    movementHandler.addObject("safe-objnode");
-    movementHandler.addObject("knight1-geom-0");
-    movementHandler.addObject("knight2-geom-0");
-    movementHandler.addObject("Desk-objnode");
   }
 
   /**

@@ -35,16 +35,13 @@ public class InputHandler {
   private Logger log = Logger.getInstance();
 
   private InputManager inputManager;
-  private Spatial observer;
-
   private List<InteractionHandler> listeners = new ArrayList<InteractionHandler>();
 
-  public InputHandler(InputManager inputManager, Spatial observer, EventManager eventManager) {
+  public InputHandler(InputManager inputManager, EventManager eventManager) {
 
     log.info(className, "Initializing...");
 
     this.inputManager = inputManager;
-    this.observer = observer;
 
     initKeyControls();
     initJoysticks();
@@ -140,9 +137,6 @@ public class InputHandler {
       actionListener.update(tpf);
     }
 
-
   }
-
-
 
 }

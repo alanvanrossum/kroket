@@ -3,7 +3,6 @@ package nl.tudelft.kroket.event;
 import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -14,7 +13,6 @@ import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.minigame.minigames.ColorSequenceMinigame;
 
 import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.InputListener;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
@@ -70,11 +68,11 @@ public class EventManager extends InteractionHandler implements ActionListener {
   public synchronized void addEvent(String type, EventObject event) {
     eventList.add(event);
 
-//    System.out.println("Events in list:");
-//
-//    for (EventObject entry : eventList) {
-//      System.out.println(entry);
-//    }
+    // System.out.println("Events in list:");
+    //
+    // for (EventObject entry : eventList) {
+    // System.out.println(entry);
+    // }
   }
 
   public synchronized void addListener(EventListener listener) {
@@ -95,8 +93,6 @@ public class EventManager extends InteractionHandler implements ActionListener {
       return;
     }
 
-    System.out.println("onAction " + name);
-
     long now = System.currentTimeMillis();
     long delta = now - prevInput;
 
@@ -106,8 +102,7 @@ public class EventManager extends InteractionHandler implements ActionListener {
 
     prevInput = now;
 
-    ButtonPressEvent bbEvent = new ButtonPressEvent(this, name);
-    addEvent("buttonpress", bbEvent);
+    addEvent("buttonpress", new ButtonPressEvent(this, name));
 
     for (Entry<String, Float> entry : triggers.entrySet()) {
 

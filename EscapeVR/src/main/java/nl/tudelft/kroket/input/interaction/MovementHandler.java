@@ -28,7 +28,7 @@ public class MovementHandler extends InteractionHandler implements ActionListene
     super(observer);
 
     this.rootNode = rootNode;
-    this.objectList = new ArrayList<String>();
+    this.objectList = new HashMap<String>();
 
   }
 
@@ -128,12 +128,14 @@ public class MovementHandler extends InteractionHandler implements ActionListene
 
   private boolean intersectsWith(Spatial object, Vector3f newPos) {
 
+   // Spatial observerClone = observer.clone(false);
+    
     boolean intersects = (object.getWorldBound()
         .intersects(observer.clone(false).move(newPos).getWorldBound()));
 
-    // if (intersects) {
-    // log.debug(className, "Observer intersects with object: " + object.getName());
-    // }
+    if (intersects) {
+      log.debug(className, "Observer intersects with object: " + object.getName());
+    }
 
     return intersects;
 
