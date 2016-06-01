@@ -29,7 +29,8 @@ public class PictureCodeMinigame extends Minigame {
    */
   @Override
   public void start() {
-    // TODO Auto-generated method stub
+    log.info(className, "Minigame A started.");
+    hud.setCenterText("Minigame A started!", 10);
   }
 
   /**
@@ -37,7 +38,8 @@ public class PictureCodeMinigame extends Minigame {
    */
   @Override
   public void stop() {
-    // TODO Auto-generated method stub
+    log.info(className, "Minigame A completed.");
+    hud.setCenterText("Minigame A complete!", 10);
   }
 
   @Override
