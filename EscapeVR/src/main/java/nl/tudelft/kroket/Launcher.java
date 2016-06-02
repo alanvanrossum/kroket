@@ -32,7 +32,8 @@ public class Launcher {
     }
 
     mainApplication = new EscapeVR();
-
+    
+    // set the hostname/ip address of the remote machine
     mainApplication.setRemoteHost(remoteHost);
 
     // create AppSettings object to enable joysticks/gamepads
@@ -46,16 +47,12 @@ public class Launcher {
     settings.setTitle("EscapeVR");
 
     // throw settings at the application
-
     mainApplication.setSettings(settings);
-
-    // // enable mirror window, make sure we can see the application's output
-    // //even when an oculus is connected
-    // mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.ENABLE_MIRROR_WINDOW, true);
-    // mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.SET_GUI_CURVED_SURFACE, false);
-    // mainApplication.preconfigureFrustrumNearFar(0.1f, 512f);
-
+    
     mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.USE_CUSTOM_DISTORTION, false);
+    
+    // enable the mirror window to be used, this will show whatever is shown in the
+    // VR goggles
     mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.ENABLE_MIRROR_WINDOW, true);
     mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.FORCE_VR_MODE, false);
     mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.SET_GUI_CURVED_SURFACE, true);

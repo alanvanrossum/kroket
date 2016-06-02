@@ -9,6 +9,8 @@ import com.jme3.scene.Spatial;
 @SuppressWarnings("serial")
 public class InteractionEvent extends EventObject {
 
+  private static final String INTERACTION_BUTTON = "Button A";
+
   String name;
 
   public InteractionEvent(Object source, String name) {
@@ -21,19 +23,18 @@ public class InteractionEvent extends EventObject {
    * 
    * @param object
    *          the object the user interacted with
-   * @param threshold
+   * @param range
    *          positional condition (distance threshold)
    * @param button
    *          the button that was used
    * @return true if event should be fired
    */
-  public static boolean checkConditions(Spatial object, float threshold, String button) {
+  public static boolean checkConditions(Spatial object, float range, String button) {
 
-    float distance = VRApplication.getFinalObserverPosition().distance(
-        object.getWorldBound().getCenter());
+    float distance = VRApplication.getFinalObserverPosition()
+        .distance(object.getWorldBound().getCenter());
 
-    return (distance <= threshold && button.equals("Button A"));
-
+    return (distance <= range && button.equals(INTERACTION_BUTTON));
   }
 
   /**

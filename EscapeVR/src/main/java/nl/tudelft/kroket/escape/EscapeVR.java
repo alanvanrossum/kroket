@@ -1,11 +1,21 @@
 package nl.tudelft.kroket.escape;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EventObject;
+import java.util.HashMap;
+import java.util.List;
+
+import com.jme3.audio.AudioNode;
+import com.jme3.material.Material;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.shape.Sphere;
 import com.jme3.util.SkyFactory;
+
 import jmevr.app.VRApplication;
 import jmevr.util.VRGuiManager;
 import jmevr.util.VRGuiManager.POSITIONING_MODE;
@@ -38,11 +48,6 @@ import nl.tudelft.kroket.state.StateManager;
 import nl.tudelft.kroket.state.states.LobbyState;
 import nl.tudelft.kroket.state.states.PlayingState;
 
-import java.util.EventObject;
-import java.util.HashMap;
-import java.util.List;
-
-
 /**
  * The EscapeVR class.
  */
@@ -50,6 +55,8 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   /** Debug flag. */
   private final boolean DEBUG = true;
+
+  private static final Vector3f spawnPosition = new Vector3f(0, 0, 0);
 
   /** Current class, used as tag for logger. */
   private final String className = this.getClass().getSimpleName();
@@ -75,14 +82,21 @@ public class EscapeVR extends VRApplication implements EventListener {
   private HeadUpDisplay hud;
 
   private MinigameManager mgManager;
-
+  
+  /** Thread reference used for the TCP connection. */
   private ClientThread clientThread;
 
+  /** The initial state of the game. */
   private GameState initialState = LobbyState.getInstance();
 
-  // private GameState playingState = PlayingState.getInstance();
+  /** List of all rigid objects. */
+  private List<String> rigidObjects = new ArrayList<String>(
+      Arrays.asList("safe-objnode", "knight1-geom-0", "knight2-geom-0", "Desk-objnode"));
 
-  private boolean forceUpdate = false;
+  // private CollisionHandler collisionHandler;
+  private MovementHandler movementHandler;
+
+  private GameState currentState;
 
 private boolean count = false;
 
@@ -93,18 +107,17 @@ private boolean count = false;
 
   private void initAudioManager() {
     audioManager = new AudioManager(getAssetManager(), rootNode, "Sound/");
-    audioManager.loadFile("waiting", "Soundtrack/waiting.wav", false, true, 0.75f);
-    //audioManager.loadFile("ambient", "Soundtrack/ambient.wav", false, true, 2);
-    audioManager.loadFile("ambient", "Soundtrack/alone.wav", false, true, 0.75f);
+    audioManager.loadFile("waiting", "Soundtrack/alone.wav", false, true, 0.75f);
+    audioManager.loadFile("ambient", "Soundtrack/ambient.wav", false, true, 0.75f);
     audioManager.loadFile("welcome", "Voice/intro2.wav", false, false, 0.5f);
     audioManager.loadFile("letthegamebegin", "Voice/letthegamebegin3.wav", false, false, 1.0f);
     audioManager.loadFile("muhaha", "Voice/muhaha.wav", false, false, 1.0f);
     audioManager.loadFile("turret", "Voice/portal2/turret/turret_autosearch_6.ogg", false, false,
-        0.7f);
+        0.5f);
   }
 
   private void initInputHandler() {
-    inputHandler = new InputHandler(getInputManager(), observer, eventManager);
+    inputHandler = new InputHandler(getInputManager(), eventManager);
   }
 
   private void initSceneManager() {
@@ -118,6 +131,7 @@ private boolean count = false;
     screenManager = new ScreenManager(getAssetManager(), guiNode, guiCanvasSize.getX(),
         guiCanvasSize.getY());
 
+    // pre-load all screens
     screenManager.loadScreen("lobby", LobbyScreen.class);
     screenManager.loadScreen("spooky", SpookyScreen.class);
     screenManager.loadScreen("controller", ControllerScreen.class);
@@ -144,8 +158,34 @@ private boolean count = false;
       System.out.println("Attached device: " + VRApplication.getVRHardware().getName());
     }
 
-    eventManager = new EventManager(observer, rootNode);
-    initObjects();
+    // Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
+
+    // create a sphere around the observer for our collision detection
+    Sphere sphere = new Sphere(10, 50, 0.4f);
+    observer = new Geometry("observer", sphere);
+
+    // the sphere should have no shaded material
+    Material mat = new Material(getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+    observer.setMaterial(mat);
+
+    Spatial sky = SkyFactory.createSky(getAssetManager(), "Textures/Sky/Bright/spheremap.png",
+        SkyFactory.EnvMapType.EquirectMap);
+    rootNode.attachChild(sky);
+
+    // test any positioning mode here (defaults to AUTO_CAM_ALL)
+    VRGuiManager.setPositioningMode(POSITIONING_MODE.AUTO_CAM_ALL_SKIP_PITCH);
+    VRGuiManager.setGuiScale(0.4f);
+    VRGuiManager.setPositioningElasticity(10f);
+
+    observer.setLocalTranslation(spawnPosition);
+
+    VRApplication.setObserver(observer);
+    rootNode.attachChild(observer);
+
+    // do not use magic VR mouse cusor (same usage as non-VR mouse cursor)
+    getInputManager().setCursorVisible(true);
+    // observer.setModelBound(bound);
+
     initHeadUpDisplay();
     initSceneManager();
     initAudioManager();
@@ -154,22 +194,16 @@ private boolean count = false;
     initNetworkClient();
     initStateManager();
 
-    
+    movementHandler = new MovementHandler(observer, rootNode);
+
+    eventManager = new EventManager(observer, rootNode);
     inputHandler.registerMappings(new RotationHandler(observer), "left", "right", "lookup",
         "lookdown", "tiltleft", "tiltright");
-    inputHandler.registerMappings(new MovementHandler(observer), "forward", "back");
+    inputHandler.registerMappings(movementHandler, "forward", "back");
     inputHandler.registerMappings(eventManager, "Button A", "Button B", "Button X", "Button Y");
 
     inputHandler.registerListener(
         new CollisionHandler(observer, sceneManager.getScene("escape").getBoundaries()));
-
-    eventManager.registerObjectInteractionTrigger("painting", 4);
-    eventManager.registerObjectInteractionTrigger("painting2", 4);
-    eventManager.registerObjectInteractionTrigger("door", 3.5f);
-    eventManager.registerObjectInteractionTrigger("portalturret-geom-0", 3.5f);
-    eventManager.registerObjectInteractionTrigger("fourbuttons2-objnode", 4f);
-    eventManager.registerObjectInteractionTrigger("DeskLaptop-objnode", 4f);
- 
 
     eventManager.addListener(this);
 
@@ -177,9 +211,12 @@ private boolean count = false;
     eventManager.addListener(mgManager);
 
     if (DEBUG) {
-      System.out.println("Switching gamestate");
-      stateManager.setGameState(PlayingState.getInstance());
+      // when in debug mode, force the game to
+      // playing state
+      setGameState(PlayingState.getInstance());
       log.setLevel(LogLevel.ALL);
+    } else {
+      setGameState(initialState);
     }
     
     //registerInteractionObjects();
@@ -207,34 +244,57 @@ private boolean count = false;
   }
 
   /**
-   * Initialize the scene.
+   * Set the current game state.
+   * 
+   * @param state
+   *          the gamestate
    */
-  private void initObjects() {
+  private void setGameState(GameState state) {
+    this.currentState = state;
+  }
 
-    // Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
-    observer = new Node("observer");
+  /**
+   * Register all objects in the environment.
+   */
+  private void registerObjects() {
 
-    Spatial sky = SkyFactory.createSky(getAssetManager(), "Textures/Sky/Bright/spheremap.png",
-        SkyFactory.EnvMapType.EquirectMap);
-    rootNode.attachChild(sky);
+    log.debug(className, "Registering objects...");
 
-    // test any positioning mode here (defaults to AUTO_CAM_ALL)
-    VRGuiManager.setPositioningMode(POSITIONING_MODE.AUTO_CAM_ALL_SKIP_PITCH);
-    VRGuiManager.setGuiScale(0.4f);
-    VRGuiManager.setPositioningElasticity(10f);
+    List<Spatial> objects = rootNode.getChildren();
 
-    observer.setLocalTranslation(new Vector3f(0.0f, 0.0f, 0.0f));
+    for (Spatial object : objects) {
 
-    VRApplication.setObserver(observer);
-    rootNode.attachChild(observer);
+      // ignore objects that are null
+      if (object == null)
+        continue;
 
-    // do not use magic VR mouse cusor (same usage as non-VR mouse cursor)
-    getInputManager().setCursorVisible(true);
+      // ignore AudioNodes
+      if (object instanceof AudioNode)
+        continue;
+
+      // ignore the observer as we can't interact with ourselves
+      if (object.getName().equals("observer"))
+        continue;
+      
+      // only process objects that extend either Geomtery or Node
+      if (object instanceof Geometry || object instanceof Node) {
+
+        log.debug(className, String.format("Registering trigger for %s", object.toString()));
+        eventManager.registerObjectInteractionTrigger(object.getName(), 4f);
+      }
+    }
+    
+    // register all rigid objects with the movementhandler
+    // the movementhandler will force the observer
+    // to stay away from these objects
+    for (String objectName : rigidObjects) {
+      movementHandler.addObject(objectName);
+    }
 
   }
 
   /**
-   * Main method to update the scene.
+   * Main method to update the game.
    */
   @Override
   public void simpleUpdate(float tpf) {
@@ -243,9 +303,9 @@ private boolean count = false;
 
     hud.update();
 
-    if (forceUpdate) {
-      stateManager.setGameState(PlayingState.getInstance());
-      forceUpdate = false;
+    if (stateManager.getCurrentState() != currentState) {
+      stateManager.setGameState(currentState);
+      registerObjects();
     }
 
     mgManager.update(tpf);
@@ -267,20 +327,21 @@ private boolean count = false;
 
       switch (command.get("command")) {
       case "START":
-        forceUpdate = true;
+        registerObjects();
+        setGameState(PlayingState.getInstance());
         hud.setCenterText("");
         break;
       case "INITVR":
         if (command.containsKey("param_0")) {
           String action = command.get("param_0");
 
-          //End minigames
+          // End minigames
           if (action.equals("doneA") || action.equals("doneB") || action.equals("doneC")
               || action.equals("doneD")) {
             mgManager.getCurrent().stop();
             mgManager.endGame();
 
-            //Start minigames 
+            // Start minigames
           } else if (action.equals("startA")) {
             mgManager.launchGame(PictureCodeMinigame.getInstance());
           } else if (action.equals("startB") && count  == false) {
@@ -294,7 +355,7 @@ private boolean count = false;
             mgManager.launchGame(ColorSequenceMinigame.getInstance());
             if (mgManager.getCurrent() instanceof ColorSequenceMinigame) {
               ((ColorSequenceMinigame) mgManager.getCurrent())
-              .parseColors(CommandParser.parseParams(line));
+                  .parseColors(CommandParser.parseParams(line));
             }
           } else if (action.equals("startD")) {
             mgManager.launchGame(GyroscopeMinigame.getInstance());
@@ -310,7 +371,8 @@ private boolean count = false;
   /**
    * Main callback method for handling remote input from socket.
    * 
-   * @param message the input received from the socket.
+   * @param message
+   *          the input received from the socket.
    */
   public void receiveLoop(String message) {
     log.debug(className, "Message received: " + message);
@@ -342,8 +404,7 @@ private boolean count = false;
           break;
         case "painting":
           clientThread.sendMessage("INITM[startA]");
-          break;
-        
+          break;       
         //case "DeskLaptop-objnode":
         case "painting2":
           clientThread.sendMessage("INITM[startB]");
@@ -361,6 +422,7 @@ private boolean count = false;
 
   /**
    * Get the remote host.
+   * 
    * @return the remoteHost
    */
   public String getRemoteHost() {
@@ -369,6 +431,7 @@ private boolean count = false;
 
   /**
    * Set the remote host.
+   * 
    * @param remoteHost
    *          the remoteHost to set
    */
@@ -378,6 +441,7 @@ private boolean count = false;
 
   /**
    * Get the remote port.
+   * 
    * @return the remotePort
    */
   public int getRemotePort() {
@@ -386,6 +450,7 @@ private boolean count = false;
 
   /**
    * Set the remote port.
+   * 
    * @param remotePort
    *          the remotePort to set
    */

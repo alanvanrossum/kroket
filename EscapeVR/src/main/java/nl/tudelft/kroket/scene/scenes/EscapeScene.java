@@ -80,7 +80,7 @@ public class EscapeScene extends Scene {
 
     /** A white ambient light source. */
     AmbientLight ambient = new AmbientLight();
-    ambient.setColor(ColorRGBA.White);  
+    ambient.setColor(ColorRGBA.White);
     rootNode.addLight(ambient);
 
     /** A white, directional light source */
@@ -90,14 +90,15 @@ public class EscapeScene extends Scene {
     rootNode.addLight(sun);
 
     addTurret();
+
     //addDesk();
 
     addKnight1();
     addKnight2();
 
     addSafe();
-    
-    //addButtons();
+
+    // addButtons();
   }
 
   private void addSafe() {
@@ -115,7 +116,7 @@ public class EscapeScene extends Scene {
     buttons.rotate(0f, -0.5f * FastMath.PI, 0.5f * FastMath.PI);
     rootNode.attachChild(buttons);
   }
-  
+
   private void addKnight1() {
     Spatial knight1 = assetManager.loadModel("Models/knight1/knight1.j3o");
     knight1.scale(0.15f);
@@ -142,9 +143,8 @@ public class EscapeScene extends Scene {
 
   private void addLamp() {
     Spatial lamp = assetManager.loadModel("Models/Petroleum_Lamp/Petroleum_Lamp.j3o");
-    lamp.move(-2, -1, -2); // put the lamp on the floor
+    // lamp.move(-2, -3, -2); // put the lamp on the floor
     rootNode.attachChild(lamp);
-
   }
 
   private void addTurret() {
@@ -162,10 +162,10 @@ public class EscapeScene extends Scene {
 
   }
 
-  private void createCube() {
-    Spatial cube = assetManager.loadModel("Models/tudcube/tudcube.j3o");
-    rootNode.attachChild(cube);
-  }
+  // private void createCube() {
+  // Spatial cube = assetManager.loadModel("Models/tudcube/tudcube.j3o");
+  // rootNode.attachChild(cube);
+  // }
 
   /**
    * Create four walls using a texture.

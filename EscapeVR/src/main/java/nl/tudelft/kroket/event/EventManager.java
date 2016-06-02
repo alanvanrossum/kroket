@@ -3,7 +3,6 @@ package nl.tudelft.kroket.event;
 import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -14,7 +13,6 @@ import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.minigame.minigames.ColorSequenceMinigame;
 
 import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.InputListener;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
@@ -27,23 +25,18 @@ public class EventManager extends InteractionHandler implements ActionListener {
   private Logger log = Logger.getInstance();
 
   private List<EventObject> eventList = new ArrayList<EventObject>();
+
+  /** List of all registered listeners. */
   private List<EventListener> listenerList = new ArrayList<EventListener>();
 
-  private final int INPUT_GRACE_PERIOD = 400;
+  private final int INPUT_GRACE_PERIOD = 200;
 
   long prevInput = 0;
 
   private Node rootNode;
 
+  /** All registered triggers: the name of the object and the range. */
   private HashMap<String, Float> triggers = new HashMap<String, Float>();
-  
-  public static boolean holdA;
-
-public static boolean holdB;
-
-public static boolean holdX;
-
-public static boolean holdY;
 
   /**
    * constructor of the event manager.
@@ -59,16 +52,20 @@ public static boolean holdY;
   }
 
   /**
-   * Puts interactable object in hash map triggers.
-   * @param objName key to be put
-   * @param threshold value for the hashmap
+   * Register an object to fire an InteractionEvent.
+   * 
+   * @param objName
+   *          the name of the object
+   * @param range
+   *          the range the player/observer has to be in (related to the object)
    */
-  public void registerObjectInteractionTrigger(String objName, float threshold) {
-    if(!(objName == null)) {
-      triggers.put(objName, threshold);
-    }
+  public void registerObjectInteractionTrigger(String objName, float range) {
+    triggers.put(objName, range);
   }
 
+  /**
+   * Fire/delegate all events we have in our list and forward them to all registered listeners.
+   */
   private synchronized void fireEvents() {
 
     for (EventObject event : eventList) {
@@ -82,6 +79,14 @@ public static boolean holdY;
     eventList.clear();
   }
 
+  /**
+   * Add an event to be fired.
+   * 
+   * @param type
+   *          the type/name of the event
+   * @param event
+   *          the event object
+   */
   public synchronized void addEvent(String type, EventObject event) {
     eventList.add(event);
 
@@ -92,94 +97,92 @@ public static boolean holdY;
     //    }
   }
 
-  public synchronized void addListener(EventListener listener) {
+  /**
+   * Add a listener.
+   * 
+   * @param listener
+   *          object to be registered
+   */
+  public void addListener(EventListener listener) {
     listenerList.add(listener);
   }
 
-  public synchronized void removeListener(EventListener listener) {
+  /**
+   * Remove a listener.
+   * 
+   * @param listener
+   *          object to be removed
+   */
+  public void removeListener(EventListener listener) {
     listenerList.remove(listener);
   }
 
+  /**
+   * General update method.
+   */
   public void update(float tpf) {
+
+    // fire all events we registered
     fireEvents();
   }
 
   @Override
   public void onAction(String name, boolean isPressed, float tpf) {
+
+    // if the button wasn't pressed, ignore it
     if (!isPressed) {
-        setBooleanHeld(name, false);
-    	return;
+      return;
     }
 
-    setBooleanHeld(name, true);
+  
     
     //System.out.println("onAction " + name);
 
+
+    // get current system time
     long now = System.currentTimeMillis();
+
+    // compute difference between the current button press
+    // and previous button press
     long delta = now - prevInput;
 
+    // if the time between button presses is too short
+    // ignore the button press
     if (delta < INPUT_GRACE_PERIOD) {
       return;
     }
 
+    // store the current action's time so we can compare it later
     prevInput = now;
 
-    ButtonPressEvent bbEvent = new ButtonPressEvent(this, name);
-    addEvent("buttonpress", bbEvent);
+    // register a new button press event
+    addEvent("buttonpress", new ButtonPressEvent(this, name));
 
+    // loop over all object triggers
     for (Entry<String, Float> entry : triggers.entrySet()) {
 
+      // get the object from the rootnode
       Spatial object = rootNode.getChild(entry.getKey());
 
+      // check whether the object exists
       if (object == null) {
         log.error(className, String
             .format("Warning: object '%s' does not exist in current scene (null)", entry.getKey()));
 
       } else {
-        if (InteractionEvent.checkConditions(object, entry.getValue(), name) 
-            && !ColorSequenceMinigame.running) {
+
+        if (InteractionEvent.checkConditions(object, entry.getValue(), name)
+            && !ColorSequenceMinigame.isActive()) {
           InteractionEvent interactionEvent = new InteractionEvent(this, entry.getKey());
           addEvent("interaction", interactionEvent);
         }
 
       }
     }
+
+    // fire the events
     fireEvents();
 
   }
-   
-  public void setBooleanHeld(String name, boolean setTo) {
-	  if(name == "Button A"){
-		  holdA = setTo;
-	  }
-	  if(name == "Button B"){
-		  holdB = setTo;
-	  }
-	  if(name == "Button X"){
-		  holdX = setTo;
-	  }
-	  if(name == "Button Y"){
-		  holdY = setTo;
-	  }
-  }
-  
-  
-  public static boolean getHold(String name) {
-	  if(name == "Button A"){
-		  return holdA;
-	  }
-	  if(name == "Button B"){
-		  return holdB;
-	  }
-	  if(name == "Button X"){
-		  return holdX;
-	  }
-	  if(name == "Button Y"){
-		  return holdY;
-	  }  
-	  else{
-		  return false;
-	  }
-  
-  }
+
 }

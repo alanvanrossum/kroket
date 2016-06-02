@@ -30,21 +30,21 @@ public class SceneManager {
 
   /** Reference to the ViewPort object. */
   private ViewPort viewPort;
-  
- // private SceneManager instance = new SceneManager(getAssetManager(), getRootNode(), getViewPort());
+
+  // private SceneManager instance = new SceneManager(getAssetManager(), getRootNode(),
+  // getViewPort());
 
   /**
    * Constructor for SceneManager object.
    * 
    * @param assetManager
-   *            reference to AssetManager
+   *          reference to AssetManager
    * @param rootNode
-   *            reference to the rootNode used in the scene
+   *          reference to the rootNode used in the scene
    * @param viewPort
-   *            reference to the ViewPort
+   *          reference to the ViewPort
    */
-  public SceneManager(AssetManager assetManager, Node rootNode,
-      ViewPort viewPort) {
+  public SceneManager(AssetManager assetManager, Node rootNode, ViewPort viewPort) {
 
     log.info(className, "Initializing...");
 
@@ -58,18 +58,17 @@ public class SceneManager {
    * Dynamically load a scene.
    * 
    * @param name
-   *            the name of the scene
+   *          the name of the scene
    * @param sceneClass
-   *            the class of the scene
+   *          the class of the scene
    */
   public void loadScene(String name, Class<? extends Scene> sceneClass) {
 
     Scene newScene = null;
     try {
 
-      Constructor<? extends Scene> ctor = sceneClass
-          .getDeclaredConstructor(String.class, AssetManager.class,
-              Node.class, ViewPort.class);
+      Constructor<? extends Scene> ctor = sceneClass.getDeclaredConstructor(String.class,
+          AssetManager.class, Node.class, ViewPort.class);
       newScene = ctor.newInstance(name, assetManager, rootNode, viewPort);
     } catch (InstantiationException e) {
 
@@ -96,43 +95,46 @@ public class SceneManager {
    * Destroy a scene by name.
    * 
    * @param name
-   *            the name of the scene.
+   *          the name of the scene.
    */
 
   public void destroyScene(String name) {
     getScene(name).destroyScene();
   }
 
-
   /**
    * Get a screen by name.
    * 
    * @param name
-   *            the name of the scene
+   *          the name of the scene
    * @return the scene object
    */
   public Scene getScene(String name) {
 
     if (!scenes.containsKey(name)) {
-      log.error(className,
-          String.format("Scene %s does not exist.", name));
+      log.error(className, String.format("Scene %s does not exist.", name));
       return null;
     }
 
     return scenes.get(name);
   }
-  
-  public HashMap<String, Scene> getScenes(){
+
+  /**
+   * Get all the registered scenes.
+   * 
+   * @return a hashmap with all scenes
+   */
+  public HashMap<String, Scene> getScenes() {
     return scenes;
   }
-  
+
   public void extendEscapeScene(String state) {
     switch (state) {
     case "C":
       ((EscapeScene) scenes.get("escape")).addButtons();
       break;
     }
-    
+
   }
 
 }
