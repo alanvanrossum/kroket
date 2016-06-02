@@ -9,6 +9,12 @@ import java.util.EventObject;
  *
  */
 public interface EventListener {
+  /**
+   * Handle the event.
+   * 
+   * @param event
+   *          the event
+   */
   public void handleEvent(EventObject event);
 
 }

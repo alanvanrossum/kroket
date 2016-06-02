@@ -1,5 +1,10 @@
 package nl.tudelft.kroket.net.protocol;
 
+/**
+ * Class containing all strings for communication with the GameHost.
+ * 
+ * @author Team Kroket
+ */
 public class Protocol {
 
   public static final String COMMAND_REGISTER = "REGISTER";

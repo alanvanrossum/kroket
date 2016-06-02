@@ -9,6 +9,12 @@ import com.jme3.font.Rectangle;
 import com.jme3.math.Vector2f;
 import com.jme3.scene.Node;
 
+/**
+ * HeadUpDisplay class, used for displaying text to the user.
+ * 
+ * @author Team Kroket
+ *
+ */
 public class HeadUpDisplay {
 
   /** Current class, used as tag for logger. */
@@ -87,16 +93,33 @@ public class HeadUpDisplay {
 
   }
 
+  /**
+   * Set the centered text in the HUD.
+   * 
+   * @param text
+   *          the text to display
+   */
   public void setCenterText(String text) {
     centerTextTime = System.currentTimeMillis() + delayTextClear;
     centerTextLabel.setText(text);
   }
 
+  /**
+   * Set the centered text in the hud and display it for a certain amount of seconds.
+   * 
+   * @param text
+   *          the text to display
+   * @param time
+   *          the time to display the text
+   */
   public void setCenterText(String text, int time) {
     centerTextTime = System.currentTimeMillis() + (time * 1000);
     centerTextLabel.setText(text);
   }
-  
+
+  /**
+   * Update method, used to update the HUD.
+   */
   public void update() {
 
     if (System.currentTimeMillis() > centerTextTime) {
@@ -104,6 +127,9 @@ public class HeadUpDisplay {
     }
   }
 
+  /**
+   * Clear the center text label.
+   */
   public void clearCenter() {
 
     if (centerTextLabel.getText().length() > 0) {
