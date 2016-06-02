@@ -12,8 +12,11 @@ public class LobbyState implements GameState {
   /** The unique singleton instance of this class. */
   private static LobbyState instance = new LobbyState();
 
-  /** The singleton reference to the Logger instance. */
-  private static Logger logger = Logger.getInstance();
+  /** Current class, used as tag for logger. */
+  private final String className = this.getClass().getSimpleName();
+
+  /** Singleton logger instance. */
+  private Logger log = Logger.getInstance();
 
   private LobbyState() {
 
@@ -22,13 +25,17 @@ public class LobbyState implements GameState {
   @Override
   public void begin(AudioManager audioManager, SceneManager sceneManager,
       ScreenManager screenManager) {
+    
+    log.debug(className, "Setting up LobbyState");
+    
     audioManager.stopAudio();
     screenManager.getScreen("lobby").show();
     audioManager.play("waiting");
   }
 
   @Override
-  public void stop(AudioManager audioManager, SceneManager sceneManager, ScreenManager screenManager) {
+  public void stop(AudioManager audioManager, SceneManager sceneManager,
+      ScreenManager screenManager) {
     audioManager.stop("waiting");
     screenManager.getScreen("lobby").hide();
   }
@@ -38,7 +45,8 @@ public class LobbyState implements GameState {
   }
 
   @Override
-  public void update(AudioManager audioManager, InputHandler inputHandler, ScreenManager screenManager, float tpf) {
+  public void update(AudioManager audioManager, InputHandler inputHandler,
+      ScreenManager screenManager, float tpf) {
     inputHandler.handleInput(tpf);
   }
 

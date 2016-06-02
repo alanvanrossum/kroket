@@ -3,21 +3,13 @@ package nl.tudelft.kroket.input;
 import java.util.ArrayList;
 import java.util.List;
 
-import jmevr.app.VRApplication;
-
 import com.jme3.input.InputManager;
 import com.jme3.input.Joystick;
 import com.jme3.input.KeyInput;
-import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.InputListener;
 import com.jme3.input.controls.JoyButtonTrigger;
 import com.jme3.input.controls.KeyTrigger;
-import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
-
 import nl.tudelft.kroket.event.EventManager;
-import nl.tudelft.kroket.input.interaction.MovementHandler;
-import nl.tudelft.kroket.input.interaction.RotationHandler;
 import nl.tudelft.kroket.log.Logger;
 
 /**
@@ -35,16 +27,13 @@ public class InputHandler {
   private Logger log = Logger.getInstance();
 
   private InputManager inputManager;
-  private Spatial observer;
-
   private List<InteractionHandler> listeners = new ArrayList<InteractionHandler>();
 
-  public InputHandler(InputManager inputManager, Spatial observer, EventManager eventManager) {
+  public InputHandler(InputManager inputManager, EventManager eventManager) {
 
     log.info(className, "Initializing...");
 
     this.inputManager = inputManager;
-    this.observer = observer;
 
     initKeyControls();
     initJoysticks();
@@ -147,9 +136,6 @@ public class InputHandler {
       actionListener.update(tpf);
     }
 
-
   }
-
-
 
 }

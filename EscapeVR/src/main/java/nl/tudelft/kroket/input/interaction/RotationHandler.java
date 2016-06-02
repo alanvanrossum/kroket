@@ -1,10 +1,7 @@
 package nl.tudelft.kroket.input.interaction;
 
 import nl.tudelft.kroket.input.InteractionHandler;
-import jmevr.app.VRApplication;
-
 import com.jme3.input.controls.ActionListener;
-import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 
 public class RotationHandler extends InteractionHandler implements ActionListener {
@@ -44,6 +41,7 @@ public class RotationHandler extends InteractionHandler implements ActionListene
       tiltRight = keyPressed;
     }
 
+    // TODO: only call externally?
     update(tpf);
 
   }
