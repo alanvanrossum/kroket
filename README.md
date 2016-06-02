@@ -69,8 +69,11 @@
 ### Week 7
 
 - Test Document 
+- Architecture design
+- Sprint backlog 7
+- Sprint retrospective 6
 
-[Week 6 documents](https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek7)
+[Week 7 documents](https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek7)
 
 ## Introduction
 
