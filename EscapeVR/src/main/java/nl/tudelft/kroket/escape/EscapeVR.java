@@ -84,6 +84,8 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   private boolean forceUpdate = false;
 
+private boolean count = false;
+
   private void initStateManager() {
     stateManager = new StateManager(audioManager, inputHandler, sceneManager, screenManager,
         initialState);
@@ -258,6 +260,8 @@ public class EscapeVR extends VRApplication implements EventListener {
   public synchronized void remoteInput(final String line) {
 
     HashMap<String, String> command = CommandParser.parseInput(line);
+    System.out.println(command);
+    
 
     if (command.containsKey("command")) {
 
@@ -279,8 +283,9 @@ public class EscapeVR extends VRApplication implements EventListener {
             //Start minigames 
           } else if (action.equals("startA")) {
             mgManager.launchGame(PictureCodeMinigame.getInstance());
-          } else if (action.equals("startB")) {
-            mgManager.launchGame(TapMinigame.getInstance());
+          } else if (action.equals("startB") && count  == false) {
+            count = true;
+        	  mgManager.launchGame(TapMinigame.getInstance());
             if (mgManager.getCurrent() instanceof TapMinigame) {
                 ((TapMinigame) mgManager.getCurrent())
                 .parseButtons(CommandParser.parseParams(line));

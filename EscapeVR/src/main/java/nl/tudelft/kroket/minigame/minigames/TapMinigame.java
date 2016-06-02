@@ -19,26 +19,60 @@ public class TapMinigame extends Minigame {
   
   /** Singleton instance. */
   private static Minigame instance = new TapMinigame();
-  
-  private int numberofButtons = 1;
-  
+
   /** Private constructor. */
   private TapMinigame() {}
   
   /** The correct sequence of buttons. */
   private static List<String> sequenceList = new ArrayList<String>();
   
-  private String firstButton, secondButton, thirdButton, fourthButton;
+  private static List<String> firstSequence = new ArrayList<String>();
+  private static List<String> secondSequence = new ArrayList<String>();
+  private static List<String> thirdSequence = new ArrayList<String>();
+  private static List<String> fourthSequence = new ArrayList<String>();
   
-  private boolean holdFirst, holdSecond, holdThird, holdFourth;
-
-private static boolean finished = false;
-
-  public static boolean Completable = true;
+  public sequenceState seqState = sequenceState.sequenceOne;
+  
+  /** The list of buttons pressed. */
+  private static List<String> buttonList = new ArrayList<String>();
 
   /** Get the singleton instance. */
   public static Minigame getInstance() {
     return instance;
+  }
+  
+  public enum sequenceState{
+	  sequenceOne, sequenceTwo, sequenceThree, sequenceFour, completed;
+	  
+	  	  
+	  public sequenceState getNext() {
+		  switch(this) {
+          case sequenceOne: return sequenceTwo;
+          case sequenceTwo: return sequenceThree;
+          case sequenceThree: return sequenceFour;
+          case sequenceFour: return completed;
+          default: return this;
+          }
+
+	  }
+	  
+	  public List<String> returnSequence() {
+          switch(this) {
+          case sequenceOne: return firstSequence;
+          case sequenceTwo: return secondSequence;
+          case sequenceThree: return thirdSequence;
+          case sequenceFour: return fourthSequence;
+          default: return sequenceList;
+          }
+	  }   
+      
+	  public String returnCompleteMessage() {
+       	  switch(this) {
+       	  case completed: return "YOU GOT THEM ALL WELL DONE!";
+       	  default: return "GOOD JOB NOW THE NEXT ONE!";
+       	  }
+       }
+	  
   }
   
   /**
@@ -51,20 +85,8 @@ private static boolean finished = false;
     screenManager.getScreen("controller").show();
     hud.setCenterText("Minigame B started!", 10);
     hud.setCenterText(
-            "Hold down the buttons specified\nby the android user\nDO NOT LET GO OF THEM!",
+            "press the buttons in order\nspecified by the android user\nthere will be multiple sequences",
             20);
-    
-    System.out.println("below is the list of buttons");
-    System.out.println(sequenceList);
-    System.out.println("above is the list of buttons");
-    firstButton = sequenceList.get(0);
-    secondButton = sequenceList.get(1);
-    thirdButton = sequenceList.get(2);
-    fourthButton = sequenceList.get(3);
-    System.out.println(firstButton);
-    System.out.println(secondButton);
-    System.out.println(thirdButton);
-    System.out.println(fourthButton);
   }
 
   /**
@@ -79,64 +101,27 @@ private static boolean finished = false;
 
   @Override
   public void update(float tpf) {
-    if(numberofButtons == 1){
-    	holdFirst = EventManager.getHold(firstButton);
-    	if(holdFirst == false){
-    		Completable  = false;
-    	}
-    }if(numberofButtons == 2){
-    	holdFirst = EventManager.getHold(firstButton);
-    	holdSecond = EventManager.getHold(secondButton);
-    	if(holdFirst == false || holdSecond == false){
-    		Completable  = false;
-    	}
-    }if(numberofButtons == 3){
-    	holdFirst = EventManager.getHold(firstButton);
-    	holdSecond = EventManager.getHold(secondButton);
-    	holdThird = EventManager.getHold(thirdButton);
-    	if(holdFirst == false || holdSecond == false || holdThird == false){
-    		Completable  = false;
-    	}
-    }if(numberofButtons == 4){
-    	holdFirst = EventManager.getHold(firstButton);
-    	holdSecond = EventManager.getHold(secondButton);
-    	holdThird = EventManager.getHold(thirdButton);
-    	holdFourth = EventManager.getHold(fourthButton);
-    	if(holdFirst == false || holdSecond == false || holdThird == false|| holdFourth == false ){
-    		Completable  = false;
-    	}
-    }
-    
+	  
+	  if(buttonList.size() == 4){
+		  if(buttonList.equals(seqState.returnSequence())){
+			  seqState = seqState.getNext();
+			  buttonList.clear();
+			  hud.setCenterText(seqState.returnCompleteMessage(), 4);
+		  } else {
+			  buttonList.clear();
+			  hud.setCenterText("WRONG SEQUENCE TRY AGAIN!", 4);
+		  }
+	  }
+	      
   }
 
   @Override
   public void handleEvent(EventObject event) {
    
 	  if (event instanceof ButtonPressEvent) {
-		  
 		  String buttonName = ((ButtonPressEvent) event).getName();
-		  
-		  if(numberofButtons == 0 && buttonName == firstButton) {
-			  numberofButtons++;
-			  holdFirst = EventManager.getHold(firstButton);
-			  
-		  }
-		  if(numberofButtons == 1 && buttonName == secondButton) {
-			  numberofButtons++;
-			  holdSecond = EventManager.getHold(secondButton);
-			  
-		  }
-		  if(numberofButtons == 2 && buttonName == thirdButton) {
-			  numberofButtons++;
-			  holdThird = EventManager.getHold(thirdButton);
-			  
-		  }
-		  if(numberofButtons == 3 && buttonName == fourthButton) {
-			  numberofButtons++;
-			  holdFourth = EventManager.getHold(fourthButton);
-			  finished  = true;
-		  }
-	  }
+	      buttonList.add(buttonName);
+	   }
 	  
 	  
   }
@@ -160,7 +145,13 @@ private static boolean finished = false;
       break;
         default: 
       }
+      
     }
+    firstSequence = sequenceList.subList(0, 4);
+    secondSequence = sequenceList.subList(4, 8);
+    thirdSequence = sequenceList.subList(8, 12);
+    fourthSequence = sequenceList.subList(12, 16);
+    
   }
 
 }

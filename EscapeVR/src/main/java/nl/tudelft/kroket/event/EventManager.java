@@ -113,7 +113,7 @@ public static boolean holdY;
 
     setBooleanHeld(name, true);
     
-    System.out.println("onAction " + name);
+    //System.out.println("onAction " + name);
 
     long now = System.currentTimeMillis();
     long delta = now - prevInput;
