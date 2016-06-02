@@ -42,15 +42,16 @@ public class MinigameManager implements EventListener {
   public void handleEvent(EventObject event) {
 
     // if no minigame is active, don't do anything
-    if (currentGame == null)
+    if (currentGame == null) {
       return;
+    }
 
     // forward the event to the current minigame
     currentGame.handleEvent(event);
   }
 
   /**
-   * Launch a minigame
+   * Launch a minigame.
    * 
    * @param minigame
    *          the minigame to be launched
@@ -88,8 +89,9 @@ public class MinigameManager implements EventListener {
   public void update(float tpf) {
 
     // if currentGame is not set don't do anything
-    if (currentGame == null)
+    if (currentGame == null) {
       return;
+    }
 
     // forward update event to current minigame
     currentGame.update(tpf);
