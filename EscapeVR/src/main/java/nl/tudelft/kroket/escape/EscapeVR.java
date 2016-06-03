@@ -318,6 +318,7 @@ public class EscapeVR extends VRApplication implements EventListener {
             if (action.equals("doneA") || action.equals("doneB")) {
               if (mgManager.getCurrent() != null) {
                 mgManager.endGame();
+                registerObjects();
               }
   
               // Start minigames
@@ -367,6 +368,7 @@ public class EscapeVR extends VRApplication implements EventListener {
    *          the input received from the socket.
    */
   public void receiveLoop(String message) {
+    
     log.debug(className, "Message received: " + message);
 
     remoteInput(message);
@@ -374,7 +376,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   @Override
   public void handleEvent(EventObject ev) {
-
+    
     if (ev instanceof InteractionEvent) {
       InteractionEvent interactionEvent = (InteractionEvent) ev;
 
