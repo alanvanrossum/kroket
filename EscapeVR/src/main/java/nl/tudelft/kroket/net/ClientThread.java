@@ -19,7 +19,7 @@ public class ClientThread extends Thread {
   private int remotePort;
 
   private final int reconnInterval = 5;
-  
+
   private String playerName = "RIFT-USER";
 
   EscapeVR callback;
@@ -34,16 +34,36 @@ public class ClientThread extends Thread {
     setRemote("localhost", 1234);
   }
 
+  /**
+   * Set the remote host details.
+   * 
+   * @param remoteHost
+   *          the remote host
+   * @param remotePort
+   *          the remote port
+   */
   public void setRemote(String remoteHost, int remotePort) {
 
     this.remoteHost = remoteHost;
     this.remotePort = remotePort;
   }
-  
+
+  /**
+   * Set the current player's name.
+   * 
+   * @param playerName
+   *          the player's name
+   */
   public void setPlayerName(String playerName) {
-      this.playerName = playerName;
+    this.playerName = playerName;
   }
 
+  /**
+   * Shorthand method to let the current thread sleep.
+   * 
+   * @param seconds
+   *          the amount of seconds to sleep
+   */
   private void sleep(int seconds) {
     try {
       Thread.sleep(seconds * 1000);
@@ -51,7 +71,13 @@ public class ClientThread extends Thread {
       exception.printStackTrace();
     }
   }
-  
+
+  /**
+   * Send a message to the remote endpoint.
+   * 
+   * @param message
+   *          the message string to send
+   */
   public void sendMessage(String message) {
     client.sendMessage(message);
   }

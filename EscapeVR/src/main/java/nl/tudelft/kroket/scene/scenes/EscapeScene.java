@@ -3,9 +3,12 @@ package nl.tudelft.kroket.scene.scenes;
 import nl.tudelft.kroket.scene.Scene;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
+import com.jme3.light.SpotLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.FogFilter;
@@ -59,8 +62,95 @@ public class EscapeScene extends Scene {
     createPainting("Textures/Painting/painting.jpg");
     createPainting2("Textures/Painting/painting2.jpg");
 
-   // createLight();
-   //createCube();
+    // createLight();
+    // createCube();
+
+    addLamp();
+    createLight();
+
+    /** A cone-shaped spotlight with location, direction, range */
+    SpotLight spot = new SpotLight();
+    spot = new SpotLight();
+    spot.setSpotRange(500);
+    spot.setSpotOuterAngle(20 * FastMath.DEG_TO_RAD);
+    spot.setSpotInnerAngle(15 * FastMath.DEG_TO_RAD);
+    spot.setDirection(new Vector3f(0, -1, 0));
+    spot.setPosition(new Vector3f(0, 4, 0));
+    rootNode.addLight(spot);
+
+    /** A white ambient light source. */
+    AmbientLight ambient = new AmbientLight();
+    ambient.setColor(ColorRGBA.White);
+    rootNode.addLight(ambient);
+
+    /** A white, directional light source */
+    DirectionalLight sun = new DirectionalLight();
+    sun.setDirection((new Vector3f(-0.5f, -0.5f, -0.5f)).normalizeLocal());
+    sun.setColor(ColorRGBA.White);
+    rootNode.addLight(sun);
+
+    addTurret();
+    addDesk();
+
+    addKnight1();
+    addKnight2();
+
+    addSafe();
+
+    // addButtons();
+  }
+
+  private void addSafe() {
+    Spatial safe = assetManager.loadModel("Models/safe/safe.j3o");
+    safe.scale(0.03f);
+    // 6 opzij, 8 naar achter :p
+    safe.move(-6.8f, -3, -10.1f);
+    rootNode.attachChild(safe);
+  }
+
+  public void addButtons() {
+    Spatial buttons = assetManager.loadModel("Models/buttons/fourbuttons2.j3o");
+    buttons.scale(0.15f);
+    buttons.move(5f, 2f, (float) (roomDepth - 0.1));
+    buttons.rotate(0f, -0.5f * FastMath.PI, 0.5f * FastMath.PI);
+    rootNode.attachChild(buttons);
+  }
+
+  private void addKnight1() {
+    Spatial knight1 = assetManager.loadModel("Models/knight1/knight1.j3o");
+    knight1.scale(0.15f);
+    knight1.move(-6.2f, 2f, 2f);
+    knight1.rotate(-0.5f * FastMath.PI, 0.5f * FastMath.PI, 0f);
+    rootNode.attachChild(knight1);
+  }
+
+  private void addKnight2() {
+    Spatial knight2 = assetManager.loadModel("Models/knight2/knight2.j3o");
+    knight2.scale(0.15f);
+    knight2.move(-6.2f, 2f, 2f);
+    knight2.rotate(-0.5f * FastMath.PI, 0.5f * FastMath.PI, 0f);
+    rootNode.attachChild(knight2);
+  }
+
+  private void addDesk() {
+    Spatial desk = assetManager.loadModel("Models/Desk/Desk.j3o");
+    desk.scale(1.2f);
+    desk.move(6.5f, -translationY + 0.2f, -9.5f);
+    rootNode.attachChild(desk);
+
+  }
+
+  private void addLamp() {
+    Spatial lamp = assetManager.loadModel("Models/Petroleum_Lamp/Petroleum_Lamp.j3o");
+    // lamp.move(-2, -3, -2); // put the lamp on the floor
+    rootNode.attachChild(lamp);
+  }
+
+  private void addTurret() {
+    Spatial turret = assetManager.loadModel("Models/portalturret/portalturret.j3o");
+    turret.move(-2, -3.5f, 5);
+    turret.scale(0.06f);
+    addObject("turret", turret);
   }
 
   private void createLight() {
@@ -68,12 +158,13 @@ public class EscapeScene extends Scene {
     sun.setDirection((new Vector3f(0, 5, 0)).normalizeLocal());
     sun.setColor(ColorRGBA.White);
     rootNode.addLight(sun);
+
   }
 
-  private void createCube() {
-    Spatial cube = assetManager.loadModel("Models/tudcube/tudcube.j3o");
-    rootNode.attachChild(cube);
-  }
+  // private void createCube() {
+  // Spatial cube = assetManager.loadModel("Models/tudcube/tudcube.j3o");
+  // rootNode.attachChild(cube);
+  // }
 
   /**
    * Create four walls using a texture.
@@ -262,6 +353,11 @@ public class EscapeScene extends Scene {
           && this.gasColor.equals(that.gasColor) && this.materialPath.equals(that.materialPath));
     }
     return false;
+  }
+
+  @Override
+  public Vector3f getBoundaries() {
+    return new Vector3f(roomWidth, roomHeight, roomDepth);
   }
 
 }

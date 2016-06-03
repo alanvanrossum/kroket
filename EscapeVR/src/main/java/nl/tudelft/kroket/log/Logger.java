@@ -87,7 +87,18 @@ public class Logger {
 
     print(LogLevel.ERROR, tag, message);
   }
-  
+
+  /**
+   * Format the output string.
+   * 
+   * @param level
+   *          the level of the message
+   * @param tag
+   *          of the message
+   * @param message
+   *          the message
+   * @return formatted output string
+   */
   private String formatOutput(LogLevel level, String tag, String message) {
     String output = "[" + timeFormat.format(new Date()) + "]: "
         + String.format(msgFormat, level, tag, message);

@@ -15,7 +15,7 @@ public class SpookyScreen extends Screen {
 
   private static final String name = "spooky";
 
-  private long displayTime = 1000;
+  private long displayTime = 2000;
 
   private long hideTime = 0;
 
@@ -35,6 +35,7 @@ public class SpookyScreen extends Screen {
     super(name, assetManager, guiNode);
 
     overlay = loadImage("overlay/spooky_face.png", width, height);
+
   }
 
   /**
@@ -43,13 +44,15 @@ public class SpookyScreen extends Screen {
   @Override
   public void show() {
 
+    //System.out.println("spookyScreen.show()");
+
     hideTime = System.currentTimeMillis() + displayTime;
 
     guiNode.attachChild(overlay);
   }
 
-  @Override
   public void update() {
+
     if (System.currentTimeMillis() > hideTime) {
       hide();
     }

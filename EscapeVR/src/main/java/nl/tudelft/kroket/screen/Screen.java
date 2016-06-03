@@ -78,8 +78,5 @@ public abstract class Screen {
     guiNode.detachChild(overlay);
   }
 
-  public void update() {
-
-  }
-
+  public abstract void update();
 }

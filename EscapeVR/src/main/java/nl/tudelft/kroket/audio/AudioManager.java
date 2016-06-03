@@ -56,7 +56,6 @@ public class AudioManager {
     this.rootPath = rootPath;
     this.rootNode = rootNode;
   }
-  
 
   /**
    * Load a file and create a new AudioNode.
@@ -71,7 +70,7 @@ public class AudioManager {
    *          volume (integer)
    * @return the created AudioNode
    */
-  private AudioNode createNode(String path, boolean positional, boolean looping, int volume) {
+  private AudioNode createNode(String path, boolean positional, boolean looping, float volume) {
     String fullPath = rootPath + path;
 
     AudioNode node = new AudioNode(assetManager, fullPath, DataType.Buffer);
@@ -93,9 +92,10 @@ public class AudioManager {
    * @param looping
    *          looping flag
    * @param volume
-   *          volume (integer)
+   *          volume (float) between 0 and 1
    */
-  public void loadFile(String name, String path, boolean positional, boolean looping, int volume) {
+  public void loadFile(String name, String path, boolean positional, boolean looping,
+      float volume) {
 
     AudioNode node = createNode(path, positional, looping, volume);
 
@@ -187,8 +187,13 @@ public class AudioManager {
   public float getPlaybackTime(String name) {
     return getNode(name).getPlaybackTime();
   }
-  
-  public HashMap<String, AudioNode> getAudioNodes(){
+
+  /**
+   * Get all AudioNode objects registered with this AudioManager instance.
+   * 
+   * @return the AudioNodes by Name, AudioNode
+   */
+  public HashMap<String, AudioNode> getAudioNodes() {
     return audioNodes;
   }
 
