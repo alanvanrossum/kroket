@@ -54,7 +54,7 @@ import java.util.List;
 public class EscapeVR extends VRApplication implements EventListener {
 
   /** Debug flag. */
-  private final boolean DEBUG = true;
+  private final boolean DEBUG = false;
 
   private static final Vector3f spawnPosition = new Vector3f(0, 0, 0);
 
