@@ -31,7 +31,7 @@ public class TapMinigame extends Minigame {
   private static List<String> thirdSequence = new ArrayList<String>();
   private static List<String> fourthSequence = new ArrayList<String>();
   
-  public sequenceState seqState = sequenceState.sequenceOne;
+  public static sequenceState seqState = sequenceState.sequenceOne;
   
   /** The list of buttons pressed. */
   private static List<String> buttonList = new ArrayList<String>();

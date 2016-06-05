@@ -340,12 +340,19 @@ private boolean count = false;
               || action.equals("doneD")) {
             mgManager.getCurrent().stop();
             mgManager.endGame();
-
-            // Start minigames
-          } else if (action.equals("startA")) {
+            
+          }
+          else if (action.equals("doneBMobile")) {
+        	  if(TapMinigame.seqState == TapMinigame.sequenceState.completed) {
+        		  clientThread.sendMessage("INITVR[doneB]");
+        	  } else {
+        		  clientThread.sendMessage("INITM[startB]");
+        	  }
+          }
+         //start minigames
+          else if (action.equals("startA")) {
             mgManager.launchGame(PictureCodeMinigame.getInstance());
-          } else if (action.equals("startB") && count  == false) {
-            count = true;
+          } else if (action.equals("startB")) {
         	  mgManager.launchGame(TapMinigame.getInstance());
             if (mgManager.getCurrent() instanceof TapMinigame) {
                 ((TapMinigame) mgManager.getCurrent())
