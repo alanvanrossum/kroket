@@ -4,7 +4,6 @@ import com.jme3.system.AppSettings;
 import jmevr.app.VRApplication.PRECONFIG_PARAMETER;
 import nl.tudelft.kroket.escape.EscapeVR;
 
-
 /**
  * Entry point for VR application.
  * 
@@ -13,7 +12,7 @@ import nl.tudelft.kroket.escape.EscapeVR;
  */
 public class Launcher {
 
-  static EscapeVR mainApplication;
+  private static EscapeVR mainApplication;
 
   /**
    * The main method.
@@ -32,7 +31,7 @@ public class Launcher {
     }
 
     mainApplication = new EscapeVR();
-    
+
     // set the hostname/ip address of the remote machine
     mainApplication.setRemoteHost(remoteHost);
 
@@ -48,9 +47,9 @@ public class Launcher {
 
     // throw settings at the application
     mainApplication.setSettings(settings);
-    
+
     mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.USE_CUSTOM_DISTORTION, false);
-    
+
     // enable the mirror window to be used, this will show whatever is shown in the
     // VR goggles
     mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.ENABLE_MIRROR_WINDOW, true);

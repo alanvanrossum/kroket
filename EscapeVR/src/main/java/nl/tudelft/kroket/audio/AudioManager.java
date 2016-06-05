@@ -94,8 +94,7 @@ public class AudioManager {
    * @param volume
    *          volume (float) between 0 and 1
    */
-  public void loadFile(String name, String path, boolean positional, boolean looping,
-      float volume) {
+  public void loadFile(String name, String path, boolean positional, boolean looping, float volume) {
 
     AudioNode node = createNode(path, positional, looping, volume);
 
