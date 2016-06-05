@@ -142,6 +142,7 @@ public class NetworkClient {
 
     try {
       dataOutputStream.writeBytes(message);
+      dataOutputStream.flush();
     } catch (IOException e) {
       setConnected(false);
     }

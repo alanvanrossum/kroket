@@ -326,8 +326,10 @@ public class EscapeVR extends VRApplication implements EventListener {
           } else if (action.equals("C")) {
             mgManager.launchGame(ColorSequenceMinigame.getInstance());
             if (mgManager.getCurrent() instanceof ColorSequenceMinigame) {
-              ((ColorSequenceMinigame) mgManager.getCurrent()).parseColors(CommandParser
-                  .parseParams(line));
+
+              ColorSequenceMinigame colorGame = (ColorSequenceMinigame) mgManager.getCurrent();
+
+              colorGame.parseColors(CommandParser.parseParams(line));
             }
           }
 
