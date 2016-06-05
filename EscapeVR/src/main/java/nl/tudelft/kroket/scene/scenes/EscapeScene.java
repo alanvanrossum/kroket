@@ -185,19 +185,19 @@ public class EscapeScene extends Scene {
     wallTexture.setAnisotropicFilter(16);
     
     
- //   Material wallMaterial = new Material(assetManager, materialPath);
-//    wallMaterial.setTexture("ColorMap", wallTexture);
+    Material wallMaterial = new Material(assetManager, materialPath);
+    wallMaterial.setTexture("ColorMap", wallTexture);
 
-    Material wallMaterial = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
-    wallMaterial.setBoolean("UseMaterialColors", true);
-    wallMaterial.setBoolean("UseVertexColor", true);
-    wallMaterial.setBoolean("VertexLighting", false);
-    wallMaterial.setColor("Diffuse", ColorRGBA.White); // minimum material color
-    wallMaterial.setColor("Specular",ColorRGBA.White); // for shininess
-    wallMaterial.setFloat("Shininess", 0); // [1,128] for shininess
-    // wallMaterial.getAdditionalRenderState().setFaceCullMode(FaceCullMode.Off);
-    wallMaterial.setTexture("DiffuseMap", wallTexture);
-    //wallMaterial.setTexture("ColorMap", wallTexture);
+//    Material wallMaterial = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+//    wallMaterial.setBoolean("UseMaterialColors", true);
+//    wallMaterial.setBoolean("UseVertexColor", true);
+//    wallMaterial.setBoolean("VertexLighting", false);
+//    wallMaterial.setColor("Diffuse", ColorRGBA.White); // minimum material color
+//    wallMaterial.setColor("Specular",ColorRGBA.White); // for shininess
+//    wallMaterial.setFloat("Shininess", 0); // [1,128] for shininess
+//    // wallMaterial.getAdditionalRenderState().setFaceCullMode(FaceCullMode.Off);
+//    wallMaterial.setTexture("DiffuseMap", wallTexture);
+//    //wallMaterial.setTexture("ColorMap", wallTexture);
 
     // wall to the right of player spawn
     Geometry wall1 = new Geometry("wall-east", new Box(.1f, roomHeight, roomDepth));
