@@ -342,11 +342,11 @@ public class EscapeVR extends VRApplication implements EventListener {
             mgManager.endGame();
             
           }
-          else if (action.equals("doneBMobile")) {
+          else if (action.equals("verifyB")) {
         	  if(TapMinigame.seqState == TapMinigame.sequenceState.completed) {
         		  clientThread.sendMessage("INITVR[doneB]");
         	  } else {
-        		  clientThread.sendMessage("INITM[startB]");
+        		  clientThread.sendMessage("INITVR[startB]");
         	  }
           }
          //start minigames
