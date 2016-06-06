@@ -26,11 +26,13 @@ public class TapMinigame extends Minigame {
   /** The correct sequence of buttons. */
   private static List<String> sequenceList = new ArrayList<String>();
   
+  /** the correct sub sequences of buttons. */
   private static List<String> firstSequence = new ArrayList<String>();
   private static List<String> secondSequence = new ArrayList<String>();
   private static List<String> thirdSequence = new ArrayList<String>();
   private static List<String> fourthSequence = new ArrayList<String>();
   
+  /** The enum used to see how many sequences the client has finished. */
   public static sequenceState seqState = sequenceState.sequenceOne;
   
   /** The list of buttons pressed. */
@@ -41,6 +43,10 @@ public class TapMinigame extends Minigame {
     return instance;
   }
   
+  /**
+   * The sequenceState is used to check how many sequences
+   * the vr client has completed.
+   */
   public enum sequenceState{
 	  sequenceOne, sequenceTwo, sequenceThree, sequenceFour, completed;
 	  
@@ -107,6 +113,10 @@ public class TapMinigame extends Minigame {
     screenManager.getScreen("controller").hide();
   }
 
+  /**
+   * The update method. Checks whether the sequence added is the correct one.
+   * and updates seqState if the sequence was correct.
+   */
   @Override
   public void update(float tpf) {
 	  
@@ -119,17 +129,17 @@ public class TapMinigame extends Minigame {
 	  }
 	      
   }
-
+  
+  /**
+   * Handles the event of clicking a button. Keeps the buttonlist of the same or smaller than 4.
+   */
   @Override
   public void handleEvent(EventObject event) {
    
 	 if (event instanceof ButtonPressEvent) {
 		  
 		  String buttonName = ((ButtonPressEvent) event).getName();
-	      
-		  System.out.println(buttonName);
-		  
-		  
+	  
 		  buttonList.add(buttonName);
 		  
 		  // Keep the lists the same size, by removing the first element
@@ -137,7 +147,6 @@ public class TapMinigame extends Minigame {
 	         buttonList = buttonList.subList(1, buttonList.size());
 	    }
 	    
-	    System.out.println(buttonList);
 	  }
 	  
 	  
@@ -169,11 +178,6 @@ public class TapMinigame extends Minigame {
     secondSequence = sequenceList.subList(4, 8);
     thirdSequence = sequenceList.subList(8, 12);
     fourthSequence = sequenceList.subList(12, 16);
-    
-    System.out.println(firstSequence);
-    System.out.println(secondSequence);
-    System.out.println(thirdSequence);
-    System.out.println(fourthSequence);
         
   }
 

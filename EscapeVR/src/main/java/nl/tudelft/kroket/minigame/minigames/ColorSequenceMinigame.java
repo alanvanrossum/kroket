@@ -65,12 +65,17 @@ public class ColorSequenceMinigame extends Minigame {
     buttonList.clear();
     running = false;
 
-    clientThread.sendMessage(Protocol.COMMAND_INIT_MOBILE + "[doneC]");
-    clientThread.sendMessage(Protocol.COMMAND_INIT_VR + "[doneC]");
-
     screenManager.getScreen("controller").hide();
     hud.setCenterText("Minigame C complete!");
-    minigameManager.endGame();
+    //minigameManager.endGame();
+  }
+  
+  /**
+   * Send to the server and mobile player that you have finished minigame C.
+   * When the server confirms this, it will send a message back and this will end the game.
+   */
+  public void finish() {
+    clientThread.sendMessage("INITM[doneC]");
   }
 
   /**
@@ -89,7 +94,7 @@ public class ColorSequenceMinigame extends Minigame {
     // Check if the correct sequence is entered
     Boolean correct = checkSequence();
     if (correct) {
-      this.stop();
+      this.finish();
     }
 
   }

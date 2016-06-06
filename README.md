@@ -66,6 +66,15 @@
 
 [Week 6 documents](https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek6)
 
+### Week 7
+
+- Test Document 
+- Architecture design
+- Sprint backlog 7
+- Sprint retrospective 6
+
+[Week 7 documents](https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek7)
+
 ## Introduction
 
 You're looking at the Github repository of Team Kroket.  Team Kroket is a group of five Computer Science students at Delft University of Technology, The Netherlands. For the course TI2806 - Contextproject our goal was to create a simple but fun multiplayer game, using an Oculus Rift, a few Android powered mobile devices and our imagination.  

@@ -1,9 +1,9 @@
 package nl.tudelft.kroket;
 
-import nl.tudelft.kroket.escape.EscapeVR;
-import jmevr.app.VRApplication.PRECONFIG_PARAMETER;
-
 import com.jme3.system.AppSettings;
+import jmevr.app.VRApplication.PRECONFIG_PARAMETER;
+import nl.tudelft.kroket.escape.EscapeVR;
+
 
 /**
  * Entry point for VR application.
