@@ -1,7 +1,5 @@
 package nl.tudelft.kroket;
 
-import com.jme3.system.AppSettings;
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,13 +11,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import jmevr.app.VRApplication.PRECONFIG_PARAMETER;
 import nl.tudelft.kroket.escape.EscapeVR;
+
+import com.jme3.system.AppSettings;
 
 /**
  * Entry point for VR application. Launches a simple dialog window to prompt the user for name and
@@ -129,31 +128,23 @@ public class Launcher extends Application {
     hbBtn.getChildren().add(btn);
     grid.add(hbBtn, 1, 4);
 
-    final Text warningText = new Text();
-    grid.add(warningText, 1, 6);
-
     btn.setOnAction(new EventHandler<ActionEvent>() {
 
       @Override
       public void handle(ActionEvent e) {
 
-        if (remoteField.getText().isEmpty()) {
-          warningText.setText("Remote host field cannot be blank!");
-          warningText.setFill(Color.DARKRED);
-        } else {
-
+        if (!remoteField.getText().isEmpty()) {
           remoteHost = remoteField.getText();
-
-          if (!userTextField.getText().isEmpty()) {
-            playerName = userTextField.getText();
-          }
-          primaryStage.close();
         }
-
+        if (!userTextField.getText().isEmpty()) {
+          playerName = userTextField.getText();
+        }
+        primaryStage.close();
       }
+
     });
 
-    Scene scene = new Scene(grid, 300, 275);
+    Scene scene = new Scene(grid, DIALOG_WIDTH, DIALOG_HEIGHT);
     primaryStage.setScene(scene);
     primaryStage.show();
   }
