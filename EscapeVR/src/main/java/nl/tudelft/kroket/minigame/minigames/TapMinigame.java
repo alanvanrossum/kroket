@@ -68,7 +68,10 @@ public class TapMinigame extends Minigame {
       
 	  public String returnCompleteMessage() {
        	  switch(this) {
-       	  case completed: return "YOU GOT THEM ALL WELL DONE!";
+       	  case sequenceOne: return "YOU DID IT NOW THE SECOND ONE";
+       	  case sequenceTwo: return "YOU DID IT NOW THE THIRD ONE";
+       	  case sequenceThree: return "YOU DID IT ONE MORE TO GO";
+       	  case sequenceFour: return "YOU GOT THEM ALL WELL DONE!";
        	  default: return "GOOD JOB NOW THE NEXT ONE!";
        	  }
        }
@@ -107,17 +110,12 @@ public class TapMinigame extends Minigame {
   @Override
   public void update(float tpf) {
 	  
-	  hud.setCenterText("You are currently in: " + seqState);
+	  //hud.setCenterText("You are currently in: " + seqState);
 	  
-	  if(buttonList.size() == 4){
-		  if(buttonList.equals(seqState.returnSequence())){
-			  seqState = seqState.getNext();
-			  buttonList.clear();
-			  hud.setCenterText(seqState.returnCompleteMessage(), 1);
-		  } else {
-			  buttonList.clear();
-			  hud.setCenterText("WRONG SEQUENCE TRY AGAIN!", 1);
-		  }
+	  if(buttonList.equals(seqState.returnSequence())){
+		 hud.setCenterText(seqState.returnCompleteMessage(), 2);
+		 seqState = seqState.getNext();
+		 buttonList.clear();
 	  }
 	      
   }
@@ -125,7 +123,7 @@ public class TapMinigame extends Minigame {
   @Override
   public void handleEvent(EventObject event) {
    
-	  if (event instanceof ButtonPressEvent) {
+	 if (event instanceof ButtonPressEvent) {
 		  
 		  String buttonName = ((ButtonPressEvent) event).getName();
 	      
@@ -134,8 +132,13 @@ public class TapMinigame extends Minigame {
 		  
 		  buttonList.add(buttonName);
 		  
-		  System.out.println(buttonList.size());
-	   }
+		  // Keep the lists the same size, by removing the first element
+	    if (buttonList.size() > 4) {
+	         buttonList = buttonList.subList(1, buttonList.size());
+	    }
+	    
+	    System.out.println(buttonList);
+	  }
 	  
 	  
   }
