@@ -89,6 +89,8 @@ public class TapMinigame extends Minigame {
             20);
     seqState = seqState.sequenceOne;
     buttonList.clear();
+    sequenceList.clear();
+    
   }
 
   /**
@@ -159,6 +161,7 @@ public class TapMinigame extends Minigame {
       }
       
     }
+    
     firstSequence = sequenceList.subList(0, 4);
     secondSequence = sequenceList.subList(4, 8);
     thirdSequence = sequenceList.subList(8, 12);
@@ -168,7 +171,7 @@ public class TapMinigame extends Minigame {
     System.out.println(secondSequence);
     System.out.println(thirdSequence);
     System.out.println(fourthSequence);
-    
+        
   }
 
 }

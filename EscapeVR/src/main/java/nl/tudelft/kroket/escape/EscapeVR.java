@@ -98,7 +98,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   private GameState currentState;
 
-private boolean count = false;
+  private boolean miniGameBInitiated = false;
 
   private void initStateManager() {
     stateManager = new StateManager(audioManager, inputHandler, sceneManager, screenManager,
@@ -414,7 +414,11 @@ private boolean count = false;
           break;       
         //case "DeskLaptop-objnode":
         case "painting2":
-          clientThread.sendMessage("INITM[startB]");
+        	if(miniGameBInitiated == false) {
+                miniGameBInitiated = true;
+        		clientThread.sendMessage("INITM[startB]");
+        	
+        	}
           break;
         case "fourbuttons2-objnode":
           clientThread.sendMessage("INITM[startC]");
