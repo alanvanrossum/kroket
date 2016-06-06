@@ -87,6 +87,8 @@ public class TapMinigame extends Minigame {
     hud.setCenterText(
             "press the buttons in order\nspecified by the android user\nthere will be multiple sequences",
             20);
+    seqState = seqState.sequenceOne;
+    buttonList.clear();
   }
 
   /**
@@ -97,19 +99,22 @@ public class TapMinigame extends Minigame {
     log.info(className, "Minigame B completed.");
     hud.setCenterText("Minigame B complete!", 10);
     sceneManager.extendEscapeScene("C");
+    screenManager.getScreen("controller").hide();
   }
 
   @Override
   public void update(float tpf) {
 	  
+	  hud.setCenterText("You are currently in: " + seqState);
+	  
 	  if(buttonList.size() == 4){
 		  if(buttonList.equals(seqState.returnSequence())){
 			  seqState = seqState.getNext();
 			  buttonList.clear();
-			  hud.setCenterText(seqState.returnCompleteMessage(), 4);
+			  hud.setCenterText(seqState.returnCompleteMessage(), 1);
 		  } else {
 			  buttonList.clear();
-			  hud.setCenterText("WRONG SEQUENCE TRY AGAIN!", 4);
+			  hud.setCenterText("WRONG SEQUENCE TRY AGAIN!", 1);
 		  }
 	  }
 	      
@@ -119,8 +124,15 @@ public class TapMinigame extends Minigame {
   public void handleEvent(EventObject event) {
    
 	  if (event instanceof ButtonPressEvent) {
+		  
 		  String buttonName = ((ButtonPressEvent) event).getName();
-	      buttonList.add(buttonName);
+	      
+		  System.out.println(buttonName);
+		  
+		  
+		  buttonList.add(buttonName);
+		  
+		  System.out.println(buttonList.size());
 	   }
 	  
 	  
@@ -151,6 +163,11 @@ public class TapMinigame extends Minigame {
     secondSequence = sequenceList.subList(4, 8);
     thirdSequence = sequenceList.subList(8, 12);
     fourthSequence = sequenceList.subList(12, 16);
+    
+    System.out.println(firstSequence);
+    System.out.println(secondSequence);
+    System.out.println(thirdSequence);
+    System.out.println(fourthSequence);
     
   }
 
