@@ -1,5 +1,7 @@
 package nl.tudelft.kroket;
 
+import com.jme3.system.AppSettings;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,16 +21,19 @@ import javafx.stage.Stage;
 import jmevr.app.VRApplication.PRECONFIG_PARAMETER;
 import nl.tudelft.kroket.escape.EscapeVR;
 
-import com.jme3.system.AppSettings;
-
 /**
- * Entry point for VR application.
+ * Entry point for VR application. Launches a simple dialog window to
+ * prompt the user for name and remote host.
  * 
  * @author Team Kroket
  *
  */
 @SuppressWarnings("restriction")
 public class Launcher extends Application {
+
+  private static final int DIALOG_WIDTH = 500;
+  private static final int DIALOG_HEIGHT = 300;
+  private static final String DIALOG_TITLE = "Escaparade";
 
   private static String remoteHost = "127.0.0.1";
   private static String playerName = "VR-USER";
@@ -91,7 +96,9 @@ public class Launcher extends Application {
   @Override
   public void start(Stage primaryStage) {
 
-    primaryStage.setTitle("Escaparade");
+    primaryStage.setWidth(DIALOG_WIDTH);
+    primaryStage.setHeight(DIALOG_HEIGHT);
+    primaryStage.setTitle(DIALOG_TITLE);
     primaryStage.requestFocus();
 
     GridPane grid = new GridPane();
@@ -122,19 +129,23 @@ public class Launcher extends Application {
     hbBtn.getChildren().add(btn);
     grid.add(hbBtn, 1, 4);
 
-    final Text actiontarget = new Text();
-    grid.add(actiontarget, 1, 6);
+    final Text warningText = new Text();
+    grid.add(warningText, 1, 6);
 
     btn.setOnAction(new EventHandler<ActionEvent>() {
 
       @Override
       public void handle(ActionEvent e) {
 
-        remoteHost = remoteField.getText();
-        playerName = userTextField.getText();
+        if (remoteField.getText().isEmpty()) {
+          warningText.setText("Remote host field cannot be blank!");
+          warningText.setFill(Color.DARKRED);
+        } else {
+          remoteHost = remoteField.getText();
+          playerName = userTextField.getText();
+          primaryStage.close();
+        }
 
-        actiontarget.setFill(Color.FIREBRICK);
-        primaryStage.close();
       }
     });
 
