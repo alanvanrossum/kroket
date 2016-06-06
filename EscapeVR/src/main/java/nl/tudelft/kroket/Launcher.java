@@ -22,8 +22,8 @@ import jmevr.app.VRApplication.PRECONFIG_PARAMETER;
 import nl.tudelft.kroket.escape.EscapeVR;
 
 /**
- * Entry point for VR application. Launches a simple dialog window to
- * prompt the user for name and remote host.
+ * Entry point for VR application. Launches a simple dialog window to prompt the user for name and
+ * remote host.
  * 
  * @author Team Kroket
  *
@@ -35,7 +35,7 @@ public class Launcher extends Application {
   private static final int DIALOG_HEIGHT = 300;
   private static final String DIALOG_TITLE = "Escaparade";
 
-  private static String remoteHost = "127.0.0.1";
+  private static String remoteHost = "localhost";
   private static String playerName = "VR-USER";
 
   private static EscapeVR mainApplication;
@@ -141,8 +141,12 @@ public class Launcher extends Application {
           warningText.setText("Remote host field cannot be blank!");
           warningText.setFill(Color.DARKRED);
         } else {
+
           remoteHost = remoteField.getText();
-          playerName = userTextField.getText();
+
+          if (!userTextField.getText().isEmpty()) {
+            playerName = userTextField.getText();
+          }
           primaryStage.close();
         }
 
