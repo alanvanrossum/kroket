@@ -1,9 +1,25 @@
 package nl.tudelft.kroket;
 
-import com.jme3.system.AppSettings;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import jmevr.app.VRApplication.PRECONFIG_PARAMETER;
 import nl.tudelft.kroket.escape.EscapeVR;
 
+import com.jme3.system.AppSettings;
 
 /**
  * Entry point for VR application.
@@ -11,9 +27,13 @@ import nl.tudelft.kroket.escape.EscapeVR;
  * @author Team Kroket
  *
  */
-public class Launcher {
+@SuppressWarnings("restriction")
+public class Launcher extends Application {
 
-  static EscapeVR mainApplication;
+  private static String remoteHost = "127.0.0.1";
+  private static String playerName = "VR-USER";
+
+  private static EscapeVR mainApplication;
 
   /**
    * The main method.
@@ -23,18 +43,19 @@ public class Launcher {
    */
   public static void main(String[] args) {
 
-    String remoteHost = "127.0.0.1";
-
     // allow remote address to be set using commandline arguments
     // (for now)
     if (args.length > 1 && !args[0].isEmpty()) {
       remoteHost = args[0];
     }
 
+    launch(args);
+
     mainApplication = new EscapeVR();
-    
+
     // set the hostname/ip address of the remote machine
     mainApplication.setRemoteHost(remoteHost);
+    mainApplication.setPlayerName(playerName);
 
     // create AppSettings object to enable joysticks/gamepads
     // and set the title
@@ -48,9 +69,9 @@ public class Launcher {
 
     // throw settings at the application
     mainApplication.setSettings(settings);
-    
+
     mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.USE_CUSTOM_DISTORTION, false);
-    
+
     // enable the mirror window to be used, this will show whatever is shown in the
     // VR goggles
     mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.ENABLE_MIRROR_WINDOW, true);
@@ -65,6 +86,61 @@ public class Launcher {
     // finally, start the application
     mainApplication.start();
 
+  }
+
+  @Override
+  public void start(Stage primaryStage) {
+
+    primaryStage.setTitle("Escaparade");
+    primaryStage.requestFocus();
+
+    GridPane grid = new GridPane();
+    grid.setAlignment(Pos.CENTER);
+    grid.setHgap(10);
+    grid.setVgap(10);
+    grid.setPadding(new Insets(25, 25, 25, 25));
+
+    Text sceneTitle = new Text("Welcome");
+    sceneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+    grid.add(sceneTitle, 0, 0, 2, 1);
+
+    Label lblUserName = new Label("Username:");
+    grid.add(lblUserName, 0, 1);
+
+    TextField userTextField = new TextField();
+    grid.add(userTextField, 1, 1);
+
+    Label lblRemoteHost = new Label("Remote host:");
+    grid.add(lblRemoteHost, 0, 2);
+
+    TextField remoteField = new TextField();
+    grid.add(remoteField, 1, 2);
+
+    Button btn = new Button("Let's play!");
+    HBox hbBtn = new HBox(10);
+    hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+    hbBtn.getChildren().add(btn);
+    grid.add(hbBtn, 1, 4);
+
+    final Text actiontarget = new Text();
+    grid.add(actiontarget, 1, 6);
+
+    btn.setOnAction(new EventHandler<ActionEvent>() {
+
+      @Override
+      public void handle(ActionEvent e) {
+
+        remoteHost = remoteField.getText();
+        playerName = userTextField.getText();
+
+        actiontarget.setFill(Color.FIREBRICK);
+        primaryStage.close();
+      }
+    });
+
+    Scene scene = new Scene(grid, 300, 275);
+    primaryStage.setScene(scene);
+    primaryStage.show();
   }
 
 }
