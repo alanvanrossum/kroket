@@ -52,7 +52,7 @@ public class EscapeScene extends Scene {
     
     /** A white ambient light source. */
     AmbientLight ambient = new AmbientLight();
-    ambient.setColor(ColorRGBA.Blue);
+    ambient.setColor(ColorRGBA.White);
     rootNode.addLight(ambient);
 
     createWalls("Textures/brick_wall.jpg");

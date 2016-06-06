@@ -75,7 +75,7 @@ public class ColorSequenceMinigame extends Minigame {
    * When the server confirms this, it will send a message back and this will end the game.
    */
   public void finish() {
-    clientThread.sendMessage("INITM[doneC]");
+    clientThread.sendMessage("DONE[C]");
   }
 
   /**

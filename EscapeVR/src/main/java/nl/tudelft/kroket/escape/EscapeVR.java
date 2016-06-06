@@ -315,39 +315,30 @@ public class EscapeVR extends VRApplication implements EventListener {
         if (command.containsKey("param_0")) {
           String action = command.get("param_0");
 
-          // End minigames, which are ended by the mobile player
-          if (action.equals("A") || action.equals("B")) {
-            if (mgManager.getCurrent() != null) {
-              mgManager.endGame();
-              registerObjects();
-            }
-
-            // Start minigames
-          } else if (action.equals("C")) {
-            mgManager.launchGame(ColorSequenceMinigame.getInstance());
-            if (mgManager.getCurrent() instanceof ColorSequenceMinigame) {
-
-              ColorSequenceMinigame colorGame = (ColorSequenceMinigame) mgManager.getCurrent();
-
-              colorGame.parseColors(CommandParser.parseParams(line));
-            }
-          }
-
           if (action.equals("A")) {
             mgManager.launchGame(PictureCodeMinigame.getInstance());
           } else if (action.equals("B")) {
             mgManager.launchGame(TapMinigame.getInstance());
           }
+
+          else if (action.equals("C")) {
+            mgManager.launchGame(ColorSequenceMinigame.getInstance());
+            
+            if (mgManager.getCurrent() instanceof ColorSequenceMinigame) {
+              ColorSequenceMinigame colorGame = (ColorSequenceMinigame) mgManager.getCurrent();
+              colorGame.parseColors(CommandParser.parseParams(line));
+            }
+          }
+
         }
         break;
       case "DONE":
         if (command.containsKey("param_0")) {
           String action = command.get("param_0");
           // End minigames, which are ended by the mobile player
-          if (action.equals("C")) {
-            if (mgManager.getCurrent() != null) {
-              mgManager.endGame();
-            }
+          if (mgManager.getCurrent() != null) {
+            mgManager.endGame();
+            registerObjects();
           }
         }
         break;
