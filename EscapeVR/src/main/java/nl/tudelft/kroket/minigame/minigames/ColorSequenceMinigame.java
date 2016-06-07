@@ -11,6 +11,8 @@ import java.util.List;
 
 public class ColorSequenceMinigame extends Minigame {
 
+  private static final String GAME_NAME = "C";
+
   /** Current class, used as tag for logger. */
   private final String className = this.getClass().getSimpleName();
 
@@ -54,6 +56,14 @@ public class ColorSequenceMinigame extends Minigame {
     hud.setCenterText(
         "Enter the color sequence by\nusing the colored buttons on\nthe right of your controller!",
         20);
+
+    if ((System.currentTimeMillis() % 10000) == 0) {
+      System.out.println("Required sequence:");
+      printList(sequenceList);
+      System.out.println("Entered sequence:");
+      printList(buttonList);
+    }
+
   }
 
   /**
@@ -67,12 +77,12 @@ public class ColorSequenceMinigame extends Minigame {
 
     screenManager.getScreen("controller").hide();
     hud.setCenterText("Minigame C complete!");
-    //minigameManager.endGame();
+    // minigameManager.endGame();
   }
-  
+
   /**
-   * Send to the server and mobile player that you have finished minigame C.
-   * When the server confirms this, it will send a message back and this will end the game.
+   * Send to the server and mobile player that you have finished minigame C. When the server
+   * confirms this, it will send a message back and this will end the game.
    */
   public void finish() {
     clientThread.sendMessage("DONE[C]");
@@ -84,12 +94,12 @@ public class ColorSequenceMinigame extends Minigame {
   @Override
   public void update(float tpf) {
 
-    if ((System.currentTimeMillis() % 10000) == 0) {
-      System.out.println("Required sequence:");
-      printList(sequenceList);
-      System.out.println("Entered sequence:");
-      printList(buttonList);
-    }
+    // if ((System.currentTimeMillis() % 10000) == 0) {
+    // System.out.println("Required sequence:");
+    // printList(sequenceList);
+    // System.out.println("Entered sequence:");
+    // printList(buttonList);
+    // }
 
     // Check if the correct sequence is entered
     Boolean correct = checkSequence();
@@ -111,6 +121,7 @@ public class ColorSequenceMinigame extends Minigame {
       buttonList.add(buttonName);
 
       // TODO Display the color pressed on the screen
+      hud.setCenterText("You pressed: " + buttonName, 2);
 
       // Keep the lists the same size, by removing the first element
       if (buttonList.size() > sequenceList.size()) {
@@ -177,6 +188,10 @@ public class ColorSequenceMinigame extends Minigame {
       default:
       }
     }
+  }
+
+  public String getName() {
+    return GAME_NAME;
   }
 
 }

@@ -6,6 +6,8 @@ import nl.tudelft.kroket.minigame.Minigame;
 import java.util.EventObject;
 
 public class GyroscopeMinigame extends Minigame {
+  
+  private static final String GAME_NAME = "D";
 
   /** Current class, used as tag for logger. */
   private final String className = this.getClass().getSimpleName();
@@ -51,6 +53,10 @@ public class GyroscopeMinigame extends Minigame {
   @Override
   public void handleEvent(EventObject event) {
     // TODO Auto-generated method stub
+  }
+  
+  public String getName() {
+    return GAME_NAME;
   }
 
 }

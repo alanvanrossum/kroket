@@ -383,10 +383,12 @@ public class EscapeVR extends VRApplication implements EventListener {
         if (command.containsKey("param_0")) {
           String action = command.get("param_0");
 
-          mgManager.endGame();
-          registerObjects();
+          if (mgManager.gameActive() && action.equals(mgManager.getCurrent().getName())) {
+            mgManager.endGame();
+          }
 
         }
+        registerObjects();
         break;
 
       case "VERIFY":
@@ -434,7 +436,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
       String objectName = interactionEvent.getName();
 
-      clientThread.sendMessage(String.format("INTERACT[%s]", objectName));
+      // clientThread.sendMessage(String.format("INTERACT[%s]", objectName));
 
       switch (objectName) {
 
@@ -448,7 +450,9 @@ public class EscapeVR extends VRApplication implements EventListener {
         hud.setCenterText("Muhahaha! You will never escape!", 5);
         break;
       case "painting":
+
         clientThread.sendMessage("BEGIN[A]");
+
         break;
       case "painting2":
 
@@ -456,7 +460,9 @@ public class EscapeVR extends VRApplication implements EventListener {
 
         break;
       case "fourbuttons2-objnode":
+
         clientThread.sendMessage("BEGIN[C]");
+
         break;
       default:
         break;
