@@ -20,7 +20,7 @@ public class ClientThread extends Thread {
 
   private final int reconnInterval = 5;
 
-  private String playerName = "RIFT-USER";
+  private String playerName = "VR-USER";
 
   EscapeVR callback;
   HeadUpDisplay hud;

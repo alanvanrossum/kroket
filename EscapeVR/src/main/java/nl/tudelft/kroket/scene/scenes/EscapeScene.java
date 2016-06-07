@@ -93,7 +93,8 @@ public class EscapeScene extends Scene {
     rootNode.addLight(sun);
 
     addTurret();
-    addDesk();
+
+    //addDesk();
 
     addKnight1();
     addKnight2();
@@ -137,13 +138,13 @@ public class EscapeScene extends Scene {
     rootNode.attachChild(knight2);
   }
 
-  private void addDesk() {
-    Spatial desk = assetManager.loadModel("Models/Desk/Desk.j3o");
-    desk.scale(1.2f);
-    desk.move(6.5f, -translationY + 0.2f, -9.5f);
-    rootNode.attachChild(desk);
-
-  }
+//  private void addDesk() {
+//    Spatial desk = assetManager.loadModel("Models/DeskLaptop/DeskLaptop.j3o");
+//    desk.scale(1.5f);
+//    desk.move(6.0f, -translationY + 0.2f, -8.9f);
+//    rootNode.attachChild(desk);
+//  }
+  
 
   private void addLamp() {
     Spatial lamp = assetManager.loadModel("Models/Petroleum_Lamp/Petroleum_Lamp.j3o");

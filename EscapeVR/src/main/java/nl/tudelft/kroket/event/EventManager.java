@@ -25,7 +25,7 @@ public class EventManager extends InteractionHandler implements ActionListener {
   private Logger log = Logger.getInstance();
 
   private List<EventObject> eventList = new ArrayList<EventObject>();
-  
+
   /** List of all registered listeners. */
   private List<EventListener> listenerList = new ArrayList<EventListener>();
 
@@ -34,7 +34,7 @@ public class EventManager extends InteractionHandler implements ActionListener {
   long prevInput = 0;
 
   private Node rootNode;
-  
+
   /** All registered triggers: the name of the object and the range. */
   private HashMap<String, Float> triggers = new HashMap<String, Float>();
 
@@ -90,11 +90,11 @@ public class EventManager extends InteractionHandler implements ActionListener {
   public synchronized void addEvent(String type, EventObject event) {
     eventList.add(event);
 
-    // System.out.println("Events in list:");
+    //    System.out.println("Events in list:");
     //
-    // for (EventObject entry : eventList) {
-    // System.out.println(entry);
-    // }
+    //    for (EventObject entry : eventList) {
+    //      System.out.println(entry);
+    //    }
   }
 
   /**
@@ -133,6 +133,11 @@ public class EventManager extends InteractionHandler implements ActionListener {
     if (!isPressed) {
       return;
     }
+
+  
+    
+    //System.out.println("onAction " + name);
+
 
     // get current system time
     long now = System.currentTimeMillis();
@@ -179,4 +184,5 @@ public class EventManager extends InteractionHandler implements ActionListener {
     fireEvents();
 
   }
+
 }

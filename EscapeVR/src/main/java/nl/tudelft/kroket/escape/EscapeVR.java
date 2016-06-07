@@ -72,6 +72,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   private String remoteHost;
   private int remotePort;
+  private String playerName = "VR-USER";
 
   private StateManager stateManager;
   private EventManager eventManager;
@@ -97,6 +98,8 @@ public class EscapeVR extends VRApplication implements EventListener {
   private MovementHandler movementHandler;
 
   private GameState currentState;
+
+  private boolean miniGameBInitiated = false;
 
   private void initStateManager() {
     System.out.println("blah");
@@ -145,6 +148,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   private void initNetworkClient() {
     clientThread = new ClientThread(this, hud);
     clientThread.setRemote(remoteHost, PORTNUM);
+    clientThread.setPlayerName(playerName);
     clientThread.start();
   }
 
@@ -217,6 +221,29 @@ public class EscapeVR extends VRApplication implements EventListener {
       log.setLevel(LogLevel.ALL);
     } else {
       setGameState(initialState);
+    }
+
+    // registerInteractionObjects();
+  }
+
+  /**
+   * Registers all objects so they can be interacted with.
+   */
+  private void registerInteractionObjects() {
+    List<Spatial> objects = rootNode.getChildren();
+    for (Spatial object : objects) {
+
+      if (object == null) {
+        continue;
+      }
+
+      System.out.println(object.toString());
+
+      if (object instanceof Geometry) {
+        eventManager.registerObjectInteractionTrigger(object.getName(), 4f);
+      } else if (object instanceof Node) {
+        eventManager.registerObjectInteractionTrigger(object.getName(), 4f);
+      }
     }
   }
 
@@ -291,6 +318,26 @@ public class EscapeVR extends VRApplication implements EventListener {
     mgManager.update(tpf);
   }
 
+  private void startGame(String gameName) {
+
+    log.info(className, "Trying to start game " + gameName);
+
+    switch (gameName) {
+    case "A":
+      mgManager.launchGame(PictureCodeMinigame.getInstance());
+      break;
+    case "B":
+      mgManager.launchGame(TapMinigame.getInstance());
+      break;
+    case "C":
+      mgManager.launchGame(ColorSequenceMinigame.getInstance());
+      break;
+    default:
+      log.error(className, "Unknown game: " + gameName);
+      break;
+    }
+  }
+
   /**
    * Process remote input.
    * 
@@ -300,30 +347,31 @@ public class EscapeVR extends VRApplication implements EventListener {
   public synchronized void remoteInput(final String line) {
 
     HashMap<String, String> command = CommandParser.parseInput(line);
+    System.out.println(command);
 
     if (command.containsKey("command")) {
 
       switch (command.get("command")) {
+
       case "START":
         registerObjects();
         setGameState(PlayingState.getInstance());
         hud.setCenterText("");
         break;
 
-      // Messages received from the mobile player
       case "BEGIN":
         if (command.containsKey("param_0")) {
           String action = command.get("param_0");
 
-          if (action.equals("A")) {
-            mgManager.launchGame(PictureCodeMinigame.getInstance());
-          } else if (action.equals("B")) {
-            mgManager.launchGame(TapMinigame.getInstance());
-          }
+          startGame(action);
 
-          else if (action.equals("C")) {
-            mgManager.launchGame(ColorSequenceMinigame.getInstance());
-            
+          if (action.equals("B")) {
+
+            if (mgManager.getCurrent() instanceof TapMinigame) {
+              TapMinigame tapGame = (TapMinigame) mgManager.getCurrent();
+              tapGame.parseButtons(CommandParser.parseParams(line));
+            }
+          } else if (action.equals("C")) {
             if (mgManager.getCurrent() instanceof ColorSequenceMinigame) {
               ColorSequenceMinigame colorGame = (ColorSequenceMinigame) mgManager.getCurrent();
               colorGame.parseColors(CommandParser.parseParams(line));
@@ -335,16 +383,31 @@ public class EscapeVR extends VRApplication implements EventListener {
       case "DONE":
         if (command.containsKey("param_0")) {
           String action = command.get("param_0");
-          // End minigames, which are ended by the mobile player
-          if (mgManager.getCurrent() != null) {
-            mgManager.endGame();
-            registerObjects();
+
+          mgManager.endGame();
+          registerObjects();
+
+        }
+        break;
+
+      case "VERIFY":
+        if (command.containsKey("param_0")) {
+          String action = command.get("param_0");
+
+          if (action.equals("B")) {
+            if (TapMinigame.seqState == TapMinigame.sequenceState.completed) {
+              clientThread.sendMessage("DONE[B]");
+            } else {
+              clientThread.sendMessage("BEGIN[B]");
+            }
           }
+
         }
         break;
 
       default:
         hud.setCenterText(line, 20);
+
       }
     }
   }
@@ -375,6 +438,7 @@ public class EscapeVR extends VRApplication implements EventListener {
       clientThread.sendMessage(String.format("INTERACT[%s]", objectName));
 
       switch (objectName) {
+
       case "portalturret-geom-0":
         audioManager.getNode("turret").play();
         break;
@@ -388,7 +452,10 @@ public class EscapeVR extends VRApplication implements EventListener {
         clientThread.sendMessage("BEGIN[A]");
         break;
       case "painting2":
-        clientThread.sendMessage("BEGIN[B]");
+        if (miniGameBInitiated == false) {
+          miniGameBInitiated = true;
+          clientThread.sendMessage("BEGIN[B]");
+        }
         break;
       case "fourbuttons2-objnode":
         clientThread.sendMessage("BEGIN[C]");
@@ -437,6 +504,11 @@ public class EscapeVR extends VRApplication implements EventListener {
    */
   public void setRemotePort(int remotePort) {
     this.remotePort = remotePort;
+  }
+
+  public void setPlayerName(String playerName) {
+    this.playerName = playerName;
+
   }
 
 }
