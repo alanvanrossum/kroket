@@ -390,22 +390,6 @@ public class EscapeVR extends VRApplication implements EventListener {
         }
         registerObjects();
         break;
-
-      case "VERIFY":
-        if (command.containsKey("param_0")) {
-          String action = command.get("param_0");
-
-          if (action.equals("B")) {
-            if (TapMinigame.seqState == TapMinigame.sequenceState.completed) {
-              clientThread.sendMessage("DONE[B]");
-            } else {
-              clientThread.sendMessage("BEGIN[B]");
-            }
-          }
-
-        }
-        break;
-
       default:
         hud.setCenterText(line, 20);
 

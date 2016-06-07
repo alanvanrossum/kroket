@@ -3,6 +3,7 @@ package nl.tudelft.kroket.minigame.minigames;
 import nl.tudelft.kroket.event.events.ButtonPressEvent;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.minigame.Minigame;
+import nl.tudelft.kroket.net.protocol.Protocol;
 
 import java.util.ArrayList;
 import java.util.EventObject;
@@ -141,6 +142,8 @@ public class TapMinigame extends Minigame {
       hud.setCenterText(seqState.returnCompleteMessage(), 2);
       seqState = seqState.getNext();
       buttonList.clear();
+      
+      clientThread.sendMessage(String.format("%s[%s]", Protocol.COMMAND_DONE, getName()));
     }
 
   }
