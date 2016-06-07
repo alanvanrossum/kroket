@@ -99,6 +99,8 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   private GameState currentState;
 
+  private boolean miniGameBInitiated = false;
+
   private void initStateManager() {
     stateManager = new StateManager(audioManager, inputHandler, sceneManager, screenManager,
         initialState);
@@ -218,6 +220,29 @@ public class EscapeVR extends VRApplication implements EventListener {
     } else {
       setGameState(initialState);
     }
+    
+    //registerInteractionObjects();
+  }
+  
+  /**
+   * Registers all objects so they can be interacted with.
+   */
+  private void registerInteractionObjects(){
+    List<Spatial> objects = rootNode.getChildren();
+    for (Spatial object : objects) {
+
+      if (object == null) {
+        continue;
+      }
+
+      System.out.println(object.toString());
+
+      if (object instanceof Geometry) {
+        eventManager.registerObjectInteractionTrigger(object.getName(), 4f);
+      } else if (object instanceof Node) {
+        eventManager.registerObjectInteractionTrigger(object.getName(), 4f);
+      }
+    }
   }
 
   /**
@@ -300,68 +325,82 @@ public class EscapeVR extends VRApplication implements EventListener {
   public synchronized void remoteInput(final String line) {
 
     HashMap<String, String> command = CommandParser.parseInput(line);
+    System.out.println(command);
+    
 
     if (command.containsKey("command")) {
 
       switch (command.get("command")) {
-      case "START":
-        registerObjects();
-        setGameState(PlayingState.getInstance());
-        hud.setCenterText("");
-        break;
-
-      // Messages received from the mobile player
-      case "INITVR":
-        if (command.containsKey("param_0")) {
-          String action = command.get("param_0");
-
-          // End minigames, which are ended by the mobile player
-          if (action.equals("doneA") || action.equals("doneB")) {
-            if (mgManager.getCurrent() != null) {
-              mgManager.endGame();
-              registerObjects();
+        case "START":
+          registerObjects();
+          setGameState(PlayingState.getInstance());
+          hud.setCenterText("");
+          break;
+          
+        //Messages received from the mobile player
+        case "INITVR":
+          if (command.containsKey("param_0")) {
+            String action = command.get("param_0");
+  
+            // End minigames, which are ended by the mobile player
+            if (action.equals("doneA") || action.equals("doneB")) {
+              if (mgManager.getCurrent() != null) {
+                mgManager.endGame();
+                registerObjects();
+              }
             }
+              
+              else if (action.equals("verifyB")) {
+            	  if(TapMinigame.seqState == TapMinigame.sequenceState.completed) {
+            		  clientThread.sendMessage("INITVR[doneB]");
+            	  } else {
+            		  clientThread.sendMessage("INITVR[startB]");
+            	  }
+              }	  
+  
+              // Start minigames
+              else if (action.equals("startB")) {
+              	  mgManager.launchGame(TapMinigame.getInstance());
+                  if (mgManager.getCurrent() instanceof TapMinigame) {
+                      ((TapMinigame) mgManager.getCurrent())
+                      .parseButtons(CommandParser.parseParams(line));
+                    }
+              } else if (action.equals("startC")) {
+              mgManager.launchGame(ColorSequenceMinigame.getInstance());
+              if (mgManager.getCurrent() instanceof ColorSequenceMinigame) {
+                ((ColorSequenceMinigame) mgManager.getCurrent())
+                    .parseColors(CommandParser.parseParams(line));
+              }
+//            } else if (action.equals("startD")) {
+//              mgManager.launchGame(GyroscopeMinigame.getInstance());
 
-            // Start minigames
-          } else if (action.equals("startC")) {
-            mgManager.launchGame(ColorSequenceMinigame.getInstance());
-            if (mgManager.getCurrent() instanceof ColorSequenceMinigame) {
-              ((ColorSequenceMinigame) mgManager.getCurrent()).parseColors(CommandParser
-                  .parseParams(line));
-            }
-            // } else if (action.equals("startD")) {
-            // mgManager.launchGame(GyroscopeMinigame.getInstance());
-          }
-        }
-        break;
-
-      // Messages sent by the VR client itself, which it gets back as verification.
-      case "INITM":
-        if (command.containsKey("param_0")) {
-          String action = command.get("param_0");
-
-          // Verifiation from server that minigames should start
-          if (action.equals("startA")) {
-            mgManager.launchGame(PictureCodeMinigame.getInstance());
-          } else if (action.equals("startB")) {
-            mgManager.launchGame(TapMinigame.getInstance());
-          }
-
-          // End minigames, which are ended by the mobile player
-          if (action.equals("doneC")) {
-            if (mgManager.getCurrent() != null) {
-              mgManager.endGame();
             }
           }
-        }
-        break;
+          break;
+          
+        // Messages sent by the VR client itself, which it gets back as verification.
+        case "INITM":
+          if (command.containsKey("param_0")) {
+            String action = command.get("param_0");
+            
+            // Verifiation from server that minigames should start
+            if (action.equals("startA")) {
+              mgManager.launchGame(PictureCodeMinigame.getInstance());
+            } 
+            
+            // End minigames, which are ended by the mobile player
+           if (action.equals("doneC")) {
+              if (mgManager.getCurrent() != null) {
+                mgManager.endGame();
+              }
+            }
+          }
+          break;
 
-      default:
-        hud.setCenterText(line, 20);
+    default:hud.setCenterText(line, 20);
       }
     }
   }
-
   /**
    * Main callback method for handling remote input from socket.
    * 
@@ -388,26 +427,30 @@ public class EscapeVR extends VRApplication implements EventListener {
       clientThread.sendMessage(String.format("INTERACT[%s]", objectName));
 
       switch (objectName) {
-      case "portalturret-geom-0":
-        audioManager.getNode("turret").play();
-        break;
-      case "door":
-        log.info(className, "Muhahaha???");
-        // Play spooky muhaha sound when player interacts with door
-        audioManager.getNode("muhaha").play();
-        hud.setCenterText("Muhahaha! You will never escape!", 5);
-        break;
-      case "painting":
-        clientThread.sendMessage("INITM[startA]");
-        break;
-      case "painting2":
-        clientThread.sendMessage("INITM[startB]");
-        break;
-      case "fourbuttons2-objnode":
-        clientThread.sendMessage("INITM[startC]");
-        break;
-      default:
-        break;
+        case "portalturret-geom-0":
+          audioManager.getNode("turret").play();
+          break;
+        case "door":
+          System.out.println("Muhahaha???");
+          //Play spooky muhaha sound when player interacts with door
+          audioManager.getNode("muhaha").play();
+          hud.setCenterText("Muhahaha! You will never escape!", 5);
+          break;
+        case "painting":
+          clientThread.sendMessage("INITM[startA]");
+          break;       
+        //case "DeskLaptop-objnode":
+        case "painting2":
+        	if(miniGameBInitiated == false) {
+                miniGameBInitiated = true;
+        		clientThread.sendMessage("INITM[startB]");
+           	}
+          break;
+        case "fourbuttons2-objnode":
+          clientThread.sendMessage("INITM[startC]");
+          break;
+        default:
+          break;
       }
 
     }
