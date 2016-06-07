@@ -33,6 +33,7 @@ import com.jme3.texture.Texture.MinFilter;
  */
 public class EscapeScene extends Scene {
 
+  
   int shadowmapSize = 2048;
 	
   float translationY = 3f;
@@ -126,7 +127,7 @@ public class EscapeScene extends Scene {
     safe.scale(0.03f);
     // 6 opzij, 8 naar achter :p
     safe.move(-6.8f, -3, -10.1f);
-    safe.setShadowMode(ShadowMode.Cast);
+    safe.setShadowMode(ShadowMode.CastAndReceive);
     rootNode.attachChild(safe);
   }
 
