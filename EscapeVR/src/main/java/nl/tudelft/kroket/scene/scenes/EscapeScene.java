@@ -5,6 +5,7 @@ import nl.tudelft.kroket.scene.Scene;
 import com.jme3.asset.AssetManager;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
+import com.jme3.light.PointLight;
 import com.jme3.light.SpotLight;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState.FaceCullMode;
@@ -14,10 +15,12 @@ import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.FogFilter;
 import com.jme3.renderer.ViewPort;
+import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
+import com.jme3.shadow.PointLightShadowRenderer;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.MagFilter;
 import com.jme3.texture.Texture.MinFilter;
@@ -30,6 +33,8 @@ import com.jme3.texture.Texture.MinFilter;
  */
 public class EscapeScene extends Scene {
 
+  int shadowmapSize = 2048;
+	
   float translationY = 3f;
 
   float roomDepth = 12f;
@@ -54,6 +59,16 @@ public class EscapeScene extends Scene {
     AmbientLight ambient = new AmbientLight();
     ambient.setColor(ColorRGBA.White);
     rootNode.addLight(ambient);
+    
+    PointLight lampLight = new PointLight();
+	lampLight.setColor(ColorRGBA.White);
+	lampLight.setRadius(50f);
+    lampLight.setPosition(new Vector3f(0f, 6f, 0f));
+	rootNode.addLight(lampLight);
+	  
+	PointLightShadowRenderer pointLightShadowRenderer = new PointLightShadowRenderer(assetManager, shadowmapSize);
+	pointLightShadowRenderer.setLight(lampLight);
+	viewPort.addProcessor(pointLightShadowRenderer);
 
     createWalls("Textures/brick_wall.jpg");
 
@@ -71,7 +86,7 @@ public class EscapeScene extends Scene {
     // createLight();
     // createCube();
 
-    addLamp();
+    // addLamp();
     // createLight();
 
     /** A cone-shaped spotlight with location, direction, range */
@@ -111,6 +126,7 @@ public class EscapeScene extends Scene {
     safe.scale(0.03f);
     // 6 opzij, 8 naar achter :p
     safe.move(-6.8f, -3, -10.1f);
+    safe.setShadowMode(ShadowMode.Cast);
     rootNode.attachChild(safe);
   }
 
@@ -119,6 +135,7 @@ public class EscapeScene extends Scene {
     buttons.scale(0.15f);
     buttons.move(5f, 2f, (float) (roomDepth - 0.1));
     buttons.rotate(0f, -0.5f * FastMath.PI, 0.5f * FastMath.PI);
+    buttons.setShadowMode(ShadowMode.Cast);
     rootNode.attachChild(buttons);
   }
 
@@ -127,6 +144,7 @@ public class EscapeScene extends Scene {
     knight1.scale(0.15f);
     knight1.move(-6.2f, 2f, 2f);
     knight1.rotate(-0.5f * FastMath.PI, 0.5f * FastMath.PI, 0f);
+    knight1.setShadowMode(ShadowMode.CastAndReceive);
     rootNode.attachChild(knight1);
   }
 
@@ -135,6 +153,7 @@ public class EscapeScene extends Scene {
     knight2.scale(0.15f);
     knight2.move(-6.2f, 2f, 2f);
     knight2.rotate(-0.5f * FastMath.PI, 0.5f * FastMath.PI, 0f);
+    knight2.setShadowMode(ShadowMode.CastAndReceive);
     rootNode.attachChild(knight2);
   }
 
@@ -142,20 +161,23 @@ public class EscapeScene extends Scene {
 //    Spatial desk = assetManager.loadModel("Models/DeskLaptop/DeskLaptop.j3o");
 //    desk.scale(1.5f);
 //    desk.move(6.0f, -translationY + 0.2f, -8.9f);
+//    desk.setShadowMode(ShadowMode.CastAndReceive);  
 //    rootNode.attachChild(desk);
 //  }
   
 
-  private void addLamp() {
-    Spatial lamp = assetManager.loadModel("Models/Petroleum_Lamp/Petroleum_Lamp.j3o");
-    // lamp.move(-2, -3, -2); // put the lamp on the floor
-    rootNode.attachChild(lamp);
-  }
+//  private void addLamp() {
+//    Spatial lamp = assetManager.loadModel("Models/Petroleum_Lamp/Petroleum_Lamp.j3o");
+//    // lamp.move(-2, -3, -2); // put the lamp on the floor
+//    lamp.setShadowMode(ShadowMode.Cast);  
+//    rootNode.attachChild(lamp);
+//  }
 
   private void addTurret() {
     Spatial turret = assetManager.loadModel("Models/portalturret/portalturret.j3o");
     turret.move(-2, -3.5f, 5);
     turret.scale(0.06f);
+    turret.setShadowMode(ShadowMode.Cast);
     addObject("turret", turret);
   }
 
@@ -204,6 +226,7 @@ public class EscapeScene extends Scene {
     Geometry wall1 = new Geometry("wall-east", new Box(.1f, roomHeight, roomDepth));
     wall1.setMaterial(wallMaterial);
     wall1.move(-roomWidth, translationY, 0);
+    wall1.setShadowMode(ShadowMode.Receive);
     addObject("wall-east", wall1);
 
     // wall to the left of player spawn
@@ -211,6 +234,7 @@ public class EscapeScene extends Scene {
     wall2.setMaterial(wallMaterial);
     wall2.rotate(0,  -FastMath.PI, 0);
     wall2.move(roomWidth, translationY, 0);
+    wall2.setShadowMode(ShadowMode.Receive);
    
     addObject("wall-west", wall2);
 
@@ -218,12 +242,14 @@ public class EscapeScene extends Scene {
     Geometry wall3 = new Geometry("wall-north", new Box(roomWidth, roomHeight, .1f));
     wall3.setMaterial(wallMaterial);
     wall3.move(0, translationY, roomDepth);
+    wall3.setShadowMode(ShadowMode.Receive);
     addObject("wall-north", wall3);
 
     // wall behind player spawn
     Geometry wall4 = new Geometry("wall-south", new Box(roomWidth, roomHeight, .1f));
     wall4.setMaterial(wallMaterial);
     wall4.move(0, translationY, -roomDepth);
+    wall4.setShadowMode(ShadowMode.Receive);
     addObject("wall-south", wall4);
   }
 
@@ -247,7 +273,8 @@ public class EscapeScene extends Scene {
     Geometry floor = new Geometry("floor", new Box(roomWidth, .1f, roomDepth));
     floor.move(0f, translationY - roomHeight, 0f);
     floor.setMaterial(floorMaterial);
-
+    
+    floor.setShadowMode(ShadowMode.Receive);
     addObject("floor", floor);
   }
 
@@ -271,6 +298,8 @@ public class EscapeScene extends Scene {
 
     ceiling.move(0f, translationY + roomHeight, 0f);
     ceiling.setMaterial(ceilingMaterial);
+    
+    ceiling.setShadowMode(ShadowMode.Receive);
 
     addObject("ceiling", ceiling);
   }
