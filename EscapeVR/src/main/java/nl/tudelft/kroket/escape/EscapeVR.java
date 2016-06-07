@@ -72,6 +72,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   private String remoteHost;
   private int remotePort;
+  private String playerName = "VR-USER";
 
   private StateManager stateManager;
   private EventManager eventManager;
@@ -82,7 +83,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   private HeadUpDisplay hud;
 
   private MinigameManager mgManager;
-  
+
   /** Thread reference used for the TCP connection. */
   private ClientThread clientThread;
 
@@ -90,8 +91,8 @@ public class EscapeVR extends VRApplication implements EventListener {
   private GameState initialState = LobbyState.getInstance();
 
   /** List of all rigid objects. */
-  private List<String> rigidObjects = new ArrayList<String>(
-      Arrays.asList("safe-objnode", "knight1-geom-0", "knight2-geom-0", "Desk-objnode"));
+  private List<String> rigidObjects = new ArrayList<String>(Arrays.asList("safe-objnode",
+      "knight1-geom-0", "knight2-geom-0", "Desk-objnode"));
 
   // private CollisionHandler collisionHandler;
   private MovementHandler movementHandler;
@@ -145,6 +146,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   private void initNetworkClient() {
     clientThread = new ClientThread(this, hud);
     clientThread.setRemote(remoteHost, PORTNUM);
+    clientThread.setPlayerName(playerName);
     clientThread.start();
   }
 
@@ -202,8 +204,8 @@ public class EscapeVR extends VRApplication implements EventListener {
     inputHandler.registerMappings(movementHandler, "forward", "back");
     inputHandler.registerMappings(eventManager, "Button A", "Button B", "Button X", "Button Y");
 
-    inputHandler.registerListener(
-        new CollisionHandler(observer, sceneManager.getScene("escape").getBoundaries()));
+    inputHandler.registerListener(new CollisionHandler(observer, sceneManager.getScene("escape")
+        .getBoundaries()));
 
     eventManager.addListener(this);
 
@@ -278,7 +280,7 @@ public class EscapeVR extends VRApplication implements EventListener {
       if (object.getName().equals("observer")) {
         continue;
       }
-      
+
       // only process objects that extend either Geomtery or Node
       if (object instanceof Geometry || object instanceof Node) {
 
@@ -286,7 +288,7 @@ public class EscapeVR extends VRApplication implements EventListener {
         eventManager.registerObjectInteractionTrigger(object.getName(), 4f);
       }
     }
-    
+
     // register all rigid objects with the movementhandler
     // the movementhandler will force the observer
     // to stay away from these objects
@@ -329,7 +331,6 @@ public class EscapeVR extends VRApplication implements EventListener {
     if (command.containsKey("command")) {
 
       switch (command.get("command")) {
-
         case "START":
           registerObjects();
           setGameState(PlayingState.getInstance());
@@ -395,13 +396,11 @@ public class EscapeVR extends VRApplication implements EventListener {
             }
           }
           break;
-          
-        default:
-          hud.setCenterText(line, 20);
+
+    default:hud.setCenterText(line, 20);
       }
     }
   }
-
   /**
    * Main callback method for handling remote input from socket.
    * 
@@ -409,7 +408,7 @@ public class EscapeVR extends VRApplication implements EventListener {
    *          the input received from the socket.
    */
   public void receiveLoop(String message) {
-    
+
     log.debug(className, "Message received: " + message);
 
     remoteInput(message);
@@ -417,7 +416,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   @Override
   public void handleEvent(EventObject ev) {
-    
+
     if (ev instanceof InteractionEvent) {
       InteractionEvent interactionEvent = (InteractionEvent) ev;
 
@@ -494,6 +493,11 @@ public class EscapeVR extends VRApplication implements EventListener {
    */
   public void setRemotePort(int remotePort) {
     this.remotePort = remotePort;
+  }
+
+  public void setPlayerName(String playerName) {
+    this.playerName = playerName;
+
   }
 
 }
