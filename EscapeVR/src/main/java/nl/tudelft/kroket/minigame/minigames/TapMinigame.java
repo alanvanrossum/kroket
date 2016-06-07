@@ -74,11 +74,11 @@ public class TapMinigame extends Minigame {
       
 	  public String returnCompleteMessage() {
        	  switch(this) {
-       	  case sequenceOne: return "YOU DID IT NOW THE SECOND ONE";
-       	  case sequenceTwo: return "YOU DID IT NOW THE THIRD ONE";
-       	  case sequenceThree: return "YOU DID IT ONE MORE TO GO";
-       	  case sequenceFour: return "YOU GOT THEM ALL WELL DONE!";
-       	  default: return "GOOD JOB NOW THE NEXT ONE!";
+       	  case sequenceOne: return "First sequence complete!";
+       	  case sequenceTwo: return "Well done! Two more to go!";
+       	  case sequenceThree: return "One more to go!";
+       	  case sequenceFour: return "You're done!";
+       	  default: return "Good job!";
        	  }
        }
 	  

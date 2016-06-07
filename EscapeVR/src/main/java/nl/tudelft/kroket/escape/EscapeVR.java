@@ -220,10 +220,9 @@ public class EscapeVR extends VRApplication implements EventListener {
       setGameState(PlayingState.getInstance());
       log.setLevel(LogLevel.ALL);
     } else {
+      log.setLevel(LogLevel.INFO);
       setGameState(initialState);
     }
-
-    // registerInteractionObjects();
   }
 
   /**
@@ -452,10 +451,9 @@ public class EscapeVR extends VRApplication implements EventListener {
         clientThread.sendMessage("BEGIN[A]");
         break;
       case "painting2":
-        if (miniGameBInitiated == false) {
-          miniGameBInitiated = true;
-          clientThread.sendMessage("BEGIN[B]");
-        }
+
+        clientThread.sendMessage("BEGIN[B]");
+
         break;
       case "fourbuttons2-objnode":
         clientThread.sendMessage("BEGIN[C]");
