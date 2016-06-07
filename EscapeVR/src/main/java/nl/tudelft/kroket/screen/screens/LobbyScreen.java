@@ -13,6 +13,7 @@ import com.jme3.scene.Node;
 public class LobbyScreen extends Screen {
 
   private static final String name = "lobby";
+  
 
   /**
    * Constructor for LobbyScreen overlay object.

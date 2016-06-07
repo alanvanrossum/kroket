@@ -1,5 +1,9 @@
 package nl.tudelft.kroket;
 
+import javax.imageio.ImageIO;
+
+import com.jme3.system.AppSettings;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,10 +19,24 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import jmevr.app.VRApplication.PRECONFIG_PARAMETER;
 import nl.tudelft.kroket.escape.EscapeVR;
 
-import com.jme3.system.AppSettings;
+import com.jme3.app.SimpleApplication;
+import com.jme3.asset.AssetManager;
+import com.jme3.font.BitmapFont;
+import com.jme3.font.BitmapText;
+import com.jme3.font.Rectangle;
+import com.jme3.math.ColorRGBA;
+import com.jme3.scene.Node;
+import com.jme3.ui.Picture;
+
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.concurrent.Callable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Entry point for VR application. Launches a simple dialog window to prompt the user for name and
@@ -53,6 +71,8 @@ public class Launcher extends Application {
       remoteHost = args[0];
     }
 
+    System.out.println("...");
+
     launch(args);
 
     mainApplication = new EscapeVR();
@@ -64,6 +84,17 @@ public class Launcher extends Application {
     // create AppSettings object to enable joysticks/gamepads
     // and set the title
     AppSettings settings = new AppSettings(true);
+    try {
+      BufferedImage buff16 = ImageIO.read(Launcher.class
+          .getResourceAsStream("/Interface/icon16.png"));
+      BufferedImage buff32 = ImageIO.read(Launcher.class
+          .getResourceAsStream("/Interface/icon32.png"));
+      settings.setIcons(new BufferedImage[] { buff16, buff32 });
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    settings.setSettingsDialogImage("/Interface/splash.png");
 
     // enable joysticks/gamepads
     settings.setUseJoysticks(true);
@@ -99,6 +130,13 @@ public class Launcher extends Application {
     primaryStage.setHeight(DIALOG_HEIGHT);
     primaryStage.setTitle(DIALOG_TITLE);
     primaryStage.requestFocus();
+
+    primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+      public void handle(WindowEvent we) {
+        System.out.println("X pressed, closing...");
+        System.exit(0);
+      }
+    });
 
     GridPane grid = new GridPane();
     grid.setAlignment(Pos.CENTER);
