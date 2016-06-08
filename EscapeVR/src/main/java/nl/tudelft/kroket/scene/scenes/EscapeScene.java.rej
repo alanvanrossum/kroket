@@ -1,0 +1,9 @@
+diff a/EscapeVR/src/main/java/nl/tudelft/kroket/scene/scenes/EscapeScene.java b/EscapeVR/src/main/java/nl/tudelft/kroket/scene/scenes/EscapeScene.java	(rejected hunks)
+@@ -162,6 +162,7 @@
+      Spatial desk = assetManager.loadModel("Models/DeskLaptop/DeskLaptop.j3o");
+      desk.scale(1.5f);
+ -    desk.move(6.0f, -translationY + 0.2f, -8.9f);
+++    desk.move(0, translationY - 6f, roomDepth);
+      rootNode.attachChild(desk);
+  
+    }
