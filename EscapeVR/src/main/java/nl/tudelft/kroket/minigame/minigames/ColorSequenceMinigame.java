@@ -82,7 +82,6 @@ public class ColorSequenceMinigame extends Minigame {
 
     screenManager.getScreen("controller").hide();
     hud.setCenterText("Great job! Can you open the door yet?");
-    // minigameManager.endGame();
   }
 
   /**

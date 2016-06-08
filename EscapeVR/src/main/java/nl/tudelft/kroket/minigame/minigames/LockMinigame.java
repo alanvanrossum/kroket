@@ -37,7 +37,8 @@ public class LockMinigame extends Minigame {
   @Override
   public void start() {
     log.info(className, "Minigame F started with code 13-37-21");
-    hud.setCenterText("13-37-21", 30);
+    hud.setCenterText("What could the code for the lock be?", 30);
+    sceneManager.extendEscapeScene("F");
   }
 
   /**
@@ -46,13 +47,12 @@ public class LockMinigame extends Minigame {
   @Override
   public void stop() {
     log.info(className, "Minigame F completed.");
-    hud.setCenterText("Minigame F complete!", 10);
+    hud.setCenterText("You opened the lock!", 10);
   }
 
   @Override
   public void update(float tpf) {
     // TODO Auto-generated method stub
-    
   }
 
   @Override
