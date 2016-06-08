@@ -352,29 +352,29 @@ public class EscapeVR extends VRApplication implements EventListener {
     if (command.containsKey("command")) {
 
       switch (command.get("command")) {
-
-      case "START":
-        registerObjects();
-        setGameState(PlayingState.getInstance());
-        hud.setCenterText("");
-        break;
-
-      case "BEGIN":
-        if (command.containsKey("param_0")) {
-          String action = command.get("param_0");
-
-          startGame(action);
-
-          if (action.equals("B")) {
-
-            if (mgManager.getCurrent() instanceof TapMinigame) {
-              TapMinigame tapGame = (TapMinigame) mgManager.getCurrent();
-              tapGame.parseButtons(CommandParser.parseParams(line));
-            }
-          } else if (action.equals("C")) {
-            if (mgManager.getCurrent() instanceof ColorSequenceMinigame) {
-              ColorSequenceMinigame colorGame = (ColorSequenceMinigame) mgManager.getCurrent();
-              colorGame.parseColors(CommandParser.parseParams(line));
+        case "START":
+          registerObjects();
+          setGameState(PlayingState.getInstance());
+          hud.setCenterText("");
+          break;
+  
+        case "BEGIN":
+          if (command.containsKey("param_0")) {
+            String action = command.get("param_0");
+  
+            startGame(action);
+  
+            if (action.equals("B")) {
+  
+              if (mgManager.getCurrent() instanceof TapMinigame) {
+                TapMinigame tapGame = (TapMinigame) mgManager.getCurrent();
+                tapGame.parseButtons(CommandParser.parseParams(line));
+              }
+            } else if (action.equals("C")) {
+              if (mgManager.getCurrent() instanceof ColorSequenceMinigame) {
+                ColorSequenceMinigame colorGame = (ColorSequenceMinigame) mgManager.getCurrent();
+                colorGame.parseColors(CommandParser.parseParams(line));
+              }
             }
           } 
 //          else if(action.equals("F")) {
@@ -383,21 +383,19 @@ public class EscapeVR extends VRApplication implements EventListener {
 //              }
 //          }
 
-        }
-        break;
-      case "DONE":
-        if (command.containsKey("param_0")) {
-          String action = command.get("param_0");
-
-          if (mgManager.gameActive() && action.equals(mgManager.getCurrent().getName())) {
-            mgManager.endGame();
+          break;
+        case "DONE":
+          if (command.containsKey("param_0")) {
+            String action = command.get("param_0");
+  
+            if (mgManager.gameActive() && action.equals(mgManager.getCurrent().getName())) {
+              mgManager.endGame();
+            }
           }
-
-        }
-        registerObjects();
-        break;
-      default:
-        hud.setCenterText(line, 20);
+          registerObjects();
+          break;
+        default:
+          hud.setCenterText(line, 20);
 
       }
     }
@@ -429,34 +427,30 @@ public class EscapeVR extends VRApplication implements EventListener {
       // clientThread.sendMessage(String.format("INTERACT[%s]", objectName));
 
       switch (objectName) {
-
-      case "portalturret-geom-0":
-        audioManager.getNode("turret").play();
-        break;
-      case "door":
-        log.info(className, "Muhahaha???");
-        // Play spooky muhaha sound when player interacts with door
-        audioManager.getNode("muhaha").play();
-        hud.setCenterText("Muhahaha! You will never escape!", 5);
-        clientThread.sendMessage("BEGIN[F]");
-        break;
-      case "painting":
-
-        clientThread.sendMessage("BEGIN[A]");
-
-        break;
-      case "painting2":
-
-        clientThread.sendMessage("BEGIN[B]");
-
-        break;
-      case "fourbuttons2-objnode":
-
-        clientThread.sendMessage("BEGIN[C]");
-
-        break;
-      default:
-        break;
+        case "portalturret-geom-0":
+          audioManager.getNode("turret").play();
+          break;
+        case "door":
+          log.info(className, "Muhahaha???");
+          // Play spooky muhaha sound when player interacts with door
+          audioManager.getNode("muhaha").play();
+          hud.setCenterText("Muhahaha! You will never escape!", 5);
+          break;
+        case "painting":
+          clientThread.sendMessage("BEGIN[A]");
+          break;
+          //case "painting2":
+        case "DeskLaptop-objnode":
+          clientThread.sendMessage("BEGIN[B]");
+  
+          break;
+        case "fourbuttons2-objnode":
+  
+          clientThread.sendMessage("BEGIN[C]");
+  
+          break;
+        default:
+          break;
       }
 
     }
