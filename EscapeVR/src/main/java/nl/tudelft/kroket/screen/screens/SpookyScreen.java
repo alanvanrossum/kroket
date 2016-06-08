@@ -15,7 +15,7 @@ public class SpookyScreen extends Screen {
 
   private static final String name = "spooky";
 
-  private long displayTime = 2000;
+  private long displayTime = 400;
 
   private long hideTime = 0;
 
