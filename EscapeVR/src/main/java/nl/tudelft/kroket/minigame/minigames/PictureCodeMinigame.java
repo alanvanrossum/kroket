@@ -61,6 +61,9 @@ public class PictureCodeMinigame extends Minigame {
     // TODO Auto-generated method stub
   }
 
+  /**
+   * Returns the name of the game.
+   */
   public String getName() {
     return GAME_NAME;
   }

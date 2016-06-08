@@ -207,6 +207,9 @@ public class TapMinigame extends Minigame {
 
   }
 
+  /**
+   * Return the game of the game.
+   */
   public String getName() {
     return GAME_NAME;
   }
