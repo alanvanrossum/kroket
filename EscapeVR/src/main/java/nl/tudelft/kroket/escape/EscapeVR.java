@@ -425,7 +425,7 @@ public class EscapeVR extends VRApplication implements EventListener {
         case "portalturret-geom-0":
           audioManager.getNode("turret").play();
           break;
-        case "door-geom0":
+        case "door-geom-0":
           log.info(className, "Muhahaha???");
           // Play spooky muhaha sound when player interacts with door
           audioManager.getNode("muhaha").play();
