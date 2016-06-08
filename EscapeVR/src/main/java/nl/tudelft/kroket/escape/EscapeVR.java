@@ -47,6 +47,7 @@ import java.util.Arrays;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.util.List;
+import main.java.nl.tudelft.kroket.minigame.minigames.LockMinigame;
 
 /**
  * The EscapeVR class.
@@ -375,6 +376,11 @@ public class EscapeVR extends VRApplication implements EventListener {
               ColorSequenceMinigame colorGame = (ColorSequenceMinigame) mgManager.getCurrent();
               colorGame.parseColors(CommandParser.parseParams(line));
             }
+          } else if(action.equals("F")) {
+              if(mgManager.getCurrent() instanceof LockMinigame) {
+                  LockMinigame lockGame = (LockMinigame) mgManager.getCurrent();
+            
+              }
           }
 
         }
@@ -432,6 +438,7 @@ public class EscapeVR extends VRApplication implements EventListener {
         // Play spooky muhaha sound when player interacts with door
         audioManager.getNode("muhaha").play();
         hud.setCenterText("Muhahaha! You will never escape!", 5);
+        clientThread.sendMessage("BEGIN[F]");
         break;
       case "painting":
 
