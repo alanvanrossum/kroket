@@ -104,6 +104,14 @@ public class EscapeScene extends Scene {
     // addButtons();
     
     createLight();
+    
+    addIsland();
+  }
+  
+  private void addIsland() {
+    Spatial island = assetManager.loadModel("Models/Island/Island.j3o");
+    island.scale((float) 0.005);
+    rootNode.attachChild(island);
   }
 
   private void addSafe() {

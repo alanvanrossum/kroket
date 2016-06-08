@@ -35,7 +35,8 @@ public class PlayingState implements GameState {
   @Override
   public void begin(AudioManager audioManager, SceneManager sceneManager,
       ScreenManager screenManager) {
-    sceneManager.getScene("escape").createScene();
+    //sceneManager.getScene("escape").createScene();
+    sceneManager.getScene("island").createScene();
     audioManager.play("letthegamebegin");
     audioManager.play("ambient");
 

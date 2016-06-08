@@ -32,6 +32,7 @@ import nl.tudelft.kroket.net.ClientThread;
 import nl.tudelft.kroket.net.protocol.CommandParser;
 import nl.tudelft.kroket.scene.SceneManager;
 import nl.tudelft.kroket.scene.scenes.EscapeScene;
+import nl.tudelft.kroket.scene.scenes.FinalScene;
 import nl.tudelft.kroket.screen.HeadUpDisplay;
 import nl.tudelft.kroket.screen.ScreenManager;
 import nl.tudelft.kroket.screen.screens.ControllerScreen;
@@ -54,7 +55,7 @@ import java.util.List;
 public class EscapeVR extends VRApplication implements EventListener {
 
   /** Debug flag. */
-  private final boolean DEBUG = false;
+  private final boolean DEBUG = true;
 
   private static final Vector3f spawnPosition = new Vector3f(0, 0, 0);
 
@@ -125,7 +126,8 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   private void initSceneManager() {
     sceneManager = new SceneManager(getAssetManager(), rootNode, getViewPort());
-    sceneManager.loadScene("escape", EscapeScene.class);
+    //sceneManager.loadScene("escape", EscapeScene.class);
+    sceneManager.loadScene("island", FinalScene.class);
   }
 
   private void initScreenManager() {
@@ -206,8 +208,8 @@ public class EscapeVR extends VRApplication implements EventListener {
     inputHandler.registerMappings(movementHandler, "forward", "back");
     inputHandler.registerMappings(eventManager, "Button A", "Button B", "Button X", "Button Y");
 
-    inputHandler.registerListener(new CollisionHandler(observer, sceneManager.getScene("escape")
-        .getBoundaries()));
+//    inputHandler.registerListener(new CollisionHandler(observer, sceneManager.getScene("escape")
+//        .getBoundaries()));
 
     eventManager.addListener(this);
 
