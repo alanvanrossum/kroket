@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.List;
 
+/**
+ * This class contains the logic of the third minigame (C) of the VR player.
+ * 
+ * @author Team Kroket
+ */
 public class ColorSequenceMinigame extends Minigame {
 
   private static final String GAME_NAME = "C";
@@ -52,9 +57,9 @@ public class ColorSequenceMinigame extends Minigame {
     running = true;
 
     screenManager.getScreen("controller").show();
-    hud.setCenterText("Minigame C started!", 10);
+    //hud.setCenterText("Minigame C started!", 10);
     hud.setCenterText(
-        "Enter the color sequence by\nusing the colored buttons on\nthe right of your controller!",
+        "Enter the colorsequence you will\nreceive from your fellow CIA agents\nby using the colored buttons on your controller!",
         20);
 
     if ((System.currentTimeMillis() % 10000) == 0) {
@@ -76,7 +81,7 @@ public class ColorSequenceMinigame extends Minigame {
     running = false;
 
     screenManager.getScreen("controller").hide();
-    hud.setCenterText("Minigame C complete!");
+    hud.setCenterText("Great job! Can you open the door yet?");
     // minigameManager.endGame();
   }
 
