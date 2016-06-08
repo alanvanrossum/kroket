@@ -92,7 +92,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   /** List of all rigid objects. */
   private List<String> rigidObjects = new ArrayList<String>(Arrays.asList("safe-objnode",
-      "knight1-geom-0", "knight2-geom-0", "Desk-objnode"));
+      "knight1-geom-0", "knight2-geom-0", "DeskLaptop-objnode", "safeopen-objnode"));
 
   // private CollisionHandler collisionHandler;
   private MovementHandler movementHandler;
@@ -425,7 +425,7 @@ public class EscapeVR extends VRApplication implements EventListener {
         case "portalturret-geom-0":
           audioManager.getNode("turret").play();
           break;
-        case "door":
+        case "door-geom0":
           log.info(className, "Muhahaha???");
           // Play spooky muhaha sound when player interacts with door
           audioManager.getNode("muhaha").play();
@@ -440,7 +440,7 @@ public class EscapeVR extends VRApplication implements EventListener {
         case "fourbuttons2-objnode":
           clientThread.sendMessage("BEGIN[C]");
           break;
-        case "opensafe2-objnode":
+        case "safeopen-objnode":
           hud.setCenterText("You found login data for the computer!");
           clientThread.sendMessage("DONE[A][ADVANCE]");
           break;
