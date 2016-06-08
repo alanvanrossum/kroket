@@ -133,11 +133,14 @@ public class EscapeScene extends Scene {
     rootNode.getChild("safe-objnode").removeFromParent();
     Spatial safe = assetManager.loadModel("Models/safeopen/safeopen.j3o");
     safe.scale(0.03f);
-    // 6 opzij, 8 naar achter :p
+
     safe.move(-6.8f, -3, -10.1f);
     rootNode.attachChild(safe);
   }
 
+  /**
+   * Add Knight 1 to the scene.
+   */
   private void addKnight1() {
     Spatial knight1 = assetManager.loadModel("Models/knight1/knight1.j3o");
     knight1.scale(0.15f);
@@ -146,6 +149,9 @@ public class EscapeScene extends Scene {
     rootNode.attachChild(knight1);
   }
 
+  /**
+   * Add Knight 2 to the scene.
+   */
   private void addKnight2() {
     Spatial knight2 = assetManager.loadModel("Models/knight2/knight2.j3o");
     knight2.scale(0.15f);
@@ -154,6 +160,9 @@ public class EscapeScene extends Scene {
     rootNode.attachChild(knight2);
   }
 
+  /**
+   * Add the desk to the scene.
+   */
   private void addDesk() {
     Spatial desk = assetManager.loadModel("Models/DeskLaptop/DeskLaptop.j3o");
     desk.scale(1.5f);

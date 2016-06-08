@@ -434,15 +434,15 @@ public class EscapeVR extends VRApplication implements EventListener {
         case "painting":
           clientThread.sendMessage("BEGIN[A]");
           break;
-          //case "painting2":
         case "DeskLaptop-objnode":
           clientThread.sendMessage("BEGIN[B]");
-  
           break;
         case "fourbuttons2-objnode":
-  
           clientThread.sendMessage("BEGIN[C]");
-  
+          break;
+        case "opensafe2-objnode":
+          hud.setCenterText("You found login data for the computer!");
+          clientThread.sendMessage("DONE[A][ADVANCE]");
           break;
         default:
           break;
