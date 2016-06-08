@@ -41,7 +41,9 @@ public class PictureCodeMinigame extends Minigame {
   @Override
   public void stop() {
     log.info(className, "Minigame A completed.");
-    hud.setCenterText("Minigame A complete!", 10);
+    hud.setCenterText("Minigame A complete, try the code on the safe!", 10);
+    System.out.println("stop");
+    sceneManager.extendEscapeScene("A");
   }
 
   @Override
