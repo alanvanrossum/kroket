@@ -137,13 +137,15 @@ public class TapMinigame extends Minigame {
   public void update(float tpf) {
 
     // hud.setCenterText("You are currently in: " + seqState);
-
+	 
     if (buttonList.equals(seqState.returnSequence())) {
       hud.setCenterText(seqState.returnCompleteMessage(), 2);
       seqState = seqState.getNext();
       buttonList.clear();
       
-      clientThread.sendMessage(String.format("%s[%s]", Protocol.COMMAND_DONE, getName()));
+      if(seqState == sequenceState.completed) {
+          clientThread.sendMessage(String.format("%s[%s]", Protocol.COMMAND_DONE, getName()));
+      }
     }
 
   }
@@ -200,7 +202,7 @@ public class TapMinigame extends Minigame {
     secondSequence = sequenceList.subList(4, 8);
     thirdSequence = sequenceList.subList(8, 12);
     fourthSequence = sequenceList.subList(12, 16);
-
+    
   }
 
   public String getName() {
