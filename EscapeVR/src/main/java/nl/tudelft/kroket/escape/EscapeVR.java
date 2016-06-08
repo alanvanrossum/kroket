@@ -357,7 +357,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     case "C":
       mgManager.launchGame(ColorSequenceMinigame.getInstance());
       break;
-    case "F":
+    case "D":
       mgManager.launchGame(LockMinigame.getInstance());
       registerObjects();
       break;
@@ -459,7 +459,7 @@ public class EscapeVR extends VRApplication implements EventListener {
           // Play spooky muhaha sound when player interacts with door
           audioManager.getNode("muhaha").play();
           hud.setCenterText("Muhahaha! You will never escape!", 5);
-          clientThread.sendMessage("BEGIN[F]");
+          clientThread.sendMessage("BEGIN[D]");
           break;
         case "painting":
           clientThread.sendMessage("BEGIN[A]");
@@ -474,21 +474,21 @@ public class EscapeVR extends VRApplication implements EventListener {
           hud.setCenterText("You found login data for the computer!");
           clientThread.sendMessage("DONE[A][ADVANCE]");
           break;
-        case "F1":
-          ((EscapeScene) sceneManager.getScene("escape")).remove("F1");
-          ((EscapeScene) sceneManager.getScene("escape")).addCode13("Textures/Painting/13.jpg", "F_13");
-          ((EscapeScene) sceneManager.getScene("escape")).addCode37("Textures/Painting/questionmark.jpg", "F2");          
+        case "D1":
+          ((EscapeScene) sceneManager.getScene("escape")).remove("D1");
+          ((EscapeScene) sceneManager.getScene("escape")).addCode13("Textures/Painting/13.jpg", "D_13");
+          ((EscapeScene) sceneManager.getScene("escape")).addCode37("Textures/Painting/questionmark.jpg", "D2");          
           registerObjects();
           break;
-        case "F2":
-          ((EscapeScene) sceneManager.getScene("escape")).remove("F2");
-          ((EscapeScene) sceneManager.getScene("escape")).addCode37("Textures/Painting/37.jpg", "F_37");
-          ((EscapeScene) sceneManager.getScene("escape")).addCode21("Textures/Painting/questionmark.jpg", "F3");          
+        case "D2":
+          ((EscapeScene) sceneManager.getScene("escape")).remove("D2");
+          ((EscapeScene) sceneManager.getScene("escape")).addCode37("Textures/Painting/37.jpg", "D_37");
+          ((EscapeScene) sceneManager.getScene("escape")).addCode21("Textures/Painting/questionmark.jpg", "D3");          
           registerObjects();
           break;
-        case "F3":
-          ((EscapeScene) sceneManager.getScene("escape")).remove("F3");
-          ((EscapeScene) sceneManager.getScene("escape")).addCode21("Textures/Painting/21.jpg", "F_21");      
+        case "D3":
+          ((EscapeScene) sceneManager.getScene("escape")).remove("D3");
+          ((EscapeScene) sceneManager.getScene("escape")).addCode21("Textures/Painting/21.jpg", "D_21");      
           registerObjects();
           break;
         default:

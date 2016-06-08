@@ -36,9 +36,9 @@ public class LockMinigame extends Minigame {
    */
   @Override
   public void start() {
-    log.info(className, "Minigame F started with code 13-37-21");
+    log.info(className, "Minigame D started.");
     hud.setCenterText("What could the code for the lock be?", 30);
-    sceneManager.extendEscapeScene("F");
+    sceneManager.extendEscapeScene("D");
   }
 
   /**
@@ -46,7 +46,7 @@ public class LockMinigame extends Minigame {
    */
   @Override
   public void stop() {
-    log.info(className, "Minigame F completed.");
+    log.info(className, "Minigame D completed.");
     hud.setCenterText("You opened the lock!", 10);
   }
 

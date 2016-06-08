@@ -146,8 +146,8 @@ public class SceneManager {
       case "A":
         ((EscapeScene) scenes.get("escape")).addOpenSafe();
         break;
-      case "F":
-        ((EscapeScene) scenes.get("escape")).addCode13("Textures/Painting/questionmark.jpg", "F1");
+      case "D":
+        ((EscapeScene) scenes.get("escape")).addCode13("Textures/Painting/questionmark.jpg", "D1");
         break;
       default:
         break;

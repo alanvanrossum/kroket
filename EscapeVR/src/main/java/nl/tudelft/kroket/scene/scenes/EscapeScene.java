@@ -381,27 +381,11 @@ public class EscapeScene extends Scene {
     addObject("painting2", painting);
   }
   
-  private void addCodePainting(String texturePath, String name, float x, float y, float z) {
-    float paintingWidth = 1.5f;
-    float paintingHeight = 1.5f;
-
-    Texture doorTexture = assetManager.loadTexture(texturePath);
-    doorTexture.setMagFilter(MagFilter.Nearest);
-    doorTexture.setMinFilter(MinFilter.Trilinear);
-    doorTexture.setAnisotropicFilter(16);
-
-    Material paintingMaterial = new Material(assetManager, materialPath);
-    paintingMaterial.setTexture("ColorMap", doorTexture);
-
-    Geometry painting = new Geometry("F_13", new Box(.01f, paintingHeight, paintingWidth));
-
-    painting.move(roomWidth - 0.1f, translationY, 7);
-
-    painting.setMaterial(paintingMaterial);
-
-    addObject("F_13", painting);
-  }
-  
+  /**
+   * Add a painting for the code 13.
+   * @param texturePath the image of the painting.
+   * @param name the name of the painting.
+   */
   public void addCode13(String texturePath, String name) {
     float paintingWidth = 1.5f;
     float paintingHeight = 1.5f;
@@ -423,6 +407,11 @@ public class EscapeScene extends Scene {
     addObject(name, painting);
   }
   
+  /**
+   * Add a painting for the code 37.
+   * @param texturePath the image of the painting.
+   * @param name the name of the painting.
+   */
   public void addCode37(String texturePath, String name) {
     float paintingWidth = 1.5f;
     float paintingHeight = 1.5f;
@@ -444,6 +433,11 @@ public class EscapeScene extends Scene {
     addObject(name, painting);
   }
   
+  /**
+   * Add a painting for the code 21.
+   * @param texturePath the image of the painting.
+   * @param name the name of the painting.
+   */
   public void addCode21(String texturePath, String name) {
     float paintingWidth = 1.5f;
     float paintingHeight = 1.5f;
@@ -494,12 +488,11 @@ public class EscapeScene extends Scene {
    * Add gas to the scene.
    */
   public void createGas() {
-
-    FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
     FogFilter fog = new FogFilter();
     fog.setFogColor(gasColor);
     fog.setFogDistance(1000);
     fog.setFogDensity(2.0f);
+    FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
     fpp.addFilter(fog);
     viewPort.addProcessor(fpp);
 
