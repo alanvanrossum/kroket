@@ -30,13 +30,13 @@ public class LobbyState implements GameState {
     
     audioManager.stopAudio();
     screenManager.getScreen("lobby").show();
-    audioManager.play("waiting");
+    audioManager.play("lobby");
   }
 
   @Override
   public void stop(AudioManager audioManager, SceneManager sceneManager,
       ScreenManager screenManager) {
-    audioManager.stop("waiting");
+    audioManager.stop("lobby");
     screenManager.getScreen("lobby").hide();
   }
 

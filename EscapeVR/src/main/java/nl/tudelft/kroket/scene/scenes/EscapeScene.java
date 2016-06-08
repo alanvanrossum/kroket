@@ -7,6 +7,7 @@ import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.SpotLight;
 import com.jme3.material.Material;
+import com.jme3.material.RenderState.FaceCullMode;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
@@ -48,6 +49,11 @@ public class EscapeScene extends Scene {
    * The create scene method.
    */
   public void createScene() {
+    
+    /** A white ambient light source. */
+    AmbientLight ambient = new AmbientLight();
+    ambient.setColor(ColorRGBA.White);
+    rootNode.addLight(ambient);
 
     createWalls("Textures/brick_wall.jpg");
 
@@ -66,22 +72,19 @@ public class EscapeScene extends Scene {
     // createCube();
 
     addLamp();
-    createLight();
+    // createLight();
 
     /** A cone-shaped spotlight with location, direction, range */
-    SpotLight spot = new SpotLight();
-    spot = new SpotLight();
-    spot.setSpotRange(500);
-    spot.setSpotOuterAngle(20 * FastMath.DEG_TO_RAD);
-    spot.setSpotInnerAngle(15 * FastMath.DEG_TO_RAD);
-    spot.setDirection(new Vector3f(0, -1, 0));
-    spot.setPosition(new Vector3f(0, 4, 0));
-    rootNode.addLight(spot);
+     SpotLight spot = new SpotLight();
+     spot = new SpotLight();
+     spot.setSpotRange(500);
+     spot.setSpotOuterAngle(20 * FastMath.DEG_TO_RAD);
+     spot.setSpotInnerAngle(15 * FastMath.DEG_TO_RAD);
+     spot.setDirection(new Vector3f(0, -1, 0));
+     spot.setPosition(new Vector3f(0, 4, 0));
+     rootNode.addLight(spot);
 
-    /** A white ambient light source. */
-    AmbientLight ambient = new AmbientLight();
-    ambient.setColor(ColorRGBA.White);
-    rootNode.addLight(ambient);
+
 
     /** A white, directional light source */
     DirectionalLight sun = new DirectionalLight();
@@ -90,7 +93,8 @@ public class EscapeScene extends Scene {
     rootNode.addLight(sun);
 
     addTurret();
-    addDesk();
+
+    //addDesk();
 
     addKnight1();
     addKnight2();
@@ -98,6 +102,8 @@ public class EscapeScene extends Scene {
     addSafe();
 
     // addButtons();
+    
+    createLight();
   }
 
   private void addSafe() {
@@ -132,13 +138,13 @@ public class EscapeScene extends Scene {
     rootNode.attachChild(knight2);
   }
 
-  private void addDesk() {
-    Spatial desk = assetManager.loadModel("Models/Desk/Desk.j3o");
-    desk.scale(1.2f);
-    desk.move(6.5f, -translationY + 0.2f, -9.5f);
-    rootNode.attachChild(desk);
-
-  }
+//  private void addDesk() {
+//    Spatial desk = assetManager.loadModel("Models/DeskLaptop/DeskLaptop.j3o");
+//    desk.scale(1.5f);
+//    desk.move(6.0f, -translationY + 0.2f, -8.9f);
+//    rootNode.attachChild(desk);
+//  }
+  
 
   private void addLamp() {
     Spatial lamp = assetManager.loadModel("Models/Petroleum_Lamp/Petroleum_Lamp.j3o");
@@ -178,9 +184,21 @@ public class EscapeScene extends Scene {
     wallTexture.setMagFilter(MagFilter.Nearest);
     wallTexture.setMinFilter(MinFilter.Trilinear);
     wallTexture.setAnisotropicFilter(16);
-
+    
+    
     Material wallMaterial = new Material(assetManager, materialPath);
     wallMaterial.setTexture("ColorMap", wallTexture);
+
+//    Material wallMaterial = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+//    wallMaterial.setBoolean("UseMaterialColors", true);
+//    wallMaterial.setBoolean("UseVertexColor", true);
+//    wallMaterial.setBoolean("VertexLighting", false);
+//    wallMaterial.setColor("Diffuse", ColorRGBA.White); // minimum material color
+//    wallMaterial.setColor("Specular",ColorRGBA.White); // for shininess
+//    wallMaterial.setFloat("Shininess", 0); // [1,128] for shininess
+//    // wallMaterial.getAdditionalRenderState().setFaceCullMode(FaceCullMode.Off);
+//    wallMaterial.setTexture("DiffuseMap", wallTexture);
+//    //wallMaterial.setTexture("ColorMap", wallTexture);
 
     // wall to the right of player spawn
     Geometry wall1 = new Geometry("wall-east", new Box(.1f, roomHeight, roomDepth));
@@ -191,7 +209,9 @@ public class EscapeScene extends Scene {
     // wall to the left of player spawn
     Geometry wall2 = new Geometry("wall-west", new Box(.1f, roomHeight, roomDepth));
     wall2.setMaterial(wallMaterial);
+    wall2.rotate(0,  -FastMath.PI, 0);
     wall2.move(roomWidth, translationY, 0);
+   
     addObject("wall-west", wall2);
 
     // wall in front of player

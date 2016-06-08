@@ -42,6 +42,8 @@ public abstract class Minigame {
   public abstract void update(float tpf);
   
   public abstract void handleEvent(EventObject event);
+  
+  public abstract String getName();
 
   
 }

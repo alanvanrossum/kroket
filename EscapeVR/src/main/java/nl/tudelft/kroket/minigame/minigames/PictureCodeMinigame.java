@@ -7,6 +7,8 @@ import java.util.EventObject;
 
 public class PictureCodeMinigame extends Minigame {
 
+  private static final String GAME_NAME = "A";
+  
   /** Current class, used as tag for logger. */
   private final String className = this.getClass().getSimpleName();
 
@@ -53,4 +55,8 @@ public class PictureCodeMinigame extends Minigame {
     // TODO Auto-generated method stub
   }
 
+  public String getName() {
+    return GAME_NAME;
+  }
+  
 }

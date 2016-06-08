@@ -57,13 +57,20 @@ public class MinigameManager implements EventListener {
    *          the minigame to be launched
    */
   public void launchGame(Minigame minigame) {
+
+    if (minigame == null) {
+      return;
+    }
+
     currentGame = minigame;
 
-    minigame.setClientThread(clientThread);
-    minigame.setHud(hud);
-    minigame.setScreenManager(screenManager);
-    minigame.setSceneManager(sceneManager);
-    minigame.setMinigameManager(this);
+    log.info(className, "Launching minigame " + currentGame.getClass().getSimpleName());
+
+    currentGame.setClientThread(clientThread);
+    currentGame.setHud(hud);
+    currentGame.setScreenManager(screenManager);
+    currentGame.setSceneManager(sceneManager);
+    currentGame.setMinigameManager(this);
 
     // start the minigame
     currentGame.start();
@@ -73,6 +80,10 @@ public class MinigameManager implements EventListener {
    * End the current minigame.
    */
   public void endGame() {
+
+    if (currentGame == null) {
+      return;
+    }
 
     // stop the current minigame
     currentGame.stop();
@@ -104,6 +115,10 @@ public class MinigameManager implements EventListener {
    */
   public Minigame getCurrent() {
     return currentGame;
+  }
+
+  public boolean gameActive() {
+    return getCurrent() != null;
   }
 
 }
