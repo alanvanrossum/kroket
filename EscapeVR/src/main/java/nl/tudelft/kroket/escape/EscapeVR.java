@@ -460,7 +460,7 @@ public class EscapeVR extends VRApplication implements EventListener {
         case "painting":
           clientThread.sendMessage("BEGIN[A]");
           break;
-        case "painting2"://"DeskLaptop-objnode":
+        case "DeskLaptop-objnode":
           clientThread.sendMessage("BEGIN[B]");
           break;
         case "fourbuttons2-objnode":
