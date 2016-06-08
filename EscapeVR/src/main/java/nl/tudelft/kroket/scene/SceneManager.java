@@ -128,11 +128,22 @@ public class SceneManager {
     return scenes;
   }
 
+  /**
+   * Adds new objects to the escape scene.
+   * @param state specifies which object.
+   */
   public void extendEscapeScene(String state) {
+    System.out.println("extend");
     switch (state) {
-    case "C":
-      ((EscapeScene) scenes.get("escape")).addButtons();
-      break;
+      case "C":
+        ((EscapeScene) scenes.get("escape")).addButtons();
+        break;
+      case "A":
+        ((EscapeScene) scenes.get("escape")).addOpenSafe();
+        System.out.println("in case a");
+        break;
+       default:
+        break;
     }
 
   }

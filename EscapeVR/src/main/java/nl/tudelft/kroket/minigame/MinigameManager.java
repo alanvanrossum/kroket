@@ -80,7 +80,6 @@ public class MinigameManager implements EventListener {
    * End the current minigame.
    */
   public void endGame() {
-
     if (currentGame == null) {
       return;
     }
