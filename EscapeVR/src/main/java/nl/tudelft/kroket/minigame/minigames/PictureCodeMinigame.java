@@ -47,7 +47,6 @@ public class PictureCodeMinigame extends Minigame {
   @Override
   public void update(float tpf) {
     // TODO Auto-generated method stub
-    
   }
 
   @Override

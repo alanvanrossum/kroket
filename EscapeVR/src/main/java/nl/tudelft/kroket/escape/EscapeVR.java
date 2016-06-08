@@ -26,6 +26,7 @@ import nl.tudelft.kroket.log.Logger.LogLevel;
 import nl.tudelft.kroket.minigame.MinigameManager;
 import nl.tudelft.kroket.minigame.minigames.ColorSequenceMinigame;
 import nl.tudelft.kroket.minigame.minigames.GyroscopeMinigame;
+import nl.tudelft.kroket.minigame.minigames.LockMinigame;
 import nl.tudelft.kroket.minigame.minigames.PictureCodeMinigame;
 import nl.tudelft.kroket.minigame.minigames.TapMinigame;
 import nl.tudelft.kroket.net.ClientThread;
@@ -47,7 +48,6 @@ import java.util.Arrays;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.util.List;
-import main.java.nl.tudelft.kroket.minigame.minigames.LockMinigame;
 
 /**
  * The EscapeVR class.
@@ -376,12 +376,12 @@ public class EscapeVR extends VRApplication implements EventListener {
               ColorSequenceMinigame colorGame = (ColorSequenceMinigame) mgManager.getCurrent();
               colorGame.parseColors(CommandParser.parseParams(line));
             }
-          } else if(action.equals("F")) {
-              if(mgManager.getCurrent() instanceof LockMinigame) {
-                  LockMinigame lockGame = (LockMinigame) mgManager.getCurrent();
-            
-              }
-          }
+          } 
+//          else if(action.equals("F")) {
+//              if(mgManager.getCurrent() instanceof LockMinigame) {
+//                  LockMinigame lockGame = (LockMinigame) mgManager.getCurrent();
+//              }
+//          }
 
         }
         break;

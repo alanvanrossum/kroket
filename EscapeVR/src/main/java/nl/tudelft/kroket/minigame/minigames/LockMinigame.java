@@ -1,16 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package main.java.nl.tudelft.kroket.minigame.minigames;
+package nl.tudelft.kroket.minigame.minigames;
 
-import java.util.EventObject;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.minigame.Minigame;
 
+import java.util.EventObject;
+
 /**
- *
- * @author Swift
+ * Class that handles the correct behaviour for the lock game.
+ * @author Team Kroket
  */
 public class LockMinigame extends Minigame {
 
