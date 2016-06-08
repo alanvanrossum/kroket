@@ -1,7 +1,5 @@
 package nl.tudelft.kroket;
 
-import javax.imageio.ImageIO;
-
 import com.jme3.system.AppSettings;
 
 import javafx.application.Application;
@@ -23,20 +21,10 @@ import javafx.stage.WindowEvent;
 import jmevr.app.VRApplication.PRECONFIG_PARAMETER;
 import nl.tudelft.kroket.escape.EscapeVR;
 
-import com.jme3.app.SimpleApplication;
-import com.jme3.asset.AssetManager;
-import com.jme3.font.BitmapFont;
-import com.jme3.font.BitmapText;
-import com.jme3.font.Rectangle;
-import com.jme3.math.ColorRGBA;
-import com.jme3.scene.Node;
-import com.jme3.ui.Picture;
-
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.concurrent.Callable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import javax.imageio.ImageIO;
 
 /**
  * Entry point for VR application. Launches a simple dialog window to prompt the user for name and

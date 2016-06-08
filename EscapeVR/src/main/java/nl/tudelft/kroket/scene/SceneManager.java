@@ -140,7 +140,6 @@ public class SceneManager {
         break;
       case "A":
         ((EscapeScene) scenes.get("escape")).addOpenSafe();
-        System.out.println("in case a");
         break;
        default:
         break;

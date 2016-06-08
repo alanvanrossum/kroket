@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.List;
 
+/**
+ * This class contains the logic of the second minigame (B) of the VR player.
+ * 
+ * @author Team Kroket
+ */
 public class TapMinigame extends Minigame {
 
   private static final String GAME_NAME = "B";
@@ -108,9 +113,8 @@ public class TapMinigame extends Minigame {
     log.info(className, "Minigame B started.");
 
     screenManager.getScreen("controller").show();
-    hud.setCenterText("Minigame B started!", 10);
     hud.setCenterText(
-        "press the buttons in order\nspecified by the android user\nthere will be multiple sequences",
+        "Hack the computer by enter the colorsequences\nyou will receive from your fellow CIA agents.\nUse the colored buttons on your controller!",
         20);
     seqState = seqState.sequenceOne;
     buttonList.clear();
@@ -124,7 +128,7 @@ public class TapMinigame extends Minigame {
   @Override
   public void stop() {
     log.info(className, "Minigame B completed.");
-    hud.setCenterText("Minigame B complete!", 10);
+    hud.setCenterText("Great job!\nWait... I think I saw something appear on that wall!", 10);
     sceneManager.extendEscapeScene("C");
     screenManager.getScreen("controller").hide();
   }
@@ -205,6 +209,9 @@ public class TapMinigame extends Minigame {
     
   }
 
+  /**
+   * Return the game of the game.
+   */
   public String getName() {
     return GAME_NAME;
   }

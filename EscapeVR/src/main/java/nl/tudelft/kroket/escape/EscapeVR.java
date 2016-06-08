@@ -83,6 +83,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   private ScreenManager screenManager;
   private HeadUpDisplay hud;
 
+  /** The manager for the minigames */
   private MinigameManager mgManager;
 
   /** Thread reference used for the TCP connection. */
@@ -93,7 +94,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   /** List of all rigid objects. */
   private List<String> rigidObjects = new ArrayList<String>(Arrays.asList("safe-objnode",
-      "knight1-geom-0", "knight2-geom-0", "Desk-objnode"));
+      "knight1-geom-0", "knight2-geom-0", "DeskLaptop-objnode", "safeopen-objnode"));
 
   // private CollisionHandler collisionHandler;
   private MovementHandler movementHandler;
@@ -102,12 +103,17 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   private boolean miniGameBInitiated = false;
 
+  /**
+   * Initialize the stateManager.
+   */
   private void initStateManager() {
-    System.out.println("blah");
     stateManager = new StateManager(audioManager, inputHandler, sceneManager, screenManager,
         initialState);
   }
 
+  /**
+   * Initialize the audio files.
+   */
   private void initAudioManager() {
     audioManager = new AudioManager(getAssetManager(), rootNode, "Sound/");
     audioManager.loadFile("waiting", "Soundtrack/alone.wav", false, true, 0.75f);
@@ -120,15 +126,24 @@ public class EscapeVR extends VRApplication implements EventListener {
         0.5f);
   }
 
+  /**
+   * Initialize the inputHandler.
+   */
   private void initInputHandler() {
     inputHandler = new InputHandler(getInputManager(), eventManager);
   }
 
+  /**
+   * Initialize the sceneManager.
+   */
   private void initSceneManager() {
     sceneManager = new SceneManager(getAssetManager(), rootNode, getViewPort());
     sceneManager.loadScene("escape", EscapeScene.class);
   }
 
+  /**
+   * Initialize the screenManager.
+   */
   private void initScreenManager() {
     Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
 
@@ -141,11 +156,17 @@ public class EscapeVR extends VRApplication implements EventListener {
     screenManager.loadScreen("controller", ControllerScreen.class);
   }
 
+  /**
+   * Initialize the head up display.
+   */
   private void initHeadUpDisplay() {
     Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
     hud = new HeadUpDisplay(getAssetManager(), guiNode, guiCanvasSize);
   }
 
+  /**
+   * Initialize the network client.
+   */
   private void initNetworkClient() {
     clientThread = new ClientThread(this, hud);
     clientThread.setRemote(remoteHost, PORTNUM);
@@ -318,6 +339,11 @@ public class EscapeVR extends VRApplication implements EventListener {
     mgManager.update(tpf);
   }
 
+  /**
+   * Starts a minigame.
+   * 
+   * @param gameName the name of the game to be started.
+   */
   private void startGame(String gameName) {
 
     log.info(className, "Trying to start game " + gameName);
@@ -430,7 +456,7 @@ public class EscapeVR extends VRApplication implements EventListener {
         case "portalturret-geom-0":
           audioManager.getNode("turret").play();
           break;
-        case "door":
+        case "door-geom-0":
           log.info(className, "Muhahaha???");
           // Play spooky muhaha sound when player interacts with door
           audioManager.getNode("muhaha").play();
@@ -439,15 +465,15 @@ public class EscapeVR extends VRApplication implements EventListener {
         case "painting":
           clientThread.sendMessage("BEGIN[A]");
           break;
-          //case "painting2":
         case "DeskLaptop-objnode":
           clientThread.sendMessage("BEGIN[B]");
-  
           break;
         case "fourbuttons2-objnode":
-  
           clientThread.sendMessage("BEGIN[C]");
-  
+          break;
+        case "safeopen-objnode":
+          hud.setCenterText("You found login data for the computer!");
+          clientThread.sendMessage("DONE[A][ADVANCE]");
           break;
         default:
           break;

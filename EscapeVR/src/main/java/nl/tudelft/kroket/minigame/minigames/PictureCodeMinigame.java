@@ -5,6 +5,11 @@ import nl.tudelft.kroket.minigame.Minigame;
 
 import java.util.EventObject;
 
+/**
+ * This class contains the logic of the first minigame (A) of the VR player.
+ * 
+ * @author Team Kroket
+ */
 public class PictureCodeMinigame extends Minigame {
 
   private static final String GAME_NAME = "A";
@@ -32,7 +37,7 @@ public class PictureCodeMinigame extends Minigame {
   @Override
   public void start() {
     log.info(className, "Minigame A started.");
-    hud.setCenterText("Minigame A started!", 10);
+    hud.setCenterText("Try to decipher the code by studying the painting!", 10);
   }
 
   /**
@@ -41,8 +46,7 @@ public class PictureCodeMinigame extends Minigame {
   @Override
   public void stop() {
     log.info(className, "Minigame A completed.");
-    hud.setCenterText("Minigame A complete, try the code on the safe!", 10);
-    System.out.println("stop");
+    hud.setCenterText("Great! You cracked the code to open the safe!", 10);
     sceneManager.extendEscapeScene("A");
   }
 
@@ -56,6 +60,9 @@ public class PictureCodeMinigame extends Minigame {
     // TODO Auto-generated method stub
   }
 
+  /**
+   * Returns the name of the game.
+   */
   public String getName() {
     return GAME_NAME;
   }
