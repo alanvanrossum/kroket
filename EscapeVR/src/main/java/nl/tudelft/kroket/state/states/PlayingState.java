@@ -125,8 +125,8 @@ public class PlayingState extends GameState {
       System.out.println("Firing timeoutEvent...");
       timeoutHit = true;
       // prevent firing event multiple times
-      em.addEvent(new TimeoutEvent(this));
-      em.addEvent(new GameLostEvent(this));
+//      em.addEvent(new TimeoutEvent(this));
+//      em.addEvent(new GameLostEvent(this));
 
     }
 
