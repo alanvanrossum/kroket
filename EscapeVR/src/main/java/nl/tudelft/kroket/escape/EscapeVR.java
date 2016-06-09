@@ -25,10 +25,14 @@ import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.log.Logger.LogLevel;
 import nl.tudelft.kroket.minigame.MinigameManager;
 import nl.tudelft.kroket.minigame.minigames.ColorSequenceMinigame;
+
+import nl.tudelft.kroket.minigame.minigames.LockMinigame;
+
 import nl.tudelft.kroket.minigame.minigames.PictureCodeMinigame;
 import nl.tudelft.kroket.minigame.minigames.TapMinigame;
 import nl.tudelft.kroket.net.ClientThread;
 import nl.tudelft.kroket.net.protocol.CommandParser;
+import nl.tudelft.kroket.scene.Scene;
 import nl.tudelft.kroket.scene.SceneManager;
 import nl.tudelft.kroket.scene.scenes.EscapeScene;
 import nl.tudelft.kroket.screen.HeadUpDisplay;
@@ -81,7 +85,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   private ScreenManager screenManager;
   private HeadUpDisplay hud;
 
-  /** The manager for the minigames */
+  /** The manager for the minigames. */
   private MinigameManager mgManager;
 
   /** Thread reference used for the TCP connection. */
@@ -125,12 +129,12 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     audioManager.loadFile("click", "ui/portal2/back.wav", false, false, 0.8f);
     audioManager.loadFile("door", "ui/portal2/default_locked.wav", false, false, 0.8f);
-   
-    audioManager.loadFile("error", "ui/portal2/klaxon1.wav", false, false, 0.8f); 
-    audioManager.loadFile("gamecomplete", "ui/portal2/startup_02_01.wav", false, false, 0.8f); 
-    audioManager.loadFile("gamebegin", "ui/portal2/p2_store_ui_checkout_01.wav", false, false, 0.8f);
-    
-    
+
+    audioManager.loadFile("error", "ui/portal2/klaxon1.wav", false, false, 0.8f);
+    audioManager.loadFile("gamecomplete", "ui/portal2/startup_02_01.wav", false, false, 0.8f);
+    audioManager
+        .loadFile("gamebegin", "ui/portal2/p2_store_ui_checkout_01.wav", false, false, 0.8f);
+
   }
 
   /**
@@ -366,6 +370,10 @@ public class EscapeVR extends VRApplication implements EventListener {
     case "C":
       mgManager.launchGame(ColorSequenceMinigame.getInstance());
       break;
+    case "D":
+      mgManager.launchGame(LockMinigame.getInstance());
+      registerObjects();
+      break;
     default:
       log.error(className, "Unknown game: " + gameName);
       audioManager.play("error");
@@ -398,7 +406,7 @@ public class EscapeVR extends VRApplication implements EventListener {
           String action = command.get("param_0");
 
           startGame(action);
-          
+
           audioManager.play("gamebegin");
 
           if (action.equals("B")) {
@@ -407,13 +415,13 @@ public class EscapeVR extends VRApplication implements EventListener {
               TapMinigame tapGame = (TapMinigame) mgManager.getCurrent();
               tapGame.parseButtons(CommandParser.parseParams(line));
             }
+
           } else if (action.equals("C")) {
             if (mgManager.getCurrent() instanceof ColorSequenceMinigame) {
               ColorSequenceMinigame colorGame = (ColorSequenceMinigame) mgManager.getCurrent();
               colorGame.parseColors(CommandParser.parseParams(line));
             }
           }
-
         }
         break;
       case "DONE":
@@ -421,7 +429,7 @@ public class EscapeVR extends VRApplication implements EventListener {
           String action = command.get("param_0");
 
           if (mgManager.isActive(action)) {
-          //if (mgManager.gameActive() && action.equals(mgManager.getCurrent().getName())) {
+            // if (mgManager.gameActive() && action.equals(mgManager.getCurrent().getName())) {
             audioManager.play("gamecomplete");
             mgManager.endGame();
           }
@@ -459,6 +467,12 @@ public class EscapeVR extends VRApplication implements EventListener {
 
       String objectName = interactionEvent.getName();
 
+      EscapeScene escapeScene = null;
+      Scene scene = sceneManager.getScene("escape");
+      if (scene instanceof EscapeScene) {
+        escapeScene = ((EscapeScene) sceneManager.getScene("escape"));
+      }
+
       // clientThread.sendMessage(String.format("INTERACT[%s]", objectName));
 
       switch (objectName) {
@@ -475,10 +489,10 @@ public class EscapeVR extends VRApplication implements EventListener {
           audioManager.getNode("muhaha").play();
           hud.setCenterText("Muhahaha! You will never escape!", 5);
         }
+        clientThread.sendMessage("BEGIN[D]");
         break;
       case "painting":
         clientThread.sendMessage("BEGIN[A]");
-        
         break;
       case "DeskLaptop-objnode":
         clientThread.sendMessage("BEGIN[B]");
@@ -490,11 +504,29 @@ public class EscapeVR extends VRApplication implements EventListener {
         hud.setCenterText("You found login data for the computer!");
         clientThread.sendMessage("DONE[A][ADVANCE]");
         break;
+      case "D1":
+        escapeScene.remove("D1");
+        escapeScene.addCode13("Textures/Painting/13.jpg", "D_13");
+        escapeScene.addCode37("Textures/Painting/questionmark.jpg", "D2");
+        registerObjects();
+        break;
+      case "D2":
+        escapeScene.remove("D2");
+        escapeScene.addCode37("Textures/Painting/37.jpg", "D_37");
+        escapeScene.addCode21("Textures/Painting/questionmark.jpg", "D3");
+        registerObjects();
+        break;
+      case "D3":
+        escapeScene.remove("D3");
+        escapeScene.addCode21("Textures/Painting/21.jpg", "D_21");
+        registerObjects();
+        break;
       default:
         if (!mgManager.gameActive()) {
           audioManager.getNode("click").playInstance();
         }
         break;
+
       }
 
     }
