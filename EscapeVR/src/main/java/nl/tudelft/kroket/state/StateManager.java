@@ -1,9 +1,11 @@
 package nl.tudelft.kroket.state;
 
 import nl.tudelft.kroket.audio.AudioManager;
+import nl.tudelft.kroket.event.EventManager;
 import nl.tudelft.kroket.input.InputHandler;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.scene.SceneManager;
+import nl.tudelft.kroket.screen.HeadUpDisplay;
 import nl.tudelft.kroket.screen.ScreenManager;
 
 /**
@@ -28,6 +30,10 @@ public class StateManager {
   private SceneManager sceneManager;
   private ScreenManager screenManager;
 
+  private HeadUpDisplay headupDisplay;
+
+  private EventManager eventManager;
+
   /**
    * StateManager constructor.
    * 
@@ -43,11 +49,14 @@ public class StateManager {
    *          the inital state
    */
   public StateManager(AudioManager audioManager, InputHandler inputHandler,
-      SceneManager sceneManager, ScreenManager screenManager, GameState initialState) {
+      SceneManager sceneManager, ScreenManager screenManager, HeadUpDisplay hud,
+      EventManager eventManager, GameState initialState) {
     this.audioManager = audioManager;
     this.inputHandler = inputHandler;
     this.sceneManager = sceneManager;
     this.screenManager = screenManager;
+    this.headupDisplay = hud;
+    this.eventManager = eventManager;
 
     this.currentState = initialState;
 
@@ -64,7 +73,7 @@ public class StateManager {
 
     screenManager.update(tpf);
 
-    currentState.update(audioManager, inputHandler, screenManager, tpf);
+    currentState.update(audioManager, inputHandler, screenManager, headupDisplay, eventManager, tpf);
   }
 
   /**
@@ -127,8 +136,8 @@ public class StateManager {
       return;
     }
 
-    log.debug(className, String.format("Switching state from %s to %s",
-        oldState.getClass().getSimpleName(), newState.getClass().getSimpleName()));
+    log.debug(className, String.format("Switching state from %s to %s", oldState.getClass()
+        .getSimpleName(), newState.getClass().getSimpleName()));
 
     // first, stop the previous/old state
     stopState(oldState);

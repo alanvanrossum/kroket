@@ -1,8 +1,6 @@
 package nl.tudelft.kroket.screen.screens;
 
-import nl.tudelft.kroket.escape.Settings;
 import nl.tudelft.kroket.screen.Screen;
-
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
 
@@ -12,13 +10,10 @@ import com.jme3.scene.Node;
  * @author Team Kroket
  *
  */
-public class SpookyScreen extends Screen {
+public class GameoverScreen extends Screen {
 
-  private static final String name = "spooky";
-
-  private long displayTime = Settings.SPOOKY_DISPLAY_TIME;
-
-  private long hideTime = 0;
+  private static final String name = "lobby";
+  
 
   /**
    * Constructor for LobbyScreen overlay object.
@@ -32,31 +27,30 @@ public class SpookyScreen extends Screen {
    * @param height
    *          the height of the overlay
    */
-  public SpookyScreen(AssetManager assetManager, Node guiNode, float width, float height) {
+  public GameoverScreen(AssetManager assetManager, Node guiNode, float width, float height) {
     super(name, assetManager, guiNode);
 
-    overlay = loadImage("overlay/spooky_face.png", width, height);
-
+    overlay = loadImage("overlay/gameover.png", width, height);
   }
 
   /**
    * Show the overlay.
    */
-  @Override
   public void show() {
-
-    //System.out.println("spookyScreen.show()");
-
-    hideTime = System.currentTimeMillis() + displayTime;
-
     guiNode.attachChild(overlay);
   }
 
-  public void update() {
+  /**
+   * Hide the overlay.
+   */
 
-    if (System.currentTimeMillis() > hideTime) {
-      hide();
-    }
+  public void hide() {
+    guiNode.detachChild(overlay);
   }
 
+  @Override
+  public void update() {
+    // TODO Auto-generated method stub
+    
+  }
 }

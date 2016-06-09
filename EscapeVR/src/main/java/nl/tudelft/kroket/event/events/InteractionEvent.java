@@ -2,6 +2,7 @@ package nl.tudelft.kroket.event.events;
 
 import java.util.EventObject;
 
+import nl.tudelft.kroket.escape.Settings;
 import jmevr.app.VRApplication;
 
 import com.jme3.scene.Spatial;
@@ -9,7 +10,7 @@ import com.jme3.scene.Spatial;
 @SuppressWarnings("serial")
 public class InteractionEvent extends EventObject {
 
-  private static final String INTERACTION_BUTTON = "Button A";
+ 
 
   String name;
 
@@ -34,7 +35,7 @@ public class InteractionEvent extends EventObject {
     float distance = VRApplication.getFinalObserverPosition()
         .distance(object.getWorldBound().getCenter());
 
-    return (distance <= range && button.equals(INTERACTION_BUTTON));
+    return (distance <= range && button.equals(Settings.INTERACTION_BUTTON));
   }
 
   /**

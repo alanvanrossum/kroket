@@ -3,7 +3,6 @@ package nl.tudelft.kroket.escape;
 import com.jme3.audio.AudioNode;
 import com.jme3.material.Material;
 import com.jme3.math.Vector2f;
-import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
@@ -16,7 +15,10 @@ import jmevr.util.VRGuiManager.POSITIONING_MODE;
 import nl.tudelft.kroket.audio.AudioManager;
 import nl.tudelft.kroket.event.EventListener;
 import nl.tudelft.kroket.event.EventManager;
+import nl.tudelft.kroket.event.events.GameLostEvent;
+import nl.tudelft.kroket.event.events.GameStartEvent;
 import nl.tudelft.kroket.event.events.InteractionEvent;
+import nl.tudelft.kroket.event.events.TimeoutEvent;
 import nl.tudelft.kroket.input.InputHandler;
 import nl.tudelft.kroket.input.interaction.CollisionHandler;
 import nl.tudelft.kroket.input.interaction.MovementHandler;
@@ -25,20 +27,22 @@ import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.log.Logger.LogLevel;
 import nl.tudelft.kroket.minigame.MinigameManager;
 import nl.tudelft.kroket.minigame.minigames.ColorSequenceMinigame;
-import nl.tudelft.kroket.minigame.minigames.GyroscopeMinigame;
 import nl.tudelft.kroket.minigame.minigames.PictureCodeMinigame;
 import nl.tudelft.kroket.minigame.minigames.TapMinigame;
 import nl.tudelft.kroket.net.ClientThread;
 import nl.tudelft.kroket.net.protocol.CommandParser;
+import nl.tudelft.kroket.net.protocol.Protocol;
 import nl.tudelft.kroket.scene.SceneManager;
 import nl.tudelft.kroket.scene.scenes.EscapeScene;
 import nl.tudelft.kroket.screen.HeadUpDisplay;
 import nl.tudelft.kroket.screen.ScreenManager;
 import nl.tudelft.kroket.screen.screens.ControllerScreen;
+import nl.tudelft.kroket.screen.screens.GameoverScreen;
 import nl.tudelft.kroket.screen.screens.LobbyScreen;
 import nl.tudelft.kroket.screen.screens.SpookyScreen;
 import nl.tudelft.kroket.state.GameState;
 import nl.tudelft.kroket.state.StateManager;
+import nl.tudelft.kroket.state.states.GameLostState;
 import nl.tudelft.kroket.state.states.LobbyState;
 import nl.tudelft.kroket.state.states.PlayingState;
 
@@ -53,19 +57,11 @@ import java.util.List;
  */
 public class EscapeVR extends VRApplication implements EventListener {
 
-  /** Debug flag. */
-  private final boolean DEBUG = false;
-
-  private static final Vector3f spawnPosition = new Vector3f(0, 0, 0);
-
   /** Current class, used as tag for logger. */
   private final String className = this.getClass().getSimpleName();
 
   /** Singleton logger instance. */
   private Logger log = Logger.getInstance();
-
-  /** Portnumber of the gamehost. */
-  private static int PORTNUM = 1234;
 
   /** Observer object. */
   Spatial observer;
@@ -100,14 +96,14 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   private GameState currentState;
 
-  private boolean miniGameBInitiated = false;
+  private int timeLimit = Settings.TIMELIMIT;
 
   /**
    * Initialize the stateManager.
    */
   private void initStateManager() {
-    stateManager = new StateManager(audioManager, inputHandler, sceneManager, screenManager,
-        initialState);
+    stateManager = new StateManager(audioManager, inputHandler, sceneManager, screenManager, hud,
+        eventManager, initialState);
   }
 
   /**
@@ -116,6 +112,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   private void initAudioManager() {
     audioManager = new AudioManager(getAssetManager(), rootNode, "Sound/");
     audioManager.loadFile("waiting", "Soundtrack/alone.wav", false, true, 0.75f);
+    audioManager.loadFile("alone", "Soundtrack/alone.wav", false, true, 0.75f);
     audioManager.loadFile("lobby", "Soundtrack/lobby16.wav", false, true, 0.9f);
     audioManager.loadFile("ambient", "Soundtrack/ambient16.wav", false, true, 0.75f);
     audioManager.loadFile("welcome", "Voice/intro2.wav", false, false, 0.5f);
@@ -153,6 +150,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     screenManager.loadScreen("lobby", LobbyScreen.class);
     screenManager.loadScreen("spooky", SpookyScreen.class);
     screenManager.loadScreen("controller", ControllerScreen.class);
+    screenManager.loadScreen("gameover", GameoverScreen.class);
   }
 
   /**
@@ -161,6 +159,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   private void initHeadUpDisplay() {
     Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
     hud = new HeadUpDisplay(getAssetManager(), guiNode, guiCanvasSize);
+
   }
 
   /**
@@ -168,7 +167,7 @@ public class EscapeVR extends VRApplication implements EventListener {
    */
   private void initNetworkClient() {
     clientThread = new ClientThread(this, hud);
-    clientThread.setRemote(remoteHost, PORTNUM);
+    clientThread.setRemote(remoteHost, Settings.PORTNUM);
     clientThread.setPlayerName(playerName);
     clientThread.start();
   }
@@ -202,7 +201,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     VRGuiManager.setGuiScale(0.4f);
     VRGuiManager.setPositioningElasticity(10f);
 
-    observer.setLocalTranslation(spawnPosition);
+    observer.setLocalTranslation(Settings.spawnPosition);
 
     VRApplication.setObserver(observer);
     rootNode.attachChild(observer);
@@ -210,6 +209,8 @@ public class EscapeVR extends VRApplication implements EventListener {
     // do not use magic VR mouse cusor (same usage as non-VR mouse cursor)
     getInputManager().setCursorVisible(true);
     // observer.setModelBound(bound);
+
+    eventManager = new EventManager(observer, rootNode);
 
     initHeadUpDisplay();
     initSceneManager();
@@ -221,7 +222,6 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     movementHandler = new MovementHandler(observer, rootNode);
 
-    eventManager = new EventManager(observer, rootNode);
     inputHandler.registerMappings(new RotationHandler(observer), "left", "right", "lookup",
         "lookdown", "tiltleft", "tiltright");
     inputHandler.registerMappings(movementHandler, "forward", "back");
@@ -235,10 +235,9 @@ public class EscapeVR extends VRApplication implements EventListener {
     mgManager = new MinigameManager(hud, clientThread, screenManager, sceneManager);
     eventManager.addListener(mgManager);
 
-    if (DEBUG) {
-      // when in debug mode, force the game to
-      // playing state
-      setGameState(PlayingState.getInstance());
+    if (Settings.DEBUG) {
+      // when in debug mode, force the game to start
+      eventManager.addEvent(new GameStartEvent(this));
       log.setLevel(LogLevel.ALL);
     } else {
       log.setLevel(LogLevel.INFO);
@@ -246,26 +245,27 @@ public class EscapeVR extends VRApplication implements EventListener {
     }
   }
 
-  /**
-   * Registers all objects so they can be interacted with.
-   */
-  private void registerInteractionObjects() {
-    List<Spatial> objects = rootNode.getChildren();
-    for (Spatial object : objects) {
-
-      if (object == null) {
-        continue;
-      }
-
-      System.out.println(object.toString());
-
-      if (object instanceof Geometry) {
-        eventManager.registerObjectInteractionTrigger(object.getName(), 4f);
-      } else if (object instanceof Node) {
-        eventManager.registerObjectInteractionTrigger(object.getName(), 4f);
-      }
-    }
-  }
+  // /**
+  // * Registers all objects so they can be interacted with.
+  // */
+  // private void registerInteractionObjects() {
+  // List<Spatial> objects = rootNode.getChildren();
+  // for (Spatial object : objects) {
+  //
+  // if (object == null) {
+  // continue;
+  // }
+  //
+  // System.out.println(object.toString());
+  //
+  // if (object instanceof Geometry) {
+  // eventManager.registerObjectInteractionTrigger(object.getName(), 4f);
+  // } else if (object instanceof Node) {
+  // eventManager.registerObjectInteractionTrigger(object.getName(), 4f);
+  // }
+  // }
+  // }
+  // deze methode mag weg van mij - Jochem
 
   /**
    * Set the current game state.
@@ -333,6 +333,16 @@ public class EscapeVR extends VRApplication implements EventListener {
     if (stateManager.getCurrentState() != currentState) {
       stateManager.setGameState(currentState);
       registerObjects();
+
+      log.info(className, "Current state is "
+          + stateManager.getCurrentState().getClass().getSimpleName());
+
+      if (stateManager.getCurrentState() instanceof PlayingState) {
+
+        log.info(className, "Forcing timelimit update...");
+        PlayingState playingState = (PlayingState) stateManager.getCurrentState();
+        playingState.setTimeLimit(timeLimit);
+      }
     }
 
     mgManager.update(tpf);
@@ -341,9 +351,10 @@ public class EscapeVR extends VRApplication implements EventListener {
   /**
    * Starts a minigame.
    * 
-   * @param gameName the name of the game to be started.
+   * @param gameName
+   *          the name of the game to be started.
    */
-  private void startGame(String gameName) {
+  private void startMinigame(String gameName) {
 
     log.info(className, "Trying to start game " + gameName);
 
@@ -363,6 +374,36 @@ public class EscapeVR extends VRApplication implements EventListener {
     }
   }
 
+  private void startGame() {
+
+    log.info(className, "startGame()");
+
+    registerObjects();
+    setGameState(PlayingState.getInstance());
+    hud.setCenterText("");
+
+  }
+
+  private void setTimeLimit(int seconds) {
+    if (stateManager.getCurrentState() == null) {
+      log.error(className, "currentState == null");
+    } else {
+
+      log.info(className, "setTimeLimit: Current state is "
+          + stateManager.getCurrentState().getClass().getSimpleName());
+
+      if (stateManager.getCurrentState() instanceof PlayingState) {
+        log.info(className, "Updating timelimit...");
+        PlayingState playingState = (PlayingState) stateManager.getCurrentState();
+        playingState.setTimeLimit(seconds);
+      } else {
+        log.error(className, "Could not update timelimit (invalid gamestate)");
+
+      }
+    }
+
+  }
+
   /**
    * Process remote input.
    * 
@@ -377,46 +418,57 @@ public class EscapeVR extends VRApplication implements EventListener {
     if (command.containsKey("command")) {
 
       switch (command.get("command")) {
-        case "START":
-          registerObjects();
-          setGameState(PlayingState.getInstance());
-          hud.setCenterText("");
-          break;
-  
-        case "BEGIN":
-          if (command.containsKey("param_0")) {
-            String action = command.get("param_0");
-  
-            startGame(action);
-  
-            if (action.equals("B")) {
-  
-              if (mgManager.getCurrent() instanceof TapMinigame) {
-                TapMinigame tapGame = (TapMinigame) mgManager.getCurrent();
-                tapGame.parseButtons(CommandParser.parseParams(line));
-              }
-            } else if (action.equals("C")) {
-              if (mgManager.getCurrent() instanceof ColorSequenceMinigame) {
-                ColorSequenceMinigame colorGame = (ColorSequenceMinigame) mgManager.getCurrent();
-                colorGame.parseColors(CommandParser.parseParams(line));
-              }
+      case Protocol.COMMAND_START:
+        eventManager.addEvent(new GameStartEvent(this));
+        break;
+
+      case Protocol.COMMAND_BEGIN:
+        if (command.containsKey("param_0")) {
+          String action = command.get("param_0");
+
+          startMinigame(action);
+
+          if (action.equals("B")) {
+
+            if (mgManager.getCurrent() instanceof TapMinigame) {
+              TapMinigame tapGame = (TapMinigame) mgManager.getCurrent();
+              tapGame.parseButtons(CommandParser.parseParams(line));
             }
-  
-          }
-          break;
-        case "DONE":
-          if (command.containsKey("param_0")) {
-            String action = command.get("param_0");
-  
-            if (mgManager.gameActive() && action.equals(mgManager.getCurrent().getName())) {
-              mgManager.endGame();
+          } else if (action.equals("C")) {
+            if (mgManager.getCurrent() instanceof ColorSequenceMinigame) {
+              ColorSequenceMinigame colorGame = (ColorSequenceMinigame) mgManager.getCurrent();
+              colorGame.parseColors(CommandParser.parseParams(line));
             }
-  
           }
-          registerObjects();
-          break;
-        default:
-          hud.setCenterText(line, 20);
+
+        }
+        break;
+      case Protocol.COMMAND_DONE:
+        if (command.containsKey("param_0")) {
+          String action = command.get("param_0");
+
+          if (mgManager.gameActive() && action.equals(mgManager.getCurrent().getName())) {
+            mgManager.endGame();
+          }
+
+        }
+        registerObjects();
+        break;
+
+      case Protocol.COMMAND_TIMELIMIT:
+        if (command.containsKey("param_0")) {
+          String parameter = command.get("param_0");
+          if (!parameter.isEmpty()) {
+            setTimeLimit(Integer.parseInt(parameter));
+            timeLimit = Integer.parseInt(parameter);
+          }
+        }
+        break;
+
+      case Protocol.COMMAND_GAMEOVER:
+        eventManager.addEvent(new GameLostEvent(this));
+      default:
+        hud.setCenterText(line, 20);
 
       }
     }
@@ -438,6 +490,25 @@ public class EscapeVR extends VRApplication implements EventListener {
   @Override
   public void handleEvent(EventObject ev) {
 
+    log.info(className, "Event received: " + ev.toString());
+
+    if (ev instanceof TimeoutEvent) {
+      log.info(className, "TimeoutEvent received");
+
+      // yeah this is kinda weird but I dont want to keep the behaviour for these events seperated
+      setGameState(GameLostState.getInstance());
+
+    }
+
+    else if (ev instanceof GameStartEvent) {
+      startGame();
+    }
+
+    else if (ev instanceof GameLostEvent) {
+      log.info(className, "GameLostEvent received");
+      setGameState(GameLostState.getInstance());
+    }
+
     if (ev instanceof InteractionEvent) {
       InteractionEvent interactionEvent = (InteractionEvent) ev;
 
@@ -448,30 +519,33 @@ public class EscapeVR extends VRApplication implements EventListener {
       // clientThread.sendMessage(String.format("INTERACT[%s]", objectName));
 
       switch (objectName) {
-        case "portalturret-geom-0":
-          audioManager.getNode("turret").play();
-          break;
-        case "door-geom-0":
-          log.info(className, "Muhahaha???");
-          // Play spooky muhaha sound when player interacts with door
-          audioManager.getNode("muhaha").play();
-          hud.setCenterText("Muhahaha! You will never escape!", 5);
-          break;
-        case "painting":
-          clientThread.sendMessage("BEGIN[A]");
-          break;
-        case "DeskLaptop-objnode":
-          clientThread.sendMessage("BEGIN[B]");
-          break;
-        case "fourbuttons2-objnode":
-          clientThread.sendMessage("BEGIN[C]");
-          break;
-        case "safeopen-objnode":
-          hud.setCenterText("You found login data for the computer!");
-          clientThread.sendMessage("DONE[A][ADVANCE]");
-          break;
-        default:
-          break;
+
+      // zou het niet handig zijn om deze namen in een lijst te zetten ofzo, een lijstje met globals
+      // oid?
+      case "portalturret-geom-0":
+        audioManager.getNode("turret").play();
+        break;
+      case "door-geom-0":
+        log.info(className, "Muhahaha???");
+        // Play spooky muhaha sound when player interacts with door
+        audioManager.getNode("muhaha").play();
+        hud.setCenterText("Muhahaha! You will never escape!", 5);
+        break;
+      case "painting":
+        clientThread.sendMessage("BEGIN[A]");
+        break;
+      case "DeskLaptop-objnode":
+        clientThread.sendMessage("BEGIN[B]");
+        break;
+      case "fourbuttons2-objnode":
+        clientThread.sendMessage("BEGIN[C]");
+        break;
+      case "safeopen-objnode":
+        hud.setCenterText("You found login data for the computer!");
+        clientThread.sendMessage("DONE[A][ADVANCE]");
+        break;
+      default:
+        break;
       }
 
     }
