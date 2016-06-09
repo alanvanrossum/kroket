@@ -42,11 +42,13 @@ import nl.tudelft.kroket.screen.HeadUpDisplay;
 import nl.tudelft.kroket.screen.ScreenManager;
 import nl.tudelft.kroket.screen.screens.ControllerScreen;
 import nl.tudelft.kroket.screen.screens.GameoverScreen;
+import nl.tudelft.kroket.screen.screens.GamewonScreen;
 import nl.tudelft.kroket.screen.screens.LobbyScreen;
 import nl.tudelft.kroket.screen.screens.SpookyScreen;
 import nl.tudelft.kroket.state.GameState;
 import nl.tudelft.kroket.state.StateManager;
 import nl.tudelft.kroket.state.states.GameLostState;
+import nl.tudelft.kroket.state.states.GameWonState;
 import nl.tudelft.kroket.state.states.LobbyState;
 import nl.tudelft.kroket.state.states.PlayingState;
 
@@ -164,6 +166,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     screenManager.loadScreen("spooky", SpookyScreen.class);
     screenManager.loadScreen("controller", ControllerScreen.class);
     screenManager.loadScreen("gameover", GameoverScreen.class);
+    screenManager.loadScreen("gamewon", GamewonScreen.class);
   }
 
   /**
@@ -474,6 +477,7 @@ public class EscapeVR extends VRApplication implements EventListener {
         break;
       case Protocol.COMMAND_GAMEWON:
         eventManager.addEvent(new GameWonEvent(this));
+        hud.setCenterText("");
         hud.setTimerText("");
         break;
       default:
@@ -510,7 +514,12 @@ public class EscapeVR extends VRApplication implements EventListener {
 
       // yeah this is kinda weird but I dont want to keep the behaviour for these events seperated
       setGameState(GameLostState.getInstance());
+    }
+    
+    else if (ev instanceof GameWonEvent) {
+      log.info(className, "TimeoutEvent received");
 
+      setGameState(GameWonState.getInstance());
     }
 
     else if (ev instanceof GameStartEvent) {
