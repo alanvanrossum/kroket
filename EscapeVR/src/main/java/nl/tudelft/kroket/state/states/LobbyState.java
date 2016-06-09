@@ -1,13 +1,15 @@
 package nl.tudelft.kroket.state.states;
 
 import nl.tudelft.kroket.audio.AudioManager;
+import nl.tudelft.kroket.event.EventManager;
 import nl.tudelft.kroket.input.InputHandler;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.scene.SceneManager;
+import nl.tudelft.kroket.screen.HeadUpDisplay;
 import nl.tudelft.kroket.screen.ScreenManager;
 import nl.tudelft.kroket.state.GameState;
 
-public class LobbyState implements GameState {
+public class LobbyState extends GameState {
 
   /** The unique singleton instance of this class. */
   private static LobbyState instance = new LobbyState();
@@ -26,7 +28,8 @@ public class LobbyState implements GameState {
   public void begin(AudioManager audioManager, SceneManager sceneManager,
       ScreenManager screenManager) {
     
-    log.debug(className, "Setting up LobbyState");
+    log.debug(className, "Setting up " + className);
+    
     
     audioManager.stopAudio();
     screenManager.getScreen("lobby").show();
@@ -46,7 +49,7 @@ public class LobbyState implements GameState {
 
   @Override
   public void update(AudioManager audioManager, InputHandler inputHandler,
-      ScreenManager screenManager, float tpf) {
+      ScreenManager screenManager, HeadUpDisplay hud, EventManager em, float tpf) {
     inputHandler.handleInput(tpf);
   }
 
