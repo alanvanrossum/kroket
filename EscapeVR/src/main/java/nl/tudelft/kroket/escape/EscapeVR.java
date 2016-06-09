@@ -30,6 +30,7 @@ import nl.tudelft.kroket.minigame.minigames.PictureCodeMinigame;
 import nl.tudelft.kroket.minigame.minigames.TapMinigame;
 import nl.tudelft.kroket.net.ClientThread;
 import nl.tudelft.kroket.net.protocol.CommandParser;
+import nl.tudelft.kroket.scene.Scene;
 import nl.tudelft.kroket.scene.SceneManager;
 import nl.tudelft.kroket.scene.scenes.EscapeScene;
 import nl.tudelft.kroket.screen.HeadUpDisplay;
@@ -447,6 +448,12 @@ public class EscapeVR extends VRApplication implements EventListener {
       log.info(className, "Player interacted with object " + interactionEvent.getName());
 
       String objectName = interactionEvent.getName();
+      
+      EscapeScene escapeScene = null;
+      Scene scene = sceneManager.getScene("escape");
+      if (scene instanceof EscapeScene) {
+        escapeScene = ((EscapeScene) sceneManager.getScene("escape"));
+      }
 
       // clientThread.sendMessage(String.format("INTERACT[%s]", objectName));
 
@@ -475,20 +482,20 @@ public class EscapeVR extends VRApplication implements EventListener {
           clientThread.sendMessage("DONE[A][ADVANCE]");
           break;
         case "D1":
-          ((EscapeScene) sceneManager.getScene("escape")).remove("D1");
-          ((EscapeScene) sceneManager.getScene("escape")).addCode13("Textures/Painting/13.jpg", "D_13");
-          ((EscapeScene) sceneManager.getScene("escape")).addCode37("Textures/Painting/questionmark.jpg", "D2");          
+          escapeScene.remove("D1");
+          escapeScene.addCode13("Textures/Painting/13.jpg", "D_13");
+          escapeScene.addCode37("Textures/Painting/questionmark.jpg", "D2");          
           registerObjects();
           break;
         case "D2":
-          ((EscapeScene) sceneManager.getScene("escape")).remove("D2");
-          ((EscapeScene) sceneManager.getScene("escape")).addCode37("Textures/Painting/37.jpg", "D_37");
-          ((EscapeScene) sceneManager.getScene("escape")).addCode21("Textures/Painting/questionmark.jpg", "D3");          
+          escapeScene.remove("D2");
+          escapeScene.addCode37("Textures/Painting/37.jpg", "D_37");
+          escapeScene.addCode21("Textures/Painting/questionmark.jpg", "D3");          
           registerObjects();
           break;
         case "D3":
-          ((EscapeScene) sceneManager.getScene("escape")).remove("D3");
-          ((EscapeScene) sceneManager.getScene("escape")).addCode21("Textures/Painting/21.jpg", "D_21");      
+          escapeScene.remove("D3");
+          escapeScene.addCode21("Textures/Painting/21.jpg", "D_21");      
           registerObjects();
           break;
         default:
