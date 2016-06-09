@@ -78,7 +78,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   private ScreenManager screenManager;
   private HeadUpDisplay hud;
 
-  /** The manager for the minigames */
+  /** The manager for the minigames. */
   private MinigameManager mgManager;
 
   /** Thread reference used for the TCP connection. */
@@ -467,6 +467,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
       case Protocol.COMMAND_GAMEOVER:
         eventManager.addEvent(new GameLostEvent(this));
+        break;
       default:
         hud.setCenterText(line, 20);
 
