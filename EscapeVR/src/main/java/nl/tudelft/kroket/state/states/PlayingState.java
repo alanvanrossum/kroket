@@ -24,8 +24,8 @@ public class PlayingState implements GameState {
 
   private static Random rand = new Random();
 
-  private final int INTERVAL_SPOOKYTIME_LOWER = 20;
-  private final int INTERVAL_SPOOKYTIME_UPPER = 120;
+  private final int INTERVAL_SPOOKYTIME_LOWER = 50;
+  private final int INTERVAL_SPOOKYTIME_UPPER = 200;
 
   public static GameState getInstance() {
     // TODO Auto-generated method stub
