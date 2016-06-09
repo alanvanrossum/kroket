@@ -93,7 +93,7 @@ public class EventManager extends InteractionHandler implements ActionListener {
    */
   public synchronized void addEvent(EventObject event) {
     eventList.add(event);
-    fireEvents();
+
     // System.out.println("Events in list:");
     //
     // for (EventObject entry : eventList) {
@@ -127,7 +127,7 @@ public class EventManager extends InteractionHandler implements ActionListener {
   public void update(float tpf) {
 
     // fire all events we registered
-    // fireEvents();
+    fireEvents();
   }
 
   @Override

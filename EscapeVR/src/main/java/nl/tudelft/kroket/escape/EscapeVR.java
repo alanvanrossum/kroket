@@ -19,6 +19,7 @@ import nl.tudelft.kroket.event.events.GameLostEvent;
 import nl.tudelft.kroket.event.events.GameStartEvent;
 import nl.tudelft.kroket.event.events.GameWonEvent;
 import nl.tudelft.kroket.event.events.InteractionEvent;
+import nl.tudelft.kroket.event.events.StartMinigameEvent;
 import nl.tudelft.kroket.event.events.TimeoutEvent;
 import nl.tudelft.kroket.input.InputHandler;
 import nl.tudelft.kroket.input.interaction.CollisionHandler;
@@ -28,18 +29,13 @@ import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.log.Logger.LogLevel;
 import nl.tudelft.kroket.minigame.MinigameManager;
 import nl.tudelft.kroket.minigame.minigames.ColorSequenceMinigame;
-
 import nl.tudelft.kroket.minigame.minigames.LockMinigame;
-
 import nl.tudelft.kroket.minigame.minigames.PictureCodeMinigame;
 import nl.tudelft.kroket.minigame.minigames.TapMinigame;
 import nl.tudelft.kroket.net.ClientThread;
 import nl.tudelft.kroket.net.protocol.CommandParser;
-
 import nl.tudelft.kroket.net.protocol.Protocol;
-
 import nl.tudelft.kroket.scene.Scene;
-
 import nl.tudelft.kroket.scene.SceneManager;
 import nl.tudelft.kroket.scene.scenes.EscapeScene;
 import nl.tudelft.kroket.screen.HeadUpDisplay;
@@ -369,7 +365,7 @@ public class EscapeVR extends VRApplication implements EventListener {
       break;
     default:
       log.error(className, "Unknown game: " + gameName);
-      audioManager.play("error");
+      
       break;
     }
   }
@@ -429,7 +425,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
           startMinigame(action);
 
-          audioManager.play("gamebegin");
+          eventManager.addEvent(new StartMinigameEvent(this));
 
           if (action.equals("B")) {
 
@@ -453,7 +449,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
           if (mgManager.isActive(action)) {
             // if (mgManager.gameActive() && action.equals(mgManager.getCurrent().getName())) {
-            audioManager.play("gamecomplete");
+            //audioManager.play("gamecomplete");
 
             mgManager.endGame();
           }
@@ -504,8 +500,12 @@ public class EscapeVR extends VRApplication implements EventListener {
   public void handleEvent(EventObject ev) {
 
     log.info(className, "Event received: " + ev.toString());
-
-    if (ev instanceof TimeoutEvent) {
+    
+    if (ev instanceof StartMinigameEvent) {
+      audioManager.play("gamebegin");
+    }
+    
+    else if (ev instanceof TimeoutEvent) {
       log.info(className, "TimeoutEvent received");
 
       // yeah this is kinda weird but I dont want to keep the behaviour for these events seperated
