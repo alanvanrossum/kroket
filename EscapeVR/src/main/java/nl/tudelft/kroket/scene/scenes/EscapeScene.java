@@ -8,7 +8,6 @@ import com.jme3.light.DirectionalLight;
 import com.jme3.light.PointLight;
 import com.jme3.light.SpotLight;
 import com.jme3.material.Material;
-import com.jme3.material.RenderState.FaceCullMode;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
@@ -105,7 +104,7 @@ public class EscapeScene extends Scene {
 
 
 
-    /** A white, directional light source */
+    /** A white, directional light source. */
     DirectionalLight sun = new DirectionalLight();
     sun.setDirection((new Vector3f(-0.5f, -0.5f, -0.5f)).normalizeLocal());
     sun.setColor(ColorRGBA.White);
@@ -119,11 +118,14 @@ public class EscapeScene extends Scene {
 
     addSafe();
 
-    // addButtons();
+    //addButtons();
 
     createLight();
   }
 
+  /**
+   * Add a closed safe to the scene.
+   */
   private void addSafe() {
     Spatial safe = assetManager.loadModel("Models/safe/safe.j3o");
     safe.scale(0.03f);
@@ -157,6 +159,14 @@ public class EscapeScene extends Scene {
     safe.move(-6.8f, -3, -10.1f);
     safe.setShadowMode(ShadowMode.CastAndReceive);
     rootNode.attachChild(safe);
+  }
+  
+  /**
+   * Removes the object from the scene.
+   * @param object the name of the object to be deleted.
+   */
+  public void remove(String object) {
+    rootNode.getChild(object);
   }
 
   /**
@@ -401,17 +411,119 @@ public class EscapeScene extends Scene {
 
     addObject("painting2", painting);
   }
+  
+  /**
+   * Add a painting for the code 13.
+   * @param texturePath the image of the painting.
+   * @param name the name of the painting.
+   */
+  public void addCode13(String texturePath, String name) {
+    float paintingWidth = 1.5f;
+    float paintingHeight = 1.5f;
+
+    Texture paintingTexture = assetManager.loadTexture(texturePath);
+    paintingTexture.setMagFilter(MagFilter.Nearest);
+    paintingTexture.setMinFilter(MinFilter.Trilinear);
+    paintingTexture.setAnisotropicFilter(16);
+
+    Material paintingMaterial = new Material(assetManager, materialPath);
+    paintingMaterial.setTexture("ColorMap", paintingTexture);
+
+    Geometry painting = new Geometry(name, new Box(.01f, paintingHeight, paintingWidth));
+
+    painting.move(roomWidth - 0.1f, translationY, 7);
+
+    painting.setMaterial(paintingMaterial);
+
+    addObject(name, painting);
+  }
+  
+  /**
+   * Add a painting for the code 37.
+   * @param texturePath the image of the painting.
+   * @param name the name of the painting.
+   */
+  public void addCode37(String texturePath, String name) {
+    float paintingWidth = 1.5f;
+    float paintingHeight = 1.5f;
+
+    Texture paintingTexture = assetManager.loadTexture(texturePath);
+    paintingTexture.setMagFilter(MagFilter.Nearest);
+    paintingTexture.setMinFilter(MinFilter.Trilinear);
+    paintingTexture.setAnisotropicFilter(16);
+
+    Material paintingMaterial = new Material(assetManager, materialPath);
+    paintingMaterial.setTexture("ColorMap", paintingTexture);
+
+    Geometry painting = new Geometry(name, new Box(.01f, paintingHeight, paintingWidth));
+
+    painting.move(- roomWidth + 0.1f, translationY - 2, 2);
+
+    painting.setMaterial(paintingMaterial);
+
+    addObject(name, painting);
+  }
+  
+  /**
+   * Add a painting for the code 21.
+   * @param texturePath the image of the painting.
+   * @param name the name of the painting.
+   */
+  public void addCode21(String texturePath, String name) {
+    float paintingWidth = 1.5f;
+    float paintingHeight = 1.5f;
+
+    Texture paintingTexture = assetManager.loadTexture(texturePath);
+    paintingTexture.setMagFilter(MagFilter.Nearest);
+    paintingTexture.setMinFilter(MinFilter.Trilinear);
+    paintingTexture.setAnisotropicFilter(16);
+
+    Material paintingMaterial = new Material(assetManager, materialPath);
+    paintingMaterial.setTexture("ColorMap", paintingTexture);
+
+    Geometry painting = new Geometry(name, new Box(.01f, paintingHeight, paintingWidth));
+
+    painting.rotate(0, 0, (float) (0.5 * Math.PI));
+    painting.move(-2, (float) (-translationY + 0.1), -5);
+
+    painting.setMaterial(paintingMaterial);
+
+    addObject(name, painting);
+  }
+  
+//  private void addCode(String name, String texturePath, float depth, float width, float height,
+//      float rotateX, float rotateY, float rotateZ) {
+//    float paintingWidth = 1.5f;
+//    float paintingHeight = 1.5f;
+//
+//    Texture paintingTexture = assetManager.loadTexture(texturePath);
+//    paintingTexture.setMagFilter(MagFilter.Nearest);
+//    paintingTexture.setMinFilter(MinFilter.Trilinear);
+//    paintingTexture.setAnisotropicFilter(16);
+//
+//    Material paintingMaterial = new Material(assetManager, materialPath);
+//    paintingMaterial.setTexture("ColorMap", paintingTexture);
+//
+//    Geometry painting = new Geometry(name, new Box(.01f, paintingHeight, paintingWidth));
+//
+//    painting.rotate(rotateX, rotateY, rotateZ);
+//    painting.move(depth, width, height);
+//
+//    painting.setMaterial(paintingMaterial);
+//
+//    addObject(name, painting);
+//  }
+
 
   /**
    * Add gas to the scene.
    */
   public void createGas() {
-
-    FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
     FogFilter fog = new FogFilter();
     fog.setFogColor(gasColor);
     fog.setFogDistance(1000);
     fog.setFogDensity(2.0f);
+    FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
     fpp.addFilter(fog);
     viewPort.addProcessor(fpp);
 
@@ -420,7 +532,7 @@ public class EscapeScene extends Scene {
   /**
    * Equals method for EscapeScene.
    * 
-   * returns true if all attributes are equal
+   * @return true if all attributes are equal
    */
   @Override
   public boolean equals(Object obj) {

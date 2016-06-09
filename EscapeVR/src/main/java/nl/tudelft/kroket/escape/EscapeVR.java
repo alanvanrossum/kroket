@@ -25,11 +25,12 @@ import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.log.Logger.LogLevel;
 import nl.tudelft.kroket.minigame.MinigameManager;
 import nl.tudelft.kroket.minigame.minigames.ColorSequenceMinigame;
-import nl.tudelft.kroket.minigame.minigames.GyroscopeMinigame;
+import nl.tudelft.kroket.minigame.minigames.LockMinigame;
 import nl.tudelft.kroket.minigame.minigames.PictureCodeMinigame;
 import nl.tudelft.kroket.minigame.minigames.TapMinigame;
 import nl.tudelft.kroket.net.ClientThread;
 import nl.tudelft.kroket.net.protocol.CommandParser;
+import nl.tudelft.kroket.scene.Scene;
 import nl.tudelft.kroket.scene.SceneManager;
 import nl.tudelft.kroket.scene.scenes.EscapeScene;
 import nl.tudelft.kroket.screen.HeadUpDisplay;
@@ -82,7 +83,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   private ScreenManager screenManager;
   private HeadUpDisplay hud;
 
-  /** The manager for the minigames */
+  /** The manager for the minigames. */
   private MinigameManager mgManager;
 
   /** Thread reference used for the TCP connection. */
@@ -357,6 +358,10 @@ public class EscapeVR extends VRApplication implements EventListener {
     case "C":
       mgManager.launchGame(ColorSequenceMinigame.getInstance());
       break;
+    case "D":
+      mgManager.launchGame(LockMinigame.getInstance());
+      registerObjects();
+      break;
     default:
       log.error(className, "Unknown game: " + gameName);
       break;
@@ -401,17 +406,16 @@ public class EscapeVR extends VRApplication implements EventListener {
                 colorGame.parseColors(CommandParser.parseParams(line));
               }
             }
-  
           }
+
           break;
         case "DONE":
           if (command.containsKey("param_0")) {
             String action = command.get("param_0");
-  
+            
             if (mgManager.gameActive() && action.equals(mgManager.getCurrent().getName())) {
               mgManager.endGame();
             }
-  
           }
           registerObjects();
           break;
@@ -444,6 +448,12 @@ public class EscapeVR extends VRApplication implements EventListener {
       log.info(className, "Player interacted with object " + interactionEvent.getName());
 
       String objectName = interactionEvent.getName();
+      
+      EscapeScene escapeScene = null;
+      Scene scene = sceneManager.getScene("escape");
+      if (scene instanceof EscapeScene) {
+        escapeScene = ((EscapeScene) sceneManager.getScene("escape"));
+      }
 
       // clientThread.sendMessage(String.format("INTERACT[%s]", objectName));
 
@@ -456,6 +466,7 @@ public class EscapeVR extends VRApplication implements EventListener {
           // Play spooky muhaha sound when player interacts with door
           audioManager.getNode("muhaha").play();
           hud.setCenterText("Muhahaha! You will never escape!", 5);
+          clientThread.sendMessage("BEGIN[D]");
           break;
         case "painting":
           clientThread.sendMessage("BEGIN[A]");
@@ -469,6 +480,23 @@ public class EscapeVR extends VRApplication implements EventListener {
         case "safeopen-objnode":
           hud.setCenterText("You found login data for the computer!");
           clientThread.sendMessage("DONE[A][ADVANCE]");
+          break;
+        case "D1":
+          escapeScene.remove("D1");
+          escapeScene.addCode13("Textures/Painting/13.jpg", "D_13");
+          escapeScene.addCode37("Textures/Painting/questionmark.jpg", "D2");          
+          registerObjects();
+          break;
+        case "D2":
+          escapeScene.remove("D2");
+          escapeScene.addCode37("Textures/Painting/37.jpg", "D_37");
+          escapeScene.addCode21("Textures/Painting/questionmark.jpg", "D3");          
+          registerObjects();
+          break;
+        case "D3":
+          escapeScene.remove("D3");
+          escapeScene.addCode21("Textures/Painting/21.jpg", "D_21");      
+          registerObjects();
           break;
         default:
           break;
