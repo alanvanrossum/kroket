@@ -132,7 +132,7 @@ public class PlayingState extends GameState {
 
     // this if statement isn't really necessary, performance-wise
     // only update label once per second
-    else if ((timeRemaining % 1000) == 0) {
+    else if ((timeRemaining % 10) == 0) {
 
       int secondsRemaining = (int) (timeRemaining / 1000);
 

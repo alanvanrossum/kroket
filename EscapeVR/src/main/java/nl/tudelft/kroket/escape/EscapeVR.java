@@ -467,6 +467,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
       case Protocol.COMMAND_GAMEOVER:
         eventManager.addEvent(new GameLostEvent(this));
+        hud.setTimerText("");
         break;
       default:
         hud.setCenterText(line, 20);
