@@ -29,9 +29,11 @@ public class PlayingState extends GameState {
 
   private static Random rand = new Random();
 
+
   private long timeLimit;
 
   private boolean timeoutHit = false;
+
 
   public static GameState getInstance() {
     // TODO Auto-generated method stub

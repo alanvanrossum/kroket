@@ -45,7 +45,7 @@ public class SpookyScreen extends Screen {
   @Override
   public void show() {
 
-    //System.out.println("spookyScreen.show()");
+    // System.out.println("spookyScreen.show()");
 
     hideTime = System.currentTimeMillis() + displayTime;
 

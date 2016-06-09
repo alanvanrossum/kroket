@@ -120,4 +120,14 @@ public class MinigameManager implements EventListener {
     return getCurrent() != null;
   }
 
+  public boolean isActive(String game) {
+    if (!gameActive()) {
+      return false;
+
+    }
+
+    return (getCurrent().getName().equals(game));
+
+  }
+
 }

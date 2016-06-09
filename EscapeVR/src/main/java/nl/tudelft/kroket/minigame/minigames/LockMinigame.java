@@ -6,13 +6,13 @@ import nl.tudelft.kroket.minigame.Minigame;
 import java.util.EventObject;
 
 /**
- * This class contains the logic of the first minigame (A) of the VR player.
- * 
+ * Class that handles the correct behaviour for the lock game.
  * @author Team Kroket
  */
-public class PictureCodeMinigame extends Minigame {
+public class LockMinigame extends Minigame {
 
-  private static final String GAME_NAME = "A";
+  
+  private static final String GAME_NAME = "F";
   
   /** Current class, used as tag for logger. */
   private final String className = this.getClass().getSimpleName();
@@ -21,10 +21,10 @@ public class PictureCodeMinigame extends Minigame {
   private Logger log = Logger.getInstance();
   
   /** Singleton instance. */
-  private static Minigame instance = new PictureCodeMinigame();
+  private static Minigame instance = new LockMinigame();
   
   /** Private constructor. */
-  private PictureCodeMinigame() {}
+  private LockMinigame() {}
 
   /** Get the singleton instance. */
   public static Minigame getInstance() {
@@ -36,8 +36,9 @@ public class PictureCodeMinigame extends Minigame {
    */
   @Override
   public void start() {
-    log.info(className, "Minigame A started.");
-    hud.setCenterText("Try to decipher the code by studying the painting!", 10);
+    log.info(className, "Minigame D started.");
+    hud.setCenterText("What could the code for the lock be?", 30);
+    sceneManager.extendEscapeScene("D");
   }
 
   /**
@@ -45,9 +46,8 @@ public class PictureCodeMinigame extends Minigame {
    */
   @Override
   public void stop() {
-    log.info(className, "Minigame A completed.");
-    hud.setCenterText("Great! You cracked the code to open the safe!", 10);
-    sceneManager.extendEscapeScene("A");
+    log.info(className, "Minigame D completed.");
+    hud.setCenterText("You opened the lock!", 10);
   }
 
   @Override
@@ -60,11 +60,8 @@ public class PictureCodeMinigame extends Minigame {
     // TODO Auto-generated method stub
   }
 
-  /**
-   * Returns the name of the game.
-   */
   public String getName() {
     return GAME_NAME;
   }
-  
+    
 }

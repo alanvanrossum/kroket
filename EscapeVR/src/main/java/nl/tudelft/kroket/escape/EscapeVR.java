@@ -28,11 +28,18 @@ import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.log.Logger.LogLevel;
 import nl.tudelft.kroket.minigame.MinigameManager;
 import nl.tudelft.kroket.minigame.minigames.ColorSequenceMinigame;
+
+import nl.tudelft.kroket.minigame.minigames.LockMinigame;
+
 import nl.tudelft.kroket.minigame.minigames.PictureCodeMinigame;
 import nl.tudelft.kroket.minigame.minigames.TapMinigame;
 import nl.tudelft.kroket.net.ClientThread;
 import nl.tudelft.kroket.net.protocol.CommandParser;
+
 import nl.tudelft.kroket.net.protocol.Protocol;
+
+import nl.tudelft.kroket.scene.Scene;
+
 import nl.tudelft.kroket.scene.SceneManager;
 import nl.tudelft.kroket.scene.scenes.EscapeScene;
 import nl.tudelft.kroket.screen.HeadUpDisplay;
@@ -121,6 +128,15 @@ public class EscapeVR extends VRApplication implements EventListener {
     audioManager.loadFile("muhaha", "Voice/muhaha.wav", false, false, 1.0f);
     audioManager.loadFile("turret", "Voice/portal2/turret/turret_autosearch_6.ogg", false, false,
         0.5f);
+
+    audioManager.loadFile("click", "ui/portal2/back.wav", false, false, 0.8f);
+    audioManager.loadFile("door", "ui/portal2/default_locked.wav", false, false, 0.8f);
+
+    audioManager.loadFile("error", "ui/portal2/klaxon1.wav", false, false, 0.8f);
+    audioManager.loadFile("gamecomplete", "ui/portal2/startup_02_01.wav", false, false, 0.8f);
+    audioManager
+        .loadFile("gamebegin", "ui/portal2/p2_store_ui_checkout_01.wav", false, false, 0.8f);
+
   }
 
   /**
@@ -246,28 +262,6 @@ public class EscapeVR extends VRApplication implements EventListener {
     }
   }
 
-  // /**
-  // * Registers all objects so they can be interacted with.
-  // */
-  // private void registerInteractionObjects() {
-  // List<Spatial> objects = rootNode.getChildren();
-  // for (Spatial object : objects) {
-  //
-  // if (object == null) {
-  // continue;
-  // }
-  //
-  // System.out.println(object.toString());
-  //
-  // if (object instanceof Geometry) {
-  // eventManager.registerObjectInteractionTrigger(object.getName(), 4f);
-  // } else if (object instanceof Node) {
-  // eventManager.registerObjectInteractionTrigger(object.getName(), 4f);
-  // }
-  // }
-  // }
-  // deze methode mag weg van mij - Jochem
-
   /**
    * Set the current game state.
    * 
@@ -369,8 +363,13 @@ public class EscapeVR extends VRApplication implements EventListener {
     case "C":
       mgManager.launchGame(ColorSequenceMinigame.getInstance());
       break;
+    case "D":
+      mgManager.launchGame(LockMinigame.getInstance());
+      registerObjects();
+      break;
     default:
       log.error(className, "Unknown game: " + gameName);
+      audioManager.play("error");
       break;
     }
   }
@@ -419,6 +418,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     if (command.containsKey("command")) {
 
       switch (command.get("command")) {
+
       case Protocol.COMMAND_START:
         eventManager.addEvent(new GameStartEvent(this));
         break;
@@ -429,12 +429,15 @@ public class EscapeVR extends VRApplication implements EventListener {
 
           startMinigame(action);
 
+          audioManager.play("gamebegin");
+
           if (action.equals("B")) {
 
             if (mgManager.getCurrent() instanceof TapMinigame) {
               TapMinigame tapGame = (TapMinigame) mgManager.getCurrent();
               tapGame.parseButtons(CommandParser.parseParams(line));
             }
+
           } else if (action.equals("C")) {
             if (mgManager.getCurrent() instanceof ColorSequenceMinigame) {
               ColorSequenceMinigame colorGame = (ColorSequenceMinigame) mgManager.getCurrent();
@@ -448,7 +451,10 @@ public class EscapeVR extends VRApplication implements EventListener {
         if (command.containsKey("param_0")) {
           String action = command.get("param_0");
 
-          if (mgManager.gameActive() && action.equals(mgManager.getCurrent().getName())) {
+          if (mgManager.isActive(action)) {
+            // if (mgManager.gameActive() && action.equals(mgManager.getCurrent().getName())) {
+            audioManager.play("gamecomplete");
+
             mgManager.endGame();
           }
 
@@ -461,7 +467,7 @@ public class EscapeVR extends VRApplication implements EventListener {
           String parameter = command.get("param_0");
           if (!parameter.isEmpty()) {
             setTimeLimit(Integer.parseInt(parameter));
-            timeLimit = Integer.parseInt(parameter);
+            // timeLimit = Integer.parseInt(parameter);
           }
         }
         break;
@@ -473,6 +479,7 @@ public class EscapeVR extends VRApplication implements EventListener {
       case Protocol.COMMAND_GAMEWON:
         eventManager.addEvent(new GameWonEvent(this));
         hud.setTimerText("");
+        break;
       default:
         hud.setCenterText(line, 20);
 
@@ -522,20 +529,34 @@ public class EscapeVR extends VRApplication implements EventListener {
 
       String objectName = interactionEvent.getName();
 
+      EscapeScene escapeScene = null;
+      Scene scene = sceneManager.getScene("escape");
+      if (scene instanceof EscapeScene) {
+        escapeScene = ((EscapeScene) sceneManager.getScene("escape"));
+      }
+
       // clientThread.sendMessage(String.format("INTERACT[%s]", objectName));
 
       switch (objectName) {
 
       // zou het niet handig zijn om deze namen in een lijst te zetten ofzo, een lijstje met globals
       // oid?
+
       case "portalturret-geom-0":
         audioManager.getNode("turret").play();
         break;
       case "door-geom-0":
-        log.info(className, "Muhahaha???");
+
         // Play spooky muhaha sound when player interacts with door
-        audioManager.getNode("muhaha").play();
-        hud.setCenterText("Muhahaha! You will never escape!", 5);
+        audioManager.getNode("door").playInstance();
+
+        if (!mgManager.gameActive()) {
+          log.info(className, "Muhahaha???");
+          audioManager.getNode("muhaha").play();
+          hud.setCenterText("Muhahaha! You will never escape!", 5);
+        }
+        clientThread.sendMessage("BEGIN[D]");
+
         break;
       case "painting":
         clientThread.sendMessage("BEGIN[A]");
@@ -550,8 +571,30 @@ public class EscapeVR extends VRApplication implements EventListener {
         hud.setCenterText("You found login data for the computer!");
         clientThread.sendMessage("DONE[A][ADVANCE]");
         break;
-      default:
+
+      case "D1":
+        escapeScene.remove("D1");
+        escapeScene.addCode13("Textures/Painting/13.jpg", "D_13");
+        escapeScene.addCode37("Textures/Painting/questionmark.jpg", "D2");
+        registerObjects();
         break;
+      case "D2":
+        escapeScene.remove("D2");
+        escapeScene.addCode37("Textures/Painting/37.jpg", "D_37");
+        escapeScene.addCode21("Textures/Painting/questionmark.jpg", "D3");
+        registerObjects();
+        break;
+      case "D3":
+        escapeScene.remove("D3");
+        escapeScene.addCode21("Textures/Painting/21.jpg", "D_21");
+        registerObjects();
+        break;
+      default:
+        if (!mgManager.gameActive()) {
+          audioManager.getNode("click").playInstance();
+        }
+        break;
+
       }
 
     }
