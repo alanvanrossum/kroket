@@ -17,6 +17,7 @@ import nl.tudelft.kroket.event.EventListener;
 import nl.tudelft.kroket.event.EventManager;
 import nl.tudelft.kroket.event.events.GameLostEvent;
 import nl.tudelft.kroket.event.events.GameStartEvent;
+import nl.tudelft.kroket.event.events.GameWonEvent;
 import nl.tudelft.kroket.event.events.InteractionEvent;
 import nl.tudelft.kroket.event.events.TimeoutEvent;
 import nl.tudelft.kroket.input.InputHandler;
@@ -469,6 +470,9 @@ public class EscapeVR extends VRApplication implements EventListener {
         eventManager.addEvent(new GameLostEvent(this));
         hud.setTimerText("");
         break;
+      case Protocol.COMMAND_GAMEWON:
+        eventManager.addEvent(new GameWonEvent(this));
+        hud.setTimerText("");
       default:
         hud.setCenterText(line, 20);
 

@@ -12,11 +12,11 @@ import com.jme3.scene.Node;
  */
 public class GameoverScreen extends Screen {
 
-  private static final String name = "lobby";
+  private static final String name = "gameover";
   
 
   /**
-   * Constructor for LobbyScreen overlay object.
+   * Constructor for GameoverScreen overlay object.
    * 
    * @param assetManager
    *          reference to the AssetManager object
