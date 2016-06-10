@@ -94,8 +94,7 @@ public class AudioManager {
    * @param volume
    *          volume (float) between 0 and 1
    */
-  public void loadFile(String name, String path, boolean positional, boolean looping,
-      float volume) {
+  public void loadFile(String name, String path, boolean positional, boolean looping, float volume) {
 
     AudioNode node = createNode(path, positional, looping, volume);
 
@@ -195,6 +194,12 @@ public class AudioManager {
    */
   public HashMap<String, AudioNode> getAudioNodes() {
     return audioNodes;
+  }
+
+  public void playInstance(String name) {
+    AudioNode node = getNode(name);
+    node.playInstance();
+
   }
 
 }

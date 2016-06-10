@@ -33,7 +33,6 @@ public class HeadUpDisplay {
 
   // clear text after 8 seconds
   private final long delayTextClear = 8 * 1000;
-
   /**
    * The HeadUpDisplay constructor.
    * 
@@ -90,7 +89,7 @@ public class HeadUpDisplay {
   }
 
   public void setTimerText(String text) {
-
+    timerTextLabel.setText(text);
   }
 
   /**
@@ -124,6 +123,15 @@ public class HeadUpDisplay {
 
     if (System.currentTimeMillis() > centerTextTime) {
       clearCenter();
+    }
+
+  }
+  
+  public void clearTimer() {
+
+    if (timerTextLabel.getText().length() > 0) {
+      timerTextLabel.setText("");
+      log.debug(className, "Timer text cleared.");
     }
   }
 

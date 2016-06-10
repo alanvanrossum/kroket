@@ -3,6 +3,7 @@ package nl.tudelft.kroket.event;
 import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -24,8 +25,8 @@ public class EventManager extends InteractionHandler implements ActionListener {
   /** Singleton logger instance. */
   private Logger log = Logger.getInstance();
 
-  private List<EventObject> eventList = new ArrayList<EventObject>();
-  
+  private HashSet<EventObject> eventList = new HashSet<EventObject>();
+
   /** List of all registered listeners. */
   private List<EventListener> listenerList = new ArrayList<EventListener>();
 
@@ -34,7 +35,7 @@ public class EventManager extends InteractionHandler implements ActionListener {
   long prevInput = 0;
 
   private Node rootNode;
-  
+
   /** All registered triggers: the name of the object and the range. */
   private HashMap<String, Float> triggers = new HashMap<String, Float>();
 
@@ -68,6 +69,9 @@ public class EventManager extends InteractionHandler implements ActionListener {
    */
   private synchronized void fireEvents() {
 
+    // copy list to prevent concurrent modifications
+    // this could be dealt with more elegantly
+
     for (EventObject event : eventList) {
       for (EventListener listener : listenerList) {
 
@@ -87,7 +91,7 @@ public class EventManager extends InteractionHandler implements ActionListener {
    * @param event
    *          the event object
    */
-  public synchronized void addEvent(String type, EventObject event) {
+  public synchronized void addEvent(EventObject event) {
     eventList.add(event);
 
     // System.out.println("Events in list:");
@@ -134,6 +138,8 @@ public class EventManager extends InteractionHandler implements ActionListener {
       return;
     }
 
+    // System.out.println("onAction " + name);
+
     // get current system time
     long now = System.currentTimeMillis();
 
@@ -151,7 +157,7 @@ public class EventManager extends InteractionHandler implements ActionListener {
     prevInput = now;
 
     // register a new button press event
-    addEvent("buttonpress", new ButtonPressEvent(this, name));
+    addEvent(new ButtonPressEvent(this, name));
 
     // loop over all object triggers
     for (Entry<String, Float> entry : triggers.entrySet()) {
@@ -161,22 +167,22 @@ public class EventManager extends InteractionHandler implements ActionListener {
 
       // check whether the object exists
       if (object == null) {
-        log.error(className, String
-            .format("Warning: object '%s' does not exist in current scene (null)", entry.getKey()));
+        log.error(
+            className,
+            String.format("Warning: object '%s' does not exist in current scene (null)",
+                entry.getKey()));
 
       } else {
 
         if (InteractionEvent.checkConditions(object, entry.getValue(), name)
             && !ColorSequenceMinigame.isActive()) {
           InteractionEvent interactionEvent = new InteractionEvent(this, entry.getKey());
-          addEvent("interaction", interactionEvent);
+          addEvent(interactionEvent);
         }
 
       }
     }
 
-    // fire the events
-    fireEvents();
-
   }
+
 }

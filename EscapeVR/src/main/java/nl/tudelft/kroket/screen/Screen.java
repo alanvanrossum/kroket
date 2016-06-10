@@ -15,7 +15,7 @@ public abstract class Screen {
   String name;
   AssetManager assetManager;
   protected Node guiNode;
-  String rootPath = "Textures/";
+  String rootPath = "Interface/";
   protected Picture overlay;
 
   /**

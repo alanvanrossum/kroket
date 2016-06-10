@@ -20,7 +20,7 @@ public class ClientThread extends Thread {
 
   private final int reconnInterval = 5;
 
-  private String playerName = "RIFT-USER";
+  private String playerName = "VR-USER";
 
   EscapeVR callback;
   HeadUpDisplay hud;
@@ -82,6 +82,7 @@ public class ClientThread extends Thread {
     client.sendMessage(message);
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public void run() {
 
@@ -117,7 +118,9 @@ public class ClientThread extends Thread {
           callback.receiveLoop(line);
         }
       } catch (IOException exception) {
-        exception.printStackTrace();
+        // exception.printStackTrace();
+
+        client.close();
       }
     }
   };

@@ -6,6 +6,8 @@ import nl.tudelft.kroket.minigame.Minigame;
 import java.util.EventObject;
 
 public class GyroscopeMinigame extends Minigame {
+  
+  private static final String GAME_NAME = "WAITING";
 
   /** Current class, used as tag for logger. */
   private final String className = this.getClass().getSimpleName();
@@ -29,8 +31,8 @@ public class GyroscopeMinigame extends Minigame {
    */
   @Override
   public void start() {
-    log.info(className, "Minigame D started.");
-    hud.setCenterText("Minigame D started!", 10);
+    log.info(className, "Minigame WAITING started.");
+    hud.setCenterText("Minigame WAITING started!", 10);
   }
 
   /**
@@ -38,19 +40,13 @@ public class GyroscopeMinigame extends Minigame {
    */
   @Override
   public void stop() {
-    log.info(className, "Minigame D completed.");
-    hud.setCenterText("Minigame D complete!", 10);
+    log.info(className, "Minigame WAITING completed.");
+    hud.setCenterText("Minigame WAITING complete!", 10);
   }
 
-  @Override
-  public void update(float tpf) {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public void handleEvent(EventObject event) {
-    // TODO Auto-generated method stub
+  
+  public String getName() {
+    return GAME_NAME;
   }
 
 }

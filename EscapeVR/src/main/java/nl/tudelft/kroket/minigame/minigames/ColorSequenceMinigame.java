@@ -9,7 +9,14 @@ import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.List;
 
+/**
+ * This class contains the logic of the third minigame (C) of the VR player.
+ * 
+ * @author Team Kroket
+ */
 public class ColorSequenceMinigame extends Minigame {
+
+  private static final String GAME_NAME = "C";
 
   /** Current class, used as tag for logger. */
   private final String className = this.getClass().getSimpleName();
@@ -50,10 +57,18 @@ public class ColorSequenceMinigame extends Minigame {
     running = true;
 
     screenManager.getScreen("controller").show();
-    hud.setCenterText("Minigame C started!", 10);
+    //hud.setCenterText("Minigame C started!", 10);
     hud.setCenterText(
-        "Enter the color sequence by\nusing the colored buttons on\nthe right of your controller!",
+        "Enter the colorsequence you will\nreceive from your fellow CIA agents\nby using the colored buttons on your controller!",
         20);
+
+    if ((System.currentTimeMillis() % 10000) == 0) {
+      System.out.println("Required sequence:");
+      printList(sequenceList);
+      System.out.println("Entered sequence:");
+      printList(buttonList);
+    }
+
   }
 
   /**
@@ -66,16 +81,15 @@ public class ColorSequenceMinigame extends Minigame {
     running = false;
 
     screenManager.getScreen("controller").hide();
-    hud.setCenterText("Minigame C complete!");
-    //minigameManager.endGame();
+    hud.setCenterText("Great job! Can you open the door yet?");
   }
-  
+
   /**
-   * Send to the server and mobile player that you have finished minigame C.
-   * When the server confirms this, it will send a message back and this will end the game.
+   * Send to the server and mobile player that you have finished minigame C. When the server
+   * confirms this, it will send a message back and this will end the game.
    */
   public void finish() {
-    clientThread.sendMessage("INITM[doneC]");
+    clientThread.sendMessage("DONE[C]");
   }
 
   /**
@@ -84,12 +98,12 @@ public class ColorSequenceMinigame extends Minigame {
   @Override
   public void update(float tpf) {
 
-    if ((System.currentTimeMillis() % 10000) == 0) {
-      System.out.println("Required sequence:");
-      printList(sequenceList);
-      System.out.println("Entered sequence:");
-      printList(buttonList);
-    }
+    // if ((System.currentTimeMillis() % 10000) == 0) {
+    // System.out.println("Required sequence:");
+    // printList(sequenceList);
+    // System.out.println("Entered sequence:");
+    // printList(buttonList);
+    // }
 
     // Check if the correct sequence is entered
     Boolean correct = checkSequence();
@@ -111,6 +125,7 @@ public class ColorSequenceMinigame extends Minigame {
       buttonList.add(buttonName);
 
       // TODO Display the color pressed on the screen
+      hud.setCenterText("You pressed: " + buttonName, 2);
 
       // Keep the lists the same size, by removing the first element
       if (buttonList.size() > sequenceList.size()) {
@@ -141,6 +156,14 @@ public class ColorSequenceMinigame extends Minigame {
   }
 
   /**
+   * Gets the sequencelist.
+   * @return the list
+   */
+  public static List<String> getSequenceList() {
+    return sequenceList;
+  }
+
+  /**
    * Print a list with strings.
    * 
    * @param list
@@ -162,21 +185,25 @@ public class ColorSequenceMinigame extends Minigame {
   public void parseColors(List<String> params) {
     for (String colorString : params) {
       switch (colorString) {
-      case "RED":
-        sequenceList.add("Button B");
-        break;
-      case "GREEN":
-        sequenceList.add("Button A");
-        break;
-      case "BLUE":
-        sequenceList.add("Button X");
-        break;
-      case "YELLOW":
-        sequenceList.add("Button Y");
-        break;
-      default:
+        case "RED":
+          sequenceList.add("Button B");
+          break;
+        case "GREEN":
+          sequenceList.add("Button A");
+          break;
+        case "BLUE":
+          sequenceList.add("Button X");
+          break;
+        case "YELLOW":
+          sequenceList.add("Button Y");
+          break;
+        default:
       }
     }
+  }
+
+  public String getName() {
+    return GAME_NAME;
   }
 
 }

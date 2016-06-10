@@ -1,9 +1,5 @@
 package nl.tudelft.kroket.scene;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-
 import com.jme3.asset.AssetManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
@@ -11,6 +7,15 @@ import com.jme3.scene.Node;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.scene.scenes.EscapeScene;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+
+/**
+ * Manager for all scenes. Handles loading and destroying of scenes.
+ * 
+ * @author Team Kroket
+ */
 public class SceneManager {
 
   /** Current class, used as tag for logger. */
@@ -128,11 +133,24 @@ public class SceneManager {
     return scenes;
   }
 
+  /**
+   * Adds new objects to the escape scene.
+   * @param state specifies which object.
+   */
   public void extendEscapeScene(String state) {
+    System.out.println("extend");
     switch (state) {
-    case "C":
-      ((EscapeScene) scenes.get("escape")).addButtons();
-      break;
+      case "C":
+        ((EscapeScene) scenes.get("escape")).addButtons();
+        break;
+      case "A":
+        ((EscapeScene) scenes.get("escape")).addOpenSafe();
+        break;
+      case "D":
+        ((EscapeScene) scenes.get("escape")).addCode13("Textures/Painting/questionmark.jpg", "D1");
+        break;
+      default:
+        break;
     }
 
   }

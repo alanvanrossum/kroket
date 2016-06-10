@@ -2,15 +2,13 @@ package nl.tudelft.kroket.event.events;
 
 import java.util.EventObject;
 
-import nl.tudelft.kroket.log.Logger;
-
+/**
+ * ButtonPressEvent, event to indicate a button was pressed.
+ * 
+ * @author Team Kroket
+ *
+ */
 public class ButtonPressEvent extends EventObject {
-
-  /** Current class, used as tag for logger. */
-  private final String className = this.getClass().getSimpleName();
-
-  /** Singleton logger instance. */
-  private Logger log = Logger.getInstance();
 
   /**
    * 

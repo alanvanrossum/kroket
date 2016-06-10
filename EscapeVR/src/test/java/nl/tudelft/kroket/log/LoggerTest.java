@@ -75,10 +75,12 @@ public class LoggerTest {
    */
   @Test
   public void testInfo() {
+    String time = "[" + timeFormat.format(new Date()) + "]: ";
+    int ti = time.length();
     log.info(className, "Test info message.");
-    String expected = "[" + timeFormat.format(new Date()) + "]: " 
-        + String.format(msgFormat, LogLevel.INFO, className, "Test info message.");
+    String expected = String.format(msgFormat, LogLevel.INFO, className, "Test info message.");
     String message = messages.toString().trim();
+    message = message.substring(ti, message.toString().length());
     assertEquals(expected, message);
   }
 
@@ -87,12 +89,12 @@ public class LoggerTest {
    */
   @Test
   public void testDebug() {
+    String time = "[" + timeFormat.format(new Date()) + "]: ";
+    int ti = time.length();
     log.debug(className, "Test debug message.");
-    String expected = "[" + timeFormat.format(new Date()) + "]: " 
-        + String.format(msgFormat, LogLevel.DEBUG, className, "Test debug message.");
+    String expected = String.format(msgFormat, LogLevel.DEBUG, className, "Test debug message.");
     String message = messages.toString().trim();
-    System.out.println(expected);
-    System.out.println(message);
+    message = message.substring(ti, message.toString().length());
     assertEquals(expected, message);
   }
 
@@ -101,10 +103,12 @@ public class LoggerTest {
    */
   @Test
   public void testError() {
+    String time = "[" + timeFormat.format(new Date()) + "]: ";
+    int ti = time.length();
     log.error(className, "Test error message.");
-    String expected = "[" + timeFormat.format(new Date()) + "]: " 
-        + String.format(msgFormat, LogLevel.ERROR, className, "Test error message.");
+    String expected = String.format(msgFormat, LogLevel.ERROR, className, "Test error message.");
     String errorMessage = errorMessages.toString().trim();
+    errorMessage = errorMessage.substring(ti, errorMessage.toString().length());
     assertEquals(expected, errorMessage);
   }
   

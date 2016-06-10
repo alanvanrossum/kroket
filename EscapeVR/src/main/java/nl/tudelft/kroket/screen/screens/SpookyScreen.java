@@ -1,5 +1,6 @@
 package nl.tudelft.kroket.screen.screens;
 
+import nl.tudelft.kroket.escape.Settings;
 import nl.tudelft.kroket.screen.Screen;
 
 import com.jme3.asset.AssetManager;
@@ -15,7 +16,7 @@ public class SpookyScreen extends Screen {
 
   private static final String name = "spooky";
 
-  private long displayTime = 2000;
+  private long displayTime = Settings.SPOOKY_DISPLAY_TIME;
 
   private long hideTime = 0;
 
@@ -44,7 +45,7 @@ public class SpookyScreen extends Screen {
   @Override
   public void show() {
 
-    //System.out.println("spookyScreen.show()");
+    // System.out.println("spookyScreen.show()");
 
     hideTime = System.currentTimeMillis() + displayTime;
 

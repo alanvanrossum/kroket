@@ -112,7 +112,7 @@ public class InputHandler {
       inputManager.addMapping("Button Y", new JoyButtonTrigger(0, 3));
 
       // inputManager.addListener(actionListener, "Button A", "Button B", "Button X", "Button Y");
-
+      
       log.debug(className, "Joystick/gamepad controls registered.");
     }
   }
