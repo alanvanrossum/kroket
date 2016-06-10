@@ -635,9 +635,20 @@ public class EscapeVR extends VRApplication implements EventListener {
     this.remotePort = remotePort;
   }
 
+  /**
+   * Sets the player name.
+   * @param playerName as string
+   */
   public void setPlayerName(String playerName) {
     this.playerName = playerName;
-
+  }
+  
+  /**
+   * Gets the playername.
+   * @return the playername as string.
+   */
+  public String getPlayerName() {
+    return this.playerName;
   }
 
 }

@@ -49,4 +49,24 @@ public abstract class Minigame {
 
   public abstract String getName();
 
+  public HeadUpDisplay getHud() {
+    return hud;
+  }
+
+  public ClientThread getClientThread() {
+    return clientThread;
+  }
+
+  public ScreenManager getScreenManager() {
+    return screenManager;
+  }
+
+  public SceneManager getSceneManager() {
+    return sceneManager;
+  }
+
+  public MinigameManager getMinigameManager() {
+    return minigameManager;
+  }
+
 }
