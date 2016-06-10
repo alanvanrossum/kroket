@@ -6,6 +6,7 @@ import com.jme3.math.Vector2f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.Spatial.CullHint;
 import com.jme3.scene.shape.Sphere;
 import com.jme3.util.SkyFactory;
 
@@ -208,6 +209,8 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     // the sphere should have no shaded material
     Material mat = new Material(getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+    
+    observer.setCullHint(CullHint.Always);
     observer.setMaterial(mat);
 
     Spatial sky = SkyFactory.createSky(getAssetManager(), "Textures/Sky/Bright/spheremap.png",
@@ -303,7 +306,7 @@ public class EscapeVR extends VRApplication implements EventListener {
       if (object instanceof Geometry || object instanceof Node) {
 
         log.debug(className, String.format("Registering trigger for %s", object.toString()));
-        eventManager.registerObjectInteractionTrigger(object.getName(), 4f);
+        eventManager.registerObjectInteractionTrigger(object.getName(), 6f);
       }
     }
 
