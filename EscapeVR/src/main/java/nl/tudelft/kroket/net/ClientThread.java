@@ -82,6 +82,7 @@ public class ClientThread extends Thread {
     client.sendMessage(message);
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public void run() {
 
@@ -117,7 +118,9 @@ public class ClientThread extends Thread {
           callback.receiveLoop(line);
         }
       } catch (IOException exception) {
-        exception.printStackTrace();
+        // exception.printStackTrace();
+
+        client.close();
       }
     }
   };

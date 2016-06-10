@@ -43,7 +43,7 @@ public class MovementHandler extends InteractionHandler implements ActionListene
 
   private boolean moveForward, moveBackwards;
 
-  private boolean flying = true;
+  // private boolean flying = true;
 
   @Override
   public void onAction(String name, boolean keyPressed, float tpf) {
@@ -64,7 +64,8 @@ public class MovementHandler extends InteractionHandler implements ActionListene
   }
 
   /**
-   * Add an object we want to use 
+   * Add an object we want to use
+   * 
    * @param objectName
    */
   public void addObject(String objectName) {
@@ -112,9 +113,8 @@ public class MovementHandler extends InteractionHandler implements ActionListene
       Vector3f newPosition = VRApplication.getFinalObserverRotation().getRotationColumn(2)
           .mult(tpf * movementSpeed);
 
-      Vector3f oldPosition = newPosition
-          .subtract(VRApplication.getFinalObserverRotation().getRotationColumn(2))
-          .mult(tpf * movementSpeed);
+      Vector3f oldPosition = newPosition.subtract(
+          VRApplication.getFinalObserverRotation().getRotationColumn(2)).mult(tpf * movementSpeed);
 
       if (allowMovement(newPosition.mult(movementSpeed))) {
         observer.move(newPosition);
@@ -125,9 +125,8 @@ public class MovementHandler extends InteractionHandler implements ActionListene
       Vector3f newPosition = VRApplication.getFinalObserverRotation().getRotationColumn(2)
           .mult(-tpf * movementSpeed);
 
-      Vector3f oldPosition = newPosition
-          .subtract(VRApplication.getFinalObserverRotation().getRotationColumn(2))
-          .mult(-tpf * movementSpeed);
+      Vector3f oldPosition = newPosition.subtract(
+          VRApplication.getFinalObserverRotation().getRotationColumn(2)).mult(-tpf * movementSpeed);
 
       if (allowMovement(newPosition.mult(movementSpeed))) {
         observer.move(newPosition);
@@ -141,8 +140,8 @@ public class MovementHandler extends InteractionHandler implements ActionListene
 
     // Spatial observerClone = observer.clone(false);
 
-    boolean intersects = (object.getWorldBound()
-        .intersects(observer.clone(false).move(newPos).getWorldBound()));
+    boolean intersects = (object.getWorldBound().intersects(observer.clone(false).move(newPos)
+        .getWorldBound()));
 
     if (intersects) {
       log.debug(className, "Observer intersects with object: " + object.getName());

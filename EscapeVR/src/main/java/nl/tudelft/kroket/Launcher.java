@@ -112,7 +112,7 @@ public class Launcher extends Application {
   }
 
   @Override
-  public void start(Stage primaryStage) {
+  public void start(final Stage primaryStage) {
 
     primaryStage.setWidth(DIALOG_WIDTH);
     primaryStage.setHeight(DIALOG_HEIGHT);
@@ -139,13 +139,13 @@ public class Launcher extends Application {
     Label lblUserName = new Label("Username:");
     grid.add(lblUserName, 0, 1);
 
-    TextField userTextField = new TextField();
+    final TextField userTextField = new TextField();
     grid.add(userTextField, 1, 1);
 
     Label lblRemoteHost = new Label("Remote host:");
     grid.add(lblRemoteHost, 0, 2);
 
-    TextField remoteField = new TextField();
+    final TextField remoteField = new TextField();
     grid.add(remoteField, 1, 2);
 
     Button btn = new Button("Let's play!");

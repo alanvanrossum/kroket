@@ -13,24 +13,25 @@ import java.util.EventObject;
 public class PictureCodeMinigame extends Minigame {
 
   private static final String GAME_NAME = "A";
-  
+
   /** Current class, used as tag for logger. */
   private final String className = this.getClass().getSimpleName();
 
   /** Singleton logger instance. */
   private Logger log = Logger.getInstance();
-  
+
   /** Singleton instance. */
   private static Minigame instance = new PictureCodeMinigame();
-  
+
   /** Private constructor. */
-  private PictureCodeMinigame() {}
+  private PictureCodeMinigame() {
+  }
 
   /** Get the singleton instance. */
   public static Minigame getInstance() {
     return instance;
   }
-  
+
   /**
    * Start the minigame.
    */
@@ -50,21 +51,11 @@ public class PictureCodeMinigame extends Minigame {
     sceneManager.extendEscapeScene("A");
   }
 
-  @Override
-  public void update(float tpf) {
-    // TODO Auto-generated method stub
-  }
-
-  @Override
-  public void handleEvent(EventObject event) {
-    // TODO Auto-generated method stub
-  }
-
   /**
    * Returns the name of the game.
    */
   public String getName() {
     return GAME_NAME;
   }
-  
+
 }

@@ -9,12 +9,12 @@ import java.util.EventObject;
 
 public abstract class Minigame {
 
-  public HeadUpDisplay hud;
-  public ClientThread clientThread;
-  public ScreenManager screenManager;
-  public SceneManager sceneManager;
-  public MinigameManager minigameManager;
-  
+  protected HeadUpDisplay hud;
+  protected ClientThread clientThread;
+  protected ScreenManager screenManager;
+  protected SceneManager sceneManager;
+  protected MinigameManager minigameManager;
+
   public void setHud(HeadUpDisplay hud) {
     this.hud = hud;
   }
@@ -26,23 +26,27 @@ public abstract class Minigame {
   public void setScreenManager(ScreenManager screenManager) {
     this.screenManager = screenManager;
   }
-  
+
   public void setSceneManager(SceneManager sceneManager) {
     this.sceneManager = sceneManager;
   }
-  
+
   public void setMinigameManager(MinigameManager minigameManager) {
     this.minigameManager = minigameManager;
   }
 
   public abstract void start();
-  
+
   public abstract void stop();
-  
-  public abstract void update(float tpf);
-  
-  public abstract void handleEvent(EventObject event);
-  
+
+  public void update(float tpf) {
+
+  }
+
+  public void handleEvent(EventObject event) {
+
+  }
+
   public abstract String getName();
 
   public HeadUpDisplay getHud() {
@@ -64,5 +68,5 @@ public abstract class Minigame {
   public MinigameManager getMinigameManager() {
     return minigameManager;
   }
-  
+
 }

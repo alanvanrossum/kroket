@@ -196,4 +196,10 @@ public class AudioManager {
     return audioNodes;
   }
 
+  public void playInstance(String name) {
+    AudioNode node = getNode(name);
+    node.playInstance();
+
+  }
+
 }
