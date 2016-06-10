@@ -5,8 +5,6 @@ import java.util.Random;
 import nl.tudelft.kroket.audio.AudioManager;
 import nl.tudelft.kroket.escape.Settings;
 import nl.tudelft.kroket.event.EventManager;
-import nl.tudelft.kroket.event.events.GameLostEvent;
-import nl.tudelft.kroket.event.events.TimeoutEvent;
 import nl.tudelft.kroket.input.InputHandler;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.scene.SceneManager;
@@ -29,14 +27,11 @@ public class PlayingState extends GameState {
 
   private static Random rand = new Random();
 
-
   private long timeLimit;
 
   private boolean timeoutHit = false;
 
-
   public static GameState getInstance() {
-    // TODO Auto-generated method stub
     return instance;
   }
 
@@ -122,13 +117,13 @@ public class PlayingState extends GameState {
     long timeRemaining = Math.max(timeLimit - System.currentTimeMillis(), 0);
 
     if (timeRemaining == 0 && !timeoutHit) {
-      
+
       hud.setTimerText("");
       System.out.println("Firing timeoutEvent...");
       timeoutHit = true;
       // prevent firing event multiple times
-//      em.addEvent(new TimeoutEvent(this));
-//      em.addEvent(new GameLostEvent(this));
+      // em.addEvent(new TimeoutEvent(this));
+      // em.addEvent(new GameLostEvent(this));
 
     }
 

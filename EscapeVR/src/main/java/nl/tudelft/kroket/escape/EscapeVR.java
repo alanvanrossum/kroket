@@ -19,6 +19,7 @@ import nl.tudelft.kroket.event.events.GameLostEvent;
 import nl.tudelft.kroket.event.events.GameStartEvent;
 import nl.tudelft.kroket.event.events.GameWonEvent;
 import nl.tudelft.kroket.event.events.InteractionEvent;
+import nl.tudelft.kroket.event.events.MinigameCompleteEvent;
 import nl.tudelft.kroket.event.events.StartMinigameEvent;
 import nl.tudelft.kroket.event.events.TimeoutEvent;
 import nl.tudelft.kroket.input.InputHandler;
@@ -118,7 +119,7 @@ public class EscapeVR extends VRApplication implements EventListener {
   private void initAudioManager() {
     audioManager = new AudioManager(getAssetManager(), rootNode, "Sound/");
     audioManager.loadFile("waiting", "Soundtrack/alone.wav", false, true, 0.75f);
-    audioManager.loadFile("alone", "Soundtrack/alone.wav", false, true, 0.75f);
+    audioManager.loadFile("alone", "Soundtrack/alone.wav", false, true, 1.0f);
     audioManager.loadFile("lobby", "Soundtrack/lobby16.wav", false, true, 0.9f);
     audioManager.loadFile("ambient", "Soundtrack/ambient16.wav", false, true, 0.75f);
     audioManager.loadFile("welcome", "Voice/intro2.wav", false, false, 0.5f);
@@ -134,6 +135,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     audioManager.loadFile("gamecomplete", "ui/portal2/startup_02_01.wav", false, false, 0.8f);
     audioManager
         .loadFile("gamebegin", "ui/portal2/p2_store_ui_checkout_01.wav", false, false, 0.8f);
+    audioManager.loadFile("gamelost", "Soundtrack/gamelost.wav", false, false, 1.0f);
 
   }
 
@@ -331,12 +333,7 @@ public class EscapeVR extends VRApplication implements EventListener {
       log.info(className, "Current state is "
           + stateManager.getCurrentState().getClass().getSimpleName());
 
-      if (stateManager.getCurrentState() instanceof PlayingState) {
-
-        log.info(className, "Forcing timelimit update...");
-        PlayingState playingState = (PlayingState) stateManager.getCurrentState();
-        playingState.setTimeLimit(timeLimit);
-      }
+      setTimeLimit(timeLimit);
     }
 
     mgManager.update(tpf);
@@ -368,7 +365,7 @@ public class EscapeVR extends VRApplication implements EventListener {
       break;
     default:
       log.error(className, "Unknown game: " + gameName);
-      
+
       break;
     }
   }
@@ -411,6 +408,8 @@ public class EscapeVR extends VRApplication implements EventListener {
    */
   public synchronized void remoteInput(final String line) {
 
+    log.info(className, "Input received: " + line);
+
     HashMap<String, String> command = CommandParser.parseInput(line);
     System.out.println(command);
 
@@ -431,7 +430,6 @@ public class EscapeVR extends VRApplication implements EventListener {
           eventManager.addEvent(new StartMinigameEvent(this));
 
           if (action.equals("B")) {
-
             if (mgManager.getCurrent() instanceof TapMinigame) {
               TapMinigame tapGame = (TapMinigame) mgManager.getCurrent();
               tapGame.parseButtons(CommandParser.parseParams(line));
@@ -452,8 +450,8 @@ public class EscapeVR extends VRApplication implements EventListener {
 
           if (mgManager.isActive(action)) {
             // if (mgManager.gameActive() && action.equals(mgManager.getCurrent().getName())) {
-            //audioManager.play("gamecomplete");
-
+            //
+            eventManager.addEvent(new MinigameCompleteEvent(this));
             mgManager.endGame();
           }
 
@@ -465,8 +463,8 @@ public class EscapeVR extends VRApplication implements EventListener {
         if (command.containsKey("param_0")) {
           String parameter = command.get("param_0");
           if (!parameter.isEmpty()) {
-            setTimeLimit(Integer.parseInt(parameter));
-            // timeLimit = Integer.parseInt(parameter);
+            // setTimeLimit(Integer.parseInt(parameter));
+            timeLimit = Integer.parseInt(parameter);
           }
         }
         break;
@@ -495,7 +493,7 @@ public class EscapeVR extends VRApplication implements EventListener {
    */
   public void receiveLoop(String message) {
 
-    log.debug(className, "Message received: " + message);
+    log.info(className, "Message received: " + message);
 
     remoteInput(message);
   }
@@ -504,34 +502,21 @@ public class EscapeVR extends VRApplication implements EventListener {
   public void handleEvent(EventObject ev) {
 
     log.info(className, "Event received: " + ev.toString());
-    
+
     if (ev instanceof StartMinigameEvent) {
       audioManager.play("gamebegin");
-    }
-    
-    else if (ev instanceof TimeoutEvent) {
-      log.info(className, "TimeoutEvent received");
-
+    } else if (ev instanceof MinigameCompleteEvent) {
+      audioManager.play("gamecomplete");
+    } else if (ev instanceof TimeoutEvent) {
       // yeah this is kinda weird but I dont want to keep the behaviour for these events seperated
       setGameState(GameLostState.getInstance());
-    }
-    
-    else if (ev instanceof GameWonEvent) {
-      log.info(className, "TimeoutEvent received");
-
+    } else if (ev instanceof GameWonEvent) {
       setGameState(GameWonState.getInstance());
-    }
-
-    else if (ev instanceof GameStartEvent) {
+    } else if (ev instanceof GameStartEvent) {
       startGame();
-    }
-
-    else if (ev instanceof GameLostEvent) {
-      log.info(className, "GameLostEvent received");
+    } else if (ev instanceof GameLostEvent) {
       setGameState(GameLostState.getInstance());
-    }
-
-    if (ev instanceof InteractionEvent) {
+    } else if (ev instanceof InteractionEvent) {
       InteractionEvent interactionEvent = (InteractionEvent) ev;
 
       log.info(className, "Player interacted with object " + interactionEvent.getName());
@@ -547,21 +532,17 @@ public class EscapeVR extends VRApplication implements EventListener {
       // clientThread.sendMessage(String.format("INTERACT[%s]", objectName));
 
       switch (objectName) {
-
-      // zou het niet handig zijn om deze namen in een lijst te zetten ofzo, een lijstje met globals
-      // oid?
-
       case "portalturret-geom-0":
         audioManager.getNode("turret").play();
         break;
       case "door-geom-0":
 
         // Play spooky muhaha sound when player interacts with door
-        audioManager.getNode("door").playInstance();
+        audioManager.playInstance("door");
 
         if (!mgManager.gameActive()) {
           log.info(className, "Muhahaha???");
-          audioManager.getNode("muhaha").play();
+          audioManager.play("muhaha");
           hud.setCenterText("Muhahaha! You will never escape!", 5);
         }
         clientThread.sendMessage("BEGIN[D]");
@@ -582,25 +563,28 @@ public class EscapeVR extends VRApplication implements EventListener {
         break;
 
       case "D1":
+        audioManager.playInstance("click");
         escapeScene.remove("D1");
         escapeScene.addCode13("Textures/Painting/13.jpg", "D_13");
         escapeScene.addCode37("Textures/Painting/questionmark.jpg", "D2");
         registerObjects();
         break;
       case "D2":
+        audioManager.playInstance("click");
         escapeScene.remove("D2");
         escapeScene.addCode37("Textures/Painting/37.jpg", "D_37");
         escapeScene.addCode21("Textures/Painting/questionmark.jpg", "D3");
         registerObjects();
         break;
       case "D3":
+        audioManager.playInstance("click");
         escapeScene.remove("D3");
         escapeScene.addCode21("Textures/Painting/21.jpg", "D_21");
         registerObjects();
         break;
       default:
         if (!mgManager.gameActive()) {
-          audioManager.getNode("click").playInstance();
+          audioManager.playInstance("click");
         }
         break;
 

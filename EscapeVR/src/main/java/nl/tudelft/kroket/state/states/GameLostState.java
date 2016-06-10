@@ -32,13 +32,13 @@ public class GameLostState extends GameState {
     
     audioManager.stopAudio();
     screenManager.getScreen("gameover").show();
-    audioManager.play("alone");
+    audioManager.play("gamelost");
   }
 
   @Override
   public void stop(AudioManager audioManager, SceneManager sceneManager,
       ScreenManager screenManager) {
-    audioManager.stop("alone");
+    audioManager.stop("gamelost");
     screenManager.getScreen("gameover").hide();
   }
 

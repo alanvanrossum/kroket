@@ -32,9 +32,8 @@ import com.jme3.texture.Texture.MinFilter;
  */
 public class EscapeScene extends Scene {
 
-  
   int shadowmapSize = 2048;
-	
+
   float translationY = 3f;
 
   float roomDepth = 12f;
@@ -59,16 +58,17 @@ public class EscapeScene extends Scene {
     AmbientLight ambient = new AmbientLight();
     ambient.setColor(ColorRGBA.White);
     rootNode.addLight(ambient);
-    
+
     PointLight lampLight = new PointLight();
-	lampLight.setColor(ColorRGBA.White);
-	lampLight.setRadius(50f);
+    lampLight.setColor(ColorRGBA.White);
+    lampLight.setRadius(50f);
     lampLight.setPosition(new Vector3f(0f, 6f, 0f));
-	rootNode.addLight(lampLight);
-	  
-	PointLightShadowRenderer pointLightShadowRenderer = new PointLightShadowRenderer(assetManager, shadowmapSize);
-	pointLightShadowRenderer.setLight(lampLight);
-	viewPort.addProcessor(pointLightShadowRenderer);
+    rootNode.addLight(lampLight);
+
+    PointLightShadowRenderer pointLightShadowRenderer = new PointLightShadowRenderer(assetManager,
+        shadowmapSize);
+    pointLightShadowRenderer.setLight(lampLight);
+    viewPort.addProcessor(pointLightShadowRenderer);
 
     createWalls("Textures/brick_wall.jpg");
 
@@ -86,11 +86,9 @@ public class EscapeScene extends Scene {
     // createLight();
     // createCube();
 
-
     // addLamp();
 
     // createLight();
-
 
     /** A cone-shaped spotlight with location, direction, range */
     SpotLight spot = new SpotLight();
@@ -102,15 +100,13 @@ public class EscapeScene extends Scene {
     spot.setPosition(new Vector3f(0, 4, 0));
     rootNode.addLight(spot);
 
-
-
     /** A white, directional light source. */
     DirectionalLight sun = new DirectionalLight();
     sun.setDirection((new Vector3f(-0.5f, -0.5f, -0.5f)).normalizeLocal());
     sun.setColor(ColorRGBA.White);
     rootNode.addLight(sun);
 
-    //addTurret();
+    // addTurret();
     addDesk();
 
     addKnight1();
@@ -118,7 +114,7 @@ public class EscapeScene extends Scene {
 
     addSafe();
 
-    //addButtons();
+    // addButtons();
 
     createLight();
   }
@@ -147,9 +143,9 @@ public class EscapeScene extends Scene {
     rootNode.attachChild(buttons);
   }
 
-/**
- * Adds the open safe after minigame a.
- */
+  /**
+   * Adds the open safe after minigame a.
+   */
   public void addOpenSafe() {
     System.out.println("hoi");
     rootNode.getChild("safe-objnode").removeFromParent();
@@ -160,10 +156,12 @@ public class EscapeScene extends Scene {
     safe.setShadowMode(ShadowMode.CastAndReceive);
     rootNode.attachChild(safe);
   }
-  
+
   /**
    * Removes the object from the scene.
-   * @param object the name of the object to be deleted.
+   * 
+   * @param object
+   *          the name of the object to be deleted.
    */
   public void remove(String object) {
     rootNode.getChild(object);
@@ -200,24 +198,24 @@ public class EscapeScene extends Scene {
     Spatial desk = assetManager.loadModel("Models/DeskLaptop/DeskLaptop.j3o");
     desk.scale(1.5f);
     desk.move(6.0f, -translationY + 0.2f, -8.9f);
-    desk.setShadowMode(ShadowMode.CastAndReceive);  
+    desk.setShadowMode(ShadowMode.CastAndReceive);
     rootNode.attachChild(desk);
   }
 
-//  private void addLamp() {
-//    Spatial lamp = assetManager.loadModel("Models/Petroleum_Lamp/Petroleum_Lamp.j3o");
-//    // lamp.move(-2, -3, -2); // put the lamp on the floor
-//    lamp.setShadowMode(ShadowMode.Cast);  
-//    rootNode.attachChild(lamp);
-//  }
+  // private void addLamp() {
+  // Spatial lamp = assetManager.loadModel("Models/Petroleum_Lamp/Petroleum_Lamp.j3o");
+  // // lamp.move(-2, -3, -2); // put the lamp on the floor
+  // lamp.setShadowMode(ShadowMode.Cast);
+  // rootNode.attachChild(lamp);
+  // }
 
-  private void addTurret() {
-    Spatial turret = assetManager.loadModel("Models/portalturret/portalturret.j3o");
-    turret.move(-2, -3.5f, 5);
-    turret.scale(0.06f);
-    turret.setShadowMode(ShadowMode.Cast);
-    addObject("turret", turret);
-  }
+//  private void addTurret() {
+//    Spatial turret = assetManager.loadModel("Models/portalturret/portalturret.j3o");
+//    turret.move(-2, -3.5f, 5);
+//    turret.scale(0.06f);
+//    turret.setShadowMode(ShadowMode.Cast);
+//    addObject("turret", turret);
+//  }
 
   private void createLight() {
     DirectionalLight sun = new DirectionalLight();
@@ -245,20 +243,19 @@ public class EscapeScene extends Scene {
     wallTexture.setMinFilter(MinFilter.Trilinear);
     wallTexture.setAnisotropicFilter(16);
 
-
     Material wallMaterial = new Material(assetManager, materialPath);
     wallMaterial.setTexture("ColorMap", wallTexture);
 
-    //    Material wallMaterial = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
-    //    wallMaterial.setBoolean("UseMaterialColors", true);
-    //    wallMaterial.setBoolean("UseVertexColor", true);
-    //    wallMaterial.setBoolean("VertexLighting", false);
-    //    wallMaterial.setColor("Diffuse", ColorRGBA.White); // minimum material color
-    //    wallMaterial.setColor("Specular",ColorRGBA.White); // for shininess
-    //    wallMaterial.setFloat("Shininess", 0); // [1,128] for shininess
-    //    // wallMaterial.getAdditionalRenderState().setFaceCullMode(FaceCullMode.Off);
-    //    wallMaterial.setTexture("DiffuseMap", wallTexture);
-    //    //wallMaterial.setTexture("ColorMap", wallTexture);
+    // Material wallMaterial = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+    // wallMaterial.setBoolean("UseMaterialColors", true);
+    // wallMaterial.setBoolean("UseVertexColor", true);
+    // wallMaterial.setBoolean("VertexLighting", false);
+    // wallMaterial.setColor("Diffuse", ColorRGBA.White); // minimum material color
+    // wallMaterial.setColor("Specular",ColorRGBA.White); // for shininess
+    // wallMaterial.setFloat("Shininess", 0); // [1,128] for shininess
+    // // wallMaterial.getAdditionalRenderState().setFaceCullMode(FaceCullMode.Off);
+    // wallMaterial.setTexture("DiffuseMap", wallTexture);
+    // //wallMaterial.setTexture("ColorMap", wallTexture);
 
     // wall to the right of player spawn
     Geometry wall1 = new Geometry("wall-east", new Box(.1f, roomHeight, roomDepth));
@@ -270,7 +267,7 @@ public class EscapeScene extends Scene {
     // wall to the left of player spawn
     Geometry wall2 = new Geometry("wall-west", new Box(.1f, roomHeight, roomDepth));
     wall2.setMaterial(wallMaterial);
-    wall2.rotate(0,  -FastMath.PI, 0);
+    wall2.rotate(0, -FastMath.PI, 0);
     wall2.move(roomWidth, translationY, 0);
     wall2.setShadowMode(ShadowMode.Receive);
     addObject("wall-west", wall2);
@@ -310,7 +307,7 @@ public class EscapeScene extends Scene {
     Geometry floor = new Geometry("floor", new Box(roomWidth, .1f, roomDepth));
     floor.move(0f, translationY - roomHeight, 0f);
     floor.setMaterial(floorMaterial);
-    
+
     floor.setShadowMode(ShadowMode.Receive);
     addObject("floor", floor);
   }
@@ -335,7 +332,7 @@ public class EscapeScene extends Scene {
 
     ceiling.move(0f, translationY + roomHeight, 0f);
     ceiling.setMaterial(ceilingMaterial);
-    
+
     ceiling.setShadowMode(ShadowMode.Receive);
 
     addObject("ceiling", ceiling);
@@ -349,22 +346,22 @@ public class EscapeScene extends Scene {
    */
   private void createDoor(String texturePath) {
     //
-    //    float doorWidth = 1.8f;
-    //    float doorHeight = 3.5f;
+    // float doorWidth = 1.8f;
+    // float doorHeight = 3.5f;
     //
-    //    Texture doorTexture = assetManager.loadTexture(texturePath);
-    //    doorTexture.setMagFilter(MagFilter.Nearest);
-    //    doorTexture.setMinFilter(MinFilter.Trilinear);
-    //    doorTexture.setAnisotropicFilter(16);
+    // Texture doorTexture = assetManager.loadTexture(texturePath);
+    // doorTexture.setMagFilter(MagFilter.Nearest);
+    // doorTexture.setMinFilter(MinFilter.Trilinear);
+    // doorTexture.setAnisotropicFilter(16);
     //
-    //    Material doorMaterial = new Material(assetManager, materialPath);
-    //    doorMaterial.setTexture("ColorMap", doorTexture);
+    // Material doorMaterial = new Material(assetManager, materialPath);
+    // doorMaterial.setTexture("ColorMap", doorTexture);
     //
-    //    Geometry door = new Geometry("door", new Box(doorWidth, doorHeight, .2f));
+    // Geometry door = new Geometry("door", new Box(doorWidth, doorHeight, .2f));
     Spatial door = assetManager.loadModel("Models/door/door.j3o");
     door.scale(0.022f);
     door.move(0, translationY - 6f, (float) (roomDepth - 0.1));
-    //door.setMaterial(doorMaterial);
+    // door.setMaterial(doorMaterial);
     door.setShadowMode(ShadowMode.CastAndReceive);
 
     addObject("door", door);
@@ -411,11 +408,14 @@ public class EscapeScene extends Scene {
 
     addObject("painting2", painting);
   }
-  
+
   /**
    * Add a painting for the code 13.
-   * @param texturePath the image of the painting.
-   * @param name the name of the painting.
+   * 
+   * @param texturePath
+   *          the image of the painting.
+   * @param name
+   *          the name of the painting.
    */
   public void addCode13(String texturePath, String name) {
     float paintingWidth = 1.5f;
@@ -437,11 +437,14 @@ public class EscapeScene extends Scene {
 
     addObject(name, painting);
   }
-  
+
   /**
    * Add a painting for the code 37.
-   * @param texturePath the image of the painting.
-   * @param name the name of the painting.
+   * 
+   * @param texturePath
+   *          the image of the painting.
+   * @param name
+   *          the name of the painting.
    */
   public void addCode37(String texturePath, String name) {
     float paintingWidth = 1.5f;
@@ -457,17 +460,20 @@ public class EscapeScene extends Scene {
 
     Geometry painting = new Geometry(name, new Box(.01f, paintingHeight, paintingWidth));
 
-    painting.move(- roomWidth + 0.1f, translationY - 2, 2);
+    painting.move(-roomWidth + 0.1f, translationY - 2, 2);
 
     painting.setMaterial(paintingMaterial);
 
     addObject(name, painting);
   }
-  
+
   /**
    * Add a painting for the code 21.
-   * @param texturePath the image of the painting.
-   * @param name the name of the painting.
+   * 
+   * @param texturePath
+   *          the image of the painting.
+   * @param name
+   *          the name of the painting.
    */
   public void addCode21(String texturePath, String name) {
     float paintingWidth = 1.5f;
@@ -490,30 +496,29 @@ public class EscapeScene extends Scene {
 
     addObject(name, painting);
   }
-  
-//  private void addCode(String name, String texturePath, float depth, float width, float height,
-//      float rotateX, float rotateY, float rotateZ) {
-//    float paintingWidth = 1.5f;
-//    float paintingHeight = 1.5f;
-//
-//    Texture paintingTexture = assetManager.loadTexture(texturePath);
-//    paintingTexture.setMagFilter(MagFilter.Nearest);
-//    paintingTexture.setMinFilter(MinFilter.Trilinear);
-//    paintingTexture.setAnisotropicFilter(16);
-//
-//    Material paintingMaterial = new Material(assetManager, materialPath);
-//    paintingMaterial.setTexture("ColorMap", paintingTexture);
-//
-//    Geometry painting = new Geometry(name, new Box(.01f, paintingHeight, paintingWidth));
-//
-//    painting.rotate(rotateX, rotateY, rotateZ);
-//    painting.move(depth, width, height);
-//
-//    painting.setMaterial(paintingMaterial);
-//
-//    addObject(name, painting);
-//  }
 
+  // private void addCode(String name, String texturePath, float depth, float width, float height,
+  // float rotateX, float rotateY, float rotateZ) {
+  // float paintingWidth = 1.5f;
+  // float paintingHeight = 1.5f;
+  //
+  // Texture paintingTexture = assetManager.loadTexture(texturePath);
+  // paintingTexture.setMagFilter(MagFilter.Nearest);
+  // paintingTexture.setMinFilter(MinFilter.Trilinear);
+  // paintingTexture.setAnisotropicFilter(16);
+  //
+  // Material paintingMaterial = new Material(assetManager, materialPath);
+  // paintingMaterial.setTexture("ColorMap", paintingTexture);
+  //
+  // Geometry painting = new Geometry(name, new Box(.01f, paintingHeight, paintingWidth));
+  //
+  // painting.rotate(rotateX, rotateY, rotateZ);
+  // painting.move(depth, width, height);
+  //
+  // painting.setMaterial(paintingMaterial);
+  //
+  // addObject(name, painting);
+  // }
 
   /**
    * Add gas to the scene.
@@ -549,6 +554,5 @@ public class EscapeScene extends Scene {
   public Vector3f getBoundaries() {
     return new Vector3f(roomWidth, roomHeight, roomDepth);
   }
-
 
 }

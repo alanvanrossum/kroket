@@ -50,18 +50,10 @@ public class LockMinigame extends Minigame {
     hud.setCenterText("You opened the lock!", 10);
   }
 
-  @Override
-  public void update(float tpf) {
-    // TODO Auto-generated method stub
-  }
-
-  @Override
-  public void handleEvent(EventObject event) {
-    // TODO Auto-generated method stub
-  }
 
   public String getName() {
     return GAME_NAME;
   }
+
     
 }
