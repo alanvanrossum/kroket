@@ -156,6 +156,14 @@ public class ColorSequenceMinigame extends Minigame {
   }
 
   /**
+   * Gets the sequencelist.
+   * @return the list
+   */
+  public static List<String> getSequenceList() {
+    return sequenceList;
+  }
+
+  /**
    * Print a list with strings.
    * 
    * @param list
@@ -177,19 +185,19 @@ public class ColorSequenceMinigame extends Minigame {
   public void parseColors(List<String> params) {
     for (String colorString : params) {
       switch (colorString) {
-      case "RED":
-        sequenceList.add("Button B");
-        break;
-      case "GREEN":
-        sequenceList.add("Button A");
-        break;
-      case "BLUE":
-        sequenceList.add("Button X");
-        break;
-      case "YELLOW":
-        sequenceList.add("Button Y");
-        break;
-      default:
+        case "RED":
+          sequenceList.add("Button B");
+          break;
+        case "GREEN":
+          sequenceList.add("Button A");
+          break;
+        case "BLUE":
+          sequenceList.add("Button X");
+          break;
+        case "YELLOW":
+          sequenceList.add("Button Y");
+          break;
+        default:
       }
     }
   }
