@@ -246,7 +246,8 @@ public class EscapeVR extends VRApplication implements EventListener {
     initStateManager();
 
     movementHandler = new MovementHandler(observer, rootNode);
-
+    movementHandler.setLockHorizontal(true);
+    
     inputHandler.registerMappings(new RotationHandler(observer), "left", "right", "lookup",
         "lookdown", "tiltleft", "tiltright");
     inputHandler.registerMappings(movementHandler, "forward", "back");
@@ -523,11 +524,15 @@ public class EscapeVR extends VRApplication implements EventListener {
       setGameState(GameWonState.getInstance());
       observer.setLocalTranslation(Settings.winingPosition);
       collisionHandler.disableRestriction();
-
+      movementHandler.setLockHorizontal(false);
+      
+      
       movementHandler.addObject("wall-north");
       movementHandler.addObject("wall-south");
       movementHandler.addObject("wall-east");
       movementHandler.addObject("wall-west");
+      movementHandler.addObject("roof");
+      movementHandler.addObject("floor");
       
     } else if (ev instanceof GameStartEvent) {
       startGame();

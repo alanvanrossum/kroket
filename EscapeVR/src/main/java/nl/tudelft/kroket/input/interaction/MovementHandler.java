@@ -43,7 +43,15 @@ public class MovementHandler extends InteractionHandler implements ActionListene
 
   private boolean moveForward, moveBackwards;
 
-  // private boolean flying = true;
+  private boolean lockHorizontal = true;
+
+  public boolean isLockHorizontal() {
+    return lockHorizontal;
+  }
+
+  public void setLockHorizontal(boolean lockHorizontal) {
+    this.lockHorizontal = lockHorizontal;
+  }
 
   @Override
   public void onAction(String name, boolean keyPressed, float tpf) {
@@ -108,6 +116,9 @@ public class MovementHandler extends InteractionHandler implements ActionListene
   public void update(float tpf) {
 
     // float deltaCorrected = collisionOffset * tpf;
+    
+
+    
     if (moveForward) {
 
       Vector3f newPosition = VRApplication.getFinalObserverRotation().getRotationColumn(2)
@@ -115,6 +126,11 @@ public class MovementHandler extends InteractionHandler implements ActionListene
 
       Vector3f oldPosition = newPosition.subtract(
           VRApplication.getFinalObserverRotation().getRotationColumn(2)).mult(tpf * movementSpeed);
+      
+      if (lockHorizontal) {
+        newPosition.setY(0);
+        oldPosition.setY(0);
+      }
 
       if (allowMovement(newPosition.mult(movementSpeed))) {
         observer.move(newPosition);
@@ -127,6 +143,12 @@ public class MovementHandler extends InteractionHandler implements ActionListene
 
       Vector3f oldPosition = newPosition.subtract(
           VRApplication.getFinalObserverRotation().getRotationColumn(2)).mult(-tpf * movementSpeed);
+      
+      if (lockHorizontal) {
+        newPosition.setY(0);
+        oldPosition.setY(0);
+      }
+      
 
       if (allowMovement(newPosition.mult(movementSpeed))) {
         observer.move(newPosition);
