@@ -106,6 +106,8 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   private int timeLimit = Settings.TIMELIMIT;
 
+  private CollisionHandler collisionHandler;
+
   /**
    * Initialize the stateManager.
    */
@@ -209,7 +211,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     // the sphere should have no shaded material
     Material mat = new Material(getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-    
+
     observer.setCullHint(CullHint.Always);
     observer.setMaterial(mat);
 
@@ -248,8 +250,10 @@ public class EscapeVR extends VRApplication implements EventListener {
     inputHandler.registerMappings(movementHandler, "forward", "back");
     inputHandler.registerMappings(eventManager, "Button A", "Button B", "Button X", "Button Y");
 
-    inputHandler.registerListener(new CollisionHandler(observer, sceneManager.getScene("escape")
-        .getBoundaries()));
+    collisionHandler = new CollisionHandler(observer, sceneManager.getScene("escape")
+        .getBoundaries());
+
+    inputHandler.registerListener(collisionHandler);
 
     eventManager.addListener(this);
 
@@ -515,6 +519,14 @@ public class EscapeVR extends VRApplication implements EventListener {
       setGameState(GameLostState.getInstance());
     } else if (ev instanceof GameWonEvent) {
       setGameState(GameWonState.getInstance());
+      observer.setLocalTranslation(Settings.winingPosition);
+      collisionHandler.disableRestriction();
+
+      movementHandler.addObject("wall-north");
+      movementHandler.addObject("wall-south");
+      movementHandler.addObject("wall-east");
+      movementHandler.addObject("wall-west");
+      
     } else if (ev instanceof GameStartEvent) {
       startGame();
     } else if (ev instanceof GameLostEvent) {

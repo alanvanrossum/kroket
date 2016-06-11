@@ -15,12 +15,16 @@ public class Settings {
 
   /** Debug flag. */
   public final static boolean DEBUG = false;
+  
+  public final static boolean WALLCOLLISION = true;
 
   /** Portnumber of the gamehost. */
   public static int PORTNUM = 1234;
 
   /** Default spawn position for the player/observer. */
   public final static Vector3f spawnPosition = new Vector3f(0, 0, 0);
+  
+  public final static Vector3f winingPosition = new Vector3f(0, 0, 15f);
 
   /** Enable the spookyscreen overlay. */
   public final static boolean SPOOKY_ENABLED = true;
