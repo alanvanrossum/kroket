@@ -531,7 +531,7 @@ public class EscapeVR extends VRApplication implements EventListener {
       movementHandler.addObject("wall-south");
       movementHandler.addObject("wall-east");
       movementHandler.addObject("wall-west");
-      movementHandler.addObject("roof");
+      movementHandler.addObject("ceiling");
       movementHandler.addObject("floor");
       
     } else if (ev instanceof GameStartEvent) {
