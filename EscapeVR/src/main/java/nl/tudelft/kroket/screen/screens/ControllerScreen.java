@@ -30,7 +30,7 @@ public class ControllerScreen extends Screen {
   public ControllerScreen(AssetManager assetManager, Node guiNode, float width, float height) {
     super(name, assetManager, guiNode);
 
-    overlay = loadImage("overlay/controller.png", width, height);
+    overlay = loadImage("Overlay/controller.png", width, height);
   }
 
   /**

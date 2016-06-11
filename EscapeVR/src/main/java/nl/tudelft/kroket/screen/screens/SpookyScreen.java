@@ -35,7 +35,7 @@ public class SpookyScreen extends Screen {
   public SpookyScreen(AssetManager assetManager, Node guiNode, float width, float height) {
     super(name, assetManager, guiNode);
 
-    overlay = loadImage("overlay/spooky_face.png", width, height);
+    overlay = loadImage("Overlay/spooky_face.png", width, height);
 
   }
 
