@@ -30,7 +30,7 @@ public class LobbyScreen extends Screen {
   public LobbyScreen(AssetManager assetManager, Node guiNode, float width, float height) {
     super(name, assetManager, guiNode);
 
-    overlay = loadImage("overlay/waiting.png", width, height);
+    overlay = loadImage("Overlay/waiting.png", width, height);
   }
 
   /**
