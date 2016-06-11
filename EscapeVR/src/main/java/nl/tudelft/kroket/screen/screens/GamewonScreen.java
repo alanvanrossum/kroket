@@ -30,7 +30,7 @@ public class GamewonScreen extends Screen {
   public GamewonScreen(AssetManager assetManager, Node guiNode, float width, float height) {
     super(name, assetManager, guiNode);
 
-    overlay = loadImage("overlay/gamewon.png", width, height);
+    overlay = loadImage("Overlay/gamewon.png", width, height);
   }
 
   /**

@@ -185,19 +185,19 @@ public class TapMinigame extends Minigame {
   public void parseButtons(List<String> params) {
     for (String buttonString : params) {
       switch (buttonString) {
-      case "RED":
-        sequenceList.add("Button B");
-        break;
-      case "GREEN":
-        sequenceList.add("Button A");
-        break;
-      case "BLUE":
-        sequenceList.add("Button X");
-        break;
-      case "YELLOW":
-        sequenceList.add("Button Y");
-        break;
-      default:
+        case "RED":
+          sequenceList.add("Button B");
+          break;
+        case "GREEN":
+          sequenceList.add("Button A");
+          break;
+        case "BLUE":
+          sequenceList.add("Button X");
+          break;
+        case "YELLOW":
+          sequenceList.add("Button Y");
+          break;
+        default:
       }
 
     }
@@ -214,6 +214,22 @@ public class TapMinigame extends Minigame {
    */
   public String getName() {
     return GAME_NAME;
+  }
+
+  public static List<String> getFirstSequence() {
+    return firstSequence;
+  }
+
+  public static List<String> getSecondSequence() {
+    return secondSequence;
+  }
+
+  public static List<String> getThirdSequence() {
+    return thirdSequence;
+  }
+
+  public static List<String> getFourthSequence() {
+    return fourthSequence;
   }
 
 }
