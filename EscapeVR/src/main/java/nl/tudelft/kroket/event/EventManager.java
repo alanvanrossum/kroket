@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import nl.tudelft.kroket.event.events.ButtonPressEvent;
 import nl.tudelft.kroket.event.events.InteractionEvent;
@@ -25,7 +26,7 @@ public class EventManager extends InteractionHandler implements ActionListener {
   /** Singleton logger instance. */
   private Logger log = Logger.getInstance();
 
-  private HashSet<EventObject> eventList = new HashSet<EventObject>();
+  private CopyOnWriteArrayList<EventObject> eventList = new CopyOnWriteArrayList<EventObject>();
 
   /** List of all registered listeners. */
   private List<EventListener> listenerList = new ArrayList<EventListener>();
