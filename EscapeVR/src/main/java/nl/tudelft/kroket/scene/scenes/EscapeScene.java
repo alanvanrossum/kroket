@@ -138,7 +138,7 @@ public class EscapeScene extends Scene {
     Material floorMaterial = new Material(assetManager, materialPath);
     floorMaterial.setTexture("ColorMap", floorTexture);
 
-    Geometry grass = new Geometry("grass", new Box(200, .5f, 200));
+    Geometry grass = new Geometry("grass", new Box(400, .5f, 400));
 
     grass.move(0f, translationY - roomHeight - 0.5f, 0f);
     grass.setMaterial(floorMaterial);
