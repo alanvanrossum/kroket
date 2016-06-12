@@ -200,7 +200,7 @@ public class EscapeScene extends Scene {
   private void addKnight1() {
     Spatial knight1 = assetManager.loadModel("Models/knight1/knight1.j3o");
     knight1.scale(0.15f);
-    knight1.move(-6.2f, 2f, 2f);
+    knight1.move(-6.2f, 2f, 4f);
     knight1.rotate(-0.5f * FastMath.PI, 0.5f * FastMath.PI, 0f);
     knight1.setShadowMode(ShadowMode.CastAndReceive);
     rootNode.attachChild(knight1);
@@ -222,9 +222,10 @@ public class EscapeScene extends Scene {
    * Add the desk to the scene.
    */
   private void addDesk() {
-    Spatial desk = assetManager.loadModel("Models/DeskLaptop/DeskLaptop.j3o");
-    desk.scale(1.5f);
-    desk.move(6.0f, -translationY + 0.2f, -8.9f);
+    Spatial desk = assetManager.loadModel("Models/desklaptop2/desklaptop2.j3o");
+    desk.scale(0.06f);
+    desk.move(7.6f, -translationY - 0.4f, -8f);
+    desk.rotate(0f, 0.5f * FastMath.PI, 0f);
     desk.setShadowMode(ShadowMode.CastAndReceive);
     rootNode.attachChild(desk);
   }
