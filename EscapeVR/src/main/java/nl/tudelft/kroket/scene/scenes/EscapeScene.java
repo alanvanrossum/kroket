@@ -117,6 +117,24 @@ public class EscapeScene extends Scene {
     // addButtons();
 
     createLight();
+    
+    addGrass();
+  }
+
+  private void addGrass() {
+    Texture floorTexture = assetManager.loadTexture("Textures/Grass_1.jpg");
+    floorTexture.setMagFilter(MagFilter.Nearest);
+    floorTexture.setMinFilter(MinFilter.Trilinear);
+    floorTexture.setAnisotropicFilter(16);
+
+    Material floorMaterial = new Material(assetManager, materialPath);
+    floorMaterial.setTexture("ColorMap", floorTexture);
+
+    Geometry floor = new Geometry("floor", new Box(900, .5f, 900));
+    floor.move(0f, translationY - roomHeight, 0f);
+    floor.setMaterial(floorMaterial); 
+    addObject("floor", floor);
+    
   }
 
   /**
