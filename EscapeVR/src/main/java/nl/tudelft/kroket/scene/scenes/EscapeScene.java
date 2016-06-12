@@ -10,6 +10,7 @@ import com.jme3.light.SpotLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
+import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.FogFilter;
@@ -23,6 +24,7 @@ import com.jme3.shadow.PointLightShadowRenderer;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.MagFilter;
 import com.jme3.texture.Texture.MinFilter;
+import com.jme3.texture.Texture.WrapMode;
 
 /**
  * EscapeScene object.
@@ -78,7 +80,7 @@ public class EscapeScene extends Scene {
 
     createDoor("Textures/door.jpg");
 
-    //createGas();
+    // createGas();
 
     createPainting("Textures/Painting/painting.jpg");
     createPainting2("Textures/Painting/painting2.jpg");
@@ -117,12 +119,18 @@ public class EscapeScene extends Scene {
     // addButtons();
 
     createLight();
-    
+
     addGrass();
   }
 
   private void addGrass() {
-    Texture floorTexture = assetManager.loadTexture("Textures/Grass_1.jpg");
+
+    
+    
+
+    Texture floorTexture = assetManager.loadTexture("Textures/grass.jpg");
+    floorTexture.setWrap(WrapMode.Repeat);
+
     floorTexture.setMagFilter(MagFilter.Nearest);
     floorTexture.setMinFilter(MinFilter.Trilinear);
     floorTexture.setAnisotropicFilter(16);
@@ -130,11 +138,12 @@ public class EscapeScene extends Scene {
     Material floorMaterial = new Material(assetManager, materialPath);
     floorMaterial.setTexture("ColorMap", floorTexture);
 
-    Geometry floor = new Geometry("floor", new Box(900, .5f, 900));
-    floor.move(0f, translationY - roomHeight, 0f);
-    floor.setMaterial(floorMaterial); 
-    addObject("floor", floor);
-    
+    Geometry grass = new Geometry("grass", new Box(200, .5f, 200));
+
+    grass.move(0f, translationY - roomHeight - 0.5f, 0f);
+    grass.setMaterial(floorMaterial);
+    addObject("grass", grass);
+
   }
 
   /**
@@ -227,13 +236,13 @@ public class EscapeScene extends Scene {
   // rootNode.attachChild(lamp);
   // }
 
-//  private void addTurret() {
-//    Spatial turret = assetManager.loadModel("Models/portalturret/portalturret.j3o");
-//    turret.move(-2, -3.5f, 5);
-//    turret.scale(0.06f);
-//    turret.setShadowMode(ShadowMode.Cast);
-//    addObject("turret", turret);
-//  }
+  // private void addTurret() {
+  // Spatial turret = assetManager.loadModel("Models/portalturret/portalturret.j3o");
+  // turret.move(-2, -3.5f, 5);
+  // turret.scale(0.06f);
+  // turret.setShadowMode(ShadowMode.Cast);
+  // addObject("turret", turret);
+  // }
 
   private void createLight() {
     DirectionalLight sun = new DirectionalLight();
@@ -541,16 +550,16 @@ public class EscapeScene extends Scene {
   /**
    * Add gas to the scene.
    */
-//  public void createGas() {
-//    FogFilter fog = new FogFilter();
-//    fog.setFogColor(gasColor);
-//    fog.setFogDistance(1000);
-//    fog.setFogDensity(2.0f);
-//    FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
-//    fpp.addFilter(fog);
-//    viewPort.addProcessor(fpp);
-//
-//  }
+  // public void createGas() {
+  // FogFilter fog = new FogFilter();
+  // fog.setFogColor(gasColor);
+  // fog.setFogDistance(1000);
+  // fog.setFogDensity(2.0f);
+  // FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+  // fpp.addFilter(fog);
+  // viewPort.addProcessor(fpp);
+  //
+  // }
 
   /**
    * Equals method for EscapeScene.
