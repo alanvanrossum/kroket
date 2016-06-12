@@ -106,6 +106,8 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   private int timeLimit = Settings.TIMELIMIT;
 
+  private CollisionHandler collisionHandler;
+
   /**
    * Initialize the stateManager.
    */
@@ -209,7 +211,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     // the sphere should have no shaded material
     Material mat = new Material(getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-    
+
     observer.setCullHint(CullHint.Always);
     observer.setMaterial(mat);
 
@@ -233,23 +235,28 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     eventManager = new EventManager(observer, rootNode);
 
+    initScreenManager();
+
     initHeadUpDisplay();
     initSceneManager();
     initAudioManager();
     initInputHandler();
-    initScreenManager();
+
     initNetworkClient();
     initStateManager();
 
     movementHandler = new MovementHandler(observer, rootNode);
-
+    movementHandler.setLockHorizontal(true);
+    
     inputHandler.registerMappings(new RotationHandler(observer), "left", "right", "lookup",
         "lookdown", "tiltleft", "tiltright");
     inputHandler.registerMappings(movementHandler, "forward", "back");
     inputHandler.registerMappings(eventManager, "Button A", "Button B", "Button X", "Button Y");
 
-    inputHandler.registerListener(new CollisionHandler(observer, sceneManager.getScene("escape")
-        .getBoundaries()));
+    collisionHandler = new CollisionHandler(observer, sceneManager.getScene("escape")
+        .getBoundaries());
+
+    inputHandler.registerListener(collisionHandler);
 
     eventManager.addListener(this);
 
@@ -515,6 +522,18 @@ public class EscapeVR extends VRApplication implements EventListener {
       setGameState(GameLostState.getInstance());
     } else if (ev instanceof GameWonEvent) {
       setGameState(GameWonState.getInstance());
+      observer.setLocalTranslation(Settings.winingPosition);
+      collisionHandler.disableRestriction();
+      movementHandler.setLockHorizontal(false);
+      
+      
+      movementHandler.addObject("wall-north");
+      movementHandler.addObject("wall-south");
+      movementHandler.addObject("wall-east");
+      movementHandler.addObject("wall-west");
+      movementHandler.addObject("ceiling");
+      movementHandler.addObject("floor");
+      
     } else if (ev instanceof GameStartEvent) {
       startGame();
     } else if (ev instanceof GameLostEvent) {
@@ -637,14 +656,17 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   /**
    * Sets the player name.
-   * @param playerName as string
+   * 
+   * @param playerName
+   *          as string
    */
   public void setPlayerName(String playerName) {
     this.playerName = playerName;
   }
-  
+
   /**
    * Gets the playername.
+   * 
    * @return the playername as string.
    */
   public String getPlayerName() {

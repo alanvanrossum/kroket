@@ -27,18 +27,21 @@ public class LobbyState extends GameState {
   @Override
   public void begin(AudioManager audioManager, SceneManager sceneManager,
       ScreenManager screenManager) {
-    
+
     log.debug(className, "Setting up " + className);
-    
-    
-    audioManager.stopAudio();
-    screenManager.getScreen("lobby").show();
-    audioManager.play("lobby");
+
+    if (screenManager == null) {
+      log.error(className, "screenManager == null!");
+    } else {
+
+      audioManager.stopAudio();
+      screenManager.getScreen("lobby").show();
+      audioManager.play("lobby");
+    }
   }
 
   @Override
-  public void stop(AudioManager audioManager, SceneManager sceneManager,
-      ScreenManager screenManager) {
+  public void stop(AudioManager audioManager, SceneManager sceneManager, ScreenManager screenManager) {
     audioManager.stop("lobby");
     screenManager.getScreen("lobby").hide();
   }

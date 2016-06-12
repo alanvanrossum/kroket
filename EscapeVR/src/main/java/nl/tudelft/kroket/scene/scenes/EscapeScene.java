@@ -78,7 +78,7 @@ public class EscapeScene extends Scene {
 
     createDoor("Textures/door.jpg");
 
-    createGas();
+    //createGas();
 
     createPainting("Textures/Painting/painting.jpg");
     createPainting2("Textures/Painting/painting2.jpg");
@@ -541,16 +541,16 @@ public class EscapeScene extends Scene {
   /**
    * Add gas to the scene.
    */
-  public void createGas() {
-    FogFilter fog = new FogFilter();
-    fog.setFogColor(gasColor);
-    fog.setFogDistance(1000);
-    fog.setFogDensity(2.0f);
-    FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
-    fpp.addFilter(fog);
-    viewPort.addProcessor(fpp);
-
-  }
+//  public void createGas() {
+//    FogFilter fog = new FogFilter();
+//    fog.setFogColor(gasColor);
+//    fog.setFogDistance(1000);
+//    fog.setFogDensity(2.0f);
+//    FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+//    fpp.addFilter(fog);
+//    viewPort.addProcessor(fpp);
+//
+//  }
 
   /**
    * Equals method for EscapeScene.

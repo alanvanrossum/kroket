@@ -52,7 +52,7 @@ public class PlayingState extends GameState {
 
   @Override
   public void stop(AudioManager audioManager, SceneManager sceneManager, ScreenManager screenManager) {
-    sceneManager.getScene("escape").destroyScene();
+    //sceneManager.getScene("escape").destroyScene();
     audioManager.stopAudio();
   }
 

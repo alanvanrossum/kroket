@@ -29,7 +29,7 @@ public abstract class Screen {
    *          the width of the overlay
    * @param height
    *          the height of the overlay
-   */
+   */ 
   public Screen(String name, AssetManager assetManager, Node guiNode) {
     this.name = name;
     this.assetManager = assetManager;

@@ -31,7 +31,7 @@ public class GameWonState extends GameState {
     log.debug(className, "Setting up " + className);
     
     audioManager.stopAudio();
-    screenManager.getScreen("gamewon").show();
+    //screenManager.getScreen("gamewon").show();
     audioManager.play("alone");
   }
 
@@ -39,7 +39,7 @@ public class GameWonState extends GameState {
   public void stop(AudioManager audioManager, SceneManager sceneManager,
       ScreenManager screenManager) {
     audioManager.stop("alone");
-    screenManager.getScreen("gamewon").hide();
+    //screenManager.getScreen("gamewon").hide();
   }
 
   public static GameState getInstance() {
@@ -49,7 +49,7 @@ public class GameWonState extends GameState {
   @Override
   public void update(AudioManager audioManager, InputHandler inputHandler,
       ScreenManager screenManager, HeadUpDisplay hud, EventManager em, float tpf) {
-   // inputHandler.handleInput(tpf);
+    inputHandler.handleInput(tpf);
   }
 
 }
