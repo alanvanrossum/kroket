@@ -32,7 +32,8 @@ public class GameWonState extends GameState {
     
     audioManager.stopAudio();
     //screenManager.getScreen("gamewon").show();
-    audioManager.play("alone");
+    //audioManager.play("alone");
+    audioManager.play("euphoria");
   }
 
   @Override

@@ -139,6 +139,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     audioManager
         .loadFile("gamebegin", "ui/portal2/p2_store_ui_checkout_01.wav", false, false, 0.8f);
     audioManager.loadFile("gamelost", "Soundtrack/gamelost.wav", false, false, 1.0f);
+    audioManager.loadFile("euphoria", "Soundtrack/euphoria.wav", false, false, 1.0f);
 
   }
 
@@ -526,6 +527,9 @@ public class EscapeVR extends VRApplication implements EventListener {
       collisionHandler.disableRestriction();
       movementHandler.setLockHorizontal(false);
       
+      movementHandler.setMovementSpeed(32f);
+      movementHandler.setForceFlying(true);
+      
       
       movementHandler.addObject("wall-north");
       movementHandler.addObject("wall-south");
@@ -533,6 +537,7 @@ public class EscapeVR extends VRApplication implements EventListener {
       movementHandler.addObject("wall-west");
       movementHandler.addObject("ceiling");
       movementHandler.addObject("floor");
+      movementHandler.addObject("grass");
       
     } else if (ev instanceof GameStartEvent) {
       startGame();
