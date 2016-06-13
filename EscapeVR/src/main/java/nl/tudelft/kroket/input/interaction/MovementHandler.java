@@ -155,12 +155,12 @@ public class MovementHandler extends InteractionHandler implements ActionListene
   public void update(float tpf) {
 
     // float deltaCorrected = collisionOffset * tpf;
-    if (moveForward) {
+    if (moveForward ||  isForceFlying()) {
       // moveForward(tpf);
       move(tpf, 2);
     }
 
-    if (moveBackwards) {
+    if (moveBackwards && !isForceFlying()) {
       // moveBackward(tpf);
       move(-tpf, 2);
     }
