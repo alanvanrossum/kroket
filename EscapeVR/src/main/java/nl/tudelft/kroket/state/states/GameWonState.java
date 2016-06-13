@@ -31,7 +31,8 @@ public class GameWonState extends GameState {
     log.debug(className, "Setting up " + className);
     
     audioManager.stopAudio();
-    //screenManager.getScreen("gamewon").show();
+    screenManager.hideAll();
+    screenManager.showScreen("gamewon");
     //audioManager.play("alone");
     audioManager.play("euphoria");
   }

@@ -121,7 +121,7 @@ public class ScreenManager {
     log.info(className, "Showing screen: " + name);
 
     Screen screen = getScreen(name);
-    
+
     if (screen == null) {
       return;
     }
@@ -156,11 +156,10 @@ public class ScreenManager {
    * Update the screen.
    */
   public void update(float tpf) {
-   if (current == null) {
-     return;
-   }
-   
-   current.update();
+    if (current == null) {
+      return;
+    }
+    current.update();
   }
 
   public Screen getCurrent() {

@@ -563,7 +563,7 @@ public class EscapeVR extends VRApplication implements EventListener {
       collisionHandler.disableRestriction();
       movementHandler.setLockHorizontal(false);
       
-      movementHandler.setMovementSpeed(32f);
+      movementHandler.setMovementSpeed(2f);
       movementHandler.setForceFlying(true);
       
       
