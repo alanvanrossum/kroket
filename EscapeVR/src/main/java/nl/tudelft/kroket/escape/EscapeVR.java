@@ -247,7 +247,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     inputHandler.registerMappings(new RotationHandler(observer), "left", "right", "lookup",
         "lookdown", "tiltleft", "tiltright");
-    inputHandler.registerMappings(movementHandler, "forward", "back");
+    inputHandler.registerMappings(movementHandler, "forward", "back", "left", "right");
     inputHandler.registerMappings(eventManager, "Button A", "Button B", "Button X", "Button Y");
 
     inputHandler.registerListener(new CollisionHandler(observer, sceneManager.getScene("escape")

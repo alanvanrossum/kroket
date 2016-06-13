@@ -14,7 +14,7 @@ public class Settings {
   public static final int TIMELIMIT = 10 * 60;
 
   /** Debug flag. */
-  public static final boolean DEBUG = false;
+  public static final boolean DEBUG = true;
 
   /** Portnumber of the gamehost. */
   public static int PORTNUM = 1234;

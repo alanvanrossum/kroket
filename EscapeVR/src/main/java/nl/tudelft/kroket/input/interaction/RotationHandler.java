@@ -23,11 +23,11 @@ public class RotationHandler extends InteractionHandler implements ActionListene
   @Override
   public void onAction(String name, boolean keyPressed, float tpf) {
 
-    if (name.equals("left")) {
-      rotateLeft = keyPressed;
-    } else if (name.equals("right")) {
-      rotateRight = keyPressed;
-    }
+//    if (name.equals("left")) {
+//      rotateLeft = keyPressed;
+//    } else if (name.equals("right")) {
+//      rotateRight = keyPressed;
+//    }
 
     if (name.equals("lookup")) {
       rotateUp = keyPressed;
