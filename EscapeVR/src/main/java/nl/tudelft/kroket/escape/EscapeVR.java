@@ -1,6 +1,7 @@
 package nl.tudelft.kroket.escape;
 
 import com.jme3.audio.AudioNode;
+import com.jme3.audio.AudioSource;
 import com.jme3.material.Material;
 import com.jme3.math.Vector2f;
 import com.jme3.scene.Geometry;
@@ -16,6 +17,7 @@ import jmevr.util.VRGuiManager.POSITIONING_MODE;
 import nl.tudelft.kroket.audio.AudioManager;
 import nl.tudelft.kroket.event.EventListener;
 import nl.tudelft.kroket.event.EventManager;
+import nl.tudelft.kroket.event.events.ButtonPressEvent;
 import nl.tudelft.kroket.event.events.GameLostEvent;
 import nl.tudelft.kroket.event.events.GameStartEvent;
 import nl.tudelft.kroket.event.events.GameWonEvent;
@@ -47,10 +49,12 @@ import nl.tudelft.kroket.screen.screens.GameoverScreen;
 import nl.tudelft.kroket.screen.screens.GamewonScreen;
 import nl.tudelft.kroket.screen.screens.LobbyScreen;
 import nl.tudelft.kroket.screen.screens.SpookyScreen;
+import nl.tudelft.kroket.screen.screens.IntroScreen;
 import nl.tudelft.kroket.state.GameState;
 import nl.tudelft.kroket.state.StateManager;
 import nl.tudelft.kroket.state.states.GameLostState;
 import nl.tudelft.kroket.state.states.GameWonState;
+import nl.tudelft.kroket.state.states.IntroState;
 import nl.tudelft.kroket.state.states.LobbyState;
 import nl.tudelft.kroket.state.states.PlayingState;
 
@@ -170,6 +174,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     screenManager.loadScreen("controller", ControllerScreen.class);
     screenManager.loadScreen("gameover", GameoverScreen.class);
     screenManager.loadScreen("gamewon", GamewonScreen.class);
+    screenManager.loadScreen("intro", IntroScreen.class);
   }
 
   /**
@@ -260,8 +265,10 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     if (Settings.DEBUG) {
       // when in debug mode, force the game to start
-      eventManager.addEvent(new GameStartEvent(this));
+      // eventManager.addEvent(new GameStartEvent(this));
       log.setLevel(LogLevel.ALL);
+      setGameState(IntroState.getInstance());
+
     } else {
       log.setLevel(LogLevel.INFO);
       setGameState(initialState);
@@ -331,6 +338,15 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     hud.update();
 
+    if (stateManager.getCurrentState() instanceof IntroState) {
+
+      // System.out.println(audioManager.getPlaybackTime("welcome"));
+
+      if (audioManager.getStatus("welcome") != AudioSource.Status.Playing) {
+        startGame();
+      }
+    }
+
     if (stateManager.getCurrentState() != currentState) {
       stateManager.setGameState(currentState);
       registerObjects();
@@ -340,6 +356,8 @@ public class EscapeVR extends VRApplication implements EventListener {
 
       setTimeLimit(timeLimit);
     }
+
+    eventManager.update(tpf);
 
     mgManager.update(tpf);
   }
@@ -355,29 +373,32 @@ public class EscapeVR extends VRApplication implements EventListener {
     log.info(className, "Trying to start game " + gameName);
 
     switch (gameName) {
-      case "A":
-        mgManager.launchGame(PictureCodeMinigame.getInstance());
-        break;
-      case "B":
-        mgManager.launchGame(TapMinigame.getInstance());
-        break;
-      case "C":
-        mgManager.launchGame(ColorSequenceMinigame.getInstance());
-        break;
-      case "D":
-        mgManager.launchGame(LockMinigame.getInstance());
-        registerObjects();
-        break;
-      default:
-        log.error(className, "Unknown game: " + gameName);
-  
-        break;
+    case "A":
+      mgManager.launchGame(PictureCodeMinigame.getInstance());
+      break;
+    case "B":
+      mgManager.launchGame(TapMinigame.getInstance());
+      break;
+    case "C":
+      mgManager.launchGame(ColorSequenceMinigame.getInstance());
+      break;
+    case "D":
+      mgManager.launchGame(LockMinigame.getInstance());
+      registerObjects();
+      break;
+    default:
+      log.error(className, "Unknown game: " + gameName);
+
+      break;
     }
   }
 
   private void startGame() {
 
     log.info(className, "startGame()");
+
+    audioManager.stopAudio();
+    screenManager.hideAll();
 
     registerObjects();
     setGameState(PlayingState.getInstance());
@@ -508,6 +529,21 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     log.info(className, "Event received: " + ev.toString());
 
+    if (stateManager.getCurrentState() instanceof IntroState) {
+
+      if (ev instanceof ButtonPressEvent) {
+
+        ButtonPressEvent bpEvent = (ButtonPressEvent) ev;
+
+        System.out.println("bpEvent.getName() = " + bpEvent.getName());
+
+        if (bpEvent.getName().equals("Button A")) {
+
+          startGame();
+        }
+      }
+    }
+
     if (ev instanceof StartMinigameEvent) {
       audioManager.play("gamebegin");
     } else if (ev instanceof MinigameCompleteEvent) {
@@ -518,7 +554,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     } else if (ev instanceof GameWonEvent) {
       setGameState(GameWonState.getInstance());
     } else if (ev instanceof GameStartEvent) {
-      startGame();
+      setGameState(IntroState.getInstance());
     } else if (ev instanceof GameLostEvent) {
       setGameState(GameLostState.getInstance());
     } else if (ev instanceof InteractionEvent) {
@@ -537,61 +573,61 @@ public class EscapeVR extends VRApplication implements EventListener {
       // clientThread.sendMessage(String.format("INTERACT[%s]", objectName));
 
       switch (objectName) {
-        case "portalturret-geom-0":
-          audioManager.getNode("turret").play();
-          break;
-        case "door-geom-0":
-  
-          // Play spooky muhaha sound when player interacts with door
-          audioManager.playInstance("door");
-  
-          if (!mgManager.gameActive()) {
-            log.info(className, "Muhahaha???");
-            audioManager.play("muhaha");
-            hud.setCenterText("Muhahaha! You will never escape!", 5);
-          }
-          clientThread.sendMessage("BEGIN[D]");
-  
-          break;
-        case "painting":
-          clientThread.sendMessage("BEGIN[A]");
-          break;
-        case "desklaptop2-objnode":
-          clientThread.sendMessage("BEGIN[B]");
-          break;
-        case "fourbuttons2-objnode":
-          clientThread.sendMessage("BEGIN[C]");
-          break;
-        case "safeopen-objnode":
-          hud.setCenterText("You found login data for the computer!");
-          clientThread.sendMessage("DONE[A][ADVANCE]");
-          break;
-  
-        case "D1":
+      case "portalturret-geom-0":
+        audioManager.getNode("turret").play();
+        break;
+      case "door-geom-0":
+
+        // Play spooky muhaha sound when player interacts with door
+        audioManager.playInstance("door");
+
+        if (!mgManager.gameActive()) {
+          log.info(className, "Muhahaha???");
+          audioManager.play("muhaha");
+          hud.setCenterText("Muhahaha! You will never escape!", 5);
+        }
+        clientThread.sendMessage("BEGIN[D]");
+
+        break;
+      case "painting":
+        clientThread.sendMessage("BEGIN[A]");
+        break;
+      case "desklaptop2-objnode":
+        clientThread.sendMessage("BEGIN[B]");
+        break;
+      case "fourbuttons2-objnode":
+        clientThread.sendMessage("BEGIN[C]");
+        break;
+      case "safeopen-objnode":
+        hud.setCenterText("You found login data for the computer!");
+        clientThread.sendMessage("DONE[A][ADVANCE]");
+        break;
+
+      case "D1":
+        audioManager.playInstance("click");
+        escapeScene.remove("D1");
+        escapeScene.addCode13("Textures/Painting/13.jpg", "D_13");
+        escapeScene.addCode37("Textures/Painting/questionmark.jpg", "D2");
+        registerObjects();
+        break;
+      case "D2":
+        audioManager.playInstance("click");
+        escapeScene.remove("D2");
+        escapeScene.addCode37("Textures/Painting/37.jpg", "D_37");
+        escapeScene.addCode21("Textures/Painting/questionmark.jpg", "D3");
+        registerObjects();
+        break;
+      case "D3":
+        audioManager.playInstance("click");
+        escapeScene.remove("D3");
+        escapeScene.addCode21("Textures/Painting/21.jpg", "D_21");
+        registerObjects();
+        break;
+      default:
+        if (!mgManager.gameActive()) {
           audioManager.playInstance("click");
-          escapeScene.remove("D1");
-          escapeScene.addCode13("Textures/Painting/13.jpg", "D_13");
-          escapeScene.addCode37("Textures/Painting/questionmark.jpg", "D2");
-          registerObjects();
-          break;
-        case "D2":
-          audioManager.playInstance("click");
-          escapeScene.remove("D2");
-          escapeScene.addCode37("Textures/Painting/37.jpg", "D_37");
-          escapeScene.addCode21("Textures/Painting/questionmark.jpg", "D3");
-          registerObjects();
-          break;
-        case "D3":
-          audioManager.playInstance("click");
-          escapeScene.remove("D3");
-          escapeScene.addCode21("Textures/Painting/21.jpg", "D_21");
-          registerObjects();
-          break;
-        default:
-          if (!mgManager.gameActive()) {
-            audioManager.playInstance("click");
-          }
-          break;
+        }
+        break;
 
       }
 

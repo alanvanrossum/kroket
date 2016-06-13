@@ -26,6 +26,8 @@ public class ScreenManager {
 
   HashMap<String, Screen> screens = new HashMap<String, Screen>();
 
+  private Screen current;
+
   AssetManager assetManager;
   Node guiNode;
 
@@ -117,7 +119,16 @@ public class ScreenManager {
   public void showScreen(String name) {
 
     log.info(className, "Showing screen: " + name);
-    getScreen(name).show();
+
+    Screen screen = getScreen(name);
+    
+    if (screen == null) {
+      return;
+    }
+    
+    current = screen;
+    screen.show();
+
   }
 
   /**
@@ -127,15 +138,33 @@ public class ScreenManager {
    *          the name of the screen
    */
   public void hideScreen(String name) {
-    getScreen(name).hide();
+
+    log.info(className, "Hiding screen: " + name);
+
+    Screen screen = getScreen(name);
+    current = null;
+    screen.hide();
+  }
+
+  public void hideAll() {
+    for (Screen screen : screens.values()) {
+      screen.hide();
+    }
   }
 
   /**
    * Update the screen.
    */
   public void update(float tpf) {
-    for (Screen screen : screens.values()) {
-      screen.update();
-    }
+   if (current == null) {
+     return;
+   }
+   
+   current.update();
+  }
+
+  public Screen getCurrent() {
+    return current;
+
   }
 }

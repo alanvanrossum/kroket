@@ -30,6 +30,7 @@ public class EventManager extends InteractionHandler implements ActionListener {
 
   /** List of all registered listeners. */
   private List<EventListener> listenerList = new ArrayList<EventListener>();
+  
 
   private final int INPUT_GRACE_PERIOD = 200;
 
