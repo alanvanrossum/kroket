@@ -20,7 +20,17 @@ public class MovementHandler extends InteractionHandler implements ActionListene
   /** Singleton logger instance. */
   private Logger log = Logger.getInstance();
 
-  private final float movementSpeed = 8f;
+  private float movementSpeed = 8f;
+  
+  private boolean forceFlying = false;
+
+  public boolean isForceFlying() {
+    return forceFlying;
+  }
+
+  public void setForceFlying(boolean forceFlying) {
+    this.forceFlying = forceFlying;
+  }
 
   private Node rootNode;
 
@@ -29,7 +39,14 @@ public class MovementHandler extends InteractionHandler implements ActionListene
 
     this.rootNode = rootNode;
     this.objectList = new ArrayList<String>();
+  }
 
+  public void setMovementSpeed(float speed) {
+    this.movementSpeed = speed;
+  }
+
+  public float getMovementSpeed() {
+    return this.movementSpeed;
   }
 
   private boolean restrictObserver = true;
@@ -43,7 +60,15 @@ public class MovementHandler extends InteractionHandler implements ActionListene
 
   private boolean moveForward, moveBackwards;
 
-  // private boolean flying = true;
+  private boolean lockHorizontal = true;
+
+  public boolean isLockHorizontal() {
+    return lockHorizontal;
+  }
+
+  public void setLockHorizontal(boolean lockHorizontal) {
+    this.lockHorizontal = lockHorizontal;
+  }
 
   @Override
   public void onAction(String name, boolean keyPressed, float tpf) {
@@ -108,7 +133,8 @@ public class MovementHandler extends InteractionHandler implements ActionListene
   public void update(float tpf) {
 
     // float deltaCorrected = collisionOffset * tpf;
-    if (moveForward) {
+
+    if (moveForward || forceFlying) {
 
       Vector3f newPosition = VRApplication.getFinalObserverRotation().getRotationColumn(2)
           .mult(tpf * movementSpeed);
@@ -116,17 +142,27 @@ public class MovementHandler extends InteractionHandler implements ActionListene
       Vector3f oldPosition = newPosition.subtract(
           VRApplication.getFinalObserverRotation().getRotationColumn(2)).mult(tpf * movementSpeed);
 
+      if (lockHorizontal) {
+        newPosition.setY(0);
+        oldPosition.setY(0);
+      }
+
       if (allowMovement(newPosition.mult(movementSpeed))) {
         observer.move(newPosition);
       } else if (allowMovement(oldPosition))
         observer.move(oldPosition);
     }
-    if (moveBackwards) {
+    if (moveBackwards && !forceFlying) {
       Vector3f newPosition = VRApplication.getFinalObserverRotation().getRotationColumn(2)
           .mult(-tpf * movementSpeed);
 
       Vector3f oldPosition = newPosition.subtract(
           VRApplication.getFinalObserverRotation().getRotationColumn(2)).mult(-tpf * movementSpeed);
+
+      if (lockHorizontal) {
+        newPosition.setY(0);
+        oldPosition.setY(0);
+      }
 
       if (allowMovement(newPosition.mult(movementSpeed))) {
         observer.move(newPosition);

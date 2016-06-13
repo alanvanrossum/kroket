@@ -49,6 +49,12 @@ public class InputHandler {
 
     listeners.add(listener);
   }
+  
+  public void removeListener(InteractionHandler listener) {
+    if (listeners.contains(listener)) {
+      listeners.remove(listener);
+    }
+  }
 
   public void registerMappings(InteractionHandler listener, String... mappingNames) {
 
