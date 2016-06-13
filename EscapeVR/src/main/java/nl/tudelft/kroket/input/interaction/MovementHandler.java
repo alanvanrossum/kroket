@@ -1,5 +1,6 @@
 package nl.tudelft.kroket.input.interaction;
 
+import nl.tudelft.kroket.escape.Settings;
 import nl.tudelft.kroket.input.InteractionHandler;
 import nl.tudelft.kroket.log.Logger;
 import jmevr.app.VRApplication;
@@ -20,7 +21,17 @@ public class MovementHandler extends InteractionHandler implements ActionListene
   /** Singleton logger instance. */
   private Logger log = Logger.getInstance();
 
-  private final float movementSpeed = 8f;
+  private float movementSpeed = 8f;
+
+  private boolean forceFlying = false;
+
+  public boolean isForceFlying() {
+    return forceFlying;
+  }
+
+  public void setForceFlying(boolean forceFlying) {
+    this.forceFlying = forceFlying;
+  }
 
   private Node rootNode;
 
@@ -29,7 +40,14 @@ public class MovementHandler extends InteractionHandler implements ActionListene
 
     this.rootNode = rootNode;
     this.objectList = new ArrayList<String>();
+  }
 
+  public void setMovementSpeed(float speed) {
+    this.movementSpeed = speed;
+  }
+
+  public float getMovementSpeed() {
+    return this.movementSpeed;
   }
 
   private boolean restrictObserver = true;
@@ -44,7 +62,15 @@ public class MovementHandler extends InteractionHandler implements ActionListene
   private boolean moveForward, moveBackwards;
   private boolean moveLeft, moveRight;
 
-  // private boolean flying = true;
+  private boolean lockHorizontal = true;
+
+  public boolean isLockHorizontal() {
+    return lockHorizontal;
+  }
+
+  public void setLockHorizontal(boolean lockHorizontal) {
+    this.lockHorizontal = lockHorizontal;
+  }
 
   @Override
   public void onAction(String name, boolean keyPressed, float tpf) {
@@ -105,55 +131,19 @@ public class MovementHandler extends InteractionHandler implements ActionListene
     return true;
   }
 
-  public void moveForward(float tpf) {
-    Vector3f newPosition = VRApplication.getFinalObserverRotation().getRotationColumn(2)
-        .mult(tpf * movementSpeed);
+  public void move(float tpf, int rotationColumn) {
+
+    Vector3f newPosition = VRApplication.getFinalObserverRotation()
+        .getRotationColumn(rotationColumn).mult(tpf * movementSpeed);
 
     Vector3f oldPosition = newPosition.subtract(
-        VRApplication.getFinalObserverRotation().getRotationColumn(2)).mult(tpf * movementSpeed);
+        VRApplication.getFinalObserverRotation().getRotationColumn(rotationColumn)).mult(
+        tpf * movementSpeed);
 
-    if (allowMovement(newPosition.mult(movementSpeed))) {
-      observer.move(newPosition);
-    } else if (allowMovement(oldPosition)) {
-      observer.move(oldPosition);
+    if (isLockHorizontal()) {
+      newPosition.setY(Settings.spawnPosition.getY());
+      oldPosition.setY(Settings.spawnPosition.getY());
     }
-  }
-
-  public void moveBackward(float tpf) {
-    Vector3f newPosition = VRApplication.getFinalObserverRotation().getRotationColumn(2)
-        .mult(-tpf * movementSpeed);
-
-    Vector3f oldPosition = newPosition.subtract(
-        VRApplication.getFinalObserverRotation().getRotationColumn(2)).mult(-tpf * movementSpeed);
-
-    if (allowMovement(newPosition.mult(movementSpeed))) {
-      observer.move(newPosition);
-    } else if (allowMovement(oldPosition)) {
-      observer.move(oldPosition);
-
-    }
-  }
-
-  public void moveLeft(float tpf) {
-    Vector3f newPosition = VRApplication.getFinalObserverRotation().getRotationColumn(0)
-        .mult(tpf * movementSpeed);
-
-    Vector3f oldPosition = newPosition.subtract(VRApplication.getFinalObserverPosition().mult(
-        -tpf * movementSpeed));
-
-    if (allowMovement(newPosition.mult(movementSpeed))) {
-      observer.move(newPosition);
-    } else if (allowMovement(oldPosition)) {
-      observer.move(oldPosition);
-    }
-  }
-
-  public void moveRight(float tpf) {
-    Vector3f newPosition = VRApplication.getFinalObserverRotation().getRotationColumn(0)
-        .mult(-tpf * movementSpeed);
-
-    Vector3f oldPosition = newPosition.subtract(VRApplication.getFinalObserverPosition().mult(
-        tpf * movementSpeed));
 
     if (allowMovement(newPosition.mult(movementSpeed))) {
       observer.move(newPosition);
@@ -166,18 +156,24 @@ public class MovementHandler extends InteractionHandler implements ActionListene
 
     // float deltaCorrected = collisionOffset * tpf;
     if (moveForward) {
-      moveForward(tpf);
+      // moveForward(tpf);
+      move(tpf, 2);
     }
+
     if (moveBackwards) {
-      moveBackward(tpf);
+      // moveBackward(tpf);
+      move(-tpf, 2);
     }
 
     if (moveLeft) {
-      moveLeft(tpf);
+      // moveLeft(tpf);
+      move(tpf, 0);
+
     }
 
     if (moveRight) {
-      moveRight(tpf);
+      // moveRight(tpf);
+      move(-tpf, 0);
     }
   }
 

@@ -106,6 +106,8 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   private int timeLimit = Settings.TIMELIMIT;
 
+  private CollisionHandler collisionHandler;
+
   /**
    * Initialize the stateManager.
    */
@@ -137,6 +139,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     audioManager
         .loadFile("gamebegin", "ui/portal2/p2_store_ui_checkout_01.wav", false, false, 0.8f);
     audioManager.loadFile("gamelost", "Soundtrack/gamelost.wav", false, false, 1.0f);
+    audioManager.loadFile("euphoria", "Soundtrack/euphoria.wav", false, false, 1.0f);
 
   }
 
@@ -244,14 +247,17 @@ public class EscapeVR extends VRApplication implements EventListener {
     initStateManager();
 
     movementHandler = new MovementHandler(observer, rootNode);
-
+    movementHandler.setLockHorizontal(true);
+    
     inputHandler.registerMappings(new RotationHandler(observer), "left", "right", "lookup",
         "lookdown", "tiltleft", "tiltright");
     inputHandler.registerMappings(movementHandler, "forward", "back", "left", "right");
     inputHandler.registerMappings(eventManager, "Button A", "Button B", "Button X", "Button Y");
 
-    inputHandler.registerListener(new CollisionHandler(observer, sceneManager.getScene("escape")
-        .getBoundaries()));
+    collisionHandler = new CollisionHandler(observer, sceneManager.getScene("escape")
+        .getBoundaries());
+
+    inputHandler.registerListener(collisionHandler);
 
     eventManager.addListener(this);
 
@@ -517,6 +523,22 @@ public class EscapeVR extends VRApplication implements EventListener {
       setGameState(GameLostState.getInstance());
     } else if (ev instanceof GameWonEvent) {
       setGameState(GameWonState.getInstance());
+      observer.setLocalTranslation(Settings.winingPosition);
+      collisionHandler.disableRestriction();
+      movementHandler.setLockHorizontal(false);
+      
+      movementHandler.setMovementSpeed(32f);
+      movementHandler.setForceFlying(true);
+      
+      
+      movementHandler.addObject("wall-north");
+      movementHandler.addObject("wall-south");
+      movementHandler.addObject("wall-east");
+      movementHandler.addObject("wall-west");
+      movementHandler.addObject("ceiling");
+      movementHandler.addObject("floor");
+      movementHandler.addObject("grass");
+      
     } else if (ev instanceof GameStartEvent) {
       startGame();
     } else if (ev instanceof GameLostEvent) {
