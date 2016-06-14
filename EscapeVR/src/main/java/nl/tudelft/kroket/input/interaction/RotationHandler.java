@@ -8,10 +8,10 @@ public class RotationHandler extends InteractionHandler implements ActionListene
 
   float rotationSpeed = 0.85f;
 
-  private boolean rotateUp;
-  private boolean rotateDown;
-  private boolean rotateLeft;
-  private boolean rotateRight;
+  private boolean lookUp;
+  private boolean lookDown;
+  private boolean lookLeft;
+  private boolean lookRight;
 
   private boolean tiltRight;
   private boolean tiltLeft;
@@ -23,16 +23,16 @@ public class RotationHandler extends InteractionHandler implements ActionListene
   @Override
   public void onAction(String name, boolean keyPressed, float tpf) {
 
-//    if (name.equals("left")) {
-//      rotateLeft = keyPressed;
-//    } else if (name.equals("right")) {
-//      rotateRight = keyPressed;
-//    }
+    if (name.equals("lookLeft")) {
+      lookLeft = keyPressed;
+    } else if (name.equals("lookRight")) {
+      lookRight = keyPressed;
+    }
 
-    if (name.equals("lookup")) {
-      rotateUp = keyPressed;
-    } else if (name.equals("lookdown")) {
-      rotateDown = keyPressed;
+    if (name.equals("lookUp")) {
+      lookUp = keyPressed;
+    } else if (name.equals("lookDown")) {
+      lookDown = keyPressed;
     }
 
     if (name.equals("tiltleft")) {
@@ -46,25 +46,32 @@ public class RotationHandler extends InteractionHandler implements ActionListene
 
   }
 
+  /**
+   * Update triggers when the right stick sends input.
+   */
   public void update(float tpf) {
 
     float deltaMovement = rotationSpeed * tpf;
     handleRotation(deltaMovement);
   }
 
+  /**
+   * Decides which axis and direction should be rotated on.
+   * @param deltaMovement delata movement
+   */
   private void handleRotation(float deltaMovement) {
-    if (rotateDown) {
-      rotateX(deltaMovement);
-    }
-    if (rotateUp) {
-      rotateX(-deltaMovement);
-    }
-
-    if (rotateLeft) {
+    if (lookDown) {
       rotateY(deltaMovement);
     }
-    if (rotateRight) {
+    if (lookUp) {
       rotateY(-deltaMovement);
+    }
+
+    if (lookLeft) {
+      rotateX(-deltaMovement);
+    }
+    if (lookRight) {
+      rotateX(deltaMovement);
     }
 
     if (tiltRight) {
