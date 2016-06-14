@@ -478,7 +478,6 @@ public class EscapeVR extends VRApplication implements EventListener {
         	        log.info(className, "Updating timelimit...");
         	        PlayingState playingState = (PlayingState) stateManager.getCurrentState();
         	        playingState.extendTimeLimit(Integer.parseInt(parameter));
-        	        setTimeLimit(timeLimit + Integer.parseInt(parameter));
         	  }
           } else if (!parameter.isEmpty()) {
             // setTimeLimit(Integer.parseInt(parameter));
