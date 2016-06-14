@@ -38,19 +38,13 @@ public class IntroScreen extends Screen {
   public IntroScreen(AssetManager assetManager, Node guiNode, float width, float height) {
     super(name, assetManager, guiNode);
 
-    overlays.add(0, loadImage("Overlay/teamkroket.png", width, height));
-    overlays.add(1, loadImage("Overlay/kroketgamestudios.png", width, height));
-    overlays.add(2, loadImage("Overlay/presents.png", width, height));
-    overlays.add(3, loadImage("Overlay/escaparade.png", width, height));
-    overlays.add(4, loadImage("Overlay/locked.png", width, height));
-    overlays.add(5, loadImage("Overlay/onlygoal.png", width, height));
-    overlays.add(6, loadImage("Overlay/getout.png", width, height));
-    overlays.add(7, loadImage("Overlay/onlyway.png", width, height));
-    overlays.add(8, loadImage("Overlay/byworkingtogether.png", width, height));
-    overlays.add(9, loadImage("Overlay/makeitoutalive.png", width, height));
-    overlays.add(10, loadImage("Overlay/getready.png", width, height));
-    overlays.add(11, loadImage("Overlay/toescape.png", width, height));
-
+    overlays.add(0, loadImage("Overlay/kroketgamestudios.png", width, height));
+    overlays.add(1, loadImage("Overlay/intro1.png", width, height));
+    overlays.add(2, loadImage("Overlay/intro2.png", width, height));
+    overlays.add(3, loadImage("Overlay/intro3.png", width, height));
+    overlays.add(4, loadImage("Overlay/intro4.png", width, height));
+    overlays.add(5, loadImage("Overlay/intro5.png", width, height));
+    overlays.add(6, loadImage("Overlay/intro6.png", width, height));
   }
 
   /**

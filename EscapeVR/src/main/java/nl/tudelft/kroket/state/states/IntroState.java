@@ -50,20 +50,25 @@ public class IntroState extends GameState {
     return instance;
   }
 
-  @Override
-  public void update(AudioManager audioManager, InputHandler inputHandler,
-      ScreenManager screenManager, HeadUpDisplay hud, EventManager em, float tpf) {
+    @Override
+    public void update(AudioManager audioManager, InputHandler inputHandler,
+                       ScreenManager screenManager, HeadUpDisplay hud, EventManager em, float tpf) {
 
-    float time = audioManager.getPlaybackTime("welcome");
-    Screen currentScreen = screenManager.getCurrent();
+        float time = audioManager.getPlaybackTime("welcome");
+        Screen currentScreen = screenManager.getCurrent();
 
-    if (currentScreen instanceof IntroScreen) {
-      IntroScreen intro = (IntroScreen) currentScreen;
+        if (currentScreen instanceof IntroScreen) {
+            IntroScreen intro = (IntroScreen) currentScreen;
 
-      int current = (int) (time / 5);
-
-      intro.setCurrent(current);
+            int current = (int) (time / 5);
+//            if (time > 25) {
+//                current = 5;
+//            }
+//            if (time > 27) {
+//                current = 6;
+//            }
+            intro.setCurrent(current);
+        }
     }
-  }
 
 }
