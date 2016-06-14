@@ -75,7 +75,7 @@ public class EventManager extends InteractionHandler implements ActionListener {
     for (EventObject event : eventList) {
       for (EventListener listener : listenerList) {
 
-        ((EventListener) listener).handleEvent(event);
+        listener.handleEvent(event);
 
       }
     }

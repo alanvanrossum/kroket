@@ -1,5 +1,6 @@
 package nl.tudelft.kroket.input.interaction;
 
+import nl.tudelft.kroket.escape.Settings;
 import nl.tudelft.kroket.input.InteractionHandler;
 import nl.tudelft.kroket.log.Logger;
 import jmevr.app.VRApplication;
@@ -21,7 +22,7 @@ public class MovementHandler extends InteractionHandler implements ActionListene
   private Logger log = Logger.getInstance();
 
   private float movementSpeed = 8f;
-  
+
   private boolean forceFlying = false;
 
   public boolean isForceFlying() {
@@ -33,12 +34,19 @@ public class MovementHandler extends InteractionHandler implements ActionListene
   }
 
   private Node rootNode;
+  private RotationHandler rotationHandler;
 
+  /**
+   * Constuctor for movementHandler.
+   * @param observer the observer spatial
+   * @param rootNode the rootnode
+   */
   public MovementHandler(Spatial observer, Node rootNode) {
     super(observer);
 
     this.rootNode = rootNode;
     this.objectList = new ArrayList<String>();
+
   }
 
   public void setMovementSpeed(float speed) {
@@ -59,6 +67,7 @@ public class MovementHandler extends InteractionHandler implements ActionListene
   private List<String> objectList;
 
   private boolean moveForward, moveBackwards;
+  private boolean moveLeft, moveRight;
 
   private boolean lockHorizontal = true;
 
@@ -74,104 +83,132 @@ public class MovementHandler extends InteractionHandler implements ActionListene
   public void onAction(String name, boolean keyPressed, float tpf) {
 
     if (name.equals("forward")) {
-      if (keyPressed) {
-        moveForward = true;
-      } else {
-        moveForward = false;
-      }
+      moveForward = keyPressed;
     } else if (name.equals("back")) {
-      if (keyPressed) {
-        moveBackwards = true;
-      } else {
-        moveBackwards = false;
-      }
+      moveBackwards = keyPressed;
     }
+
+    if (name.equals("left")) {
+      moveLeft = keyPressed;
+    } else if (name.equals("right")) {
+      moveRight = keyPressed;
+    }
+
   }
 
   /**
-   * Add an object we want to use
+   * Add an object we want to use.
    * 
-   * @param objectName
+   * @param objectName object name
    */
   public void addObject(String objectName) {
 
-    if (objectList.contains(objectName))
+    if (objectList.contains(objectName)) {
       return;
-
+    }
     log.debug(className, "Adding collision object: " + objectName);
     objectList.add(objectName);
   }
 
+  /**
+   * Removes an object.
+   * @param objectName object name
+   */
   public void removeObject(Spatial objectName) {
-    if (!objectList.contains(objectName))
+    if (!objectList.contains(objectName)) {
       return;
-
+    }
     log.debug(className, "Removing collision object: " + objectName);
     objectList.remove(objectName);
   }
 
+  /**
+   * Checks if movement is allowed.
+   * @param newPos a vector3f
+   * @return a boolean 
+   */
   private boolean allowMovement(Vector3f newPos) {
 
-    if (!restrictObserver)
+    if (!restrictObserver) {
       return true;
-
+    }
     // boolean intersects = false;
 
     for (String objectName : objectList) {
 
       Spatial object = rootNode.getChild(objectName);
 
-      if (object == null)
+      if (object == null) {
         continue;
+      }
 
-      if (intersectsWith(object, newPos))
+      if (intersectsWith(object, newPos)) {
         return false;
+      }
     }
     return true;
   }
 
+  /**
+   * Makes the move.
+   * @param tpf a float
+   * @param rotationColumn the rotation column
+   */
+  public void move(float tpf, int rotationColumn) {
+
+    Vector3f newPosition = VRApplication.getFinalObserverRotation()
+        .getRotationColumn(rotationColumn).mult(tpf * movementSpeed);
+
+    Vector3f oldPosition = newPosition.subtract(
+        VRApplication.getFinalObserverRotation().getRotationColumn(rotationColumn)).mult(
+        tpf * movementSpeed);
+
+    if (isLockHorizontal()) {
+      newPosition.setY(Settings.spawnPosition.getY());
+      oldPosition.setY(Settings.spawnPosition.getY());
+    }
+
+    if (allowMovement(newPosition.mult(movementSpeed))) {
+      observer.move(newPosition);
+    } else if (allowMovement(oldPosition)) {
+      observer.move(oldPosition);
+    }
+  }
+
+  /**
+   * Update called when there is input.
+   */
   public void update(float tpf) {
 
     // float deltaCorrected = collisionOffset * tpf;
-
-    if (moveForward || forceFlying) {
-
-      Vector3f newPosition = VRApplication.getFinalObserverRotation().getRotationColumn(2)
-          .mult(tpf * movementSpeed);
-
-      Vector3f oldPosition = newPosition.subtract(
-          VRApplication.getFinalObserverRotation().getRotationColumn(2)).mult(tpf * movementSpeed);
-
-      if (lockHorizontal) {
-        newPosition.setY(0);
-        oldPosition.setY(0);
-      }
-
-      if (allowMovement(newPosition.mult(movementSpeed))) {
-        observer.move(newPosition);
-      } else if (allowMovement(oldPosition))
-        observer.move(oldPosition);
-    }
-    if (moveBackwards && !forceFlying) {
-      Vector3f newPosition = VRApplication.getFinalObserverRotation().getRotationColumn(2)
-          .mult(-tpf * movementSpeed);
-
-      Vector3f oldPosition = newPosition.subtract(
-          VRApplication.getFinalObserverRotation().getRotationColumn(2)).mult(-tpf * movementSpeed);
-
-      if (lockHorizontal) {
-        newPosition.setY(0);
-        oldPosition.setY(0);
-      }
-
-      if (allowMovement(newPosition.mult(movementSpeed))) {
-        observer.move(newPosition);
-      } else if (allowMovement(oldPosition))
-        observer.move(oldPosition);
+    if (moveForward ||  isForceFlying()) {
+      // moveForward(tpf);
+      move(tpf, 2);
     }
 
+    if (moveBackwards && !isForceFlying()) {
+      // moveBackward(tpf);
+      move(-tpf, 2);
+    }
+
+    if (moveLeft) {
+      // moveLeft(tpf);
+      move(tpf, 0);
+
+    }
+
+    if (moveRight) {
+      // moveRight(tpf);
+      move(-tpf, 0);
+    }
   }
 
+  /**
+   * Checks if player intersects with an object.
+   * @param object the object
+   * @param newPos the position
+   * @return true if there is an intersection
+   */
   private boolean intersectsWith(Spatial object, Vector3f newPos) {
 
     // Spatial observerClone = observer.clone(false);
