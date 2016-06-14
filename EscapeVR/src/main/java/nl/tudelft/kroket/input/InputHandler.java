@@ -87,8 +87,10 @@ public class InputHandler {
 
     inputManager.addMapping("Button A", new KeyTrigger(KeyInput.KEY_SPACE));
 
-    inputManager.addMapping("lookup", new KeyTrigger(KeyInput.KEY_J));
-    inputManager.addMapping("lookdown", new KeyTrigger(KeyInput.KEY_U));
+    inputManager.addMapping("lookUp", new KeyTrigger(KeyInput.KEY_RIGHT));
+    inputManager.addMapping("lookDown", new KeyTrigger(KeyInput.KEY_LEFT));
+    inputManager.addMapping("lookRight", new KeyTrigger(KeyInput.KEY_DOWN));
+    inputManager.addMapping("lookLeft", new KeyTrigger(KeyInput.KEY_UP));
     inputManager.addMapping("tiltleft", new KeyTrigger(KeyInput.KEY_H));
     inputManager.addMapping("tiltright", new KeyTrigger(KeyInput.KEY_K));
   }
