@@ -125,6 +125,7 @@ public class EscapeVR extends VRApplication implements EventListener {
    */
   private void initAudioManager() {
     audioManager = new AudioManager(getAssetManager(), rootNode, "Sound/");
+      audioManager.loadFile("intro", "Soundtrack/alone32.wav",false, false, 0.75f);
     audioManager.loadFile("waiting", "Soundtrack/alone.wav", false, true, 0.75f);
     audioManager.loadFile("alone", "Soundtrack/alone.wav", false, true, 1.0f);
     audioManager.loadFile("lobby", "Soundtrack/lobby16.wav", false, true, 0.9f);
@@ -348,7 +349,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
       // System.out.println(audioManager.getPlaybackTime("welcome"));
 
-      if (audioManager.getStatus("welcome") != AudioSource.Status.Playing) {
+      if (audioManager.getStatus("intro") != AudioSource.Status.Playing) {
         startGame();
       }
     }

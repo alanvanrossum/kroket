@@ -37,7 +37,7 @@ public class IntroState extends GameState {
     } else {
 
       audioManager.stopAudio();
-      audioManager.play("welcome");
+      audioManager.play("intro");
       screenManager.showScreen("intro");
     }
   }
@@ -54,19 +54,13 @@ public class IntroState extends GameState {
     public void update(AudioManager audioManager, InputHandler inputHandler,
                        ScreenManager screenManager, HeadUpDisplay hud, EventManager em, float tpf) {
 
-        float time = audioManager.getPlaybackTime("welcome");
+        float time = audioManager.getPlaybackTime("intro");
         Screen currentScreen = screenManager.getCurrent();
 
         if (currentScreen instanceof IntroScreen) {
             IntroScreen intro = (IntroScreen) currentScreen;
 
             int current = (int) (time / 5);
-//            if (time > 25) {
-//                current = 5;
-//            }
-//            if (time > 27) {
-//                current = 6;
-//            }
             intro.setCurrent(current);
         }
     }
