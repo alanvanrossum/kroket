@@ -91,7 +91,7 @@ public class PlayingState extends GameState {
   public void extendTimeLimit(int seconds) {
 	  timeLimit = timeLimit + seconds * 1000;    
 	  
-	  log.info(className, String.format("Update time: game ends in %d seconds...", seconds));
+	  log.info(className, String.format("Update time, added %d. Game ends in %d seconds...", seconds, timeLimit));
   }
 
   /**
