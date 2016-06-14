@@ -60,7 +60,7 @@ public class IntroState extends GameState {
         if (currentScreen instanceof IntroScreen) {
             IntroScreen intro = (IntroScreen) currentScreen;
 
-            int current = (int) (time / 5);
+            int current = (int) (time / 4);
             intro.setCurrent(current);
         }
     }

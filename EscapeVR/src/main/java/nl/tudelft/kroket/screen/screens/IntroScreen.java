@@ -45,6 +45,7 @@ public class IntroScreen extends Screen {
     overlays.add(4, loadImage("Overlay/intro4.png", width, height));
     overlays.add(5, loadImage("Overlay/intro5.png", width, height));
     overlays.add(6, loadImage("Overlay/intro6.png", width, height));
+    overlays.add(7, loadImage("Overlay/controls.png", width, height));
   }
 
   /**
