@@ -57,6 +57,7 @@ import nl.tudelft.kroket.state.states.GameWonState;
 import nl.tudelft.kroket.state.states.IntroState;
 import nl.tudelft.kroket.state.states.LobbyState;
 import nl.tudelft.kroket.state.states.PlayingState;
+import nl.tudelft.kroket.timer.Timer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -108,7 +109,8 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   private GameState currentState;
 
-  private int timeLimit = Settings.TIMELIMIT;
+  //private int timeLimit = Settings.TIMELIMIT;
+  private Timer timer;
 
   private CollisionHandler collisionHandler;
 
@@ -269,6 +271,8 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     mgManager = new MinigameManager(hud, clientThread, screenManager, sceneManager);
     eventManager.addListener(mgManager);
+    
+    timer = new Timer(clientThread, hud);
 
     if (Settings.DEBUG) {
       // when in debug mode, force the game to start
@@ -361,7 +365,11 @@ public class EscapeVR extends VRApplication implements EventListener {
       log.info(className, "Current state is "
           + stateManager.getCurrentState().getClass().getSimpleName());
 
-      setTimeLimit(timeLimit);
+      //setTimeLimit(timeLimit);
+    }
+    
+    if (timer.isActive()) {
+    	timer.update();
     }
 
     eventManager.update(tpf);
@@ -410,7 +418,8 @@ public class EscapeVR extends VRApplication implements EventListener {
     registerObjects();
     setGameState(PlayingState.getInstance());
     hud.setCenterText("");
-
+    
+    timer.startTimer();
   }
 
   private void setTimeLimit(int seconds) {
@@ -491,22 +500,27 @@ public class EscapeVR extends VRApplication implements EventListener {
         }
         registerObjects();
         break;
+        
+      case Protocol.COMMAND_BONUSTIME:
+    	timer.bonusTime();
+    	break;
 
-      case Protocol.COMMAND_TIMELIMIT:
-        if (command.containsKey("param_0")) {
-          String parameter = command.get("param_0");
-          if (command.containsKey("param_1")) {
-        	  if (stateManager.getCurrentState() instanceof PlayingState) {
-        	        log.info(className, "Updating timelimit...");
-        	        PlayingState playingState = (PlayingState) stateManager.getCurrentState();
-        	        playingState.extendTimeLimit(Integer.parseInt(parameter));
-        	  }
-          } else if (!parameter.isEmpty()) {
-            // setTimeLimit(Integer.parseInt(parameter));
-            timeLimit = Integer.parseInt(parameter);
-          }
-        }
-        break;
+//        ***
+//      case Protocol.COMMAND_TIMELIMIT:
+//        if (command.containsKey("param_0")) {
+//          String parameter = command.get("param_0");
+//          if (command.containsKey("param_1")) {
+//        	  if (stateManager.getCurrentState() instanceof PlayingState) {
+//        	        log.info(className, "Updating timelimit...");
+//        	        PlayingState playingState = (PlayingState) stateManager.getCurrentState();
+//        	        playingState.extendTimeLimit(Integer.parseInt(parameter));
+//        	  }
+//          } else if (!parameter.isEmpty()) {
+//            // setTimeLimit(Integer.parseInt(parameter));
+//            timeLimit = Integer.parseInt(parameter);
+//          }
+//        }
+//        break;
 
       case Protocol.COMMAND_GAMEOVER:
         eventManager.addEvent(new GameLostEvent(this));

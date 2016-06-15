@@ -125,33 +125,33 @@ public class PlayingState extends GameState {
       }
     }
 
-    long timeRemaining = Math.max(timeLimit - System.currentTimeMillis(), 0);
-
-    if (timeRemaining == 0 && !timeoutHit) {
-
-      hud.setTimerText("");
-      System.out.println("Firing timeoutEvent...");
-      timeoutHit = true;
+//    long timeRemaining = Math.max(timeLimit - System.currentTimeMillis(), 0);
+//
+//    if (timeRemaining == 0 && !timeoutHit) {
+//
+//      hud.setTimerText("");
+//      System.out.println("Firing timeoutEvent...");
+//      timeoutHit = true;
       // prevent firing event multiple times
       // em.addEvent(new TimeoutEvent(this));
       // em.addEvent(new GameLostEvent(this));
 
-    }
+//    }
 
     // this if statement isn't really necessary, performance-wise
     // only update label once per second
-    else if ((timeRemaining % 10) == 0) {
-
-      int secondsRemaining = (int) (timeRemaining / 1000);
-
-      int minutesRemaining = secondsRemaining / 60;
-      secondsRemaining -= (minutesRemaining * 60);
-
-      // log.debug(className, minutesRemaining + " minutes remaining");
-
-      hud.setTimerText(String.format("Time remaining: %02d:%02d", minutesRemaining,
-          secondsRemaining));
-    }
+//    else if ((timeRemaining % 10) == 0) {
+//
+//      int secondsRemaining = (int) (timeRemaining / 1000);
+//
+//      int minutesRemaining = secondsRemaining / 60;
+//      secondsRemaining -= (minutesRemaining * 60);
+//
+//      // log.debug(className, minutesRemaining + " minutes remaining");
+//
+//      hud.setTimerText(String.format("Time remaining: %02d:%02d", minutesRemaining,
+//          secondsRemaining));
+//    }
 
   }
 
