@@ -534,7 +534,7 @@ public class EscapeVR extends VRApplication implements EventListener {
       setGameState(GameLostState.getInstance());
     } else if (ev instanceof GameWonEvent) {
       setGameState(GameWonState.getInstance());
-      observer.setLocalTranslation(Settings.winingPosition);
+      observer.setLocalTranslation(Settings.winningPosition);
       collisionHandler.disableRestriction();
       movementHandler.setLockHorizontal(false);
       
