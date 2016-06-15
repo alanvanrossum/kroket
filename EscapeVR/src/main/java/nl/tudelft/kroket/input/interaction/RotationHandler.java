@@ -1,10 +1,18 @@
 package nl.tudelft.kroket.input.interaction;
 
 import nl.tudelft.kroket.input.InteractionHandler;
+import nl.tudelft.kroket.log.Logger;
+
 import com.jme3.input.controls.ActionListener;
 import com.jme3.scene.Spatial;
 
 public class RotationHandler extends InteractionHandler implements ActionListener {
+  
+  /** Current class, used as tag for logger. */
+  private final String className = this.getClass().getSimpleName();
+
+  /** Singleton logger instance. */
+  private Logger log = Logger.getInstance();
 
   float rotationSpeed = 0.85f;
 
@@ -35,9 +43,9 @@ public class RotationHandler extends InteractionHandler implements ActionListene
       lookDown = keyPressed;
     }
 
-    if (name.equals("tiltleft")) {
+    if (name.equals("tiltLeft")) {
       tiltLeft = keyPressed;
-    } else if (name.equals("tiltright")) {
+    } else if (name.equals("tiltRight")) {
       tiltRight = keyPressed;
     }
 
@@ -57,21 +65,23 @@ public class RotationHandler extends InteractionHandler implements ActionListene
 
   /**
    * Decides which axis and direction should be rotated on.
-   * @param deltaMovement delata movement
+   * 
+   * @param deltaMovement
+   *          delata movement
    */
   private void handleRotation(float deltaMovement) {
     if (lookDown) {
-      rotateY(deltaMovement);
+      rotateX(deltaMovement);
     }
     if (lookUp) {
-      rotateY(-deltaMovement);
+      rotateX(-deltaMovement);
     }
 
     if (lookLeft) {
-      rotateX(-deltaMovement);
+      rotateY(deltaMovement);
     }
     if (lookRight) {
-      rotateX(deltaMovement);
+      rotateY(-deltaMovement);
     }
 
     if (tiltRight) {

@@ -26,20 +26,25 @@ public class MovementHandler extends InteractionHandler implements ActionListene
   private boolean forceFlying = false;
 
   public boolean isForceFlying() {
+
     return forceFlying;
   }
 
   public void setForceFlying(boolean forceFlying) {
+
+    System.out.println("force flying is set to " + forceFlying);
     this.forceFlying = forceFlying;
   }
 
   private Node rootNode;
-  private RotationHandler rotationHandler;
 
   /**
    * Constuctor for movementHandler.
-   * @param observer the observer spatial
-   * @param rootNode the rootnode
+   * 
+   * @param observer
+   *          the observer spatial
+   * @param rootNode
+   *          the rootnode
    */
   public MovementHandler(Spatial observer, Node rootNode) {
     super(observer);
@@ -99,7 +104,8 @@ public class MovementHandler extends InteractionHandler implements ActionListene
   /**
    * Add an object we want to use.
    * 
-   * @param objectName object name
+   * @param objectName
+   *          object name
    */
   public void addObject(String objectName) {
 
@@ -112,7 +118,9 @@ public class MovementHandler extends InteractionHandler implements ActionListene
 
   /**
    * Removes an object.
-   * @param objectName object name
+   * 
+   * @param objectName
+   *          object name
    */
   public void removeObject(Spatial objectName) {
     if (!objectList.contains(objectName)) {
@@ -124,8 +132,10 @@ public class MovementHandler extends InteractionHandler implements ActionListene
 
   /**
    * Checks if movement is allowed.
-   * @param newPos a vector3f
-   * @return a boolean 
+   * 
+   * @param newPos
+   *          a vector3f
+   * @return a boolean
    */
   private boolean allowMovement(Vector3f newPos) {
 
@@ -151,8 +161,11 @@ public class MovementHandler extends InteractionHandler implements ActionListene
 
   /**
    * Makes the move.
-   * @param tpf a float
-   * @param rotationColumn the rotation column
+   * 
+   * @param tpf
+   *          a float
+   * @param rotationColumn
+   *          the rotation column
    */
   public void move(float tpf, int rotationColumn) {
 
@@ -164,8 +177,9 @@ public class MovementHandler extends InteractionHandler implements ActionListene
         tpf * movementSpeed);
 
     if (isLockHorizontal()) {
-      newPosition.setY(Settings.spawnPosition.getY());
-      oldPosition.setY(Settings.spawnPosition.getY());
+
+      newPosition.setY(0);
+      oldPosition.setY(0);
     }
 
     if (allowMovement(newPosition.mult(movementSpeed))) {
@@ -176,13 +190,13 @@ public class MovementHandler extends InteractionHandler implements ActionListene
   }
 
   /**
-   * Update called when there is input.
+   * Update method.
    */
   public void update(float tpf) {
 
-    // float deltaCorrected = collisionOffset * tpf;
-    if (moveForward ||  isForceFlying()) {
+    if (moveForward || isForceFlying()) {
       // moveForward(tpf);
+
       move(tpf, 2);
     }
 
@@ -205,8 +219,11 @@ public class MovementHandler extends InteractionHandler implements ActionListene
 
   /**
    * Checks if player intersects with an object.
-   * @param object the object
-   * @param newPos the position
+   * 
+   * @param object
+   *          the object
+   * @param newPos
+   *          the position
    * @return true if there is an intersection
    */
   private boolean intersectsWith(Spatial object, Vector3f newPos) {

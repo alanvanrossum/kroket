@@ -3,12 +3,14 @@ package nl.tudelft.kroket.input;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jme3.input.DefaultJoystickAxis;
 import com.jme3.input.InputManager;
 import com.jme3.input.Joystick;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.InputListener;
 import com.jme3.input.controls.JoyButtonTrigger;
 import com.jme3.input.controls.KeyTrigger;
+
 import nl.tudelft.kroket.event.EventManager;
 import nl.tudelft.kroket.log.Logger;
 
@@ -31,8 +33,11 @@ public class InputHandler {
 
   /**
    * Constructor for InputHandler.
-   * @param inputManager the InputManager
-   * @param eventManager the EvenManager
+   * 
+   * @param inputManager
+   *          the InputManager
+   * @param eventManager
+   *          the EvenManager
    */
   public InputHandler(InputManager inputManager, EventManager eventManager) {
 
@@ -46,7 +51,9 @@ public class InputHandler {
 
   /**
    * Registers a listerener.
-   * @param listener an InteractionHandler object
+   * 
+   * @param listener
+   *          an InteractionHandler object
    */
   public void registerListener(InteractionHandler listener) {
 
@@ -58,10 +65,12 @@ public class InputHandler {
     }
     listeners.add(listener);
   }
-  
+
   /**
    * Removes a listener.
-   * @param listener the listener to be removed
+   * 
+   * @param listener
+   *          the listener to be removed
    */
   public void removeListener(InteractionHandler listener) {
     if (listeners.contains(listener)) {
@@ -71,8 +80,11 @@ public class InputHandler {
 
   /**
    * Registers the names of the input mappings to the listener.
-   * @param listener the InterActionHandler
-   * @param mappingNames the name of the mappig as string
+   * 
+   * @param listener
+   *          the InterActionHandler
+   * @param mappingNames
+   *          the name of the mappig as string
    */
   public void registerMappings(InteractionHandler listener, String... mappingNames) {
 
@@ -94,10 +106,8 @@ public class InputHandler {
     inputManager.addMapping("back", new KeyTrigger(KeyInput.KEY_S));
     inputManager.addMapping("left", new KeyTrigger(KeyInput.KEY_A));
     inputManager.addMapping("right", new KeyTrigger(KeyInput.KEY_D));
-    inputManager.addMapping("filter", new KeyTrigger(KeyInput.KEY_F));
-    // inputManager.addMapping("dumpImages", new KeyTrigger(KeyInput.KEY_I));
 
-    // register numpad keys, for when we don't have a keypad
+    // register numpad keys, for when we don't have a gamepad
     inputManager.addMapping("Button A", new KeyTrigger(KeyInput.KEY_NUMPAD1));
     inputManager.addMapping("Button B", new KeyTrigger(KeyInput.KEY_NUMPAD2));
     inputManager.addMapping("Button X", new KeyTrigger(KeyInput.KEY_NUMPAD3));
@@ -105,12 +115,13 @@ public class InputHandler {
 
     inputManager.addMapping("Button A", new KeyTrigger(KeyInput.KEY_SPACE));
 
-    inputManager.addMapping("lookUp", new KeyTrigger(KeyInput.KEY_RIGHT));
-    inputManager.addMapping("lookDown", new KeyTrigger(KeyInput.KEY_LEFT));
-    inputManager.addMapping("lookRight", new KeyTrigger(KeyInput.KEY_DOWN));
-    inputManager.addMapping("lookLeft", new KeyTrigger(KeyInput.KEY_UP));
-    inputManager.addMapping("tiltleft", new KeyTrigger(KeyInput.KEY_H));
-    inputManager.addMapping("tiltright", new KeyTrigger(KeyInput.KEY_K));
+    inputManager.addMapping("lookRight", new KeyTrigger(KeyInput.KEY_RIGHT));
+    inputManager.addMapping("lookLeft", new KeyTrigger(KeyInput.KEY_LEFT));
+    inputManager.addMapping("lookUp", new KeyTrigger(KeyInput.KEY_DOWN));
+    inputManager.addMapping("lookDown", new KeyTrigger(KeyInput.KEY_UP));
+
+    inputManager.addMapping("tiltLeft", new KeyTrigger(KeyInput.KEY_H));
+    inputManager.addMapping("tiltRight", new KeyTrigger(KeyInput.KEY_K));
   }
 
   /**
@@ -128,12 +139,23 @@ public class InputHandler {
 
       Joystick joy = joysticks[0];
 
+      if (joy.getXAxis() instanceof DefaultJoystickAxis) {
+        ((DefaultJoystickAxis) joy.getXAxis()).setDeadZone(0.40f);
+        ((DefaultJoystickAxis) joy.getYAxis()).setDeadZone(0.40f);
+        ((DefaultJoystickAxis) joy.getPovXAxis()).setDeadZone(0.60f);
+        ((DefaultJoystickAxis) joy.getPovYAxis()).setDeadZone(0.60f);
+        
+        
+      }
+
+      joy.rumble(1f);
+
       // assign axes left stick
       joy.getAxes().get(0).assignAxis("right", "left");
       joy.getAxes().get(1).assignAxis("forward", "back");
       // assign axes right stick
-      joy.getAxes().get(2).assignAxis("lookUp", "lookDown");
-      joy.getAxes().get(3).assignAxis("lookLeft", "lookRight");
+      joy.getAxes().get(2).assignAxis("lookRight", "lookLeft");
+      joy.getAxes().get(3).assignAxis("lookUp", "lookDown");
 
       inputManager.addMapping("Button A", new JoyButtonTrigger(0, 0));
       inputManager.addMapping("Button B", new JoyButtonTrigger(0, 1));
@@ -141,7 +163,7 @@ public class InputHandler {
       inputManager.addMapping("Button Y", new JoyButtonTrigger(0, 3));
 
       // inputManager.addListener(actionListener, "Button A", "Button B", "Button X", "Button Y");
-      
+
       log.debug(className, "Joystick/gamepad controls registered.");
     }
   }

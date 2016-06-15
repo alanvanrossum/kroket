@@ -125,7 +125,7 @@ public class EscapeVR extends VRApplication implements EventListener {
    */
   private void initAudioManager() {
     audioManager = new AudioManager(getAssetManager(), rootNode, "Sound/");
-      audioManager.loadFile("intro", "Soundtrack/alone32.wav",false, false, 0.75f);
+    audioManager.loadFile("intro", "Soundtrack/alone32.wav", false, false, 0.75f);
     audioManager.loadFile("waiting", "Soundtrack/alone.wav", false, true, 0.75f);
     audioManager.loadFile("alone", "Soundtrack/alone.wav", false, true, 1.0f);
     audioManager.loadFile("lobby", "Soundtrack/lobby16.wav", false, true, 0.9f);
@@ -228,7 +228,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     // test any positioning mode here (defaults to AUTO_CAM_ALL)
     VRGuiManager.setPositioningMode(POSITIONING_MODE.AUTO_CAM_ALL_SKIP_PITCH);
-    VRGuiManager.setGuiScale(0.4f);
+    VRGuiManager.setGuiScale(0.2f);
     VRGuiManager.setPositioningElasticity(10f);
 
     observer.setLocalTranslation(Settings.spawnPosition);
@@ -254,10 +254,14 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     movementHandler = new MovementHandler(observer, rootNode);
     movementHandler.setLockHorizontal(true);
+    inputHandler.registerMappings(movementHandler, "left", "right", "forward", "back");
+
+    // inputHandler.registerMappings(new RotationHandler(observer), "tiltLeft", "tiltRight");
     
-    inputHandler.registerMappings(new RotationHandler(observer), "lookUp",
-        "lookDown", "lookLeft", "lookRight", "tiltLeft", "tiltRight");
-    inputHandler.registerMappings(movementHandler, "forward", "back", "left", "right");
+
+    inputHandler.registerMappings(new RotationHandler(observer), "lookUp", "lookDown", "lookLeft",
+        "lookRight", "tiltLeft", "tiltRight");
+
     inputHandler.registerMappings(eventManager, "Button A", "Button B", "Button X", "Button Y");
 
     collisionHandler = new CollisionHandler(observer, sceneManager.getScene("escape")
@@ -496,11 +500,11 @@ public class EscapeVR extends VRApplication implements EventListener {
         if (command.containsKey("param_0")) {
           String parameter = command.get("param_0");
           if (command.containsKey("param_1")) {
-        	  if (stateManager.getCurrentState() instanceof PlayingState) {
-        	        log.info(className, "Updating timelimit...");
-        	        PlayingState playingState = (PlayingState) stateManager.getCurrentState();
-        	        playingState.extendTimeLimit(Integer.parseInt(parameter));
-        	  }
+            if (stateManager.getCurrentState() instanceof PlayingState) {
+              log.info(className, "Updating timelimit...");
+              PlayingState playingState = (PlayingState) stateManager.getCurrentState();
+              playingState.extendTimeLimit(Integer.parseInt(parameter));
+            }
           } else if (!parameter.isEmpty()) {
             // setTimeLimit(Integer.parseInt(parameter));
             timeLimit = Integer.parseInt(parameter);
@@ -566,14 +570,13 @@ public class EscapeVR extends VRApplication implements EventListener {
       setGameState(GameLostState.getInstance());
     } else if (ev instanceof GameWonEvent) {
       setGameState(GameWonState.getInstance());
-      observer.setLocalTranslation(Settings.winingPosition);
+      observer.setLocalTranslation(Settings.winningPosition);
       collisionHandler.disableRestriction();
       movementHandler.setLockHorizontal(false);
-      
+
       movementHandler.setMovementSpeed(2f);
-      movementHandler.setForceFlying(true);
-      
-      
+      // movementHandler.setForceFlying(true);
+
       movementHandler.addObject("wall-north");
       movementHandler.addObject("wall-south");
       movementHandler.addObject("wall-east");
@@ -581,7 +584,7 @@ public class EscapeVR extends VRApplication implements EventListener {
       movementHandler.addObject("ceiling");
       movementHandler.addObject("floor");
       movementHandler.addObject("grass");
-      
+
     } else if (ev instanceof GameStartEvent) {
       setGameState(IntroState.getInstance());
     } else if (ev instanceof GameLostEvent) {
