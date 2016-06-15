@@ -29,6 +29,11 @@ public class InputHandler {
   private InputManager inputManager;
   private List<InteractionHandler> listeners = new ArrayList<InteractionHandler>();
 
+  /**
+   * Constructor for InputHandler.
+   * @param inputManager the InputManager
+   * @param eventManager the EvenManager
+   */
   public InputHandler(InputManager inputManager, EventManager eventManager) {
 
     log.info(className, "Initializing...");
@@ -39,23 +44,36 @@ public class InputHandler {
     initJoysticks();
   }
 
+  /**
+   * Registers a listerener.
+   * @param listener an InteractionHandler object
+   */
   public void registerListener(InteractionHandler listener) {
 
-    if (listener == null)
+    if (listener == null) {
       return;
-
-    if (listeners.contains(listener))
+    }
+    if (listeners.contains(listener)) {
       return;
-
+    }
     listeners.add(listener);
   }
   
+  /**
+   * Removes a listener.
+   * @param listener the listener to be removed
+   */
   public void removeListener(InteractionHandler listener) {
     if (listeners.contains(listener)) {
       listeners.remove(listener);
     }
   }
 
+  /**
+   * Registers the names of the input mappings to the listener.
+   * @param listener the InterActionHandler
+   * @param mappingNames the name of the mappig as string
+   */
   public void registerMappings(InteractionHandler listener, String... mappingNames) {
 
     registerListener(listener);
@@ -67,9 +85,9 @@ public class InputHandler {
 
   private void initKeyControls() {
 
-    if (inputManager == null)
+    if (inputManager == null) {
       log.error(className, "inputManager == null");
-
+    }
     log.info(className, "Registering mappings...");
 
     inputManager.addMapping("forward", new KeyTrigger(KeyInput.KEY_W));
@@ -87,8 +105,10 @@ public class InputHandler {
 
     inputManager.addMapping("Button A", new KeyTrigger(KeyInput.KEY_SPACE));
 
-    inputManager.addMapping("lookup", new KeyTrigger(KeyInput.KEY_J));
-    inputManager.addMapping("lookdown", new KeyTrigger(KeyInput.KEY_U));
+    inputManager.addMapping("lookUp", new KeyTrigger(KeyInput.KEY_RIGHT));
+    inputManager.addMapping("lookDown", new KeyTrigger(KeyInput.KEY_LEFT));
+    inputManager.addMapping("lookRight", new KeyTrigger(KeyInput.KEY_DOWN));
+    inputManager.addMapping("lookLeft", new KeyTrigger(KeyInput.KEY_UP));
     inputManager.addMapping("tiltleft", new KeyTrigger(KeyInput.KEY_H));
     inputManager.addMapping("tiltright", new KeyTrigger(KeyInput.KEY_K));
   }
@@ -108,9 +128,12 @@ public class InputHandler {
 
       Joystick joy = joysticks[0];
 
-      // assign axes
+      // assign axes left stick
       joy.getAxes().get(0).assignAxis("right", "left");
       joy.getAxes().get(1).assignAxis("forward", "back");
+      // assign axes right stick
+      joy.getAxes().get(2).assignAxis("lookUp", "lookDown");
+      joy.getAxes().get(3).assignAxis("lookLeft", "lookRight");
 
       inputManager.addMapping("Button A", new JoyButtonTrigger(0, 0));
       inputManager.addMapping("Button B", new JoyButtonTrigger(0, 1));

@@ -255,9 +255,9 @@ public class EscapeVR extends VRApplication implements EventListener {
     movementHandler = new MovementHandler(observer, rootNode);
     movementHandler.setLockHorizontal(true);
     
-    inputHandler.registerMappings(new RotationHandler(observer), "left", "right", "lookup",
-        "lookdown", "tiltleft", "tiltright");
-    inputHandler.registerMappings(movementHandler, "forward", "back");
+    inputHandler.registerMappings(new RotationHandler(observer), "lookUp",
+        "lookDown", "lookLeft", "lookRight", "tiltLeft", "tiltRight");
+    inputHandler.registerMappings(movementHandler, "forward", "back", "left", "right");
     inputHandler.registerMappings(eventManager, "Button A", "Button B", "Button X", "Button Y");
 
     collisionHandler = new CollisionHandler(observer, sceneManager.getScene("escape")
@@ -495,7 +495,13 @@ public class EscapeVR extends VRApplication implements EventListener {
       case Protocol.COMMAND_TIMELIMIT:
         if (command.containsKey("param_0")) {
           String parameter = command.get("param_0");
-          if (!parameter.isEmpty()) {
+          if (command.containsKey("param_1")) {
+        	  if (stateManager.getCurrentState() instanceof PlayingState) {
+        	        log.info(className, "Updating timelimit...");
+        	        PlayingState playingState = (PlayingState) stateManager.getCurrentState();
+        	        playingState.extendTimeLimit(Integer.parseInt(parameter));
+        	  }
+          } else if (!parameter.isEmpty()) {
             // setTimeLimit(Integer.parseInt(parameter));
             timeLimit = Integer.parseInt(parameter);
           }
