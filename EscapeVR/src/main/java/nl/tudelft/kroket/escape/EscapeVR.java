@@ -417,26 +417,6 @@ public class EscapeVR extends VRApplication implements EventListener {
     timer.startTimer();
   }
 
-  private void setTimeLimit(int seconds) {
-    if (stateManager.getCurrentState() == null) {
-      log.error(className, "currentState == null");
-    } else {
-
-      log.info(className, "setTimeLimit: Current state is "
-          + stateManager.getCurrentState().getClass().getSimpleName());
-
-      if (stateManager.getCurrentState() instanceof PlayingState) {
-        log.info(className, "Updating timelimit...");
-        PlayingState playingState = (PlayingState) stateManager.getCurrentState();
-        playingState.setTimeLimit(seconds);
-      } else {
-        log.error(className, "Could not update timelimit (invalid gamestate)");
-
-      }
-    }
-
-  }
-
   /**
    * Process remote input.
    * 
