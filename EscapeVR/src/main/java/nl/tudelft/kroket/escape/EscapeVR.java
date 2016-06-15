@@ -109,7 +109,6 @@ public class EscapeVR extends VRApplication implements EventListener {
 
   private GameState currentState;
 
-  //private int timeLimit = Settings.TIMELIMIT;
   private Timer timer;
 
   private CollisionHandler collisionHandler;
@@ -211,8 +210,6 @@ public class EscapeVR extends VRApplication implements EventListener {
     if (VRApplication.getVRHardware() != null) {
       System.out.println("Attached device: " + VRApplication.getVRHardware().getName());
     }
-
-    // Vector2f guiCanvasSize = VRGuiManager.getCanvasSize();
 
     // create a sphere around the observer for our collision detection
     Sphere sphere = new Sphere(10, 50, 0.4f);
@@ -364,8 +361,6 @@ public class EscapeVR extends VRApplication implements EventListener {
 
       log.info(className, "Current state is "
           + stateManager.getCurrentState().getClass().getSimpleName());
-
-      //setTimeLimit(timeLimit);
     }
     
     if (timer.isActive()) {
@@ -491,8 +486,6 @@ public class EscapeVR extends VRApplication implements EventListener {
           String action = command.get("param_0");
 
           if (mgManager.isActive(action)) {
-            // if (mgManager.gameActive() && action.equals(mgManager.getCurrent().getName())) {
-            //
             eventManager.addEvent(new MinigameCompleteEvent(this));
             mgManager.endGame();
           }
@@ -500,28 +493,9 @@ public class EscapeVR extends VRApplication implements EventListener {
         }
         registerObjects();
         break;
-        
       case Protocol.COMMAND_BONUSTIME:
     	timer.bonusTime();
     	break;
-
-//        ***
-//      case Protocol.COMMAND_TIMELIMIT:
-//        if (command.containsKey("param_0")) {
-//          String parameter = command.get("param_0");
-//          if (command.containsKey("param_1")) {
-//        	  if (stateManager.getCurrentState() instanceof PlayingState) {
-//        	        log.info(className, "Updating timelimit...");
-//        	        PlayingState playingState = (PlayingState) stateManager.getCurrentState();
-//        	        playingState.extendTimeLimit(Integer.parseInt(parameter));
-//        	  }
-//          } else if (!parameter.isEmpty()) {
-//            // setTimeLimit(Integer.parseInt(parameter));
-//            timeLimit = Integer.parseInt(parameter);
-//          }
-//        }
-//        break;
-
       case Protocol.COMMAND_GAMEOVER:
         eventManager.addEvent(new GameLostEvent(this));
         hud.setTimerText("");
@@ -612,8 +586,6 @@ public class EscapeVR extends VRApplication implements EventListener {
       if (scene instanceof EscapeScene) {
         escapeScene = ((EscapeScene) sceneManager.getScene("escape"));
       }
-
-      // clientThread.sendMessage(String.format("INTERACT[%s]", objectName));
 
       switch (objectName) {
       case "portalturret-geom-0":

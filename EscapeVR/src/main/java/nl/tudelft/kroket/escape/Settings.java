@@ -11,7 +11,7 @@ import com.jme3.math.Vector3f;
 public class Settings {
 
   /** Gameplay time in seconds. */
-  public static final int TIMELIMIT = 2 * 60;
+  public static final int TIMELIMIT = 15 * 60;
   
   /** The amount of seconds added to the timer when bonustime is received. */
   public static final int BONUSTIME = 20;
