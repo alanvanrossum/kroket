@@ -22,9 +22,9 @@ public class Settings {
   public static final int PORTNUM = 1234;
 
   /** Default spawn position for the player/observer. */
-  public final static Vector3f spawnPosition = new Vector3f(0, 0, 0);
-
-  public final static Vector3f winingPosition = new Vector3f(0, 0, 15f);
+  public final static Vector3f spawnPosition = new Vector3f(0, 2, 0);
+  
+  public final static Vector3f winingPosition = new Vector3f(0, 2, 15f);
 
   /** Enable the spookyscreen overlay. */
   public static final boolean SPOOKY_ENABLED = true;

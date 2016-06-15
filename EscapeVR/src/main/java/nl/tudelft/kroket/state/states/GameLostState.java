@@ -27,17 +27,16 @@ public class GameLostState extends GameState {
   @Override
   public void begin(AudioManager audioManager, SceneManager sceneManager,
       ScreenManager screenManager) {
-    
+
     log.debug(className, "Setting up " + className);
-    
+
     audioManager.stopAudio();
     screenManager.getScreen("gameover").show();
     audioManager.play("gamelost");
   }
 
   @Override
-  public void stop(AudioManager audioManager, SceneManager sceneManager,
-      ScreenManager screenManager) {
+  public void stop(AudioManager audioManager, SceneManager sceneManager, ScreenManager screenManager) {
     audioManager.stop("gamelost");
     screenManager.getScreen("gameover").hide();
   }
@@ -49,7 +48,7 @@ public class GameLostState extends GameState {
   @Override
   public void update(AudioManager audioManager, InputHandler inputHandler,
       ScreenManager screenManager, HeadUpDisplay hud, EventManager em, float tpf) {
-   // inputHandler.handleInput(tpf);
+    // inputHandler.handleInput(tpf);
   }
 
 }
