@@ -12,6 +12,12 @@ import nl.tudelft.kroket.screen.HeadUpDisplay;
 import nl.tudelft.kroket.screen.ScreenManager;
 import nl.tudelft.kroket.state.GameState;
 
+/**
+ * State that indicates that the actual game is being played.
+ * 
+ * @author Team Kroket
+ *
+ */
 public class PlayingState extends GameState {
 
   /** The unique singleton instance of this class. */
@@ -27,10 +33,18 @@ public class PlayingState extends GameState {
 
   private static Random rand = new Random();
 
+  /**
+   * Get the instance of this state.
+   * 
+   * @return the instance
+   */
   public static GameState getInstance() {
     return instance;
   }
 
+  /**
+   * Begin this state.
+   */
   @Override
   public void begin(AudioManager audioManager, SceneManager sceneManager,
       ScreenManager screenManager) {
@@ -44,6 +58,9 @@ public class PlayingState extends GameState {
     setSpookyTime(Settings.INTERVAL_SPOOKYTIME_LOWER, Settings.INTERVAL_SPOOKYTIME_UPPER);
   }
 
+  /**
+   * Stop this state.
+   */
   @Override
   public void stop(AudioManager audioManager, SceneManager sceneManager, ScreenManager screenManager) {
     //sceneManager.getScene("escape").destroyScene();
@@ -87,6 +104,10 @@ public class PlayingState extends GameState {
     return randomNum;
   }
 
+  /**
+   * Updates this state. 
+   * Checks if the spooky screen should be showed.
+   */
   @Override
   public void update(AudioManager audioManager, InputHandler inputHandler,
       ScreenManager screenManager, HeadUpDisplay hud, EventManager em, float tpf) {

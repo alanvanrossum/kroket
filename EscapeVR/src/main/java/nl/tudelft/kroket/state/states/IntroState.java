@@ -11,6 +11,12 @@ import nl.tudelft.kroket.screen.ScreenManager;
 import nl.tudelft.kroket.screen.screens.IntroScreen;
 import nl.tudelft.kroket.state.GameState;
 
+/**
+ * State that indicates that the game is showing the introduction.
+ * 
+ * @author Team Kroket
+ *
+ */
 public class IntroState extends GameState {
 
   /** The unique singleton instance of this class. */
@@ -22,10 +28,14 @@ public class IntroState extends GameState {
   /** Singleton logger instance. */
   private Logger log = Logger.getInstance();
 
-  private IntroState() {
+  /**
+   * Private constructor for the IntroState
+   */
+  private IntroState() {}
 
-  }
-
+  /**
+   * Begin this state.
+   */
   @Override
   public void begin(AudioManager audioManager, SceneManager sceneManager,
       ScreenManager screenManager) {
@@ -35,72 +45,61 @@ public class IntroState extends GameState {
     if (screenManager == null) {
       log.error(className, "screenManager == null!");
     } else {
-
       audioManager.stopAudio();
       audioManager.play("intro");
       screenManager.showScreen("intro");
     }
   }
 
+  /**
+   * Stop this state.
+   */
   @Override
-  public void stop(AudioManager audioManager, SceneManager sceneManager, ScreenManager screenManager) {
-  }
+  public void stop(AudioManager audioManager, SceneManager sceneManager, ScreenManager screenManager) {}
 
+  /**
+   * Get the instance of this state.
+   * 
+   * @return the instance
+   */
   public static GameState getInstance() {
     return instance;
   }
 
-    @Override
-    public void update(AudioManager audioManager, InputHandler inputHandler,
-                       ScreenManager screenManager, HeadUpDisplay hud, EventManager em, float tpf) {
+  /**
+   * Updates the intro state.
+   */
+  @Override
+  public void update(AudioManager audioManager, InputHandler inputHandler,
+                     ScreenManager screenManager, HeadUpDisplay hud, EventManager em, float tpf) {
 
-        float time = audioManager.getPlaybackTime("intro");
-        Screen currentScreen = screenManager.getCurrent();
+    float time = audioManager.getPlaybackTime("intro");
+    Screen currentScreen = screenManager.getCurrent();
 
-        if (currentScreen instanceof IntroScreen) {
-            IntroScreen intro = (IntroScreen) currentScreen;
-            //index 0 = KroketLogo
-            //index 1-6 = StoryLine
-            //index 7 = controls
-
-            int current = convertTimeToSlide((int) (time));
-            intro.setCurrent(current);
-        }
+    if (currentScreen instanceof IntroScreen) {
+      IntroScreen intro = (IntroScreen) currentScreen;
+      int current = convertTimeToSlide((int) (time));
+      intro.setCurrent(current);
     }
-    /*
-    This method takes the current time of the audio playing and decides which introOverlay to show.
-    It takes into account the amount of text for each slide, giving slides with more text more time on screen.
-     */
-    private int convertTimeToSlide(int time) {
-        int[] timePerSlide = new int[]{4,6,5,6,7,1,2,4};
-        int sum=0;
-        for (int i = 0; i < timePerSlide.length; i++) {
-            sum+=timePerSlide[i];
-            if(time<sum){
-                return i;
-            }
-        }
-        return timePerSlide.length-1;
-        //The code above does exactly the same as the commented code below.
-        //Below is a more readable version.
-        //Above is a smarter shorter version.
-//        if(time<4){
-//            return 0;
-//        } else if(time<10) {
-//            return 1;
-//        } else if(time<15){
-//            return 2;
-//        } else if(time<21){
-//            return 3;
-//        } else if(time<28){
-//            return 4;
-//        } else if(time<29){
-//            return 5;
-//        } else if(time<31){
-//            return 6;
-//        } else {
-//            return 7;
-//        }
-    }
+  }
+  
+  /**
+   * This method takes the current time of the audio playing and decides which introOverlay to show.
+   * It takes into account the amount of text for each slide, giving slides with more text more time on screen.
+   * 
+   * @param time current time of the playing audio
+   * @return the slide number
+   */
+   private int convertTimeToSlide(int time) {
+     int[] timePerSlide = new int[]{4, 6, 5, 6, 7, 1, 2, 4};
+     int sum = 0;
+     for (int i = 0; i < timePerSlide.length; i++) {
+       sum += timePerSlide[i];
+       if (time < sum){
+         return i;
+       }
+     }
+     return timePerSlide.length - 1;
+   }
 
 }

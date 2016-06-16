@@ -10,6 +10,7 @@ import nl.tudelft.kroket.screen.HeadUpDisplay;
  * Class that handles the timer for the VR player.
  * 
  * @author Team Kroket
+ * 
  */
 public class Timer {
 
