@@ -7,6 +7,12 @@ import nl.tudelft.kroket.escape.EscapeVR;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.screen.HeadUpDisplay;
 
+/**
+ * Thread that can be used to send messages to the host.
+ * 
+ * @author Team Kroket
+ *
+ */
 public class ClientThread extends Thread {
 
   /** Current class, used as tag for logger. */
@@ -26,6 +32,12 @@ public class ClientThread extends Thread {
   HeadUpDisplay hud;
   NetworkClient client;
 
+  /**
+   * Constructor for the client thread.
+   * 
+   * @param source the VR application
+   * @param hud the head up display
+   */
   public ClientThread(EscapeVR source, HeadUpDisplay hud) {
     this.hud = hud;
     this.client = new NetworkClient();
@@ -82,6 +94,9 @@ public class ClientThread extends Thread {
     client.sendMessage(message);
   }
 
+  /**
+   * Registers the client to the server and receives messages.
+   */
   @SuppressWarnings("deprecation")
   @Override
   public void run() {
@@ -118,8 +133,6 @@ public class ClientThread extends Thread {
           callback.receiveLoop(line);
         }
       } catch (IOException exception) {
-        // exception.printStackTrace();
-
         client.close();
       }
     }

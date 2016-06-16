@@ -53,16 +53,16 @@ public class CommandParser {
    */
   public static String parseCommand(String input) {
 
-    // find the position of the first bracket
+    // Find the position of the first bracket
     int bracketPosition = input.indexOf("[");
 
-    // if bracket wasn't found, the entire input string is
+    // If bracket wasn't found, the entire input string is
     // our command
     if (bracketPosition == -1) {
       return input;
     }
 
-    // otherwise, return the string up until the
+    // Otherwise, return the string up until the
     // bracket was found
     return input.substring(0, bracketPosition);
   }
@@ -75,7 +75,7 @@ public class CommandParser {
    * @return list of all parameters
    */
   public static List<String> parseParams(String input) {
-    // because there potentially could be many occurences
+    // Because there potentially could be many occurrences
     // we use regular expressions here
 
     List<String> paramList = new ArrayList<String>();

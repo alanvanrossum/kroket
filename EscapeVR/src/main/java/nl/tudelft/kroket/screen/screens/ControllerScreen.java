@@ -13,6 +13,7 @@ import com.jme3.scene.Node;
  */
 public class ControllerScreen extends Screen {
 
+  /** The name of the screen. */
   private static final String name = "controller";
 
   /**
@@ -43,11 +44,13 @@ public class ControllerScreen extends Screen {
   /**
    * Hide the overlay.
    */
-
   public void hide() {
     guiNode.detachChild(overlay);
   }
 
+  /**
+   * Update method for this screen.
+   */
   @Override
   public void update() {
     // TODO Auto-generated method stub

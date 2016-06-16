@@ -14,8 +14,10 @@ import com.jme3.scene.Node;
  */
 public class SpookyScreen extends Screen {
 
+  /** Name of this screen. */
   private static final String name = "spooky";
 
+  /** The length of time this screen is displayed. */
   private long displayTime = Settings.SPOOKY_DISPLAY_TIME;
 
   private long hideTime = 0;
@@ -44,16 +46,14 @@ public class SpookyScreen extends Screen {
    */
   @Override
   public void show() {
-
-    // System.out.println("spookyScreen.show()");
-
     hideTime = System.currentTimeMillis() + displayTime;
-
     guiNode.attachChild(overlay);
   }
 
+  /**
+   * Hides the screen when its time is up.
+   */
   public void update() {
-
     if (System.currentTimeMillis() > hideTime) {
       hide();
     }

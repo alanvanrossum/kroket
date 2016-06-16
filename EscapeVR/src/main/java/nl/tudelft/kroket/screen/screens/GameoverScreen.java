@@ -11,9 +11,9 @@ import com.jme3.scene.Node;
  *
  */
 public class GameoverScreen extends Screen {
-
-  private static final String name = "gameover";
   
+  /** Name of this screen. */
+  private static final String name = "gameover";
 
   /**
    * Constructor for GameoverScreen overlay object.
@@ -48,9 +48,12 @@ public class GameoverScreen extends Screen {
     guiNode.detachChild(overlay);
   }
 
+  /**
+   * Update method for this screen.
+   */
   @Override
   public void update() {
     // TODO Auto-generated method stub
-    
   }
+  
 }
