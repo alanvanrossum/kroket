@@ -1,6 +1,5 @@
 package nl.tudelft.kroket.input.interaction;
 
-import nl.tudelft.kroket.escape.Settings;
 import nl.tudelft.kroket.input.InteractionHandler;
 import nl.tudelft.kroket.log.Logger;
 import jmevr.app.VRApplication;
@@ -13,6 +12,12 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
+/**
+ * Handles movement of the player.
+ * 
+ * @author Team Kroket
+ *
+ */
 public class MovementHandler extends InteractionHandler implements ActionListener {
 
   /** Current class, used as tag for logger. */
@@ -25,18 +30,39 @@ public class MovementHandler extends InteractionHandler implements ActionListene
 
   private boolean forceFlying = false;
 
-  public boolean isForceFlying() {
+  private Node rootNode;
 
+  private boolean restrictObserver = true;
+
+  float collisionThreshold = 3.2f;
+  float collisionOffset = 8.0f;
+
+  // Using a string here so that we only need to use the name
+  // so that this works even when objects aren't present in the hierarchy
+  private List<String> objectList;
+
+  private boolean moveForward, moveBackwards;
+  private boolean moveLeft, moveRight;
+
+  private boolean lockHorizontal = true;
+  
+  /**
+   * Getter for the forceFlying boolean.
+   * 
+   * @return true iff flying is enabled.
+   */
+  public boolean isForceFlying() {
     return forceFlying;
   }
 
+  /**
+   * Setter for the forceFlying boolean.
+   * 
+   * @param forceFlying true iff forceFlying should be set to true.
+   */
   public void setForceFlying(boolean forceFlying) {
-
-    System.out.println("force flying is set to " + forceFlying);
     this.forceFlying = forceFlying;
   }
-
-  private Node rootNode;
 
   /**
    * Constuctor for movementHandler.
@@ -54,36 +80,45 @@ public class MovementHandler extends InteractionHandler implements ActionListene
 
   }
 
+  /**
+   * Setter for the movement speed.
+   * 
+   * @param speed the speed to be set.
+   */
   public void setMovementSpeed(float speed) {
     this.movementSpeed = speed;
   }
 
+  /**
+   * Getter for the movement speed.
+   * 
+   * @return the movement speed
+   */
   public float getMovementSpeed() {
     return this.movementSpeed;
   }
 
-  private boolean restrictObserver = true;
-
-  float collisionThreshold = 3.2f;
-  float collisionOffset = 8.0f;
-
-  // using a string here so that we only need to use the name
-  // so that this works even when objects aren't present in the hierarchy
-  private List<String> objectList;
-
-  private boolean moveForward, moveBackwards;
-  private boolean moveLeft, moveRight;
-
-  private boolean lockHorizontal = true;
-
+  /**
+   * Getter for the lockHorizontal boolean.
+   * 
+   * @return true iff the horizontal axis are locked.
+   */
   public boolean isLockHorizontal() {
     return lockHorizontal;
   }
 
+  /**
+   * Setter for locking the horizontal axis.
+   * 
+   * @param lockHorizontal the boolean to be set.
+   */
   public void setLockHorizontal(boolean lockHorizontal) {
     this.lockHorizontal = lockHorizontal;
   }
 
+  /**
+   * Handles movement to front, back, left and right.
+   */
   @Override
   public void onAction(String name, boolean keyPressed, float tpf) {
 
@@ -142,7 +177,6 @@ public class MovementHandler extends InteractionHandler implements ActionListene
     if (!restrictObserver) {
       return true;
     }
-    // boolean intersects = false;
 
     for (String objectName : objectList) {
 
@@ -195,24 +229,19 @@ public class MovementHandler extends InteractionHandler implements ActionListene
   public void update(float tpf) {
 
     if (moveForward || isForceFlying()) {
-      // moveForward(tpf);
-
       move(tpf, 2);
     }
 
     if (moveBackwards && !isForceFlying()) {
-      // moveBackward(tpf);
       move(-tpf, 2);
     }
 
     if (moveLeft) {
-      // moveLeft(tpf);
       move(tpf, 0);
 
     }
 
     if (moveRight) {
-      // moveRight(tpf);
       move(-tpf, 0);
     }
   }
@@ -227,8 +256,6 @@ public class MovementHandler extends InteractionHandler implements ActionListene
    * @return true if there is an intersection
    */
   private boolean intersectsWith(Spatial object, Vector3f newPos) {
-
-    // Spatial observerClone = observer.clone(false);
 
     boolean intersects = (object.getWorldBound().intersects(observer.clone(false).move(newPos)
         .getWorldBound()));

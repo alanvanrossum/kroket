@@ -31,7 +31,6 @@ import javax.imageio.ImageIO;
  * remote host.
  * 
  * @author Team Kroket
- *
  */
 @SuppressWarnings("restriction")
 public class Launcher extends Application {
@@ -53,24 +52,21 @@ public class Launcher extends Application {
    */
   public static void main(String[] args) {
 
-    // allow remote address to be set using commandline arguments
-    // (for now)
+    // Allow remote address to be set using commandline arguments.
     if (args.length > 1 && !args[0].isEmpty()) {
       remoteHost = args[0];
     }
-
-    System.out.println("...");
 
     launch(args);
 
     mainApplication = new EscapeVR();
 
-    // set the hostname/ip address of the remote machine
+    // Set the hostname/ip address of the remote machine.
     mainApplication.setRemoteHost(remoteHost);
     mainApplication.setPlayerName(playerName);
 
-    // create AppSettings object to enable joysticks/gamepads
-    // and set the title
+    // Create AppSettings object to enable joysticks/gamepads
+    // and set the title.
     AppSettings settings = new AppSettings(true);
     try {
       BufferedImage buff16 = ImageIO.read(Launcher.class
@@ -84,18 +80,18 @@ public class Launcher extends Application {
 
     settings.setSettingsDialogImage("/Interface/splash.png");
 
-    // enable joysticks/gamepads
+    // Enable joysticks/gamepads
     settings.setUseJoysticks(true);
 
-    // set application/window title
+    // Set application/window title
     settings.setTitle("EscapeVR");
 
-    // throw settings at the application
+    // Throw settings at the application
     mainApplication.setSettings(settings);
 
     mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.USE_CUSTOM_DISTORTION, false);
 
-    // enable the mirror window to be used, this will show whatever is shown in the
+    // Enable the mirror window to be used, this will show whatever is shown in the
     // VR goggles
     mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.ENABLE_MIRROR_WINDOW, true);
     mainApplication.preconfigureVRApp(PRECONFIG_PARAMETER.FORCE_VR_MODE, false);
@@ -108,9 +104,11 @@ public class Launcher extends Application {
 
     // finally, start the application
     mainApplication.start();
-
   }
 
+  /**
+   * Launches the game.
+   */
   @Override
   public void start(final Stage primaryStage) {
 

@@ -36,9 +36,6 @@ public class SceneManager {
   /** Reference to the ViewPort object. */
   private ViewPort viewPort;
 
-  // private SceneManager instance = new SceneManager(getAssetManager(), getRootNode(),
-  // getViewPort());
-
   /**
    * Constructor for SceneManager object.
    * 
@@ -50,12 +47,10 @@ public class SceneManager {
    *          reference to the ViewPort
    */
   public SceneManager(AssetManager assetManager, Node rootNode, ViewPort viewPort) {
-
     log.info(className, "Initializing...");
 
     this.assetManager = assetManager;
     this.rootNode = rootNode;
-
     this.viewPort = viewPort;
   }
 
@@ -88,11 +83,10 @@ public class SceneManager {
       e.printStackTrace();
 
     } catch (IllegalAccessException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
 
-    // after initiating the scene, store it so we can reference it later
+    // After initiating the scene, store it so we can reference it later
     scenes.put(name, newScene);
   }
 
@@ -138,7 +132,6 @@ public class SceneManager {
    * @param state specifies which object.
    */
   public void extendEscapeScene(String state) {
-    System.out.println("extend");
     switch (state) {
       case "C":
         ((EscapeScene) scenes.get("escape")).addButtons();

@@ -8,17 +8,16 @@ import java.util.EventObject;
  * @author Team Kroket
  *
  */
+@SuppressWarnings("serial")
 public class TimeoutEvent extends EventObject {
 
   /**
+   * Constructor for the TimeoutEvent.
    * 
+   * @param source the source of the event.
    */
-  private static final long serialVersionUID = 1896744754464507950L;
-
   public TimeoutEvent(Object source) {
     super(source);
   }
   
-  
-
 }

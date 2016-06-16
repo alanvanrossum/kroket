@@ -8,6 +8,12 @@ import java.net.UnknownHostException;
 
 import nl.tudelft.kroket.log.Logger;
 
+/**
+ * Makes a connection with the game host.
+ * 
+ * @author Team Kroket
+ *
+ */
 public class NetworkClient {
 
   /** Current class, used as tag for logger. */
@@ -25,15 +31,15 @@ public class NetworkClient {
   private DataOutputStream dataOutputStream;
   private DataInputStream dataInputStream;
 
+  private boolean initialised;
+  private boolean connected;
+  
   /**
    * Constructor for TCP NetworkClient object.
    */
   public NetworkClient() {
     log.info(className, "Initializing...");
   }
-
-  private boolean initialised;
-  private boolean connected;
 
   /**
    * Check whether the socket is initialised.
@@ -73,6 +79,11 @@ public class NetworkClient {
     return connected;
   }
 
+  /**
+   * Setter for the connected boolean.
+   * 
+   * @param connected true iff there is a connection
+   */
   public void setConnected(boolean connected) {
     this.connected = connected;
   }

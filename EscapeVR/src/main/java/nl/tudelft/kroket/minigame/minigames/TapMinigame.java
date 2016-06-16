@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class TapMinigame extends Minigame {
 
+  /** The name of this minigame. */
   private static final String GAME_NAME = "B";
 
   /** Current class, used as tag for logger. */
@@ -73,6 +74,11 @@ public class TapMinigame extends Minigame {
 
     }
 
+    /**
+     * Returns the correct sequence according to the current minigamestate.
+     * 
+     * @return the correct sequence
+     */
     public List<String> returnSequence() {
       switch (this) {
       case sequenceOne:
@@ -88,6 +94,11 @@ public class TapMinigame extends Minigame {
       }
     }
 
+    /**
+     * Matches the enums to actual strings.
+     * 
+     * @return the string that belongs to the current enum
+     */
     public String returnCompleteMessage() {
       switch (this) {
       case sequenceOne:
@@ -139,8 +150,6 @@ public class TapMinigame extends Minigame {
    */
   @Override
   public void update(float tpf) {
-
-    // hud.setCenterText("You are currently in: " + seqState);
 	 
     if (buttonList.equals(seqState.returnSequence())) {
       hud.setCenterText(seqState.returnCompleteMessage(), 2);
@@ -216,18 +225,38 @@ public class TapMinigame extends Minigame {
     return GAME_NAME;
   }
 
+  /**
+   * Getter for the first sequence.
+   * 
+   * @return the first sequence
+   */
   public static List<String> getFirstSequence() {
     return firstSequence;
   }
 
+  /**
+   * Getter for the second sequence.
+   * 
+   * @return the second sequence
+   */
   public static List<String> getSecondSequence() {
     return secondSequence;
   }
 
+  /**
+   * Getter for the third sequence.
+   * 
+   * @return the third sequence
+   */
   public static List<String> getThirdSequence() {
     return thirdSequence;
   }
 
+  /**
+   * Getter for the fourth sequence.
+   * 
+   * @return the fourth sequence
+   */
   public static List<String> getFourthSequence() {
     return fourthSequence;
   }
