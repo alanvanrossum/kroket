@@ -59,10 +59,48 @@ public class IntroState extends GameState {
 
         if (currentScreen instanceof IntroScreen) {
             IntroScreen intro = (IntroScreen) currentScreen;
+            //index 0 = KroketLogo
+            //index 1-6 = StoryLine
+            //index 7 = controls
 
-            int current = (int) (time / 4);
+            int current = convertTimeToSlide((int) (time));
             intro.setCurrent(current);
         }
+    }
+    /*
+    This method takes the current time of the audio playing and decides which introOverlay to show.
+    It takes into account the amount of text for each slide, giving slides with more text more time on screen.
+     */
+    private int convertTimeToSlide(int time) {
+        int[] timerPerSlide = new int[]{4,6,5,6,7,1,2,4};
+        int sum=0;
+        for (int i = 0; i < timerPerSlide.length; i++) {
+            sum+=timerPerSlide[i];
+            if(time<sum){
+                return i;
+            }
+        }
+        return 7;
+        //The code above does exactly the same as the commented code below.
+        //Below is a more readable version.
+        //Above is a smarter shorter version.
+//        if(time<4){
+//            return 0;
+//        } else if(time<10) {
+//            return 1;
+//        } else if(time<15){
+//            return 2;
+//        } else if(time<21){
+//            return 3;
+//        } else if(time<28){
+//            return 4;
+//        } else if(time<29){
+//            return 5;
+//        } else if(time<31){
+//            return 6;
+//        } else {
+//            return 7;
+//        }
     }
 
 }
