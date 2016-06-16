@@ -7,13 +7,24 @@ import jmevr.app.VRApplication;
 
 import com.jme3.scene.Spatial;
 
+/**
+ * Event that indicates that an interaction with an object has taken place.
+ * 
+ * @author Team Kroket
+ *
+ */
 @SuppressWarnings("serial")
 public class InteractionEvent extends EventObject {
 
- 
-
+  /** Name of the object. */
   String name;
 
+  /**
+   * Constructor for the InteractionEvent.
+   * 
+   * @param source the source of the event.
+   * @param name the name of the interacted objet.
+   */
   public InteractionEvent(Object source, String name) {
     super(source);
     this.name = name;
@@ -46,4 +57,5 @@ public class InteractionEvent extends EventObject {
   public String getName() {
     return name;
   }
+  
 }

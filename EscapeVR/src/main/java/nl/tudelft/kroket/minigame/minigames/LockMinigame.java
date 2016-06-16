@@ -3,16 +3,15 @@ package nl.tudelft.kroket.minigame.minigames;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.minigame.Minigame;
 
-import java.util.EventObject;
-
 /**
  * Class that handles the correct behaviour for the lock game.
+ * 
  * @author Team Kroket
  */
 public class LockMinigame extends Minigame {
 
-  
-  private static final String GAME_NAME = "F";
+  /** Name for the lock minigame. */
+  private static final String GAME_NAME = "D";
   
   /** Current class, used as tag for logger. */
   private final String className = this.getClass().getSimpleName();
@@ -50,7 +49,9 @@ public class LockMinigame extends Minigame {
     hud.setCenterText("You opened the lock!", 10);
   }
 
-
+  /**
+   * Get the name of the minigame.
+   */
   public String getName() {
     return GAME_NAME;
   }

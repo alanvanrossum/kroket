@@ -51,14 +51,11 @@ public abstract class Screen {
 
     String fullPath = rootPath + imgPath;
 
-    // System.out.println("fullPath = " + fullPath);
-
     Picture image = new Picture(name);
     image.setImage(assetManager, fullPath, true);
     image.setWidth(width);
     image.setHeight(height);
-    // move back image (so text can appear in front of
-    // image)
+    // Move back image (so text can appear in front of image)
     image.move(0, 0, -1);
 
     return image;
@@ -78,5 +75,8 @@ public abstract class Screen {
     guiNode.detachChild(overlay);
   }
 
+  /**
+   * Abstract method for updating the screen.
+   */
   public abstract void update();
 }

@@ -25,14 +25,16 @@ public class HeadUpDisplay {
 
   /** The text displayed in the HUD. */
   BitmapText centerTextLabel;
+  
   long centerTextTime = 0;
 
   BitmapText timerTextLabel;
 
   BitmapFont guiFont;
 
-  // clear text after 8 seconds
+  /** Clear text after 8 seconds. */
   private final long delayTextClear = 8 * 1000;
+  
   /**
    * The HeadUpDisplay constructor.
    * 
@@ -59,7 +61,6 @@ public class HeadUpDisplay {
     timerTextLabel.setSize(24);
 
     guiNode.attachChild(timerTextLabel);
-
   }
 
   /**
@@ -88,6 +89,11 @@ public class HeadUpDisplay {
     return txt;
   }
 
+  /**
+   * Set the text for the timer label.
+   * 
+   * @param text the text to be set
+   */
   public void setTimerText(String text) {
     timerTextLabel.setText(text);
   }
@@ -120,15 +126,15 @@ public class HeadUpDisplay {
    * Update method, used to update the HUD.
    */
   public void update() {
-
     if (System.currentTimeMillis() > centerTextTime) {
       clearCenter();
     }
-
   }
   
+  /**
+   * Clear the text on the timer label.
+   */
   public void clearTimer() {
-
     if (timerTextLabel.getText().length() > 0) {
       timerTextLabel.setText("");
       log.debug(className, "Timer text cleared.");
@@ -139,7 +145,6 @@ public class HeadUpDisplay {
    * Clear the center text label.
    */
   public void clearCenter() {
-
     if (centerTextLabel.getText().length() > 0) {
       centerTextLabel.setText("");
       log.debug(className, "Center text cleared.");

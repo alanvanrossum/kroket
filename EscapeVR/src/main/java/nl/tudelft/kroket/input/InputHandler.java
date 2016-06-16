@@ -29,6 +29,7 @@ public class InputHandler {
   private Logger log = Logger.getInstance();
 
   private InputManager inputManager;
+  
   private List<InteractionHandler> listeners = new ArrayList<InteractionHandler>();
 
   /**
@@ -95,6 +96,9 @@ public class InputHandler {
     }
   }
 
+  /**
+   * Initializes the key controls for playing the game on a computer.
+   */
   private void initKeyControls() {
 
     if (inputManager == null) {
@@ -107,7 +111,7 @@ public class InputHandler {
     inputManager.addMapping("left", new KeyTrigger(KeyInput.KEY_A));
     inputManager.addMapping("right", new KeyTrigger(KeyInput.KEY_D));
 
-    // register numpad keys, for when we don't have a gamepad
+    // Register numpad keys, for when we don't have a gamepad
     inputManager.addMapping("Button A", new KeyTrigger(KeyInput.KEY_NUMPAD1));
     inputManager.addMapping("Button B", new KeyTrigger(KeyInput.KEY_NUMPAD2));
     inputManager.addMapping("Button X", new KeyTrigger(KeyInput.KEY_NUMPAD3));
@@ -128,7 +132,6 @@ public class InputHandler {
    * Initialize joysticks/gamepads.
    */
   private void initJoysticks() {
-
     log.debug(className, "Registering joystick/gamepad controls...");
 
     Joystick[] joysticks = inputManager.getJoysticks();
@@ -144,16 +147,14 @@ public class InputHandler {
         ((DefaultJoystickAxis) joy.getYAxis()).setDeadZone(0.40f);
         ((DefaultJoystickAxis) joy.getPovXAxis()).setDeadZone(0.60f);
         ((DefaultJoystickAxis) joy.getPovYAxis()).setDeadZone(0.60f);
-        
-        
       }
 
       joy.rumble(1f);
 
-      // assign axes left stick
+      // Assign axes left stick
       joy.getAxes().get(0).assignAxis("right", "left");
       joy.getAxes().get(1).assignAxis("forward", "back");
-      // assign axes right stick
+      // Assign axes right stick
       joy.getAxes().get(2).assignAxis("lookRight", "lookLeft");
       joy.getAxes().get(3).assignAxis("lookUp", "lookDown");
 
@@ -161,8 +162,6 @@ public class InputHandler {
       inputManager.addMapping("Button B", new JoyButtonTrigger(0, 1));
       inputManager.addMapping("Button X", new JoyButtonTrigger(0, 2));
       inputManager.addMapping("Button Y", new JoyButtonTrigger(0, 3));
-
-      // inputManager.addListener(actionListener, "Button A", "Button B", "Button X", "Button Y");
 
       log.debug(className, "Joystick/gamepad controls registered.");
     }

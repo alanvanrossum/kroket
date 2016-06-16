@@ -16,6 +16,7 @@ import com.jme3.scene.Spatial;
  */
 public abstract class Scene {
 
+  /** The list of all objects in all scenes. */
   protected HashMap<String, Spatial> objects = new HashMap<String, Spatial>();
 
   String name;
@@ -86,11 +87,18 @@ public abstract class Scene {
   public void addObject(String name, Spatial object) {
     rootNode.attachChild(object);
     objects.put(name, object);
-
   }
 
+  /**
+   * Abstract method to create a scene.
+   */
   public abstract void createScene();
   
+  /**
+   * Abstract method to get the boundaries of the scene.
+   * 
+   * @return the vector with the boundaries
+   */
   public abstract Vector3f getBoundaries();
 
   /**
