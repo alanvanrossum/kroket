@@ -98,4 +98,13 @@ public class Timer {
     timeLimit += Settings.BONUSTIME * 1000;
   }
 
+  /**
+   * Gets the timelimit.
+   * @return the timelimit
+   */
+  public long getTimeLimit() {
+    return timeLimit;
+  }
+
+  
 }
