@@ -6,6 +6,12 @@ import com.jme3.scene.Spatial;
 import nl.tudelft.kroket.escape.Settings;
 import nl.tudelft.kroket.input.InteractionHandler;
 
+/**
+ * Handles collisions.
+ * 
+ * @author Team Kroket
+ *
+ */
 public class CollisionHandler extends InteractionHandler {
 
   private boolean restrictObserver;
@@ -33,6 +39,13 @@ public class CollisionHandler extends InteractionHandler {
     }
   }
 
+  /**
+   * Handles collisions.
+   * 
+   * @param collisionOffset how hard you are pushed back when colliding 
+   * @param collisionThreshold how close you can get to an object
+   * @param tpf time per frame
+   */
   private void handleCollision(float collisionOffset, float collisionThreshold, float tpf) {
 
     // deltaCorrected is the distance we should use to push the
@@ -63,18 +76,32 @@ public class CollisionHandler extends InteractionHandler {
     }
   }
 
+  /**
+   * Enables restrictions.
+   */
   public void enableRestriction() {
     setRestriction(true);
   }
 
+  /**
+   * Disable restrictions.
+   */
   public void disableRestriction() {
     setRestriction(false);
   }
 
+  /**
+   * Enable or disable restrictions.
+   * 
+   * @param restrict true iff restrictions should be enabled.
+   */
   public void setRestriction(boolean restrict) {
     this.restrictObserver = restrict;
   }
 
+  /**
+   * Update method which handles collisions.
+   */
   @Override
   public void update(float tpf) {
 

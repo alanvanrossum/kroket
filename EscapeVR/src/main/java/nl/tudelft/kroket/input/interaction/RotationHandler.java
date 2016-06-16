@@ -6,6 +6,12 @@ import nl.tudelft.kroket.log.Logger;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.scene.Spatial;
 
+/**
+ * Handles rotation of the player.
+ * 
+ * @author Team Kroket
+ *
+ */
 public class RotationHandler extends InteractionHandler implements ActionListener {
   
   /** Current class, used as tag for logger. */
@@ -24,10 +30,18 @@ public class RotationHandler extends InteractionHandler implements ActionListene
   private boolean tiltRight;
   private boolean tiltLeft;
 
+  /**
+   * Constructor for the rotation handler.
+   * 
+   * @param observer the observer of the handler
+   */
   public RotationHandler(Spatial observer) {
     super(observer);
   }
 
+  /**
+   * Handles looking up, down, left and right.
+   */
   @Override
   public void onAction(String name, boolean keyPressed, float tpf) {
 
@@ -48,8 +62,7 @@ public class RotationHandler extends InteractionHandler implements ActionListene
     } else if (name.equals("tiltRight")) {
       tiltRight = keyPressed;
     }
-
-    // TODO: only call externally?
+    
     update(tpf);
 
   }
@@ -92,14 +105,29 @@ public class RotationHandler extends InteractionHandler implements ActionListene
     }
   }
 
+  /**
+   * Rotate around the x-axis.
+   * 
+   * @param delta the angle in radians
+   */
   private void rotateX(float delta) {
     observer.rotate(delta, 0, 0);
   }
 
+  /**
+   * Rotate around the y-axis.
+   * 
+   * @param delta the angle in radians
+   */
   private void rotateY(float delta) {
     observer.rotate(0, delta, 0);
   }
 
+  /**
+   * Rotate around the z-axis.
+   * 
+   * @param delta the angle in radians
+   */
   private void rotateZ(float delta) {
     observer.rotate(0, 0, delta);
   }
