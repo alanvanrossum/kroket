@@ -72,10 +72,10 @@ public class IntroState extends GameState {
     It takes into account the amount of text for each slide, giving slides with more text more time on screen.
      */
     private int convertTimeToSlide(int time) {
-        int[] timerPerSlide = new int[]{4,6,5,6,7,1,2,4};
+        int[] timePerSlide = new int[]{4,6,5,6,7,1,2,4};
         int sum=0;
-        for (int i = 0; i < timerPerSlide.length; i++) {
-            sum+=timerPerSlide[i];
+        for (int i = 0; i < timePerSlide.length; i++) {
+            sum+=timePerSlide[i];
             if(time<sum){
                 return i;
             }
