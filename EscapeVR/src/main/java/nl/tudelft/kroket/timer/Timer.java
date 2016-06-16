@@ -6,10 +6,17 @@ import nl.tudelft.kroket.net.ClientThread;
 import nl.tudelft.kroket.net.protocol.Protocol;
 import nl.tudelft.kroket.screen.HeadUpDisplay;
 
+/**
+ * Class that handles the timer for the VR player.
+ * 
+ * @author Team Kroket
+ */
 public class Timer {
 
+	/** Singleton logger instance. */
 	static final Logger log = Logger.getInstance();
 
+	/** Current class, used as tag for logger. */
 	private String className = this.getClass().getSimpleName();
 
 	private long timeLimit;
@@ -18,28 +25,48 @@ public class Timer {
 	private ClientThread clientThread;
 	private HeadUpDisplay hud;
 
+	/**
+	 * Constructor for the timer object.
+	 * 
+	 * @param clientThread the client thread for sending messages to the server.
+	 * @param hud the head up display.
+	 */
 	public Timer(ClientThread clientThread, HeadUpDisplay hud) {
 		active = false;
 		this.clientThread = clientThread;
 		this.hud = hud;
 	}
 
+	/**
+	 * Starts the timer.
+	 */
 	public void startTimer() {
 		log.info(className, "Starting timer...");
 		timeLimit = Settings.TIMELIMIT * 1000 + System.currentTimeMillis();
 		active = true;
 	}
 
+	/**
+	 * Stops the timer.
+	 */
 	public void stopTimer() {
 		log.info(className, "Stopping timer...");				
 		clientThread.sendMessage(String.format("%s", Protocol.COMMAND_GAMEOVER));
 		active = false;
 	}
 
+	/**
+	 * Checks whether the timer is active.
+	 * 
+	 * @return true iff the timer is active.
+	 */
 	public boolean isActive() {
 		return active;
 	}
 
+	/**
+	 * Updates the timer.
+	 */
 	public void update() {
 		if (isActive()) {
 			
@@ -70,6 +97,5 @@ public class Timer {
 		log.info(className, String.format("Timer increased by %d seconds.", Settings.BONUSTIME));
 		timeLimit += Settings.BONUSTIME * 1000;
 	}
-
 
 }
