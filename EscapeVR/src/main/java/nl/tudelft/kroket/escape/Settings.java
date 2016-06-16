@@ -10,11 +10,14 @@ import com.jme3.math.Vector3f;
  */
 public class Settings {
 
-  /** Gameplay time in seconds. Value can be overridden by host. */
-  public static final int TIMELIMIT = 10 * 60;
+  /** Gameplay time in seconds. */
+  public static final int TIMELIMIT = 15 * 60;
+  
+  /** The amount of seconds added to the timer when bonustime is received. */
+  public static final int BONUSTIME = 20;
 
   /** Debug flag. */
-  public static final boolean DEBUG = true;
+  public static final boolean DEBUG = false;
 
   public static final boolean WALLCOLLISION = true;
 
