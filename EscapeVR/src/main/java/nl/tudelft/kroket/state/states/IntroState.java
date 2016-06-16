@@ -80,7 +80,7 @@ public class IntroState extends GameState {
                 return i;
             }
         }
-        return 7;
+        return timePerSlide.length-1;
         //The code above does exactly the same as the commented code below.
         //Below is a more readable version.
         //Above is a smarter shorter version.
