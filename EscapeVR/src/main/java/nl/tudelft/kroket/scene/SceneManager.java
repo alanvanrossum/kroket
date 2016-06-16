@@ -138,7 +138,6 @@ public class SceneManager {
    * @param state specifies which object.
    */
   public void extendEscapeScene(String state) {
-    System.out.println("extend");
     switch (state) {
       case "C":
         ((EscapeScene) scenes.get("escape")).addButtons();
