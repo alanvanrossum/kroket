@@ -126,7 +126,7 @@ public class EscapeVR extends VRApplication implements EventListener {
    */
   private void initAudioManager() {
     audioManager = new AudioManager(getAssetManager(), rootNode, "Sound/");
-    audioManager.loadFile("intro", "Soundtrack/alone32.wav", false, false, 0.75f);
+    audioManager.loadFile("intro", "Soundtrack/alone.wav", false, false, 0.75f);
     audioManager.loadFile("waiting", "Soundtrack/alone.wav", false, true, 0.75f);
     audioManager.loadFile("alone", "Soundtrack/alone.wav", false, true, 1.0f);
     audioManager.loadFile("lobby", "Soundtrack/lobby16.wav", false, true, 0.9f);
@@ -354,9 +354,11 @@ public class EscapeVR extends VRApplication implements EventListener {
 
       // System.out.println(audioManager.getPlaybackTime("welcome"));
 
-      if (audioManager.getStatus("intro") != AudioSource.Status.Playing) {
-        startGame();
-      }
+        if (audioManager.getStatus("intro") == AudioSource.Status.Playing) {
+            if (audioManager.getPlaybackTime("intro") > 35) {
+                startGame();
+            }
+        }
     }
 
     if (stateManager.getCurrentState() != currentState) {
@@ -384,7 +386,7 @@ public class EscapeVR extends VRApplication implements EventListener {
    */
   private void startMinigame(String gameName) {
 
-    log.info(className, "Trying to start game " + gameName);
+      log.info(className, "Trying to start game " + gameName);
 
     switch (gameName) {
     case "A":
@@ -537,12 +539,12 @@ public class EscapeVR extends VRApplication implements EventListener {
       // yeah this is kinda weird but I dont want to keep the behaviour for these events seperated
       setGameState(GameLostState.getInstance());
     } else if (ev instanceof GameWonEvent) {
-      setGameState(GameWonState.getInstance());
-      observer.setLocalTranslation(Settings.winningPosition);
-      collisionHandler.disableRestriction();
-      movementHandler.setLockHorizontal(false);
+        setGameState(GameWonState.getInstance());
+        observer.setLocalTranslation(Settings.winningPosition);
+        collisionHandler.disableRestriction();
+        movementHandler.setLockHorizontal(false);
 
-      movementHandler.setMovementSpeed(2f);
+        movementHandler.setMovementSpeed(2f);
       // movementHandler.setForceFlying(true);
 
       movementHandler.addObject("wall-north");
