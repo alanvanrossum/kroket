@@ -3,7 +3,6 @@ package nl.tudelft.kroket.minigame.minigames;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.minigame.Minigame;
 
-import java.util.EventObject;
 
 public class GyroscopeMinigame extends Minigame {
   

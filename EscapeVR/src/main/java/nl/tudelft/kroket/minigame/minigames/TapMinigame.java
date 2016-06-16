@@ -114,7 +114,7 @@ public class TapMinigame extends Minigame {
 
     screenManager.getScreen("controller").show();
     hud.setCenterText(
-        "Hack the computer by enter the colorsequences\nyou will receive from your fellow CIA agents.\nUse the colored buttons on your controller!",
+        "Hack the computer by entering the colorsequences\nyou will receive from your fellow CIA agents.\nUse the colored buttons on your controller!",
         20);
     seqState = seqState.sequenceOne;
     buttonList.clear();

@@ -57,17 +57,10 @@ public class ColorSequenceMinigame extends Minigame {
     running = true;
 
     screenManager.getScreen("controller").show();
-    //hud.setCenterText("Minigame C started!", 10);
+    // hud.setCenterText("Minigame C started!", 10);
     hud.setCenterText(
         "Enter the colorsequence you will\nreceive from your fellow CIA agents\nby using the colored buttons on your controller!",
         20);
-
-    if ((System.currentTimeMillis() % 10000) == 0) {
-      System.out.println("Required sequence:");
-      printList(sequenceList);
-      System.out.println("Entered sequence:");
-      printList(buttonList);
-    }
 
   }
 
@@ -157,6 +150,7 @@ public class ColorSequenceMinigame extends Minigame {
 
   /**
    * Gets the sequencelist.
+   * 
    * @return the list
    */
   public static List<String> getSequenceList() {
@@ -185,19 +179,19 @@ public class ColorSequenceMinigame extends Minigame {
   public void parseColors(List<String> params) {
     for (String colorString : params) {
       switch (colorString) {
-        case "RED":
-          sequenceList.add("Button B");
-          break;
-        case "GREEN":
-          sequenceList.add("Button A");
-          break;
-        case "BLUE":
-          sequenceList.add("Button X");
-          break;
-        case "YELLOW":
-          sequenceList.add("Button Y");
-          break;
-        default:
+      case "RED":
+        sequenceList.add("Button B");
+        break;
+      case "GREEN":
+        sequenceList.add("Button A");
+        break;
+      case "BLUE":
+        sequenceList.add("Button X");
+        break;
+      case "YELLOW":
+        sequenceList.add("Button Y");
+        break;
+      default:
       }
     }
   }
