@@ -87,8 +87,6 @@ public class EventManager extends InteractionHandler implements ActionListener {
   /**
    * Add an event to be fired.
    * 
-   * @param type
-   *          the type/name of the event
    * @param event
    *          the event object
    */
@@ -185,5 +183,30 @@ public class EventManager extends InteractionHandler implements ActionListener {
     }
 
   }
+
+  /**
+   * Gets the triggers hashmap.
+   * @return the triggers hashmap.
+   */
+  public HashMap<String, Float> getTriggers() {
+    return triggers;
+  }
+
+  /**
+   * Gets the eventlist.
+   * @return the eventlist
+   */
+  public CopyOnWriteArrayList<EventObject> getEventList() {
+    return eventList;
+  }
+
+  /**
+   * Gets the listener list.
+   * @return the listener list
+   */
+  public List<EventListener> getListenerList() {
+    return listenerList;
+  }
+  
 
 }

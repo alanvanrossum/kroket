@@ -182,4 +182,12 @@ public class InputHandler {
 
   }
 
+  /**
+   * Gets the listener list.
+   * @return listeners
+   */
+  public List<InteractionHandler> getListeners() {
+    return listeners;
+  }
+
 }

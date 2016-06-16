@@ -20,7 +20,7 @@ import nl.tudelft.kroket.screen.ScreenManager;
 
 public class TapMinigameTest {
   
-  private Minigame miniGame;
+  private TapMinigame miniGame;
   @Mock private HeadUpDisplay hud;
   @Mock private ClientThread clientThread;
   @Mock private ScreenManager screenManager;
@@ -34,7 +34,7 @@ public class TapMinigameTest {
    */
   @Before
   public void setUp() throws Exception {
-    miniGame = TapMinigame.getInstance();
+    miniGame = (TapMinigame)TapMinigame.getInstance();
     hud = Mockito.mock(HeadUpDisplay.class);
     clientThread = Mockito.mock(ClientThread.class);
     screenManager = Mockito.mock(ScreenManager.class);
@@ -57,7 +57,7 @@ public class TapMinigameTest {
   public void testStop() {
     Mockito.doNothing().when(hud).setCenterText(
         "Great job!\nWait... I think I saw something appear on that wall!", 10);
-    miniGame.start();
+    ((TapMinigame)miniGame).start();
     Mockito.verify(hud).setCenterText(
         "Great job!\nWait... I think I saw something appear on that wall!", 10);
   }
@@ -81,7 +81,7 @@ public class TapMinigameTest {
     addColors();
     addColors();
     addColors();
-    ((TapMinigame) miniGame).parseButtons(colors);
+    miniGame.parseButtons(colors);
     assertEquals(TapMinigame.getFirstSequence(), list);
     assertEquals(TapMinigame.getSecondSequence(), list);
     assertEquals(TapMinigame.getThirdSequence(), list);
