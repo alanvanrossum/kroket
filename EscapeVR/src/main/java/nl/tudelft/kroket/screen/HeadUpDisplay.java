@@ -51,14 +51,14 @@ public class HeadUpDisplay {
     
     
     timerTextLabel = createLabel(assetManager, "Interface/Fonts/Default.fnt",
-        guiCanvasSize.getX() * 0.5f - 145, (guiCanvasSize.getY() * 0.5f) + 295,
+        guiCanvasSize.getX() * 0.5f - 145, (guiCanvasSize.getY() * 0.5f) + 320,
         guiCanvasSize.getX(), guiCanvasSize.getY());
     timerTextLabel.setSize(24);
 
     guiNode.attachChild(timerTextLabel);
 
     centerTextLabel = createLabel(assetManager, "Interface/Fonts/Default.fnt",
-        guiCanvasSize.getX() * 0.5f - 180, (guiCanvasSize.getY() * 0.5f) - 180,
+        guiCanvasSize.getX() * 0.5f - 240, (guiCanvasSize.getY() * 0.5f) - 200,
         guiCanvasSize.getX(), guiCanvasSize.getY());
     centerTextLabel.setSize(28);
 
