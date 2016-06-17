@@ -3,12 +3,14 @@ package nl.tudelft.kroket.minigame.minigames;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.minigame.Minigame;
 
+
 /**
  * This class contains the logic of waiting minigame Gyroscope of the VR player.
  * 
  * @author Team Kroket
  *
  */
+
 public class GyroscopeMinigame extends Minigame {
   
   /** The name of the game. */

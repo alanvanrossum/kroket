@@ -520,7 +520,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
       if (ev instanceof ButtonPressEvent) {
         ButtonPressEvent bpEvent = (ButtonPressEvent) ev;
-
+        
         if (bpEvent.getName().equals(Settings.INTERACTION_BUTTON)) {
           startGame();
         }
