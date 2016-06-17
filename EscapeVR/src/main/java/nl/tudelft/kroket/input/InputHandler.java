@@ -156,7 +156,7 @@ public class InputHandler {
       joy.getAxes().get(1).assignAxis("forward", "back");
       // Assign axes right stick
       joy.getAxes().get(2).assignAxis("lookRight", "lookLeft");
-      joy.getAxes().get(3).assignAxis("lookUp", "lookDown");
+     // joy.getAxes().get(3).assignAxis("lookUp", "lookDown");
 
       inputManager.addMapping("Button A", new JoyButtonTrigger(0, 0));
       inputManager.addMapping("Button B", new JoyButtonTrigger(0, 1));

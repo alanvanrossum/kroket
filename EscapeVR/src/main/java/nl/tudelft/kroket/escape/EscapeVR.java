@@ -225,7 +225,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     // test any positioning mode here (defaults to AUTO_CAM_ALL)
     VRGuiManager.setPositioningMode(POSITIONING_MODE.AUTO_CAM_ALL_SKIP_PITCH);
-    VRGuiManager.setGuiScale(0.2f);
+    VRGuiManager.setGuiScale(0.4f);
     VRGuiManager.setPositioningElasticity(10f);
 
     observer.setLocalTranslation(Settings.spawnPosition);
@@ -251,9 +251,9 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     movementHandler = new MovementHandler(observer, rootNode);
     movementHandler.setLockHorizontal(true);
-    
+
     inputHandler.registerMappings(movementHandler, "left", "right", "forward", "back");
-    
+
     inputHandler.registerMappings(new RotationHandler(observer), "lookUp", "lookDown", "lookLeft",
         "lookRight", "tiltLeft", "tiltRight");
 
@@ -268,7 +268,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     mgManager = new MinigameManager(hud, clientThread, screenManager, sceneManager);
     eventManager.addListener(mgManager);
-    
+
     timer = new Timer(clientThread, hud);
 
     if (Settings.DEBUG) {
@@ -347,11 +347,11 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     if (stateManager.getCurrentState() instanceof IntroState) {
 
-        if (audioManager.getStatus("intro") == AudioSource.Status.Playing) {
-            if (audioManager.getPlaybackTime("intro") > 35) {
-                startGame();
-            }
+      if (audioManager.getStatus("intro") == AudioSource.Status.Playing) {
+        if (audioManager.getPlaybackTime("intro") > 35) {
+          startGame();
         }
+      }
     }
 
     if (stateManager.getCurrentState() != currentState) {
@@ -361,9 +361,9 @@ public class EscapeVR extends VRApplication implements EventListener {
       log.info(className, "Current state is "
           + stateManager.getCurrentState().getClass().getSimpleName());
     }
-    
+
     if (timer.isActive()) {
-    	timer.update();
+      timer.update();
     }
 
     eventManager.update(tpf);
@@ -379,7 +379,7 @@ public class EscapeVR extends VRApplication implements EventListener {
    */
   private void startMinigame(String gameName) {
 
-      log.info(className, "Trying to start game " + gameName);
+    log.info(className, "Trying to start game " + gameName);
 
     switch (gameName) {
     case "A":
@@ -414,7 +414,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     registerObjects();
     setGameState(PlayingState.getInstance());
     hud.setCenterText("");
-    
+
     timer.startTimer();
   }
 
@@ -475,8 +475,8 @@ public class EscapeVR extends VRApplication implements EventListener {
         registerObjects();
         break;
       case Protocol.COMMAND_BONUSTIME:
-    	timer.bonusTime();
-    	break;
+        timer.bonusTime();
+        break;
       case Protocol.COMMAND_GAMEOVER:
         eventManager.addEvent(new GameLostEvent(this));
         hud.setTimerText("");
@@ -485,6 +485,7 @@ public class EscapeVR extends VRApplication implements EventListener {
         eventManager.addEvent(new GameWonEvent(this));
         hud.setCenterText("");
         hud.setTimerText("");
+        timer.setActive(false);
         break;
       default:
         hud.setCenterText(line, 20);
@@ -520,7 +521,7 @@ public class EscapeVR extends VRApplication implements EventListener {
 
       if (ev instanceof ButtonPressEvent) {
         ButtonPressEvent bpEvent = (ButtonPressEvent) ev;
-        
+
         if (bpEvent.getName().equals(Settings.INTERACTION_BUTTON)) {
           startGame();
         }
@@ -534,11 +535,12 @@ public class EscapeVR extends VRApplication implements EventListener {
     } else if (ev instanceof TimeoutEvent) {
       setGameState(GameLostState.getInstance());
     } else if (ev instanceof GameWonEvent) {
+
       setGameState(GameWonState.getInstance());
       observer.setLocalTranslation(Settings.winningPosition);
       collisionHandler.disableRestriction();
       movementHandler.setLockHorizontal(false);
-      movementHandler.setMovementSpeed(2f);
+      movementHandler.setMovementSpeed(22f);
       // movementHandler.setForceFlying(true);
       movementHandler.addObject("wall-north");
       movementHandler.addObject("wall-south");
