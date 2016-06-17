@@ -12,6 +12,12 @@ import nl.tudelft.kroket.screen.HeadUpDisplay;
 import nl.tudelft.kroket.screen.ScreenManager;
 import nl.tudelft.kroket.state.GameState;
 
+/**
+ * State that indicates that the actual game is being played.
+ * 
+ * @author Team Kroket
+ *
+ */
 public class PlayingState extends GameState {
 
   /** The unique singleton instance of this class. */
@@ -27,21 +33,23 @@ public class PlayingState extends GameState {
 
   private static Random rand = new Random();
 
-  private long timeLimit;
-
-  private boolean timeoutHit = false;
-
+  /**
+   * Get the instance of this state.
+   * 
+   * @return the instance
+   */
   public static GameState getInstance() {
     return instance;
   }
 
+  /**
+   * Begin this state.
+   */
   @Override
   public void begin(AudioManager audioManager, SceneManager sceneManager,
       ScreenManager screenManager) {
 
     log.debug(className, "Setting up " + className);
-
-    timeoutHit = false;
 
     sceneManager.getScene("escape").createScene();
     audioManager.play("letthegamebegin");
@@ -50,9 +58,12 @@ public class PlayingState extends GameState {
     setSpookyTime(Settings.INTERVAL_SPOOKYTIME_LOWER, Settings.INTERVAL_SPOOKYTIME_UPPER);
   }
 
+  /**
+   * Stop this state.
+   */
   @Override
   public void stop(AudioManager audioManager, SceneManager sceneManager, ScreenManager screenManager) {
-    sceneManager.getScene("escape").destroyScene();
+    //sceneManager.getScene("escape").destroyScene();
     audioManager.stopAudio();
   }
 
@@ -75,14 +86,6 @@ public class PlayingState extends GameState {
     spookyTime = System.currentTimeMillis() + seconds * 1000;
   }
 
-  public void setTimeLimit(int seconds) {
-
-    // get time NOW (current system time) and add amount of seconds to it
-    timeLimit = System.currentTimeMillis() + (seconds * 1000);
-
-    log.info(className, String.format("Game ends in %d seconds...", seconds));
-  }
-
   /**
    * Get a random integer value between two values.
    * 
@@ -101,6 +104,10 @@ public class PlayingState extends GameState {
     return randomNum;
   }
 
+  /**
+   * Updates this state. 
+   * Checks if the spooky screen should be showed.
+   */
   @Override
   public void update(AudioManager audioManager, InputHandler inputHandler,
       ScreenManager screenManager, HeadUpDisplay hud, EventManager em, float tpf) {
@@ -113,35 +120,6 @@ public class PlayingState extends GameState {
         setSpookyTime(Settings.INTERVAL_SPOOKYTIME_LOWER, Settings.INTERVAL_SPOOKYTIME_UPPER);
       }
     }
-
-    long timeRemaining = Math.max(timeLimit - System.currentTimeMillis(), 0);
-
-    if (timeRemaining == 0 && !timeoutHit) {
-
-      hud.setTimerText("");
-      System.out.println("Firing timeoutEvent...");
-      timeoutHit = true;
-      // prevent firing event multiple times
-      // em.addEvent(new TimeoutEvent(this));
-      // em.addEvent(new GameLostEvent(this));
-
-    }
-
-    // this if statement isn't really necessary, performance-wise
-    // only update label once per second
-    else if ((timeRemaining % 10) == 0) {
-
-      int secondsRemaining = (int) (timeRemaining / 1000);
-
-      int minutesRemaining = secondsRemaining / 60;
-      secondsRemaining -= (minutesRemaining * 60);
-
-      // log.debug(className, minutesRemaining + " minutes remaining");
-
-      hud.setTimerText(String.format("Time remaining: %02d:%02d", minutesRemaining,
-          secondsRemaining));
-    }
-
   }
 
 }

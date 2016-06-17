@@ -2,13 +2,20 @@ package nl.tudelft.kroket.event.events;
 
 import java.util.EventObject;
 
+/**
+ * Event that indicates that a minigame is complete.
+ * 
+ * @author Team Kroket
+ *
+ */
+@SuppressWarnings("serial")
 public class MinigameCompleteEvent extends EventObject {
 
   /**
+   * Constructor for the MinigameCompleteEvent.
    * 
+   * @param source the source of the event.
    */
-  private static final long serialVersionUID = 4932454541418846945L;
-
   public MinigameCompleteEvent(Object source) {
     super(source);
   }

@@ -3,8 +3,6 @@ package nl.tudelft.kroket.minigame.minigames;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.minigame.Minigame;
 
-import java.util.EventObject;
-
 /**
  * This class contains the logic of the first minigame (A) of the VR player.
  * 
@@ -12,6 +10,7 @@ import java.util.EventObject;
  */
 public class PictureCodeMinigame extends Minigame {
 
+  /** Name of this minigame. */
   private static final String GAME_NAME = "A";
 
   /** Current class, used as tag for logger. */

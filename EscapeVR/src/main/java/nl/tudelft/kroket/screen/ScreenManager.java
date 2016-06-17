@@ -21,10 +21,12 @@ public class ScreenManager {
   private final String className = this.getClass().getSimpleName();
 
   /** Singleton logger instance. */
-
   private Logger log = Logger.getInstance();
 
+  /** List of all screens. */
   HashMap<String, Screen> screens = new HashMap<String, Screen>();
+
+  private Screen current;
 
   AssetManager assetManager;
   Node guiNode;
@@ -45,7 +47,6 @@ public class ScreenManager {
    *          the height of the overlays
    */
   public ScreenManager(AssetManager assetManager, Node guiNode, float width, float height) {
-
     log.info(className, "Initializing...");
 
     this.assetManager = assetManager;
@@ -81,12 +82,11 @@ public class ScreenManager {
       e.printStackTrace();
     } catch (InvocationTargetException e) {
       e.printStackTrace();
-
     } catch (IllegalAccessException e) {
       e.printStackTrace();
     }
 
-    // after initiating the screen, store it so we can reference it later
+    // After initiating the screen, store it so we can reference it later
     screens.put(name, newScreen);
   }
 
@@ -97,7 +97,6 @@ public class ScreenManager {
    *          the name of the screen
    * @return Screen object, could be null if not found
    */
-
   public Screen getScreen(String name) {
 
     if (!screens.containsKey(name)) {
@@ -115,9 +114,16 @@ public class ScreenManager {
    *          the name of the screen
    */
   public void showScreen(String name) {
-
     log.info(className, "Showing screen: " + name);
-    getScreen(name).show();
+
+    Screen screen = getScreen(name);
+
+    if (screen == null) {
+      return;
+    }
+    
+    current = screen;
+    screen.show();
   }
 
   /**
@@ -127,15 +133,39 @@ public class ScreenManager {
    *          the name of the screen
    */
   public void hideScreen(String name) {
-    getScreen(name).hide();
+    log.info(className, "Hiding screen: " + name);
+
+    Screen screen = getScreen(name);
+    current = null;
+    screen.hide();
+  }
+
+  /**
+   * Hide all screens.
+   */
+  public void hideAll() {
+    for (Screen screen : screens.values()) {
+      screen.hide();
+    }
   }
 
   /**
    * Update the screen.
    */
   public void update(float tpf) {
-    for (Screen screen : screens.values()) {
-      screen.update();
+    if (current == null) {
+      return;
     }
+    current.update();
   }
+
+  /**
+   * Getter for the current screen.
+   * 
+   * @return the current screen
+   */
+  public Screen getCurrent() {
+    return current;
+  }
+  
 }

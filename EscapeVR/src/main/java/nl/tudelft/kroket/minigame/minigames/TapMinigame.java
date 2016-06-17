@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class TapMinigame extends Minigame {
 
+  /** The name of this minigame. */
   private static final String GAME_NAME = "B";
 
   /** Current class, used as tag for logger. */
@@ -59,48 +60,58 @@ public class TapMinigame extends Minigame {
 
     public sequenceState getNext() {
       switch (this) {
-      case sequenceOne:
-        return sequenceTwo;
-      case sequenceTwo:
-        return sequenceThree;
-      case sequenceThree:
-        return sequenceFour;
-      case sequenceFour:
-        return completed;
-      default:
-        return this;
+        case sequenceOne:
+          return sequenceTwo;
+        case sequenceTwo:
+          return sequenceThree;
+        case sequenceThree:
+          return sequenceFour;
+        case sequenceFour:
+          return completed;
+        default:
+          return this;
       }
 
     }
 
+    /**
+     * Returns the correct sequence according to the current minigamestate.
+     * 
+     * @return the correct sequence
+     */
     public List<String> returnSequence() {
       switch (this) {
-      case sequenceOne:
-        return firstSequence;
-      case sequenceTwo:
-        return secondSequence;
-      case sequenceThree:
-        return thirdSequence;
-      case sequenceFour:
-        return fourthSequence;
-      default:
-        return sequenceList;
+        case sequenceOne:
+          return firstSequence;
+        case sequenceTwo:
+          return secondSequence;
+        case sequenceThree:
+          return thirdSequence;
+        case sequenceFour:
+          return fourthSequence;
+        default:
+          return sequenceList;
       }
     }
 
+    /**
+     * Matches the enums to actual strings.
+     * 
+     * @return the string that belongs to the current enum
+     */
     public String returnCompleteMessage() {
       switch (this) {
-      case sequenceOne:
-        return "First sequence complete!";
-      case sequenceTwo:
-        return "Well done! Two more to go!";
-      case sequenceThree:
-        return "One more to go!";
-      case sequenceFour:
-        return "You're done!";
-      default:
-        return "Good job!";
-      }
+        case sequenceOne:
+          return "First sequence complete!";
+        case sequenceTwo:
+          return "Well done! Two more to go!";
+        case sequenceThree:
+          return "One more to go!";
+        case sequenceFour:
+          return "You're done!";
+        default:
+          return "Good job!";
+        }
     }
 
   }
@@ -114,7 +125,7 @@ public class TapMinigame extends Minigame {
 
     screenManager.getScreen("controller").show();
     hud.setCenterText(
-        "Hack the computer by enter the colorsequences\nyou will receive from your fellow CIA agents.\nUse the colored buttons on your controller!",
+        "Hack the computer by entering the colorsequences\nyou will receive from your fellow CIA agents.\nUse the colored buttons on your controller!",
         20);
     seqState = seqState.sequenceOne;
     buttonList.clear();
@@ -139,8 +150,6 @@ public class TapMinigame extends Minigame {
    */
   @Override
   public void update(float tpf) {
-
-    // hud.setCenterText("You are currently in: " + seqState);
 	 
     if (buttonList.equals(seqState.returnSequence())) {
       hud.setCenterText(seqState.returnCompleteMessage(), 2);
@@ -216,20 +225,50 @@ public class TapMinigame extends Minigame {
     return GAME_NAME;
   }
 
+  /**
+   * Getter for the first sequence.
+   * 
+   * @return the first sequence
+   */
   public static List<String> getFirstSequence() {
     return firstSequence;
   }
 
+  /**
+   * Getter for the second sequence.
+   * 
+   * @return the second sequence
+   */
   public static List<String> getSecondSequence() {
     return secondSequence;
   }
 
+  /**
+   * Getter for the third sequence.
+   * 
+   * @return the third sequence
+   */
   public static List<String> getThirdSequence() {
     return thirdSequence;
   }
 
+  /**
+   * Getter for the fourth sequence.
+   * 
+   * @return the fourth sequence
+   */
   public static List<String> getFourthSequence() {
     return fourthSequence;
   }
+
+  /**
+   * Gets the buttonlist.
+   * @return the button list
+   */
+  public static List<String> getButtonList() {
+    return buttonList;
+  }
+  
+  
 
 }

@@ -84,15 +84,14 @@ public class StateManager {
    */
   public void setGameState(GameState state) {
 
-    // do not switch state if already in given state
+    // Do not switch state if already in given state
     if (currentState == state) {
-      System.err.println("currentState == state");
+      log.error(className, "currentState == state");
       return;
     }
 
-    // switch the state
+    // Switch the state
     switchState(currentState, state);
-
   }
 
   /**
@@ -102,7 +101,6 @@ public class StateManager {
    *          the state to be stopped
    */
   private void stopState(GameState state) {
-
     log.debug(className, String.format("Stopping state %s", state.getClass().getSimpleName()));
 
     state.stop(audioManager, sceneManager, screenManager);
@@ -115,7 +113,6 @@ public class StateManager {
    *          the state to be started
    */
   private void startState(GameState state) {
-
     log.debug(className, String.format("Starting state %s", state.getClass().getSimpleName()));
 
     state.begin(audioManager, sceneManager, screenManager);
@@ -131,7 +128,7 @@ public class StateManager {
    */
   private void switchState(GameState oldState, GameState newState) {
 
-    // do not switch state if already in given state
+    // Do not switch state if already in given state
     if (oldState == newState) {
       return;
     }
@@ -139,13 +136,13 @@ public class StateManager {
     log.debug(className, String.format("Switching state from %s to %s", oldState.getClass()
         .getSimpleName(), newState.getClass().getSimpleName()));
 
-    // first, stop the previous/old state
+    // First, stop the previous/old state
     stopState(oldState);
 
-    // start the new state
+    // Start the new state
     startState(newState);
 
-    // set the current state to the new state
+    // Set the current state to the new state
     currentState = newState;
   }
 
@@ -157,5 +154,7 @@ public class StateManager {
   public GameState getCurrentState() {
     return currentState;
   }
+  
+  
 
 }

@@ -12,6 +12,12 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
+/**
+ * Handles movement of the player.
+ * 
+ * @author Team Kroket
+ *
+ */
 public class MovementHandler extends InteractionHandler implements ActionListener {
 
   /** Current class, used as tag for logger. */
@@ -20,10 +26,52 @@ public class MovementHandler extends InteractionHandler implements ActionListene
   /** Singleton logger instance. */
   private Logger log = Logger.getInstance();
 
-  private final float movementSpeed = 8f;
+  private float movementSpeed = 8f;
+
+  private boolean forceFlying = false;
 
   private Node rootNode;
 
+  private boolean restrictObserver = true;
+
+  float collisionThreshold = 3.2f;
+  float collisionOffset = 8.0f;
+
+  // Using a string here so that we only need to use the name
+  // so that this works even when objects aren't present in the hierarchy
+  private List<String> objectList;
+
+  private boolean moveForward, moveBackwards;
+  private boolean moveLeft, moveRight;
+
+  private boolean lockHorizontal = true;
+  
+  /**
+   * Getter for the forceFlying boolean.
+   * 
+   * @return true iff flying is enabled.
+   */
+  public boolean isForceFlying() {
+    return forceFlying;
+  }
+
+  /**
+   * Setter for the forceFlying boolean.
+   * 
+   * @param forceFlying true iff forceFlying should be set to true.
+   */
+  public void setForceFlying(boolean forceFlying) {
+    this.forceFlying = forceFlying;
+  }
+
+  /**
+   * Constuctor for movementHandler.
+   * 
+   * @param observer
+   *          the observer spatial
+   * @param rootNode
+   *          the rootnode
+   */
   public MovementHandler(Spatial observer, Node rootNode) {
     super(observer);
 
@@ -32,113 +80,182 @@ public class MovementHandler extends InteractionHandler implements ActionListene
 
   }
 
-  private boolean restrictObserver = true;
+  /**
+   * Setter for the movement speed.
+   * 
+   * @param speed the speed to be set.
+   */
+  public void setMovementSpeed(float speed) {
+    this.movementSpeed = speed;
+  }
 
-  float collisionThreshold = 3.2f;
-  float collisionOffset = 8.0f;
+  /**
+   * Getter for the movement speed.
+   * 
+   * @return the movement speed
+   */
+  public float getMovementSpeed() {
+    return this.movementSpeed;
+  }
 
-  // using a string here so that we only need to use the name
-  // so that this works even when objects aren't present in the hierarchy
-  private List<String> objectList;
+  /**
+   * Getter for the lockHorizontal boolean.
+   * 
+   * @return true iff the horizontal axis are locked.
+   */
+  public boolean isLockHorizontal() {
+    return lockHorizontal;
+  }
 
-  private boolean moveForward, moveBackwards;
+  /**
+   * Setter for locking the horizontal axis.
+   * 
+   * @param lockHorizontal the boolean to be set.
+   */
+  public void setLockHorizontal(boolean lockHorizontal) {
+    this.lockHorizontal = lockHorizontal;
+  }
 
-  // private boolean flying = true;
-
+  /**
+   * Handles movement to front, back, left and right.
+   */
   @Override
   public void onAction(String name, boolean keyPressed, float tpf) {
 
     if (name.equals("forward")) {
-      if (keyPressed) {
-        moveForward = true;
-      } else {
-        moveForward = false;
-      }
+      moveForward = keyPressed;
     } else if (name.equals("back")) {
-      if (keyPressed) {
-        moveBackwards = true;
-      } else {
-        moveBackwards = false;
-      }
+      moveBackwards = keyPressed;
     }
+
+    if (name.equals("left")) {
+      moveLeft = keyPressed;
+    } else if (name.equals("right")) {
+      moveRight = keyPressed;
+    }
+
   }
 
   /**
-   * Add an object we want to use
+   * Add an object we want to use.
    * 
    * @param objectName
+   *          object name
    */
   public void addObject(String objectName) {
 
-    if (objectList.contains(objectName))
+    if (objectList.contains(objectName)) {
       return;
-
+    }
     log.debug(className, "Adding collision object: " + objectName);
     objectList.add(objectName);
   }
 
-  public void removeObject(Spatial objectName) {
-    if (!objectList.contains(objectName))
+  /**
+   * Removes an object.
+   * 
+   * @param objectName
+   *          object name
+   */
+  public void removeObject(String objectName) {
+    if (!objectList.contains(objectName)) {
       return;
-
+    }
     log.debug(className, "Removing collision object: " + objectName);
     objectList.remove(objectName);
   }
 
+  /**
+   * Checks if movement is allowed.
+   * 
+   * @param newPos
+   *          a vector3f
+   * @return a boolean
+   */
   private boolean allowMovement(Vector3f newPos) {
 
-    if (!restrictObserver)
+    if (!restrictObserver) {
       return true;
-
-    // boolean intersects = false;
+    }
 
     for (String objectName : objectList) {
 
       Spatial object = rootNode.getChild(objectName);
 
-      if (object == null)
+      if (object == null) {
         continue;
+      }
 
-      if (intersectsWith(object, newPos))
+      if (intersectsWith(object, newPos)) {
         return false;
+      }
     }
     return true;
   }
 
-  public void update(float tpf) {
+  /**
+   * Makes the move.
+   * 
+   * @param tpf
+   *          a float
+   * @param rotationColumn
+   *          the rotation column
+   */
+  public void move(float tpf, int rotationColumn) {
 
-    // float deltaCorrected = collisionOffset * tpf;
-    if (moveForward) {
+    Vector3f newPosition = VRApplication.getFinalObserverRotation()
+        .getRotationColumn(rotationColumn).mult(tpf * movementSpeed);
 
-      Vector3f newPosition = VRApplication.getFinalObserverRotation().getRotationColumn(2)
-          .mult(tpf * movementSpeed);
+    Vector3f oldPosition = newPosition.subtract(
+        VRApplication.getFinalObserverRotation().getRotationColumn(rotationColumn)).mult(
+        tpf * movementSpeed);
 
-      Vector3f oldPosition = newPosition.subtract(
-          VRApplication.getFinalObserverRotation().getRotationColumn(2)).mult(tpf * movementSpeed);
+    if (isLockHorizontal()) {
 
-      if (allowMovement(newPosition.mult(movementSpeed))) {
-        observer.move(newPosition);
-      } else if (allowMovement(oldPosition))
-        observer.move(oldPosition);
-    }
-    if (moveBackwards) {
-      Vector3f newPosition = VRApplication.getFinalObserverRotation().getRotationColumn(2)
-          .mult(-tpf * movementSpeed);
-
-      Vector3f oldPosition = newPosition.subtract(
-          VRApplication.getFinalObserverRotation().getRotationColumn(2)).mult(-tpf * movementSpeed);
-
-      if (allowMovement(newPosition.mult(movementSpeed))) {
-        observer.move(newPosition);
-      } else if (allowMovement(oldPosition))
-        observer.move(oldPosition);
+      newPosition.setY(0);
+      oldPosition.setY(0);
     }
 
+    if (allowMovement(newPosition.mult(movementSpeed))) {
+      observer.move(newPosition);
+    } else if (allowMovement(oldPosition)) {
+      observer.move(oldPosition);
+    }
   }
 
-  private boolean intersectsWith(Spatial object, Vector3f newPos) {
+  /**
+   * Update method.
+   */
+  public void update(float tpf) {
 
-    // Spatial observerClone = observer.clone(false);
+    if (moveForward || isForceFlying()) {
+      move(tpf, 2);
+    }
+
+    if (moveBackwards && !isForceFlying()) {
+      move(-tpf, 2);
+    }
+
+    if (moveLeft) {
+      move(tpf, 0);
+
+    }
+
+    if (moveRight) {
+      move(-tpf, 0);
+    }
+  }
+
+  /**
+   * Checks if player intersects with an object.
+   * 
+   * @param object
+   *          the object
+   * @param newPos
+   *          the position
+   * @return true if there is an intersection
+   */
+  private boolean intersectsWith(Spatial object, Vector3f newPos) {
 
     boolean intersects = (object.getWorldBound().intersects(observer.clone(false).move(newPos)
         .getWorldBound()));
@@ -150,5 +267,43 @@ public class MovementHandler extends InteractionHandler implements ActionListene
     return intersects;
 
   }
+
+  public boolean isMoveForward() {
+    return moveForward;
+  }
+
+  public void setMoveForward(boolean moveForward) {
+    this.moveForward = moveForward;
+  }
+
+  public boolean isMoveBackwards() {
+    return moveBackwards;
+  }
+
+  public void setMoveBackwards(boolean moveBackwards) {
+    this.moveBackwards = moveBackwards;
+  }
+
+  public boolean isMoveLeft() {
+    return moveLeft;
+  }
+
+  public void setMoveLeft(boolean moveLeft) {
+    this.moveLeft = moveLeft;
+  }
+
+  public boolean isMoveRight() {
+    return moveRight;
+  }
+
+  public void setMoveRight(boolean moveRight) {
+    this.moveRight = moveRight;
+  }
+
+  public List<String> getObjectList() {
+    return objectList;
+  }
+  
+  
 
 }

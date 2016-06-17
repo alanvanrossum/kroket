@@ -9,6 +9,12 @@ import nl.tudelft.kroket.scene.SceneManager;
 import nl.tudelft.kroket.screen.HeadUpDisplay;
 import nl.tudelft.kroket.screen.ScreenManager;
 
+/**
+ * Manages the current minigame.
+ * 
+ * @author Team Kroket
+ *
+ */
 public class MinigameManager implements EventListener {
 
   /** Current class, used as tag for logger. */
@@ -25,6 +31,14 @@ public class MinigameManager implements EventListener {
   public ScreenManager screenManager;
   public SceneManager sceneManager;
 
+  /**
+   * Constructor for the MinigameManager
+   * 
+   * @param hud the head up display of the game
+   * @param clientThread the client thread to send messages to
+   * @param screenManager the screen manager
+   * @param sceneManager the scene manager
+   */
   public MinigameManager(HeadUpDisplay hud, ClientThread clientThread, ScreenManager screenManager,
       SceneManager sceneManager) {
     log.info(className, "Initializing...");
@@ -41,12 +55,12 @@ public class MinigameManager implements EventListener {
   @Override
   public void handleEvent(EventObject event) {
 
-    // if no minigame is active, don't do anything
+    // If no minigame is active, don't do anything
     if (currentGame == null) {
       return;
     }
 
-    // forward the event to the current minigame
+    // Forward the event to the current minigame
     currentGame.handleEvent(event);
   }
 
@@ -72,7 +86,7 @@ public class MinigameManager implements EventListener {
     currentGame.setSceneManager(sceneManager);
     currentGame.setMinigameManager(this);
 
-    // start the minigame
+    // Start the minigame
     currentGame.start();
   }
 
@@ -84,7 +98,7 @@ public class MinigameManager implements EventListener {
       return;
     }
 
-    // stop the current minigame
+    // Stop the current minigame
     currentGame.stop();
 
     currentGame = null;
@@ -98,12 +112,12 @@ public class MinigameManager implements EventListener {
    */
   public void update(float tpf) {
 
-    // if currentGame is not set don't do anything
+    // If currentGame is not set don't do anything
     if (currentGame == null) {
       return;
     }
 
-    // forward update event to current minigame
+    // Forward update event to current minigame
     currentGame.update(tpf);
   }
 
@@ -116,18 +130,27 @@ public class MinigameManager implements EventListener {
     return currentGame;
   }
 
+  /**
+   * Check whether the game is active.
+   * 
+   * @return true iff the game is active
+   */
   public boolean gameActive() {
     return getCurrent() != null;
   }
 
+  /**
+   * Check whether a minigame is active.
+   * 
+   * @param game the minigame to be checked
+   * @return true iff the minigame is active
+   */
   public boolean isActive(String game) {
     if (!gameActive()) {
       return false;
-
     }
 
     return (getCurrent().getName().equals(game));
-
   }
 
 }

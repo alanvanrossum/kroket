@@ -12,8 +12,8 @@ import com.jme3.scene.Node;
  */
 public class LobbyScreen extends Screen {
 
+  /** Name of this screen. */
   private static final String name = "lobby";
-  
 
   /**
    * Constructor for LobbyScreen overlay object.
@@ -43,14 +43,16 @@ public class LobbyScreen extends Screen {
   /**
    * Hide the overlay.
    */
-
   public void hide() {
     guiNode.detachChild(overlay);
   }
 
+  /**
+   * Update method for this screen.
+   */
   @Override
   public void update() {
     // TODO Auto-generated method stub
-    
   }
+  
 }

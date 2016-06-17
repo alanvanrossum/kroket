@@ -32,7 +32,6 @@ public class AudioManager {
   HashMap<String, AudioNode> audioNodes = new HashMap<String, AudioNode>();
 
   /** Handle to the AssetManager object. */
-
   private AssetManager assetManager;
 
   private Node rootNode;
@@ -196,10 +195,14 @@ public class AudioManager {
     return audioNodes;
   }
 
+  /**
+   * Play an audio instance.
+   * 
+   * @param name the name of the audio instance.
+   */
   public void playInstance(String name) {
     AudioNode node = getNode(name);
     node.playInstance();
-
   }
 
 }

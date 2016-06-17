@@ -20,6 +20,7 @@ public class Logger {
   /** The current LogLevel. Default is ALL. */
   private LogLevel level = LogLevel.ALL;
 
+  /** The different log levels available. */
   public enum LogLevel {
     NONE, INFO, ERROR, DEBUG, ALL
   }
@@ -27,18 +28,28 @@ public class Logger {
   /** The message format. */
   private String msgFormat = "%s %s: %s";
 
-  public void setLevel(LogLevel level) {
-    this.level = level;
-  }
-
-  public LogLevel getLevel() {
-    return level;
-  }
-
   /** Singleton instance. */
   private static Logger instance = new Logger();
 
   private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+
+  /**
+   * Sets the log level.
+   * 
+   * @param level the log level to be set.
+   */
+  public void setLevel(LogLevel level) {
+    this.level = level;
+  }
+
+  /**
+   * Get the log level.
+   * 
+   * @return the current log level.
+   */
+  public LogLevel getLevel() {
+    return level;
+  }
 
   /**
    * Singleton instance.
@@ -58,7 +69,6 @@ public class Logger {
    *          the message
    */
   public void info(String tag, String message) {
-
     print(LogLevel.INFO, tag, message);
   }
 
@@ -71,7 +81,6 @@ public class Logger {
    *          the message
    */
   public void debug(String tag, String message) {
-
     print(LogLevel.DEBUG, tag, message);
   }
 
@@ -84,7 +93,6 @@ public class Logger {
    *          the message
    */
   public void error(String tag, String message) {
-
     print(LogLevel.ERROR, tag, message);
   }
 
@@ -121,7 +129,7 @@ public class Logger {
       return;
     }
 
-    // only print messages if our settings allow us to
+    // Only print messages if our settings allow us to
     if (level.ordinal() <= getLevel().ordinal()) {
       String output = formatOutput(level, tag, message);
       if (level == LogLevel.ERROR) {

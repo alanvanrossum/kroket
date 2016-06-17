@@ -8,12 +8,10 @@ import java.util.EventObject;
  * @author Team Kroket
  *
  */
+@SuppressWarnings("serial")
 public class ButtonPressEvent extends EventObject {
 
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 1899976237424414092L;
+  /** Name of the button. */
   String name;
 
   /**
