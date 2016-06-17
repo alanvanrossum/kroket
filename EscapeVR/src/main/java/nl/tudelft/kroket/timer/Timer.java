@@ -29,8 +29,10 @@ public class Timer {
   /**
    * Constructor for the timer object.
    * 
-   * @param clientThread the client thread for sending messages to the server.
-   * @param hud the head up display.
+   * @param clientThread
+   *          the client thread for sending messages to the server.
+   * @param hud
+   *          the head up display.
    */
   public Timer(ClientThread clientThread, HeadUpDisplay hud) {
     active = false;
@@ -106,6 +108,14 @@ public class Timer {
   public long getTimeLimit() {
     return timeLimit;
   }
+ 
+  /**
+   * Set timer activity.
+   * 
+   * @param active set the timer's activity
+   */
+  public void setActive(boolean active) {
+    this.active = active;
+  }
 
-  
 }
