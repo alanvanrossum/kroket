@@ -55,7 +55,7 @@ public class TapMinigameTest {
     Mockito.doNothing().when(screen).show();
     Mockito.doNothing().when(hud).setCenterText(Mockito.anyString(), Mockito.anyInt());
     miniGame.start();
-    Mockito.verify(hud).setCenterText( "Hack the computer by enter the colorsequences\n"
+    Mockito.verify(hud).setCenterText( "Hack the computer by entering the colorsequences\n"
         + "you will receive from your fellow CIA agents.\n"
         + "Use the colored buttons on your controller!", 20);
   }
