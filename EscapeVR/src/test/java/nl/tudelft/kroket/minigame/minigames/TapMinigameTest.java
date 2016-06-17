@@ -11,11 +11,13 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import nl.tudelft.kroket.event.events.ButtonPressEvent;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.minigame.Minigame;
 import nl.tudelft.kroket.net.ClientThread;
 import nl.tudelft.kroket.scene.SceneManager;
 import nl.tudelft.kroket.screen.HeadUpDisplay;
+import nl.tudelft.kroket.screen.Screen;
 import nl.tudelft.kroket.screen.ScreenManager;
 
 public class TapMinigameTest {
@@ -46,22 +48,37 @@ public class TapMinigameTest {
   }
 
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void testStart() {
-    Logger logSpy = Mockito.spy(Logger.getInstance());
+    Screen screen = Mockito.mock(Screen.class);
+    Mockito.when(screenManager.getScreen(Mockito.anyString())).thenReturn(screen);
+    Mockito.doNothing().when(screen).show();
+    Mockito.doNothing().when(hud).setCenterText(Mockito.anyString(), Mockito.anyInt());
     miniGame.start();
-    Mockito.verify(logSpy).info("TapMinigame", "Minigame B started.");
+    Mockito.verify(hud).setCenterText( "Hack the computer by enter the colorsequences\n"
+        + "you will receive from your fellow CIA agents.\n"
+        + "Use the colored buttons on your controller!", 20);
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test
   public void testStop() {
+    Screen screen = Mockito.mock(Screen.class);
+    Mockito.when(screenManager.getScreen(Mockito.anyString())).thenReturn(screen);
+    Mockito.doNothing().when(screen).hide();
+    Mockito.doNothing().when(sceneManager).extendEscapeScene(Mockito.anyString());
     Mockito.doNothing().when(hud).setCenterText(
-        "Great job!\nWait... I think I saw something appear on that wall!", 10);
-    ((TapMinigame)miniGame).start();
+        Mockito.anyString(), Mockito.anyInt());
+    miniGame.stop();
     Mockito.verify(hud).setCenterText(
         "Great job!\nWait... I think I saw something appear on that wall!", 10);
   }
 
+  @Test
+  public void testHandleEvent() {
+    ButtonPressEvent bpe = new ButtonPressEvent(Mockito.mock(Object.class), "test");
+    miniGame.handleEvent(bpe);
+    assertTrue(TapMinigame.getButtonList().contains("test"));
+  }
 
   @Test
   public void testGetName() {
