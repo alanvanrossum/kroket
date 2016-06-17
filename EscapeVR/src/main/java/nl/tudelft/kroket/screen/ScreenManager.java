@@ -21,9 +21,9 @@ public class ScreenManager {
   private final String className = this.getClass().getSimpleName();
 
   /** Singleton logger instance. */
-
   private Logger log = Logger.getInstance();
 
+  /** List of all screens. */
   HashMap<String, Screen> screens = new HashMap<String, Screen>();
 
   private Screen current;
@@ -47,7 +47,6 @@ public class ScreenManager {
    *          the height of the overlays
    */
   public ScreenManager(AssetManager assetManager, Node guiNode, float width, float height) {
-
     log.info(className, "Initializing...");
 
     this.assetManager = assetManager;
@@ -83,12 +82,11 @@ public class ScreenManager {
       e.printStackTrace();
     } catch (InvocationTargetException e) {
       e.printStackTrace();
-
     } catch (IllegalAccessException e) {
       e.printStackTrace();
     }
 
-    // after initiating the screen, store it so we can reference it later
+    // After initiating the screen, store it so we can reference it later
     screens.put(name, newScreen);
   }
 
@@ -99,7 +97,6 @@ public class ScreenManager {
    *          the name of the screen
    * @return Screen object, could be null if not found
    */
-
   public Screen getScreen(String name) {
 
     if (!screens.containsKey(name)) {
@@ -117,7 +114,6 @@ public class ScreenManager {
    *          the name of the screen
    */
   public void showScreen(String name) {
-
     log.info(className, "Showing screen: " + name);
 
     Screen screen = getScreen(name);
@@ -128,7 +124,6 @@ public class ScreenManager {
     
     current = screen;
     screen.show();
-
   }
 
   /**
@@ -138,7 +133,6 @@ public class ScreenManager {
    *          the name of the screen
    */
   public void hideScreen(String name) {
-
     log.info(className, "Hiding screen: " + name);
 
     Screen screen = getScreen(name);
@@ -146,6 +140,9 @@ public class ScreenManager {
     screen.hide();
   }
 
+  /**
+   * Hide all screens.
+   */
   public void hideAll() {
     for (Screen screen : screens.values()) {
       screen.hide();
@@ -162,8 +159,13 @@ public class ScreenManager {
     current.update();
   }
 
+  /**
+   * Getter for the current screen.
+   * 
+   * @return the current screen
+   */
   public Screen getCurrent() {
     return current;
-
   }
+  
 }

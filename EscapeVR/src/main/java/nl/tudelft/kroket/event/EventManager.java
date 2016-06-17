@@ -17,6 +17,12 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
+/**
+ * Manages events.
+ * 
+ * @author Team Kroket
+ *
+ */
 public class EventManager extends InteractionHandler implements ActionListener {
 
   /** Current class, used as tag for logger. */
@@ -25,12 +31,13 @@ public class EventManager extends InteractionHandler implements ActionListener {
   /** Singleton logger instance. */
   private Logger log = Logger.getInstance();
 
+  /** List of events. */
   private CopyOnWriteArrayList<EventObject> eventList = new CopyOnWriteArrayList<EventObject>();
 
   /** List of all registered listeners. */
   private List<EventListener> listenerList = new ArrayList<EventListener>();
   
-
+  /** Time in milliseconds new input is ignored after an event. */
   private final int INPUT_GRACE_PERIOD = 200;
 
   long prevInput = 0;
@@ -70,9 +77,8 @@ public class EventManager extends InteractionHandler implements ActionListener {
    */
   private synchronized void fireEvents() {
 
-    // copy list to prevent concurrent modifications
+    // Copy list to prevent concurrent modifications
     // this could be dealt with more elegantly
-
     for (EventObject event : eventList) {
       for (EventListener listener : listenerList) {
 
@@ -94,12 +100,6 @@ public class EventManager extends InteractionHandler implements ActionListener {
    */
   public synchronized void addEvent(EventObject event) {
     eventList.add(event);
-
-    // System.out.println("Events in list:");
-    //
-    // for (EventObject entry : eventList) {
-    // System.out.println(entry);
-    // }
   }
 
   /**
@@ -126,47 +126,45 @@ public class EventManager extends InteractionHandler implements ActionListener {
    * General update method.
    */
   public void update(float tpf) {
-
-    // fire all events we registered
+	
+    // Fire all events we registered
     fireEvents();
   }
 
   @Override
   public void onAction(String name, boolean isPressed, float tpf) {
 
-    // if the button wasn't pressed, ignore it
+    // If the button wasn't pressed, ignore it
     if (!isPressed) {
       return;
     }
 
-    // System.out.println("onAction " + name);
-
-    // get current system time
+    // Get current system time
     long now = System.currentTimeMillis();
 
-    // compute difference between the current button press
+    // Compute difference between the current button press
     // and previous button press
     long delta = now - prevInput;
 
-    // if the time between button presses is too short
+    // If the time between button presses is too short
     // ignore the button press
     if (delta < INPUT_GRACE_PERIOD) {
       return;
     }
 
-    // store the current action's time so we can compare it later
+    // Store the current action's time so we can compare it later
     prevInput = now;
 
-    // register a new button press event
+    // Register a new button press event
     addEvent(new ButtonPressEvent(this, name));
 
-    // loop over all object triggers
+    // Loop over all object triggers
     for (Entry<String, Float> entry : triggers.entrySet()) {
 
-      // get the object from the rootnode
+      // Get the object from the rootnode
       Spatial object = rootNode.getChild(entry.getKey());
 
-      // check whether the object exists
+      // Check whether the object exists
       if (object == null) {
         log.error(
             className,
@@ -174,7 +172,7 @@ public class EventManager extends InteractionHandler implements ActionListener {
                 entry.getKey()));
 
       } else {
-
+    	  
         if (InteractionEvent.checkConditions(object, entry.getValue(), name)
             && !ColorSequenceMinigame.isActive()) {
           InteractionEvent interactionEvent = new InteractionEvent(this, entry.getKey());

@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class ColorSequenceMinigame extends Minigame {
 
+  /** Name of the class. */
   private static final String GAME_NAME = "C";
 
   /** Current class, used as tag for logger. */
@@ -36,13 +37,26 @@ public class ColorSequenceMinigame extends Minigame {
   /** Boolean which shows if this game is active. */
   private static boolean running = false;
 
+  /**
+   * Constructor for the ColorSequenceMinigame.
+   */
   private ColorSequenceMinigame() {
   }
 
+  /**
+   * Get the instance of the minigame.
+   * 
+   * @return the instance
+   */
   public static Minigame getInstance() {
     return instance;
   }
 
+  /**
+   * Check whether this minigame is active.
+   * 
+   * @return true iff the minigame is active.
+   */
   public static boolean isActive() {
     return running;
   }
@@ -57,10 +71,17 @@ public class ColorSequenceMinigame extends Minigame {
     running = true;
 
     screenManager.getScreen("controller").show();
-    // hud.setCenterText("Minigame C started!", 10);
+
     hud.setCenterText(
         "Enter the colorsequence you will\nreceive from your fellow CIA agents\nby using the colored buttons on your controller!",
         20);
+
+    if ((System.currentTimeMillis() % 10000) == 0) {
+      log.debug(className, "Required sequence:");
+      printList(sequenceList);
+      log.debug(className, "Entered sequence:");
+      printList(buttonList);
+    }
 
   }
 
@@ -82,7 +103,7 @@ public class ColorSequenceMinigame extends Minigame {
    * confirms this, it will send a message back and this will end the game.
    */
   public void finish() {
-    clientThread.sendMessage("DONE[C]");
+    clientThread.sendMessage(String.format("%s[%s]", Protocol.COMMAND_DONE, GAME_NAME));
   }
 
   /**
@@ -90,13 +111,6 @@ public class ColorSequenceMinigame extends Minigame {
    */
   @Override
   public void update(float tpf) {
-
-    // if ((System.currentTimeMillis() % 10000) == 0) {
-    // System.out.println("Required sequence:");
-    // printList(sequenceList);
-    // System.out.println("Entered sequence:");
-    // printList(buttonList);
-    // }
 
     // Check if the correct sequence is entered
     Boolean correct = checkSequence();
@@ -117,7 +131,6 @@ public class ColorSequenceMinigame extends Minigame {
       String buttonName = ((ButtonPressEvent) event).getName();
       buttonList.add(buttonName);
 
-      // TODO Display the color pressed on the screen
       hud.setCenterText("You pressed: " + buttonName, 2);
 
       // Keep the lists the same size, by removing the first element
@@ -134,7 +147,6 @@ public class ColorSequenceMinigame extends Minigame {
    * @return true iff it is correct.
    */
   public boolean checkSequence() {
-    // check hier of alle entries in buttonList hetzelfde zijn als sequenceList
     return sequenceList.equals(buttonList);
   }
 
@@ -165,7 +177,7 @@ public class ColorSequenceMinigame extends Minigame {
    */
   private void printList(List<String> list) {
     for (String button : list) {
-      System.out.println(button);
+      log.debug(className, button);
     }
   }
 
@@ -196,6 +208,9 @@ public class ColorSequenceMinigame extends Minigame {
     }
   }
 
+  /**
+   * Getter for the name of the game.
+   */
   public String getName() {
     return GAME_NAME;
   }

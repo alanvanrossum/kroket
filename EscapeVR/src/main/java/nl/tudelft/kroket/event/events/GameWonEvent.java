@@ -2,16 +2,22 @@ package nl.tudelft.kroket.event.events;
 
 import java.util.EventObject;
 
+/**
+ * Event to indicate tha the game is won.
+ * 
+ * @author Team Kroket
+ *
+ */
+@SuppressWarnings("serial")
 public class GameWonEvent extends EventObject {
 
   /**
+   * Constructor for the GameWonEvent.
    * 
+   * @param source the source of the event
    */
-  private static final long serialVersionUID = 6054027296811348288L;
-
   public GameWonEvent(Object source) {
     super(source);
-    // TODO Auto-generated constructor stub
   }
   
 

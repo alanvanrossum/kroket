@@ -19,6 +19,7 @@ public class Settings {
   /** Debug flag. */
   public static final boolean DEBUG = false;
 
+  /** Flag for colliding with the walls. */
   public static final boolean WALLCOLLISION = true;
 
   /** Portnumber of the gamehost. */
@@ -27,6 +28,7 @@ public class Settings {
   /** Default spawn position for the player/observer. */
   public final static Vector3f spawnPosition = new Vector3f(0, 2, 0);
   
+  /** Default spawn position for the the player/observer after winning the game. */
   public final static Vector3f winningPosition = new Vector3f(0, 2, 15f);
 
   /** Enable the spookyscreen overlay. */
@@ -42,6 +44,7 @@ public class Settings {
   public static final int INTERVAL_SPOOKYTIME_LOWER = 20;
   public static final int INTERVAL_SPOOKYTIME_UPPER = 120;
 
+  /** The button that causes interaction events. */
   public static final String INTERACTION_BUTTON = "Button A";
 
 }

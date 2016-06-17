@@ -4,8 +4,16 @@ import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.minigame.Minigame;
 
 
+/**
+ * This class contains the logic of waiting minigame Gyroscope of the VR player.
+ * 
+ * @author Team Kroket
+ *
+ */
+
 public class GyroscopeMinigame extends Minigame {
   
+  /** The name of the game. */
   private static final String GAME_NAME = "WAITING";
 
   /** Current class, used as tag for logger. */
@@ -43,7 +51,9 @@ public class GyroscopeMinigame extends Minigame {
     hud.setCenterText("Minigame WAITING complete!", 10);
   }
 
-  
+  /**
+   * Getter for the name of the game.
+   */
   public String getName() {
     return GAME_NAME;
   }

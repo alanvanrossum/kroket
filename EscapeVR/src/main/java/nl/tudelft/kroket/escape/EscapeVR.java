@@ -104,7 +104,6 @@ public class EscapeVR extends VRApplication implements EventListener {
   private List<String> rigidObjects = new ArrayList<String>(Arrays.asList("safe-objnode",
       "knight1-geom-0", "knight2-geom-0", "desklaptop2-objnode", "safeopen-objnode"));
 
-  // private CollisionHandler collisionHandler;
   private MovementHandler movementHandler;
 
   private GameState currentState;
@@ -126,7 +125,7 @@ public class EscapeVR extends VRApplication implements EventListener {
    */
   private void initAudioManager() {
     audioManager = new AudioManager(getAssetManager(), rootNode, "Sound/");
-    audioManager.loadFile("intro", "Soundtrack/alone32.wav", false, false, 0.75f);
+    audioManager.loadFile("intro", "Soundtrack/alone.wav", false, false, 0.75f);
     audioManager.loadFile("waiting", "Soundtrack/alone.wav", false, true, 0.75f);
     audioManager.loadFile("alone", "Soundtrack/alone.wav", false, true, 1.0f);
     audioManager.loadFile("lobby", "Soundtrack/lobby16.wav", false, true, 0.9f);
@@ -146,7 +145,6 @@ public class EscapeVR extends VRApplication implements EventListener {
         .loadFile("gamebegin", "ui/portal2/p2_store_ui_checkout_01.wav", false, false, 0.8f);
     audioManager.loadFile("gamelost", "Soundtrack/gamelost.wav", false, false, 1.0f);
     audioManager.loadFile("euphoria", "Soundtrack/euphoria.wav", false, false, 1.0f);
-
   }
 
   /**
@@ -173,7 +171,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     screenManager = new ScreenManager(getAssetManager(), guiNode, guiCanvasSize.getX(),
         guiCanvasSize.getY());
 
-    // pre-load all screens
+    // Pre-load all screens
     screenManager.loadScreen("lobby", LobbyScreen.class);
     screenManager.loadScreen("spooky", SpookyScreen.class);
     screenManager.loadScreen("controller", ControllerScreen.class);
@@ -211,11 +209,11 @@ public class EscapeVR extends VRApplication implements EventListener {
       System.out.println("Attached device: " + VRApplication.getVRHardware().getName());
     }
 
-    // create a sphere around the observer for our collision detection
+    // Create a sphere around the observer for our collision detection
     Sphere sphere = new Sphere(10, 50, 0.4f);
     observer = new Geometry("observer", sphere);
 
-    // the sphere should have no shaded material
+    // The sphere should have no shaded material
     Material mat = new Material(getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
 
     observer.setCullHint(CullHint.Always);
@@ -253,11 +251,9 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     movementHandler = new MovementHandler(observer, rootNode);
     movementHandler.setLockHorizontal(true);
-    inputHandler.registerMappings(movementHandler, "left", "right", "forward", "back");
-
-    // inputHandler.registerMappings(new RotationHandler(observer), "tiltLeft", "tiltRight");
     
-
+    inputHandler.registerMappings(movementHandler, "left", "right", "forward", "back");
+    
     inputHandler.registerMappings(new RotationHandler(observer), "lookUp", "lookDown", "lookLeft",
         "lookRight", "tiltLeft", "tiltRight");
 
@@ -276,7 +272,7 @@ public class EscapeVR extends VRApplication implements EventListener {
     timer = new Timer(clientThread, hud);
 
     if (Settings.DEBUG) {
-      // when in debug mode, force the game to start
+      // When in debug mode, force the game to start
       // eventManager.addEvent(new GameStartEvent(this));
       log.setLevel(LogLevel.ALL);
       setGameState(IntroState.getInstance());
@@ -308,30 +304,29 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     for (Spatial object : objects) {
 
-      // ignore objects that are null
+      // Ignore objects that are null
       if (object == null) {
         continue;
       }
 
-      // ignore AudioNodes
+      // Ignore AudioNodes
       if (object instanceof AudioNode) {
         continue;
       }
 
-      // ignore the observer as we can't interact with ourselves
+      // Ignore the observer as we can't interact with ourselves
       if (object.getName().equals("observer")) {
         continue;
       }
 
-      // only process objects that extend either Geomtery or Node
+      // Only process objects that extend either Geomtery or Node
       if (object instanceof Geometry || object instanceof Node) {
-
         log.debug(className, String.format("Registering trigger for %s", object.toString()));
         eventManager.registerObjectInteractionTrigger(object.getName(), 6f);
       }
     }
 
-    // register all rigid objects with the movementhandler
+    // Register all rigid objects with the movementhandler
     // the movementhandler will force the observer
     // to stay away from these objects
     for (String objectName : rigidObjects) {
@@ -352,11 +347,11 @@ public class EscapeVR extends VRApplication implements EventListener {
 
     if (stateManager.getCurrentState() instanceof IntroState) {
 
-      // System.out.println(audioManager.getPlaybackTime("welcome"));
-
-      if (audioManager.getStatus("intro") != AudioSource.Status.Playing) {
-        startGame();
-      }
+        if (audioManager.getStatus("intro") == AudioSource.Status.Playing) {
+            if (audioManager.getPlaybackTime("intro") > 35) {
+                startGame();
+            }
+        }
     }
 
     if (stateManager.getCurrentState() != currentState) {
@@ -384,7 +379,7 @@ public class EscapeVR extends VRApplication implements EventListener {
    */
   private void startMinigame(String gameName) {
 
-    log.info(className, "Trying to start game " + gameName);
+      log.info(className, "Trying to start game " + gameName);
 
     switch (gameName) {
     case "A":
@@ -407,8 +402,10 @@ public class EscapeVR extends VRApplication implements EventListener {
     }
   }
 
+  /**
+   * Starts the playing state, timer and starts the game.
+   */
   private void startGame() {
-
     log.info(className, "startGame()");
 
     audioManager.stopAudio();
@@ -509,19 +506,22 @@ public class EscapeVR extends VRApplication implements EventListener {
     remoteInput(message);
   }
 
+  /**
+   * Handle an event.
+   * 
+   * @param event
+   *          the event
+   */
   @Override
   public void handleEvent(EventObject ev) {
-
     log.info(className, "Event received: " + ev.toString());
 
     if (stateManager.getCurrentState() instanceof IntroState) {
 
       if (ev instanceof ButtonPressEvent) {
-
         ButtonPressEvent bpEvent = (ButtonPressEvent) ev;
         
         if (bpEvent.getName().equals(Settings.INTERACTION_BUTTON)) {
-
           startGame();
         }
       }
@@ -532,17 +532,14 @@ public class EscapeVR extends VRApplication implements EventListener {
     } else if (ev instanceof MinigameCompleteEvent) {
       audioManager.play("gamecomplete");
     } else if (ev instanceof TimeoutEvent) {
-      // yeah this is kinda weird but I dont want to keep the behaviour for these events seperated
       setGameState(GameLostState.getInstance());
     } else if (ev instanceof GameWonEvent) {
       setGameState(GameWonState.getInstance());
       observer.setLocalTranslation(Settings.winningPosition);
       collisionHandler.disableRestriction();
       movementHandler.setLockHorizontal(false);
-
       movementHandler.setMovementSpeed(2f);
       // movementHandler.setForceFlying(true);
-
       movementHandler.addObject("wall-north");
       movementHandler.addObject("wall-south");
       movementHandler.addObject("wall-east");

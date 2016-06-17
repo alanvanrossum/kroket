@@ -2,13 +2,20 @@ package nl.tudelft.kroket.event.events;
 
 import java.util.EventObject;
 
+/**
+ * Event to indicate that the game should start.
+ * 
+ * @author Team Kroket
+ *
+ */
+@SuppressWarnings("serial")
 public class GameStartEvent extends EventObject {
 
   /**
+   * Constructor for the GameStartEvent.
    * 
+   * @param source the source of the event.
    */
-  private static final long serialVersionUID = -3907975018392629402L;
-
   public GameStartEvent(Object source) {
     super(source);
   }
