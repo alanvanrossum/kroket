@@ -157,7 +157,7 @@ public class MovementHandler extends InteractionHandler implements ActionListene
    * @param objectName
    *          object name
    */
-  public void removeObject(Spatial objectName) {
+  public void removeObject(String objectName) {
     if (!objectList.contains(objectName)) {
       return;
     }
@@ -267,5 +267,43 @@ public class MovementHandler extends InteractionHandler implements ActionListene
     return intersects;
 
   }
+
+  public boolean isMoveForward() {
+    return moveForward;
+  }
+
+  public void setMoveForward(boolean moveForward) {
+    this.moveForward = moveForward;
+  }
+
+  public boolean isMoveBackwards() {
+    return moveBackwards;
+  }
+
+  public void setMoveBackwards(boolean moveBackwards) {
+    this.moveBackwards = moveBackwards;
+  }
+
+  public boolean isMoveLeft() {
+    return moveLeft;
+  }
+
+  public void setMoveLeft(boolean moveLeft) {
+    this.moveLeft = moveLeft;
+  }
+
+  public boolean isMoveRight() {
+    return moveRight;
+  }
+
+  public void setMoveRight(boolean moveRight) {
+    this.moveRight = moveRight;
+  }
+
+  public List<String> getObjectList() {
+    return objectList;
+  }
+  
+  
 
 }

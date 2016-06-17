@@ -132,4 +132,54 @@ public class RotationHandler extends InteractionHandler implements ActionListene
     observer.rotate(0, 0, delta);
   }
 
+  /**
+   * Lookup boolean.
+   * @return lookUp
+   */
+  public boolean isLookUp() {
+    return lookUp;
+  }
+
+  /**
+   * LookDown boolean.
+   * @return lookDown
+   */
+  public boolean isLookDown() {
+    return lookDown;
+  }
+
+  /**
+   * LookLeft boolean.
+   * @return lookLeft
+   */
+  public boolean isLookLeft() {
+    return lookLeft;
+  }
+
+  /**
+   * LookRight boolean.
+   * @return lookRight
+   */
+  public boolean isLookRight() {
+    return lookRight;
+  }
+
+  /**
+   * TiltRight boolean.
+   * @return tiltRight
+   */
+  public boolean isTiltRight() {
+    return tiltRight;
+  }
+
+  /**
+   * TiltLeft boolean.
+   * @return tiltLeft
+   */
+  public boolean isTiltLeft() {
+    return tiltLeft;
+  }
+  
+  
+
 }

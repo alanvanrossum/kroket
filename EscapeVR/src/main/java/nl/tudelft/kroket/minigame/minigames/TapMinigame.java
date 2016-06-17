@@ -60,16 +60,16 @@ public class TapMinigame extends Minigame {
 
     public sequenceState getNext() {
       switch (this) {
-      case sequenceOne:
-        return sequenceTwo;
-      case sequenceTwo:
-        return sequenceThree;
-      case sequenceThree:
-        return sequenceFour;
-      case sequenceFour:
-        return completed;
-      default:
-        return this;
+        case sequenceOne:
+          return sequenceTwo;
+        case sequenceTwo:
+          return sequenceThree;
+        case sequenceThree:
+          return sequenceFour;
+        case sequenceFour:
+          return completed;
+        default:
+          return this;
       }
 
     }
@@ -81,16 +81,16 @@ public class TapMinigame extends Minigame {
      */
     public List<String> returnSequence() {
       switch (this) {
-      case sequenceOne:
-        return firstSequence;
-      case sequenceTwo:
-        return secondSequence;
-      case sequenceThree:
-        return thirdSequence;
-      case sequenceFour:
-        return fourthSequence;
-      default:
-        return sequenceList;
+        case sequenceOne:
+          return firstSequence;
+        case sequenceTwo:
+          return secondSequence;
+        case sequenceThree:
+          return thirdSequence;
+        case sequenceFour:
+          return fourthSequence;
+        default:
+          return sequenceList;
       }
     }
 
@@ -101,17 +101,17 @@ public class TapMinigame extends Minigame {
      */
     public String returnCompleteMessage() {
       switch (this) {
-      case sequenceOne:
-        return "First sequence complete!";
-      case sequenceTwo:
-        return "Well done! Two more to go!";
-      case sequenceThree:
-        return "One more to go!";
-      case sequenceFour:
-        return "You're done!";
-      default:
-        return "Good job!";
-      }
+        case sequenceOne:
+          return "First sequence complete!";
+        case sequenceTwo:
+          return "Well done! Two more to go!";
+        case sequenceThree:
+          return "One more to go!";
+        case sequenceFour:
+          return "You're done!";
+        default:
+          return "Good job!";
+        }
     }
 
   }
@@ -260,5 +260,15 @@ public class TapMinigame extends Minigame {
   public static List<String> getFourthSequence() {
     return fourthSequence;
   }
+
+  /**
+   * Gets the buttonlist.
+   * @return the button list
+   */
+  public static List<String> getButtonList() {
+    return buttonList;
+  }
+  
+  
 
 }

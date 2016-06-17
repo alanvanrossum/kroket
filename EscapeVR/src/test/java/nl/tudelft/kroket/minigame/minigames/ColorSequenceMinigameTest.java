@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import nl.tudelft.kroket.event.events.ButtonPressEvent;
 import nl.tudelft.kroket.minigame.Minigame;
 import nl.tudelft.kroket.net.ClientThread;
 import nl.tudelft.kroket.scene.SceneManager;
@@ -29,7 +30,7 @@ import nl.tudelft.kroket.screen.ScreenManager;
 public class ColorSequenceMinigameTest {
   
 
-  private Minigame miniGame;
+  private ColorSequenceMinigame miniGame;
   @Mock private HeadUpDisplay hud;
   @Mock private ClientThread clientThread;
   @Mock private ScreenManager screenManager;
@@ -41,7 +42,7 @@ public class ColorSequenceMinigameTest {
    */
   @Before
   public void setUp() throws Exception {
-    miniGame = ColorSequenceMinigame.getInstance();
+    miniGame = (ColorSequenceMinigame) ColorSequenceMinigame.getInstance();
     hud = Mockito.mock(HeadUpDisplay.class);
     clientThread = Mockito.mock(ClientThread.class);
     screenManager = Mockito.mock(ScreenManager.class);
@@ -51,12 +52,26 @@ public class ColorSequenceMinigameTest {
     miniGame.setSceneManager(sceneManager);
     miniGame.setScreenManager(screenManager);
   }
+  
+  /**
+   * Clears the sequencelist after each test.
+   */
+  @After
+  public void tearDown() {
+    List<String> list = new ArrayList<>();
+    miniGame.setSequence(list);
+    
+  }
 
   /**
    * Test for start method.
    */
-  @Test(expected = NullPointerException.class)
+  @Test
   public void testStart() {
+    Screen screen = Mockito.mock(Screen.class);
+    Mockito.when(screenManager.getScreen(Mockito.anyString())).thenReturn(screen);
+    Mockito.doNothing().when(screen).show();
+    Mockito.doNothing().when(hud).setCenterText(Mockito.anyString(), Mockito.anyInt());
     assertFalse(ColorSequenceMinigame.isActive());
     miniGame.start();
     assertTrue(ColorSequenceMinigame.isActive());
@@ -65,8 +80,13 @@ public class ColorSequenceMinigameTest {
   /**
    * Test for stop method.
    */
-  @Test(expected = NullPointerException.class)
+  @Test
   public void testStop() {
+    Screen screen = Mockito.mock(Screen.class);
+    Mockito.when(screenManager.getScreen(Mockito.anyString())).thenReturn(screen);
+    Mockito.doNothing().when(screen).hide();
+    Mockito.doNothing().when(hud).setCenterText(
+        Mockito.anyString(), Mockito.anyInt());
     miniGame.stop();
     assertFalse(ColorSequenceMinigame.isActive());
   }
@@ -92,6 +112,17 @@ public class ColorSequenceMinigameTest {
     gameSpy.update(1f);
     ((ColorSequenceMinigame) Mockito.verify(gameSpy, Mockito.never())).finish();
   }
+  
+  @Test
+  public void testHandleEvent() {
+    ButtonPressEvent bpe = new ButtonPressEvent(Mockito.mock(Object.class), "test");
+    List<String> list = new ArrayList<>();
+    list.add("test");
+    miniGame.setSequence(list);
+    miniGame.handleEvent(bpe);
+    assertTrue(ColorSequenceMinigame.getButtonList().contains("test"));
+  }
+
 
   /**
    * Test getName method.
@@ -123,7 +154,7 @@ public class ColorSequenceMinigameTest {
    */
   @Test
   public void testFinish() {
-    ((ColorSequenceMinigame) miniGame).finish();
+    miniGame.finish();
     Mockito.doNothing().when(clientThread).sendMessage(Mockito.anyString());
     Mockito.verify(clientThread).sendMessage(Mockito.anyString());
   }
@@ -136,7 +167,7 @@ public class ColorSequenceMinigameTest {
     assertTrue(ColorSequenceMinigame.getSequenceList().isEmpty());
     List<String> list = new ArrayList<>();
     list.add("test");
-    ((ColorSequenceMinigame) miniGame).setSequence(list);
+    miniGame.setSequence(list);
     assertEquals(ColorSequenceMinigame.getSequenceList(), list);
   }
 
@@ -145,7 +176,7 @@ public class ColorSequenceMinigameTest {
    */
   @Test
   public void testParseColors() {
-    ((ColorSequenceMinigame) miniGame).setSequence(new ArrayList<>());
+    miniGame.setSequence(new ArrayList<>());
     List<String> list = new ArrayList<>();
     list.add("Button B");
     list.add("Button A");
@@ -156,7 +187,7 @@ public class ColorSequenceMinigameTest {
     colors.add("GREEN");
     colors.add("BLUE");
     colors.add("YELLOW");
-    ((ColorSequenceMinigame) miniGame).parseColors(colors);
+    miniGame.parseColors(colors);
     assertEquals(ColorSequenceMinigame.getSequenceList(), list);
   }
 

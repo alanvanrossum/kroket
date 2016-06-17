@@ -215,4 +215,14 @@ public class ColorSequenceMinigame extends Minigame {
     return GAME_NAME;
   }
 
+  /**
+   * Gets the button list.
+   * @return the buttonList
+   */
+  public static List<String> getButtonList() {
+    return buttonList;
+  }
+  
+  
+
 }

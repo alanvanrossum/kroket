@@ -55,7 +55,7 @@ public class LockMinigameTest {
 
   @Test
   public void testGetName() {
-    assertEquals("F", miniGame.getName());
+    assertEquals("D", miniGame.getName());
   }
 
   @Test

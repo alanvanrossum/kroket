@@ -86,7 +86,7 @@ public class StateManager {
 
     // Do not switch state if already in given state
     if (currentState == state) {
-      System.err.println("currentState == state");
+      log.error(className, "currentState == state");
       return;
     }
 
@@ -154,5 +154,7 @@ public class StateManager {
   public GameState getCurrentState() {
     return currentState;
   }
+  
+  
 
 }

@@ -10,6 +10,7 @@ import static org.mockito.Mockito.mock;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.renderer.ViewPort;
@@ -75,25 +76,56 @@ public class SceneManagerTest {
     sc.destroyScene("test");
     assertNull(rn.getChild("test"));
   }
-  
+
   /**
    * Test for getScene method.
    */
   @Test
-  public void getScenetest() {
+  public void getSceneTest() {
     SceneManager sc = new SceneManager(am, rn, vp);
     sc.loadScene("test", EscapeScene.class);
     EscapeScene es = new EscapeScene("test", am, rn, vp);
     assertEquals(sc.getScene("test"), es);
   }
-  
+
   /**
    * Test for getScene method if scene is not present.
    */
   @Test
-  public void getSceneFailtest() {
+  public void getSceneFailTest() {
     SceneManager sc = new SceneManager(am, rn, vp);;
     assertNull(sc.getScene("test"));
+  }
+
+  @Test
+  public void extendEscapeSceneATest() {
+    SceneManager sc = new SceneManager(am, rn, vp);
+    EscapeScene scene = Mockito.mock(EscapeScene.class);  
+    sc.scenes.put("escape", scene);
+    Mockito.doNothing().when(scene).addOpenSafe();
+    sc.extendEscapeScene("A");
+    Mockito.verify(scene).addOpenSafe();
+
+  }
+
+  @Test
+  public void extendEscapeSceneCTest() {
+    SceneManager sc = new SceneManager(am, rn, vp);
+    EscapeScene scene = Mockito.mock(EscapeScene.class);  
+    sc.scenes.put("escape", scene);
+    Mockito.doNothing().when(scene).addButtons();
+    sc.extendEscapeScene("C");
+    Mockito.verify(scene).addButtons();
+  }
+
+  @Test
+  public void extendEscapeSceneDTest() {
+    SceneManager sc = new SceneManager(am, rn, vp);
+    EscapeScene scene = Mockito.mock(EscapeScene.class);  
+    sc.scenes.put("escape", scene);
+    Mockito.doNothing().when(scene).addCode13(Mockito.anyString(), Mockito.anyString());
+    sc.extendEscapeScene("D");
+    Mockito.verify(scene).addCode13(Mockito.anyString(), Mockito.anyString());
   }
 
 }

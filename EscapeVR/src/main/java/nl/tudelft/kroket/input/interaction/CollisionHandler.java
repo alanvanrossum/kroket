@@ -110,4 +110,12 @@ public class CollisionHandler extends InteractionHandler {
     }
   }
 
+  /**
+   * Gets the restrictObserver boolean.
+   * @return restricObserver
+   */
+  public boolean isRestrictObserver() {
+    return restrictObserver;
+  }
+
 }

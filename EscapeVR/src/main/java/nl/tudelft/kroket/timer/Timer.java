@@ -102,6 +102,14 @@ public class Timer {
   }
 
   /**
+   * Gets the timelimit.
+   * @return the timelimit
+   */
+  public long getTimeLimit() {
+    return timeLimit;
+  }
+ 
+  /**
    * Set timer activity.
    * 
    * @param active set the timer's activity
