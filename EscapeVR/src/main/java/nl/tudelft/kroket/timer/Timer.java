@@ -29,8 +29,10 @@ public class Timer {
   /**
    * Constructor for the timer object.
    * 
-   * @param clientThread the client thread for sending messages to the server.
-   * @param hud the head up display.
+   * @param clientThread
+   *          the client thread for sending messages to the server.
+   * @param hud
+   *          the head up display.
    */
   public Timer(ClientThread clientThread, HeadUpDisplay hud) {
     active = false;
@@ -97,6 +99,15 @@ public class Timer {
   public void bonusTime() {
     log.info(className, String.format("Timer increased by %d seconds.", Settings.BONUSTIME));
     timeLimit += Settings.BONUSTIME * 1000;
+  }
+
+  /**
+   * Set timer activity.
+   * 
+   * @param active set the timer's activity
+   */
+  public void setActive(boolean active) {
+    this.active = active;
   }
 
 }
