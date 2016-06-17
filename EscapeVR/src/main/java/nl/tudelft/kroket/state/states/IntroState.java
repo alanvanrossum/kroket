@@ -78,8 +78,10 @@ public class IntroState extends GameState {
 
     if (currentScreen instanceof IntroScreen) {
       IntroScreen intro = (IntroScreen) currentScreen;
-      int current = convertTimeToSlide((int) (time));
-      intro.setCurrent(current);
+        if(time!=0.0) {
+            int current = convertTimeToSlide((int) (time));
+            intro.setCurrent(current);
+        }
     }
   }
   
