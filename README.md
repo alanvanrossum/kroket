@@ -87,8 +87,8 @@
 ### Week 9
 
 - Test Document 
-- Final Report Draft
-- Architecture design
+- Final Report (Draft)
+- Architecture design (Final)
 - Sprint retrospective 8
 
 [Week 9 documents](https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek9)
