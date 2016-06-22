@@ -2,6 +2,30 @@
 ## Computer Games context
 ### Team Kroket
 
+Welcome to the main Github repository of Team Kroket. Team Kroket is a group of five Computer Science majors at Delft University of Technology, The Netherlands. 
+This is the our main repository for Contextproject 2016. Our goal was to create a small and fun multiplayer videogame, for the Oculus Rift and several other multimedia devices. In order to play this game, you need one Oculus Rift headset and two Android powered devices. Android 4 and later are supported. The machine operating the Oculus Rift headset should be running Microsoft Windows. Oculus Runtime SDK 0.8.0.0 and SteamVR are required. 
+No other platforms are currently supported.
+
+## Introduction
+
+### W...what am I looking at?
+
+Escaparade! A videogame by Team Kroket!
+
+When we were signing up for this project, we had to pick a name for our team. We picked a random food, a kroket. We didn't think the name Team Kroket would matter much and figured it would be temporary, but the name showed up everywhere in official documentation and we decided to stick by it.
+
+The title of our game is "Escaparade". The name is a contraction between the words "Escape" and "Parade". Initially, this was a temporary title. Again, we deciced to stick by it.
+
+This repository contains the VR-side of the game (to be used with the Oculus Rift). The game engine used is the jMonkeyEngine platform (Java powered), as per course-requirement. 
+
+Our Android client and dedicated (standalone) gamehost are located on different repositories for Continous Integration purposes. Please follow the links below:
+- [Android client](https://github.com/alanvanrossum/kroketapp/) 
+- [Gamehost/server](https://github.com/alanvanrossum/krokethost/)
+
+
+We think our silly game will be a fun experience for everyone. We hope you enjoy playing Escaparade!
+
+
 [![Kroket game studios](http://i.imgur.com/hQs8FMT.png)](https://github.com/alanvanrossum/kroket)
 
 | Component        | Build status  | 
@@ -9,6 +33,37 @@
 | [Virtual Reality client](https://github.com/alanvanrossum/kroket/) 	| [![Build Status](https://api.travis-ci.org/alanvanrossum/kroket.svg?branch=master)](https://travis-ci.org/alanvanrossum/kroket)|
 | [Android client](https://github.com/alanvanrossum/kroketapp/)    | [![Build Status](https://api.travis-ci.org/alanvanrossum/kroketapp.svg?branch=master)](https://travis-ci.org/alanvanrossum/kroketapp)|
 | [Gamehost/server](https://github.com/alanvanrossum/krokethost/)  | [![Build Status](https://api.travis-ci.org/alanvanrossum/krokethost.svg?branch=master)](https://travis-ci.org/alanvanrossum/krokethost)|
+
+### How to play
+
+You'll need:
+- 1 Oculus Rift connected to a computer
+- 2 friends
+- 2 Android Smartphones with the EscapeApp installed
+- To get ready to laugh
+
+#### Step 1: Installing the server
+Install and run the EscapeHost application. The EscapeHost will listen (by defaulft) on port TCP/1234. If you are behind a NAT device, please configure it to forward incoming connections.
+The server (EscapeHost) will automatically deal with all clients connecting and start the game when everyone is ready.
+
+#### Step 2: Installing the VR client
+Connect your Oculus Rift to a computer and install EscapeVR on this machine. This can be the same computer you're running the EscapeHost on.
+
+#### Step 3: Installing the Mobile client
+Install EscapeApp to at least two Android mobile devices. 
+
+#### Step 4: Connect the clients to the server
+Run EscapeVR and make sure it connects to the EscapeHost. 
+On both Android devices, run the EscapeApp and make sure both are connected to the EscapeHost.
+
+#### Step 5: Start the game
+The EscapeHost will start the game when everyone is connected and ready to play.
+
+Enjoy your game!
+
+# Disclaimer
+
+Material used for educational purposes only. No copyright infringement intended.
 
 
 # Documentation
@@ -93,43 +148,4 @@
 
 [Week 9 documents](https://github.com/alanvanrossum/kroket/tree/master/doc/deliverablesweek9)
 
-## Introduction
 
-You're looking at the Github repository of Team Kroket.  Team Kroket is a group of five Computer Science students at Delft University of Technology, The Netherlands. For the course TI2806 - Contextproject our goal was to create a simple but fun multiplayer game, using an Oculus Rift, a few Android powered mobile devices and our imagination.  
-
-### What am I looking at?
-
-This is Escaparade. Yes, Escaparade, or Escapãradè (??), all up to you. Escaparade is a multiplayer game by Team Kroket.
-
-### Team w..wha?
-
-Kroket! A kroket is a Dutch snack. Look it up on [Wikipedia](https://en.wikipedia.org/wiki/Croquette#Netherlands)!
-
-We picked this name because... we could. When signing up, we just picked a random food. Kroket it was. 
-
-### How to play
-
-You'll need:
-- 1 Oculus Rift connected to a computer
-- 2 friends
-- 2 Android Smartphones with the EscapeApp installed
-- To get ready to laugh
-
-#### Step 1: Installing the server
-Install and run the EscapeHost application. The EscapeHost will listen (by defaulft) on port TCP/1234. If you are behind a NAT device, please configure it to forward incoming connections.
-The server (EscapeHost) will automatically deal with all clients connecting and start the game when everyone is ready.
-
-#### Step 2: Installing the VR client
-Connect your Oculus Rift to a computer and install EscapeVR on this machine. This can be the same computer you're running the EscapeHost on.
-
-#### Step 3: Installing the Mobile client
-Install EscapeApp to at least two Android mobile devices. 
-
-#### Step 4: Connect the clients to the server
-Run EscapeVR and make sure it connects to the EscapeHost. 
-On both Android devices, run the EscapeApp and make sure both are connected to the EscapeHost.
-
-#### Step 5: Start the game
-The EscapeHost will start the game when everyone is connected and ready to play.
-
-Enjoy your game!
